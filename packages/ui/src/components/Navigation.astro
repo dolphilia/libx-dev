@@ -1,0 +1,44 @@
+---
+interface NavItem {
+  title: string;
+  href: string;
+  children?: NavItem[];
+}
+
+interface Props {
+  items: NavItem[];
+  class?: string;
+}
+
+const { items, class: className = '' } = Astro.props;
+---
+
+<nav class:list={['flex space-x-4', className]}>
+  {
+    items.map((item) => (
+      <div class="relative group">
+        <a
+          href={item.href}
+          class="px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-100 rounded-md transition-colors"
+        >
+          {item.title}
+          {item.children && item.children.length > 0 && (
+            <span class="ml-1">▼</span>
+          )}
+        </a>
+        {item.children && item.children.length > 0 && (
+          <div class="absolute left-0 mt-2 w-48 bg-white border rounded-md shadow-lg hidden group-hover:block z-10">
+            {item.children.map((child) => (
+              <a
+                href={child.href}
+                class="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-blue-600"
+              >
+                {child.title}
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    ))
+  }
+</nav>

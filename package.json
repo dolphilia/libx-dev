@@ -1,0 +1,16 @@
+{
+  "name": "docs-astro",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter=./apps/* dev",
+    "build": "pnpm --filter=./apps/* build",
+    "preview": "pnpm --filter=./apps/* preview",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0"
+  }
+}

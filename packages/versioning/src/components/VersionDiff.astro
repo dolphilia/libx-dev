@@ -1,0 +1,218 @@
+---
+import { Card } from '@docs/ui/components';
+import type { Version } from '../utils/version';
+import { diffLines, createHtmlDiff } from '../utils/diff';
+
+interface Props {
+  versions: Version[];
+  oldVersionId: string;
+  newVersionId: string;
+  oldContent: string;
+  newContent: string;
+  title?: string;
+  className?: string;
+}
+
+const {
+  versions,
+  oldVersionId,
+  newVersionId,
+  oldContent,
+  newContent,
+  title = 'バージョン間の差分',
+  className = ''
+} = Astro.props;
+
+// バージョン情報を取得
+const oldVersion = versions.find(v => v.id === oldVersionId);
+const newVersion = versions.find(v => v.id === newVersionId);
+
+// 差分を計算
+const diffResults = diffLines(oldContent, newContent, { context: 3 });
+const diffHtml = createHtmlDiff(diffResults);
+
+// 変更の統計情報
+const addedLines = diffResults.filter(r => r.type === 'added').length;
+const removedLines = diffResults.filter(r => r.type === 'removed').length;
+const unchangedLines = diffResults.filter(r => r.type === 'unchanged').length;
+---
+
+<div class={`version-diff ${className}`}>
+  <Card>
+    <div slot="title" class="flex items-center justify-between">
+      <h2 class="text-xl font-bold">{title}</h2>
+      <div class="text-sm text-gray-500 dark:text-gray-400">
+        {oldVersion?.name || oldVersionId} → {newVersion?.name || newVersionId}
+      </div>
+    </div>
+    
+    <div slot="content">
+      <div class="mb-4 flex items-center space-x-4 text-sm">
+        <div class="flex items-center">
+          <span class="inline-block w-3 h-3 mr-1 bg-red-500 rounded-full"></span>
+          <span>削除: {removedLines}行</span>
+        </div>
+        <div class="flex items-center">
+          <span class="inline-block w-3 h-3 mr-1 bg-green-500 rounded-full"></span>
+          <span>追加: {addedLines}行</span>
+        </div>
+        <div class="flex items-center">
+          <span class="inline-block w-3 h-3 mr-1 bg-gray-300 dark:bg-gray-600 rounded-full"></span>
+          <span>変更なし: {unchangedLines}行</span>
+        </div>
+      </div>
+      
+      <div class="version-diff-controls mb-4">
+        <label class="inline-flex items-center mr-4">
+          <input type="checkbox" id="toggle-context" class="form-checkbox h-4 w-4 text-primary-600" checked>
+          <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">コンテキストを表示</span>
+        </label>
+        
+        <label class="inline-flex items-center">
+          <input type="checkbox" id="toggle-whitespace" class="form-checkbox h-4 w-4 text-primary-600">
+          <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">空白の変更を無視</span>
+        </label>
+      </div>
+      
+      <div class="overflow-x-auto">
+        <div class="diff-container border border-gray-200 dark:border-gray-700 rounded-md font-mono text-sm">
+          <div class="diff-header flex bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+            <div class="w-12 py-2 px-3 text-center text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-gray-700">旧</div>
+            <div class="w-12 py-2 px-3 text-center text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-gray-700">新</div>
+            <div class="py-2 px-3 text-gray-500 dark:text-gray-400">コード</div>
+          </div>
+          
+          <div id="diff-content" class="diff-content">
+            <Fragment set:html={diffHtml} />
+          </div>
+        </div>
+      </div>
+    </div>
+  </Card>
+</div>
+
+<style>
+  .diff-line {
+    display: flex;
+    white-space: pre;
+    border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+  }
+  
+  .diff-line:last-child {
+    border-bottom: none;
+  }
+  
+  .diff-line-number {
+    display: inline-block;
+    width: 3rem;
+    padding: 0 0.5rem;
+    text-align: right;
+    color: #6b7280;
+    user-select: none;
+    border-right: 1px solid rgba(229, 231, 235, 0.5);
+  }
+  
+  .diff-prefix {
+    display: inline-block;
+    width: 1.5rem;
+    padding: 0 0.5rem;
+    color: #6b7280;
+    user-select: none;
+  }
+  
+  .diff-content {
+    flex: 1;
+    padding: 0 0.5rem;
+  }
+  
+  .diff-added {
+    background-color: rgba(16, 185, 129, 0.1);
+  }
+  
+  .diff-added .diff-prefix {
+    color: #10b981;
+  }
+  
+  .diff-removed {
+    background-color: rgba(239, 68, 68, 0.1);
+  }
+  
+  .diff-removed .diff-prefix {
+    color: #ef4444;
+  }
+  
+  /* ダークモード対応 */
+  :global(.dark) .diff-line {
+    border-bottom: 1px solid rgba(55, 65, 81, 0.5);
+  }
+  
+  :global(.dark) .diff-line-number {
+    color: #9ca3af;
+    border-right: 1px solid rgba(55, 65, 81, 0.5);
+  }
+  
+  :global(.dark) .diff-prefix {
+    color: #9ca3af;
+  }
+  
+  :global(.dark) .diff-added {
+    background-color: rgba(16, 185, 129, 0.15);
+  }
+  
+  :global(.dark) .diff-removed {
+    background-color: rgba(239, 68, 68, 0.15);
+  }
+</style>
+
+<script>
+  // 差分表示の制御
+  const toggleContext = document.getElementById('toggle-context') as HTMLInputElement;
+  const toggleWhitespace = document.getElementById('toggle-whitespace') as HTMLInputElement;
+  const diffContent = document.getElementById('diff-content');
+  
+  // 元のコンテンツを保存
+  let oldContent = '';
+  let newContent = '';
+  
+  if (diffContent) {
+    // 初期コンテンツを保存
+    oldContent = document.getElementById('old-content')?.textContent || '';
+    newContent = document.getElementById('new-content')?.textContent || '';
+  }
+  
+  // コンテキスト表示の切り替え
+  if (toggleContext) {
+    toggleContext.addEventListener('change', () => {
+      const unchangedLines = document.querySelectorAll('.diff-unchanged');
+      unchangedLines.forEach(line => {
+        if (toggleContext.checked) {
+          line.classList.remove('hidden');
+        } else {
+          line.classList.add('hidden');
+        }
+      });
+    });
+  }
+  
+  // 空白の変更を無視する設定
+  if (toggleWhitespace && diffContent) {
+    toggleWhitespace.addEventListener('change', async () => {
+      // 実際の実装では、サーバーサイドで再計算するか、
+      // クライアントサイドでdiffライブラリを使用して再計算する
+      console.log('空白の変更を無視する設定が変更されました:', toggleWhitespace.checked);
+      
+      // この例では、設定変更のメッセージのみ表示
+      const notification = document.createElement('div');
+      notification.className = 'p-2 mb-2 text-sm text-primary-700 bg-primary-100 rounded-md dark:bg-primary-800 dark:text-primary-200';
+      notification.textContent = '空白の変更を無視する設定は、実際の実装ではサーバーサイドで処理されます。';
+      
+      // 通知を表示
+      diffContent.parentNode?.insertBefore(notification, diffContent);
+      
+      // 3秒後に通知を削除
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    });
+  }
+</script>

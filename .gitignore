@@ -134,3 +134,13 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Astro
+.astro/
+
+# Build output
+dist/
+.output/
+
+# Generated types
+.astro/

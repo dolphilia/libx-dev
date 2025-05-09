@@ -1,0 +1,48 @@
+---
+interface SidebarItem {
+  title: string;
+  href: string;
+  isActive?: boolean;
+  children?: SidebarItem[];
+}
+
+interface Props {
+  items: SidebarItem[];
+  title?: string;
+  class?: string;
+}
+
+const { items, title, class: className = '' } = Astro.props;
+
+const renderItems = (items: SidebarItem[]) => {
+  return items.map((item) => (
+    <li>
+      <a
+        href={item.href}
+        class:list={[
+          'block py-2 px-3 rounded-md transition-colors',
+          item.isActive
+            ? 'bg-blue-50 text-blue-700 font-medium'
+            : 'text-gray-700 hover:bg-gray-100',
+        ]}
+      >
+        {item.title}
+      </a>
+      {item.children && item.children.length > 0 && (
+        <ul class="ml-4 mt-1 space-y-1 border-l border-gray-200 pl-2">
+          {renderItems(item.children)}
+        </ul>
+      )}
+    </li>
+  ));
+};
+---
+
+<aside class:list={['w-64 shrink-0', className]}>
+  {title && <h3 class="mb-3 font-semibold text-lg">{title}</h3>}
+  <nav>
+    <ul class="space-y-1">
+      {renderItems(items)}
+    </ul>
+  </nav>
+</aside>

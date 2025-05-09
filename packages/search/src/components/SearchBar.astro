@@ -1,0 +1,51 @@
+---
+import { Button } from '@docs/ui/components';
+
+interface Props {
+  placeholder?: string;
+  buttonText?: string;
+  className?: string;
+}
+
+const {
+  placeholder = '検索...',
+  buttonText = '検索',
+  className = '',
+} = Astro.props;
+---
+
+<div class={`search-bar ${className}`}>
+  <form id="search-form" class="flex">
+    <input
+      type="text"
+      id="search-input"
+      name="q"
+      placeholder={placeholder}
+      class="flex-grow px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+    />
+    <Button type="submit" class="rounded-l-none">
+      {buttonText}
+    </Button>
+  </form>
+</div>
+
+<script>
+  // 検索フォームの送信処理
+  const searchForm = document.getElementById('search-form') as HTMLFormElement;
+  const searchInput = document.getElementById('search-input') as HTMLInputElement;
+
+  if (searchForm) {
+    searchForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const query = searchInput.value.trim();
+      
+      if (query) {
+        // カスタムイベントを発行して検索を実行
+        const searchEvent = new CustomEvent('docsearch', {
+          detail: { query }
+        });
+        document.dispatchEvent(searchEvent);
+      }
+    });
+  }
+</script>
