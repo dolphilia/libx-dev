@@ -227,3 +227,16 @@ GitHub Actionsを使用して自動デプロイを行います：
 5. **CI/CDパイプラインの構築**:
    - GitHub Actionsによる自動ビルド・デプロイ
    - テスト自動化
+
+## 最近の修正内容
+
+### GitHub Pagesのリダイレクト問題の修正（2025/5/9）
+
+GitHub Pagesにデプロイされたサイト（https://dolphilia.github.io/docs-astro/）にアクセスした際に、
+「Redirecting from / to /en/」と表示され、https://dolphilia.github.io/en/ に誤ってリダイレクトされる問題を修正しました。
+
+修正内容：
+1. `apps/sample-docs/astro.config.mjs`に`base: '/docs-astro'`を追加して、GitHub Pagesのサブディレクトリにデプロイする際のベースパスを設定
+2. `apps/sample-docs/src/pages/index.astro`のリダイレクト先を絶対パス（/en）から相対パス（./en/）に変更
+
+これにより、https://dolphilia.github.io/docs-astro/ にアクセスした際に、正しく https://dolphilia.github.io/docs-astro/en/ にリダイレクトされるようになりました。

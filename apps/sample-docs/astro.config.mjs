@@ -10,6 +10,8 @@ const __dirname = path.dirname(__filename);
 
 // https://astro.build/config
 export default defineConfig({
+  // GitHub Pagesのサブディレクトリにデプロイするためのベースパス
+  base: '/docs-astro',
   integrations: [tailwind()],
   vite: {
     resolve: {
