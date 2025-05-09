@@ -518,7 +518,7 @@ class ImmutableDataStore {
    */
   static async fromModule() {
     try {
-      const data = await import('./_astro_data-layer-content.BjCo3uMv.js');
+      const data = await import('./_astro_data-layer-content.CfHWWdi6.js');
       if (data.default instanceof Map) {
         return ImmutableDataStore.fromMap(data.default);
       }
@@ -665,7 +665,7 @@ const CONTENT_LAYER_IMAGE_REGEX = /__ASTRO_IMAGE_="([^"]+)"/g;
 async function updateImageReferencesInBody(html, fileName) {
   const { default: imageAssetMap } = await import('./content-assets.DleWbedO.js');
   const imageObjects = /* @__PURE__ */ new Map();
-  const { getImage } = await import('./_astro_assets.BJY3G778.js').then(n => n._);
+  const { getImage } = await import('./_astro_assets.CbpI3Ew7.js').then(n => n._);
   for (const [_full, imagePath] of html.matchAll(CONTENT_LAYER_IMAGE_REGEX)) {
     try {
       const decodedImagePath = JSON.parse(imagePath.replaceAll("&#x22;", '"'));
@@ -725,7 +725,7 @@ async function renderEntry(entry) {
   }
   if (entry.deferredRender) {
     try {
-      const { default: contentModules } = await import('./content-modules.D0ePa97R.js');
+      const { default: contentModules } = await import('./content-modules.DfjJ1Ymz.js');
       const renderEntryImport = contentModules.get(entry.filePath);
       return render({
         collection: "",
@@ -871,4 +871,10 @@ const getCollection = createGetCollection({
 	cacheEntriesByCollection,
 });
 
-export { DEFAULT_OUTPUT_FORMAT as D, VALID_SUPPORTED_FORMATS as V, DEFAULT_HASH_PROPS as a, getCollection as g, isRemotePath as i, joinPaths as j };
+const _astro_content = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+	__proto__: null,
+	getCollection,
+	render: renderEntry
+}, Symbol.toStringTag, { value: 'Module' }));
+
+export { DEFAULT_OUTPUT_FORMAT as D, VALID_SUPPORTED_FORMATS as V, _astro_content as _, DEFAULT_HASH_PROPS as a, getCollection as g, isRemotePath as i, joinPaths as j };

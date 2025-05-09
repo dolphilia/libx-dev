@@ -3,6 +3,8 @@ import { c as createVNode, F as Fragment, _ as __astro_tag_component__ } from '.
 const frontmatter = {
   "title": "Getting Started",
   "description": "Learn how to get started with our platform",
+  "category": "guide",
+  "categoryOrder": 1,
   "pubDate": "2024-01-01T00:00:00.000Z",
   "updatedDate": "2025-01-01T00:00:00.000Z",
   "author": "Docs Team",

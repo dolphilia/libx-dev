@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang="ja"> <head><meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="/docs-astro/favicon.svg"><meta name="viewport" content="width=device-width"><meta name="generator" content="Astro v5.7.12"><title>サイドバーの自動生成 | Docs</title><!-- スタイルシートを動的に読み込み --><link rel="stylesheet" href="/docs-astro/assets/style.DLp7nfKL.css"></head> <body class="min-h-screen flex flex-col"> <header class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700"> <div class="container mx-auto px-4 py-4"> <div class="flex justify-between items-center"> <div class="navbar bg-base-100"> <div class="navbar-start"> <div class="dropdown"> <div tabindex="0" role="button" class="btn btn-ghost lg:hidden"> <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"></path></svg> </div> <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"> <li> <a href="/docs-astro/ja">Home</a>  </li><li> <a href="/docs-astro/ja/v1/guide/getting-started">Docs</a>  </li><li> <a href="/docs-astro/ja/v1/api">API</a>  </li> </ul> </div> </div> <div class="navbar-center hidden lg:flex"> <ul class="menu menu-horizontal px-1"> <li> <a href="/docs-astro/ja">Home</a>  </li><li> <a href="/docs-astro/ja/v1/guide/getting-started">Docs</a>  </li><li> <a href="/docs-astro/ja/v1/api">API</a>  </li> </ul> </div> </div> <div class="dropdown dropdown-end"> <div tabindex="0" role="button" class="btn btn-ghost m-1"> <span>日本語</span> <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path> </svg> </div> <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"> <li> <a href="/docs-astro/v1/guide/sidebar-auto-generation/" class> English </a> </li><li> <a href="/docs-astro/ja/v1/guide/sidebar-auto-generation/" class="active"> 日本語 </a> </li> </ul> </div> </div> </div> </header> <main class="flex-grow container mx-auto px-4 py-8">  <div class="flex flex-col md:flex-row gap-8"> <aside class="w-full md:w-64 shrink-0"> <div class="sticky top-4 space-y-6"> <div class="space-y-2"> <div class="search-bar"> <form id="search-form" class="w-full"> <label class="input input-bordered flex items-center gap-2 w-full"> <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor"> <circle cx="11" cy="11" r="8"></circle> <path d="m21 21-4.3-4.3"></path> </g> </svg> <input type="search" id="search-input" name="q" placeholder="ドキュメントを検索..." class="grow"> <div class="flex items-center gap-1"> <kbd class="kbd kbd-sm">⌘</kbd> <kbd class="kbd kbd-sm">K</kbd> </div> </label> </form> </div> <script type="module" src="/docs-astro/assets/SearchBar.astro_astro_type_script_index_0_lang.BCs3wRP2.js"></script> <div id="search-results" class="search-results hidden mt-2"> <div class="flex justify-between items-center mb-4"> <h2 class="text-xl font-bold">検索結果</h2> <button id="close-search-results" class="btn btn-sm btn-circle btn-ghost"> <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg> </button> </div> <div id="search-results-container" class="space-y-4"> <!-- 検索結果がここに動的に挿入されます --> <div id="search-loading" class="py-8 text-center hidden"> <span class="loading loading-spinner loading-lg"></span> <p class="mt-2 opacity-70">読み込み中...</p> </div> <div id="search-empty" class="py-8 text-center hidden"> <div class="alert"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> <span id="no-results-message"></span> </div> </div> </div> </div> <script type="module" src="/docs-astro/assets/SearchResults.astro_astro_type_script_index_0_lang.DZF6YK8s.js"></script> </div> <div class="dropdown"> <div tabindex="0" role="button" class="btn btn-ghost m-1"> <span> Version 1.0  </span> <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path> </svg> </div> <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"> <li> <a href="/docs-astro/ja" class> <div class="flex flex-col"> <div class="flex items-center justify-between"> <span>Version 2.0</span> <span class="badge badge-xs badge-primary">最新</span> </div> <div class="text-xs opacity-70"> 1/1/2025 </div> </div> </a> </li><li> <a href="/docs-astro/ja" class="active"> <div class="flex flex-col"> <div class="flex items-center justify-between"> <span>Version 1.0</span>  </div> <div class="text-xs opacity-70"> 1/1/2024 </div> </div> </a> </li> </ul> <div class="mt-4 flex flex-col gap-2"> <a href="/docs-astro/ja" class="link link-primary link-hover text-xs">
+最新バージョンを表示
+</a> <a href="/docs-astro/version-diffja" class="link link-primary link-hover text-sm">
+バージョン間の差分を表示
+</a> </div> </div> <aside class="w-64 shrink-0"> <h3 class="mb-3 font-semibold text-lg">ドキュメント</h3> <nav> <ul class="menu bg-base-200 w-full rounded-box"> <li> <h4 class="menu-title">ガイド</h4> <ul> <li> <a href="/docs-astro/ja/v1/guide/getting-started"> 入門 </a> </li><li> <a href="/docs-astro/ja/v1/guide/sidebar-auto-generation"> サイドバーの自動生成 </a> </li> </ul> </li> </ul> </nav> </aside> </div> </aside> <div class="flex-grow"> <article class="prose max-w-none"> <h1>サイドバーの自動生成</h1>  <div class="flex flex-col md:flex-row"> <div class="w-full md:w-3/4 pr-0 md:pr-8"> <article class="prose prose-slate dark:prose-invert max-w-none"> <h1>サイドバーの自動生成</h1> <p class="text-lg text-gray-600 dark:text-gray-400">サイドバー自動生成機能の使い方を学ぶ</p> <h1 id="サイドバーの自動生成">サイドバーの自動生成</h1>
+<p>このガイドでは、コンテンツ構造に基づいてサイドバーナビゲーションを自動的に作成するサイドバー自動生成機能の使い方を説明します。</p>
+<h2 id="概要">概要</h2>
+<p>サイドバー自動生成機能では、以下のことが可能です：</p>
+<ol>
+<li>コンテンツファイルに基づいてサイドバーナビゲーションを自動生成</li>
+<li>フロントマターを使用してカテゴリとその順序を定義</li>
+<li>カテゴリ内の項目の順序を制御</li>
+<li>設定ファイルを手動で更新せずにサイドバー表示をカスタマイズ</li>
+</ol>
+<h2 id="自動生成の有効化">自動生成の有効化</h2>
+<p>サイドバー自動生成を有効にするには、<code>docs.config.ts</code>ファイルで<code>useAutoSidebar</code>オプションを<code>true</code>に設定します：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto;white-space:pre-wrap;word-wrap:break-word" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#6A737D">// apps/sample-docs/src/config/docs.config.ts</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> docsConfig</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">  // ... その他のオプション</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#6A737D">  // サイドバー自動生成を有効化</span></span>
+<span class="line"><span style="color:#E1E4E8">  useAutoSidebar: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#6A737D">  // ... その他のオプション</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<h2 id="フロントマターの設定">フロントマターの設定</h2>
+<p>サイドバーでのコンテンツの表示方法を制御するには、以下のフロントマタープロパティを使用します：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto;white-space:pre-wrap;word-wrap:break-word" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#B392F0">---</span></span>
+<span class="line"><span style="color:#85E89D">title</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;ドキュメントのタイトル&quot;</span></span>
+<span class="line"><span style="color:#85E89D">description</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;ドキュメントの説明&quot;</span></span>
+<span class="line"><span style="color:#85E89D">category</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;guide&quot;</span><span style="color:#6A737D">  # カテゴリ名（省略可、デフォルトはパスベースのカテゴリ）</span></span>
+<span class="line"><span style="color:#85E89D">categoryOrder</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1</span><span style="color:#6A737D">   # サイドバーでのカテゴリの順序（省略可）</span></span>
+<span class="line"><span style="color:#85E89D">order</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2</span><span style="color:#6A737D">           # カテゴリ内での順序（省略可）</span></span>
+<span class="line"><span style="color:#B392F0">---</span></span></code></pre>
+<h3 id="プロパティ">プロパティ</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>プロパティ</th><th>型</th><th>説明</th></tr></thead><tbody><tr><td><code>title</code></td><td>string</td><td>ドキュメントのタイトル（必須）</td></tr><tr><td><code>category</code></td><td>string</td><td>サイドバーでのグループ化に使用するカテゴリ名（省略可）</td></tr><tr><td><code>categoryOrder</code></td><td>number</td><td>サイドバーでのカテゴリの順序（数値が小さいほど先に表示）</td></tr><tr><td><code>order</code></td><td>number</td><td>カテゴリ内でのドキュメントの順序（数値が小さいほど先に表示）</td></tr></tbody></table>
+<h2 id="動作の仕組み">動作の仕組み</h2>
+<p>サイドバー生成プロセスは以下の手順で行われます：</p>
+<ol>
+<li>現在の言語とバージョンのすべてのコンテンツファイルを収集</li>
+<li>カテゴリ（フロントマターまたはファイルパスから）でグループ化</li>
+<li><code>categoryOrder</code>に基づいてカテゴリを並べ替え</li>
+<li><code>order</code>に基づいて各カテゴリ内のドキュメントを並べ替え</li>
+<li>適切なタイトルとリンクを持つサイドバー構造を生成</li>
+</ol>
+<h2 id="パスベースのカテゴリ">パスベースのカテゴリ</h2>
+<p>フロントマターで<code>category</code>を指定しない場合、システムはパスベースのカテゴリを使用します。例えば：</p>
+<ul>
+<li><code>src/content/docs/ja/v1/guide/getting-started.mdx</code>のファイルは「guide」としてカテゴリ分けされます</li>
+<li><code>src/content/docs/ja/v1/api/reference.mdx</code>のファイルは「api」としてカテゴリ分けされます</li>
+</ul>
+<h2 id="カテゴリタイトル">カテゴリタイトル</h2>
+<p>カテゴリタイトルは以下の順序で決定されます：</p>
+<ol>
+<li><code>docs.{category}</code>に一致する翻訳キー（例：<code>docs.guide</code> → 「ガイド」）</li>
+<li>翻訳が見つからない場合、カテゴリ名の最初の文字を大文字にします（例：「guide」→ 「Guide」）</li>
+</ol>
+<h2 id="例">例</h2>
+<p>以下はドキュメントのフロントマターの完全な例です：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto;white-space:pre-wrap;word-wrap:break-word" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#B392F0">---</span></span>
+<span class="line"><span style="color:#85E89D">title</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;入門&quot;</span></span>
+<span class="line"><span style="color:#85E89D">description</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;プラットフォームの使い方を学ぶ&quot;</span></span>
+<span class="line"><span style="color:#85E89D">category</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;guide&quot;</span></span>
+<span class="line"><span style="color:#85E89D">categoryOrder</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1</span></span>
+<span class="line"><span style="color:#85E89D">order</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1</span></span>
+<span class="line"><span style="color:#85E89D">pubDate</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2025-01-01</span></span>
+<span class="line"><span style="color:#85E89D">updatedDate</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2025-01-01</span></span>
+<span class="line"><span style="color:#85E89D">author</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;ドキュメントチーム&quot;</span></span>
+<span class="line"><span style="color:#85E89D">next</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  text</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;インストール&quot;</span></span>
+<span class="line"><span style="color:#85E89D">  link</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;/docs-astro/ja/v1/guide/installation&quot;</span></span>
+<span class="line"><span style="color:#B392F0">---</span></span></code></pre>
+<p>これにより、ドキュメントは「ガイド」カテゴリ（サイドバーで最初に表示される）に配置され、そのカテゴリ内の最初の項目になります。</p>  <div class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-800 flex justify-between"> <a href="/docs-astro/ja/v1/guide/installation" class="group flex items-center"> <span class="mr-2">←</span> <span> <span class="block text-sm text-gray-500 dark:text-gray-400">前のページ</span> <span class="block font-medium group-hover:text-blue-500">インストール</span> </span> </a> <a href="/docs-astro/ja/v1/guide/configuration" class="group flex items-center ml-auto"> <span> <span class="block text-sm text-gray-500 dark:text-gray-400">次のページ</span> <span class="block font-medium group-hover:text-blue-500">設定</span> </span> <span class="ml-2">→</span> </a> </div>  <div class="mt-8 text-sm text-gray-500 dark:text-gray-400"> <a href="https://github.com/dolphilia/docs-astro/edit/main/apps/sample-docs/src/content/docs/ja/v1/guide/sidebar-auto-generation.mdx" target="_blank" rel="noopener noreferrer" class="inline-flex items-center hover:text-blue-500"> <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path> </svg>
+このページをGitHubで編集
+</a> </div> </article> </div>  <div class="w-full md:w-1/4 mt-8 md:mt-0"> <div class="sticky top-4"> <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-4">このページの目次</h3> <ul class="text-sm"> <li class="mb-2"> <a href="#サイドバーの自動生成" class="text-gray-600 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400" style="margin-left: 0px;"> サイドバーの自動生成 </a> </li><li class="mb-2"> <a href="#概要" class="text-gray-600 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400" style="margin-left: 16px;"> 概要 </a> </li><li class="mb-2"> <a href="#自動生成の有効化" class="text-gray-600 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400" style="margin-left: 16px;"> 自動生成の有効化 </a> </li><li class="mb-2"> <a href="#フロントマターの設定" class="text-gray-600 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400" style="margin-left: 16px;"> フロントマターの設定 </a> </li><li class="mb-2"> <a href="#プロパティ" class="text-gray-600 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400" style="margin-left: 32px;"> プロパティ </a> </li><li class="mb-2"> <a href="#動作の仕組み" class="text-gray-600 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400" style="margin-left: 16px;"> 動作の仕組み </a> </li><li class="mb-2"> <a href="#パスベースのカテゴリ" class="text-gray-600 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400" style="margin-left: 16px;"> パスベースのカテゴリ </a> </li><li class="mb-2"> <a href="#カテゴリタイトル" class="text-gray-600 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400" style="margin-left: 16px;"> カテゴリタイトル </a> </li><li class="mb-2"> <a href="#例" class="text-gray-600 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400" style="margin-left: 16px;"> 例 </a> </li> </ul> </div> </div> </div>  </article> </div> </div>  </main> <footer class="footer p-10 bg-base-200 text-base-content"> <div>  <p>© 2025 Docs Astro. All rights reserved.</p> <div class="flex space-x-4 mt-4">  </div> </div> <nav> <h6 class="footer-title">Docs</h6> <a href="/docs-astro/ja/v1/guide/getting-started" class="link link-hover">Getting Started</a><a href="/docs-astro/ja/v1/api" class="link link-hover">API Reference</a> </nav><nav> <h6 class="footer-title">Community</h6> <a href="https://github.com" class="link link-hover">GitHub</a><a href="https://discord.com" class="link link-hover">Discord</a> </nav> </footer> </body></html>
