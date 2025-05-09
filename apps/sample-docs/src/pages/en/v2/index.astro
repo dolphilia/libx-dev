@@ -1,4 +1,88 @@
 ---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import MainLayout from '../../../layouts/MainLayout.astro';
+import { Card } from '@docs/ui/components';
+import type { LocaleKey } from '@docs/i18n/locales';
+import { translate } from '@docs/i18n/utils';
+
+// 言語とバージョンの設定
+const lang: LocaleKey = 'en';
+const version = 'v2';
+
+// GitHub Pagesのベースパス
+const baseUrl = '/docs-astro';
+
+// 型定義
+type DocEntry = CollectionEntry<'docs'>;
+
+// v2の英語ドキュメントを取得
+const docs = await getCollection('docs', (entry: DocEntry) => {
+  return entry.slug.startsWith(`${lang}/${version}/`);
+});
+
+// カテゴリごとにドキュメントを整理
+const categories = docs.reduce((acc: Record<string, DocEntry[]>, doc: DocEntry) => {
+  // スラグからカテゴリを抽出（例: en/v2/guide/getting-started → guide）
+  const parts = doc.slug.split('/');
+  if (parts.length >= 3) {
+    const category = parts[2]; // 3番目の部分がカテゴリ
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(doc);
+  }
+  return acc;
+}, {});
+
+// カテゴリごとにドキュメントを順序で並べ替え
+Object.keys(categories).forEach(category => {
+  categories[category].sort((a: DocEntry, b: DocEntry) => {
+    const orderA = a.data.order || 999;
+    const orderB = b.data.order || 999;
+    return orderA - orderB;
+  });
+});
+
+// カテゴリの表示名マッピング
+const categoryNames: Record<string, string> = {
+  'guide': translate('docs.guide', lang),
+  'api': translate('navigation.api', lang),
+  'examples': translate('docs.examples', lang)
+};
 ---
 
-<meta http-equiv="refresh" content="0;url=/en/v2/guide/getting-started" />
+<MainLayout title={`${translate('docs.documentation', lang)} (${version})`} lang={lang} version={version}>
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold mb-8">{translate('docs.documentation', lang)} - {version}</h1>
+    
+    <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg mb-8">
+      <p class="text-blue-800 dark:text-blue-200">
+        <span class="font-semibold">New in v2:</span> TypeScript support, plugin system, theming, and performance improvements.
+      </p>
+    </div>
+    
+    <div class="space-y-12">
+      {Object.keys(categories).map(category => (
+        <div>
+          <h2 class="text-2xl font-semibold mb-4">{categoryNames[category] || category}</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {categories[category].map((doc: DocEntry) => (
+              <Card
+                title={doc.data.title}
+                href={`${baseUrl}/${lang}/${version}/${doc.slug.split('/').slice(2).join('/')}`}
+              >
+                <p class="text-gray-600 dark:text-gray-400">{doc.data.description}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+    
+    {Object.keys(categories).length === 0 && (
+      <div class="text-center py-12">
+        <p class="text-gray-600 dark:text-gray-400">{translate('docs.no_documents', lang)}</p>
+      </div>
+    )}
+  </div>
+</MainLayout>

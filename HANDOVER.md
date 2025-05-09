@@ -230,6 +230,32 @@ GitHub Actionsを使用して自動デプロイを行います：
 
 ## 最近の修正内容
 
+### MDXコンテンツコレクションの実装（2025/5/9）
+
+Astroのコンテンツコレクション機能を使用して、MDXファイルでドキュメントを管理できるように実装しました。
+
+実装内容：
+1. `apps/sample-docs/src/content/config.ts`を作成し、ドキュメントコレクションのスキーマを定義
+   - タイトル、説明、公開日、更新日、著者、画像、タグ、ドラフトフラグ、順序、前後のページへのリンクなどのメタデータをサポート
+2. サンプルMDXファイルの作成
+   - `apps/sample-docs/src/content/docs/en/v1/guide/getting-started.mdx`
+   - `apps/sample-docs/src/content/docs/ja/v1/guide/getting-started.mdx`
+   - `apps/sample-docs/src/content/docs/en/v2/guide/getting-started.mdx`
+   - `apps/sample-docs/src/content/docs/ja/v2/guide/getting-started.mdx`
+3. 動的ルーティングの実装
+   - `apps/sample-docs/src/pages/[lang]/[version]/[...slug].astro`を作成し、MDXコンテンツを表示
+   - 目次の自動生成機能を追加
+   - 前後のページへのナビゲーションリンクを実装
+   - GitHubでの編集リンクを追加
+4. インデックスページの更新
+   - `apps/sample-docs/src/pages/en/v1/index.astro`
+   - `apps/sample-docs/src/pages/en/v2/index.astro`
+   - `apps/sample-docs/src/pages/ja/v1/index.astro`
+   - `apps/sample-docs/src/pages/ja/v2/index.astro`
+   - コンテンツコレクションからドキュメントのリストを取得して表示するように更新
+
+これにより、MDXファイルを使用してドキュメントを管理できるようになり、フロントマターでメタデータを定義し、マークダウン記法でコンテンツを記述できるようになりました。また、コードブロックのシンタックスハイライトやインタラクティブなコンポーネントの埋め込みなど、MDXの機能を活用できるようになりました。
+
 ### GitHub Pagesのリダイレクト問題の修正（2025/5/9）
 
 GitHub Pagesにデプロイされたサイト（https://dolphilia.github.io/docs-astro/）にアクセスした際に、

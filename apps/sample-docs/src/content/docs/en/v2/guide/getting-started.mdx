@@ -1,0 +1,80 @@
+---
+title: "Getting Started with v2"
+description: "Learn how to get started with version 2 of our platform"
+pubDate: 2025-01-01
+updatedDate: 2025-05-01
+author: "Docs Team"
+order: 1
+next:
+  text: "Installation"
+  link: "/docs-astro/en/v2/guide/installation"
+---
+
+# Getting Started with v2
+
+Welcome to version 2 of our documentation! This guide will help you get started with our platform.
+
+## Prerequisites
+
+- Node.js 18 or higher
+- npm, yarn, or pnpm
+- Basic knowledge of JavaScript and TypeScript
+
+## Installation
+
+You can install our package using npm:
+
+```bash
+npm install @our-package/core@2
+```
+
+Or using yarn:
+
+```bash
+yarn add @our-package/core@2
+```
+
+Or using pnpm:
+
+```bash
+pnpm add @our-package/core@2
+```
+
+## Basic Usage
+
+Here's a simple example of how to use our package with TypeScript:
+
+```typescript
+import { createApp, type AppOptions } from '@our-package/core';
+
+const options: AppOptions = {
+  // Configuration options
+  debug: true,
+  mode: 'development',
+  // New in v2
+  plugins: [],
+  theme: 'light'
+};
+
+const app = createApp(options);
+
+app.start();
+```
+
+## New Features in v2
+
+Version 2 introduces several new features:
+
+- **TypeScript Support**: Full TypeScript support with type definitions
+- **Plugin System**: Extend functionality with plugins
+- **Theming**: Built-in theme support
+- **Performance Improvements**: 50% faster than v1
+
+## Next Steps
+
+Now that you have the basics set up, you can:
+
+- Learn more about [configuration options](/docs-astro/en/v2/guide/configuration)
+- Explore the [API reference](/docs-astro/en/v2/api/reference)
+- Check out some [examples](/docs-astro/en/v2/examples)
+- Read about [migrating from v1](/docs-astro/en/v2/guide/migration)

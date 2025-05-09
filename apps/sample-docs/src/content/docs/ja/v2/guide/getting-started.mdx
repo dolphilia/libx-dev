@@ -1,0 +1,80 @@
+---
+title: "v2ではじめる"
+description: "プラットフォームのバージョン2の使い方を学ぶ"
+pubDate: 2025-01-01
+updatedDate: 2025-05-01
+author: "ドキュメントチーム"
+order: 1
+next:
+  text: "インストール"
+  link: "/docs-astro/ja/v2/guide/installation"
+---
+
+# v2ではじめる
+
+バージョン2のドキュメントへようこそ！このガイドでは、プラットフォームの使い方について説明します。
+
+## 前提条件
+
+- Node.js 18以上
+- npm、yarn、またはpnpm
+- JavaScriptとTypeScriptの基本的な知識
+
+## インストール
+
+npmを使用してパッケージをインストールできます：
+
+```bash
+npm install @our-package/core@2
+```
+
+または、yarnを使用：
+
+```bash
+yarn add @our-package/core@2
+```
+
+または、pnpmを使用：
+
+```bash
+pnpm add @our-package/core@2
+```
+
+## 基本的な使い方
+
+TypeScriptを使用したパッケージの使用例：
+
+```typescript
+import { createApp, type AppOptions } from '@our-package/core';
+
+const options: AppOptions = {
+  // 設定オプション
+  debug: true,
+  mode: 'development',
+  // v2の新機能
+  plugins: [],
+  theme: 'light'
+};
+
+const app = createApp(options);
+
+app.start();
+```
+
+## v2の新機能
+
+バージョン2では、いくつかの新機能が導入されています：
+
+- **TypeScriptサポート**: 型定義を含む完全なTypeScriptサポート
+- **プラグインシステム**: プラグインで機能を拡張
+- **テーマ機能**: 組み込みのテーマサポート
+- **パフォーマンスの向上**: v1より50%高速化
+
+## 次のステップ
+
+基本的なセットアップが完了したら、以下のことができます：
+
+- [設定オプション](/docs-astro/ja/v2/guide/configuration)について詳しく学ぶ
+- [APIリファレンス](/docs-astro/ja/v2/api/reference)を調べる
+- [サンプル](/docs-astro/ja/v2/examples)を確認する
+- [v1からの移行](/docs-astro/ja/v2/guide/migration)について読む

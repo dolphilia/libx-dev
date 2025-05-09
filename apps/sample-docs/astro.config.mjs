@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
+import mdx from '@astrojs/mdx';
 
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -14,7 +15,21 @@ export default defineConfig({
   site: 'https://dolphilia.github.io',
   // GitHub Pagesのサブディレクトリにデプロイするためのベースパス
   base: '/docs-astro',
-  integrations: [tailwind()],
+  integrations: [
+    tailwind(),
+    mdx({
+      // シンタックスハイライトの設定
+      syntaxHighlight: 'shiki',
+      shikiConfig: {
+        theme: 'github-dark',
+        langs: [],
+        wrap: true
+      },
+      // MDXの設定
+      remarkPlugins: [],
+      rehypePlugins: []
+    })
+  ],
   vite: {
     resolve: {
       alias: {
@@ -46,16 +61,9 @@ export default defineConfig({
       prefixDefaultLocale: true
     }
   },
-  // コンテンツコレクションの設定 (Astro v2.5+では通常 src/content/config.ts で定義)
-  // contentCollections: {
-  //   docs: {
-  //     /**
-  //      * @param {object} params
-  //      * @param {string} params.defaultSlug
-  //      * @param {string} params.locale
-  //      * @param {string} params.version
-  //      */
-  //     slug: ({ defaultSlug, locale, version }) => `${locale}/${version}/${defaultSlug}`,
-  //   }
-  // }
+  // コンテンツコレクションの設定
+  // Astro v2.5+では通常 src/content/config.ts で定義するが、
+  // ここでも基本的な設定を行っておく
+  // 注: 最新のAstroではコンテンツコレクションは標準機能になっているため、
+  // experimental設定は不要
 });
