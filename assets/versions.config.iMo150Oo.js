@@ -8,7 +8,7 @@ const $$Button = createComponent(($$result, $$props, $$slots) => {
   const {
     variant = "primary",
     size = "md",
-    class: className = "",
+    class: additionalClass = "",
     ...rest
   } = Astro2.props;
   const variantClasses = {
@@ -34,7 +34,7 @@ const $$Button = createComponent(($$result, $$props, $$slots) => {
     "btn",
     variantClasses[variant],
     sizeClasses[size],
-    className
+    additionalClass
   ];
   return renderTemplate`${rest.href ? renderTemplate`${maybeRenderHead()}<a${addAttribute(classes, "class:list")}${spreadAttributes(rest)}>${renderSlot($$result, $$slots["default"])}</a>` : renderTemplate`<button${addAttribute(classes, "class:list")}${spreadAttributes(rest)}>${renderSlot($$result, $$slots["default"])}</button>`}`;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Button.astro", void 0);
@@ -56,7 +56,7 @@ const $$Card = createComponent(($$result, $$props, $$slots) => {
     variantClasses[variant],
     className
   ];
-  return renderTemplate`${maybeRenderHead()}<div${addAttribute(classes, "class:list")}${spreadAttributes(rest)}> ${title && renderTemplate`<div class="card-body"> <h2 class="card-title">${title}</h2> ${renderSlot($$result, $$slots["default"])} ${Astro2.slots.has("footer") && renderTemplate`<div class="card-actions justify-end"> ${renderSlot($$result, $$slots["footer"])} </div>`} </div>`} ${!title && renderTemplate`<div class="card-body"> ${renderSlot($$result, $$slots["default"])} ${Astro2.slots.has("footer") && renderTemplate`<div class="card-actions justify-end"> ${renderSlot($$result, $$slots["footer"])} </div>`} </div>`} </div>`;
+  return renderTemplate`${maybeRenderHead()}<div${addAttribute(classes, "class:list")}${spreadAttributes(rest)}> <div class="card-body"> ${title && renderTemplate`<h2 class="card-title">${title}</h2>`} ${renderSlot($$result, $$slots["default"])} ${Astro2.slots.has("footer") && renderTemplate`<div class="card-actions justify-end"> ${renderSlot($$result, $$slots["footer"])} </div>`} </div> </div>`;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Card.astro", void 0);
 
 const $$Astro$5 = createAstro("https://dolphilia.github.io");
@@ -64,7 +64,41 @@ const $$Navigation = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$5, $$props, $$slots);
   Astro2.self = $$Navigation;
   const { items, class: className = "" } = Astro2.props;
-  return renderTemplate`${maybeRenderHead()}<div${addAttribute(["navbar bg-base-100", className], "class:list")}> <div class="navbar-start"> <div class="dropdown"> <div tabindex="0" role="button" class="btn btn-ghost lg:hidden"> <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"></path></svg> </div> <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"> ${items.map((item) => renderTemplate`<li> <a${addAttribute(item.href, "href")}>${item.title}</a> ${item.children && item.children.length > 0 && renderTemplate`<ul class="p-2"> ${item.children.map((child) => renderTemplate`<li><a${addAttribute(child.href, "href")}>${child.title}</a></li>`)} </ul>`} </li>`)} </ul> </div> </div> <div class="navbar-center hidden lg:flex"> <ul class="menu menu-horizontal px-1"> ${items.map((item) => renderTemplate`<li> <a${addAttribute(item.href, "href")}>${item.title}</a> ${item.children && item.children.length > 0 && renderTemplate`<ul class="p-2"> ${item.children.map((child) => renderTemplate`<li><a${addAttribute(child.href, "href")}>${child.title}</a></li>`)} </ul>`} </li>`)} </ul> </div> </div>`;
+  function renderNavItems(items2, isMobile = false) {
+    return items2.map((item) => `
+    <li>
+      <a 
+        href="${item.href}" 
+        role="menuitem" 
+        aria-label="${item.title}\u30DA\u30FC\u30B8\u3078\u79FB\u52D5"
+        class="${isMobile ? "" : "hover:bg-base-200"}"
+      >
+        ${item.title}
+      </a>
+      ${item.children && item.children.length > 0 ? `
+        <ul 
+          class="p-2 ${isMobile ? "" : "dropdown-content"}" 
+          role="menu" 
+          aria-label="${item.title}\u306E\u30B5\u30D6\u30E1\u30CB\u30E5\u30FC"
+        >
+          ${item.children.map((child) => `
+            <li>
+              <a 
+                href="${child.href}" 
+                role="menuitem" 
+                aria-label="${child.title}\u30DA\u30FC\u30B8\u3078\u79FB\u52D5"
+                class="${isMobile ? "" : "hover:bg-base-200"}"
+              >
+                ${child.title}
+              </a>
+            </li>
+          `).join("")}
+        </ul>
+      ` : ""}
+    </li>
+  `).join("");
+  }
+  return renderTemplate`${maybeRenderHead()}<nav${addAttribute(["navbar bg-base-100", className], "class:list")} aria-label="メインナビゲーション"> <div class="navbar-start"> <div class="dropdown"> <button type="button" aria-haspopup="true" aria-expanded="false" aria-label="モバイルメニューを切り替え" class="btn btn-ghost lg:hidden"> <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"></path> </svg> </button> <ul class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52" role="menu" aria-label="モバイルナビゲーション">${unescapeHTML(renderNavItems(items, true))}</ul> </div> </div> <div class="navbar-center hidden lg:flex"> <ul class="menu menu-horizontal px-1" role="menubar" aria-label="デスクトップナビゲーション">${unescapeHTML(renderNavItems(items))}</ul> </div> </nav>`;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Navigation.astro", void 0);
 
 const $$Astro$4 = createAstro("https://dolphilia.github.io");
@@ -72,7 +106,7 @@ const $$Sidebar = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$4, $$props, $$slots);
   Astro2.self = $$Sidebar;
   const { items, title, class: className = "" } = Astro2.props;
-  return renderTemplate`${maybeRenderHead()}<aside${addAttribute(["w-64 shrink-0", className], "class:list")}> ${title && renderTemplate`<h3 class="mb-3 font-semibold text-lg">${title}</h3>`} <nav> <ul class="menu bg-base-200 w-full rounded-box"> ${items.map((section) => renderTemplate`<li> ${section.title && renderTemplate`<h4 class="menu-title">${section.title}</h4>`} ${section.items && renderTemplate`<ul> ${section.items.map((item) => renderTemplate`<li> <a${addAttribute(item.href, "href")}> ${item.title} </a> </li>`)} </ul>`} </li>`)} </ul> </nav> </aside>`;
+  return renderTemplate`${maybeRenderHead()}<aside${addAttribute(["w-64 shrink-0", className], "class:list")} role="complementary"${addAttribute(title || "\u30B5\u30A4\u30C9\u30CA\u30D3\u30B2\u30FC\u30B7\u30E7\u30F3", "aria-label")}> ${title && renderTemplate`<h3 class="mb-3 font-semibold text-lg" id="sidebar-title"> ${title} </h3>`} <nav aria-labelledby="sidebar-title"> <ul class="menu bg-base-200 w-full rounded-box"> ${items.map((section, index) => renderTemplate`<li> ${section.title && renderTemplate`<h4 class="menu-title"${addAttribute(`section-${index}-title`, "id")}> ${section.title} </h4>`} ${section.items && renderTemplate`<ul${addAttribute(`section-${index}-title`, "aria-labelledby")}> ${section.items.map((item) => renderTemplate`<li> <a${addAttribute(item.href, "href")} class="hover:bg-base-300 transition-colors"> ${item.title} </a> </li>`)} </ul>`} </li>`)} </ul> </nav> </aside>`;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Sidebar.astro", void 0);
 
 const $$Astro$3 = createAstro("https://dolphilia.github.io");
@@ -84,7 +118,8 @@ const $$Footer = createComponent(($$result, $$props, $$slots) => {
     linkGroups = [],
     class: className = ""
   } = Astro2.props;
-  return renderTemplate`${maybeRenderHead()}<footer${addAttribute(["footer p-10 bg-base-200 text-base-content", className], "class:list")}> <div> ${renderSlot($$result, $$slots["logo"])} <p>${copyright}</p> <div class="flex space-x-4 mt-4"> ${renderSlot($$result, $$slots["social-links"])} </div> </div> ${linkGroups.map((group) => renderTemplate`<nav> <h6 class="footer-title">${group.title}</h6> ${group.links.map((link) => renderTemplate`<a${addAttribute(link.href, "href")} class="link link-hover">${link.title}</a>`)} </nav>`)} </footer>`;
+  const FOOTER_BASE_CLASSES = "footer p-10 bg-base-200 text-base-content";
+  return renderTemplate`${maybeRenderHead()}<footer${addAttribute([FOOTER_BASE_CLASSES, className], "class:list")} role="contentinfo" data-astro-cid-v2payc3g> <div class="footer-content" data-astro-cid-v2payc3g> <div class="brand-section" data-astro-cid-v2payc3g> ${renderSlot($$result, $$slots["logo"])} <p class="copyright" data-astro-cid-v2payc3g>${copyright}</p> <div class="social-links flex space-x-4 mt-4" data-astro-cid-v2payc3g> ${renderSlot($$result, $$slots["social-links"])} </div> </div> ${linkGroups.map((group) => renderTemplate`<nav class="link-group"${addAttribute(`footer-${group.title.toLowerCase().replace(/\s+/g, "-")}`, "aria-labelledby")} data-astro-cid-v2payc3g> <h6 class="footer-title"${addAttribute(`footer-${group.title.toLowerCase().replace(/\s+/g, "-")}`, "id")} data-astro-cid-v2payc3g> ${group.title} </h6> <ul class="link-list" data-astro-cid-v2payc3g> ${group.links.map((link) => renderTemplate`<li data-astro-cid-v2payc3g> <a${addAttribute(link.href, "href")} class="link link-hover"${addAttribute(link.ariaLabel || link.title, "aria-label")} data-astro-cid-v2payc3g> ${link.title} </a> </li>`)} </ul> </nav>`)} </div> </footer> `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Footer.astro", void 0);
 
 const $$Astro$2 = createAstro("https://dolphilia.github.io");
@@ -249,19 +284,19 @@ const $$Astro = createAstro("https://dolphilia.github.io");
 const $$MainLayout = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$MainLayout;
+  const BASE_URL = "/docs-astro";
   const { title, lang, version = "v1" } = Astro2.props;
-  const baseUrl = "/docs-astro";
   const navItems = [
-    { title: "Home", href: `${baseUrl}/${lang}` },
-    { title: "Docs", href: `${baseUrl}/${lang}/${version}/guide/getting-started` },
-    { title: "API", href: `${baseUrl}/${lang}/${version}/api` }
+    { title: "Home", href: `${BASE_URL}/${lang}` },
+    { title: "Docs", href: `${BASE_URL}/${lang}/${version}/guide/getting-started` },
+    { title: "API", href: `${BASE_URL}/${lang}/${version}/api` }
   ];
   const linkGroups = [
     {
       title: "Docs",
       links: [
-        { title: "Getting Started", href: `${baseUrl}/${lang}/${version}/guide/getting-started` },
-        { title: "API Reference", href: `${baseUrl}/${lang}/${version}/api` }
+        { title: "Getting Started", href: `${BASE_URL}/${lang}/${version}/guide/getting-started` },
+        { title: "API Reference", href: `${BASE_URL}/${lang}/${version}/api` }
       ]
     },
     {
@@ -272,7 +307,8 @@ const $$MainLayout = createComponent(($$result, $$props, $$slots) => {
       ]
     }
   ];
-  return renderTemplate`<html${addAttribute(lang, "lang")}> <head><meta charset="utf-8"><link rel="icon" type="image/svg+xml"${addAttribute(`${baseUrl}/favicon.svg`, "href")}><meta name="viewport" content="width=device-width"><meta name="generator"${addAttribute(Astro2.generator, "content")}><title>${title} | Docs</title><!-- スタイルシートを動的に読み込み -->${renderHead()}</head> <body class="min-h-screen flex flex-col"> <header class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700"> <div class="container mx-auto px-4 py-4"> <div class="flex justify-between items-center"> ${renderComponent($$result, "Navigation", $$Navigation, { "items": navItems })} ${renderComponent($$result, "LanguageSelector", $$LanguageSelector, { "currentLang": lang })} </div> </div> </header> <main class="flex-grow container mx-auto px-4 py-8"> ${renderSlot($$result, $$slots["default"])} </main> ${renderComponent($$result, "Footer", $$Footer, { "linkGroups": linkGroups, "copyright": `\xA9 ${(/* @__PURE__ */ new Date()).getFullYear()} Docs Astro. All rights reserved.` })} </body></html>`;
+  const currentYear = (/* @__PURE__ */ new Date()).getFullYear();
+  return renderTemplate`<html${addAttribute(lang, "lang")}> <head><meta charset="utf-8"><link rel="icon" type="image/svg+xml"${addAttribute(`${BASE_URL}/favicon.svg`, "href")}><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator"${addAttribute(Astro2.generator, "content")}><meta name="description" content="Documentation site built with Astro"><title>${title} | Docs</title><!-- フォールバックスタイル定義 -->${renderHead()}</head> <body class="min-h-screen flex flex-col"> <header class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700"> <div class="container mx-auto px-4 py-4"> <div class="flex justify-between items-center"> <nav aria-label="メインナビゲーション"> ${renderComponent($$result, "Navigation", $$Navigation, { "items": navItems })} </nav> <div aria-label="言語選択"> ${renderComponent($$result, "LanguageSelector", $$LanguageSelector, { "currentLang": lang })} </div> </div> </div> </header> <main id="main-content" class="flex-grow container mx-auto px-4 py-8"> ${renderSlot($$result, $$slots["default"])} </main> ${renderComponent($$result, "Footer", $$Footer, { "linkGroups": linkGroups, "copyright": `\xA9 ${currentYear} Docs Astro. All rights reserved.` })} </body></html>`;
 }, "/home/runner/work/docs-astro/docs-astro/apps/sample-docs/src/layouts/MainLayout.astro", void 0);
 
 const versions = [
