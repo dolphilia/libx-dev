@@ -1,9 +1,9 @@
 ---
-// Sidebar.astro - simplified but with items prop
-interface SidebarItem { // 元の SidebarItem 定義を（簡略化して）戻す
+// Sidebar.astro
+interface SidebarItem {
   title: string;
   href?: string;
-  children?: SidebarItem[];
+  items?: SidebarItem[];
 }
 
 interface Props {
@@ -17,9 +17,28 @@ const { items, title, class: className = '' } = Astro.props; // items, className
 <aside class:list={['w-64 shrink-0', className]}>
   {title && <h3 class="mb-3 font-semibold text-lg">{title}</h3>}
   <nav>
-    <ul>
-      <li><a href="/test1">Test Link 1</a></li>
-      <li><a href="/test2">Test Link 2</a></li>
+    <ul class="space-y-4">
+      {items.map(section => (
+        <li class="mb-4">
+          {section.title && (
+            <h4 class="mb-2 font-medium text-gray-700 dark:text-gray-300">{section.title}</h4>
+          )}
+          {section.items && (
+            <ul class="space-y-2 pl-2">
+              {section.items.map(item => (
+                <li>
+                  <a 
+                    href={item.href} 
+                    class="block py-1 text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400"
+                  >
+                    {item.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))}
     </ul>
   </nav>
 </aside>
