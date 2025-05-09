@@ -1,4 +1,4 @@
-import { d as createAstro, a as createComponent, m as maybeRenderHead, f as addAttribute, s as spreadAttributes, e as renderSlot, b as renderTemplate, u as unescapeHTML, n as renderHead, r as renderComponent } from './astro/server.D23QPF4t.js';
+import { a as createAstro, b as createComponent, m as maybeRenderHead, f as addAttribute, s as spreadAttributes, j as renderSlot, d as renderTemplate, u as unescapeHTML, q as renderHead, r as renderComponent } from './astro/server.DZ9z6Le0.js';
 /* empty css                         */
 
 const $$Astro$7 = createAstro("https://dolphilia.github.io");
@@ -275,4 +275,19 @@ const $$MainLayout = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`<html${addAttribute(lang, "lang")}> <head><meta charset="utf-8"><link rel="icon" type="image/svg+xml"${addAttribute(`${baseUrl}/favicon.svg`, "href")}><meta name="viewport" content="width=device-width"><meta name="generator"${addAttribute(Astro2.generator, "content")}><title>${title} | Docs</title><!-- スタイルシートを動的に読み込み -->${renderHead()}</head> <body class="min-h-screen flex flex-col"> <header class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700"> <div class="container mx-auto px-4 py-4"> <div class="flex justify-between items-center"> ${renderComponent($$result, "Navigation", $$Navigation, { "items": navItems })} ${renderComponent($$result, "LanguageSelector", $$LanguageSelector, { "currentLang": lang })} </div> </div> </header> <main class="flex-grow container mx-auto px-4 py-8"> ${renderSlot($$result, $$slots["default"])} </main> ${renderComponent($$result, "Footer", $$Footer, { "linkGroups": linkGroups, "copyright": `\xA9 ${(/* @__PURE__ */ new Date()).getFullYear()} Docs Astro. All rights reserved.` })} </body></html>`;
 }, "/home/runner/work/docs-astro/docs-astro/apps/sample-docs/src/layouts/MainLayout.astro", void 0);
 
-export { $$MainLayout as $, $$Card as a, $$Button as b, $$Sidebar as c, t };
+const versions = [
+  {
+    id: "v1",
+    name: "Version 1.0",
+    date: /* @__PURE__ */ new Date("2024-01-01"),
+    isLatest: false
+  },
+  {
+    id: "v2",
+    name: "Version 2.0",
+    date: /* @__PURE__ */ new Date("2025-01-01"),
+    isLatest: true
+  }
+];
+
+export { $$MainLayout as $, $$Card as a, $$Button as b, $$Sidebar as c, t, versions as v };

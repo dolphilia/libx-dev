@@ -1,4 +1,4 @@
-import { c as createVNode, F as Fragment, _ as __astro_tag_component__ } from './astro/server.D23QPF4t.js';
+import { c as createVNode, F as Fragment, _ as __astro_tag_component__ } from './astro/server.DZ9z6Le0.js';
 
 const frontmatter = {
   "title": "Sidebar Auto-Generation",

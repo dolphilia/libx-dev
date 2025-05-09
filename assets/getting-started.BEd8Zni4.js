@@ -1,5 +1,5 @@
 async function getMod() {
-						return import('./installation.C7J_e195.js');
+						return import('./getting-started.CITFbW7S.js');
 					}
 					const collectedLinks = [];
 					const collectedStyles = [];

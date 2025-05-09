@@ -1,0 +1,1 @@
+import{d as t,s as o}from"./index.kbYS10fO.js";function r(){if(typeof navigator>"u")return t;const n=navigator.language.split("-")[0];return o.includes(n)?n:t}function s(n){return r()}const a={supportedLangs:["en","ja"],defaultLang:"en"},e=s(),u=a.supportedLangs,g=a.defaultLang,d=u.includes(e)?e:g;window.location.href=`./${d}/`;
