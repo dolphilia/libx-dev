@@ -2,12 +2,38 @@
 最新バージョンを表示
 </a> <a href="/docs-astro/version-diffja" class="link link-primary link-hover text-sm">
 バージョン間の差分を表示
-</a> </div> </div> <aside class="w-64 shrink-0"> <h3 class="mb-3 font-semibold text-lg">ドキュメント</h3> <nav> <ul class="menu bg-base-200 w-full rounded-box"> <li> <h4 class="menu-title">ガイド</h4> <ul> <li> <a href="/docs-astro/ja/v1/guide/getting-started"> はじめに </a> </li><li> <a href="/docs-astro/ja/v1/guide/installation"> インストール </a> </li><li> <a href="/docs-astro/ja/v1/guide/configuration"> 設定 </a> </li> </ul> </li><li> <h4 class="menu-title">API</h4> <ul> <li> <a href="/docs-astro/ja/v1/api"> 概要 </a> </li><li> <a href="/docs-astro/ja/v1/api/reference"> リファレンス </a> </li> </ul> </li> </ul> </nav> </aside> </div> </aside> <div class="flex-grow"> <article class="prose max-w-none"> <h1>はじめに</h1>  <p>ドキュメントへようこそ！このガイドでは、プラットフォームの使い方について説明します。</p> <h2>前提条件</h2> <ul> <li><a href="/docs-astro/ja/v1/guide/configuration">設定オプション</a>について詳しく学ぶ</li> <li><a href="/docs-astro/ja/v1/api/reference">APIリファレンス</a>を探索する</li> <li>いくつかの<a href="/docs-astro/ja/v1/examples">サンプル</a>を確認する</li> </ul> <h2>インストール</h2> <p>npmを使用してパッケージをインストールできます：</p> <pre><code>npm install @our-package/core</code></pre> <p>または、yarnを使用：</p> <pre><code>yarn add @our-package/core</code></pre> <p>または、pnpmを使用：</p> <pre><code>pnpm add @our-package/core</code></pre> <h2>基本的な使い方</h2> <p>パッケージの使用例：</p> <pre><code>import { createApp } from &#39;@our-package/core&#39;;
-
-const app = createApp({
-  // 設定オプション
-  debug: true,
-  mode: &#39;development&#39;
-});
-
-app.start();</code></pre> <h2>次のステップ</h2> <p>基本的なセットアップが完了したら、次のことができます：</p> <ul> <li><a href="/ja/v1/guide/configuration">設定オプション</a>についてさらに学ぶ</li> <li><a href="/ja/v1/api/reference">APIリファレンス</a>を調べる</li> <li>いくつかの<a href="/ja/v1/examples">サンプル</a>を確認する</li> </ul>  </article> </div> </div>  </main> <footer class="footer p-10 bg-base-200 text-base-content"> <div>  <p>© 2025 Docs Astro. All rights reserved.</p> <div class="flex space-x-4 mt-4">  </div> </div> <nav> <h6 class="footer-title">Docs</h6> <a href="/docs-astro/ja/v1/guide/getting-started" class="link link-hover">Getting Started</a><a href="/docs-astro/ja/v1/api" class="link link-hover">API Reference</a> </nav><nav> <h6 class="footer-title">Community</h6> <a href="https://github.com" class="link link-hover">GitHub</a><a href="https://discord.com" class="link link-hover">Discord</a> </nav> </footer> </body></html>
+</a> </div> </div> <aside class="w-64 shrink-0"> <h3 class="mb-3 font-semibold text-lg">ドキュメント</h3> <nav> <ul class="menu bg-base-200 w-full rounded-box"> <li> <h4 class="menu-title">ガイド</h4> <ul> <li> <a href="/docs-astro/ja/v1/guide/getting-started"> はじめに </a> </li><li> <a href="/docs-astro/ja/v1/guide/installation"> インストール </a> </li><li> <a href="/docs-astro/ja/v1/guide/configuration"> 設定 </a> </li> </ul> </li><li> <h4 class="menu-title">API</h4> <ul> <li> <a href="/docs-astro/ja/v1/api"> 概要 </a> </li><li> <a href="/docs-astro/ja/v1/api/reference"> リファレンス </a> </li> </ul> </li> </ul> </nav> </aside> </div> </aside> <div class="flex-grow"> <article class="prose max-w-none"> <h1>はじめに</h1>  <div class="flex flex-col md:flex-row"> <div class="w-full md:w-3/4 pr-0 md:pr-8"> <article class="prose prose-slate dark:prose-invert max-w-none"> <h1>はじめに</h1> <p class="text-lg text-gray-600 dark:text-gray-400">プラットフォームの使い方を学ぶ</p> <h1 id="はじめに">はじめに</h1>
+<p>ドキュメントへようこそ！このガイドでは、プラットフォームの使い方について説明します。</p>
+<h2 id="前提条件">前提条件</h2>
+<ul>
+<li>Node.js 18以上</li>
+<li>npm、yarn、またはpnpm</li>
+<li>JavaScriptの基本的な知識</li>
+</ul>
+<h2 id="インストール">インストール</h2>
+<p>npmを使用してパッケージをインストールできます：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto;white-space:pre-wrap;word-wrap:break-word" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> @our-package/core</span></span></code></pre>
+<p>または、yarnを使用：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto;white-space:pre-wrap;word-wrap:break-word" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> @our-package/core</span></span></code></pre>
+<p>または、pnpmを使用：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto;white-space:pre-wrap;word-wrap:break-word" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">pnpm</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> @our-package/core</span></span></code></pre>
+<h2 id="基本的な使い方">基本的な使い方</h2>
+<p>パッケージの使用例：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto;white-space:pre-wrap;word-wrap:break-word" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { createApp } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> &#39;@our-package/core&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> app</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> createApp</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#6A737D">  // 設定オプション</span></span>
+<span class="line"><span style="color:#E1E4E8">  debug: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  mode: </span><span style="color:#9ECBFF">&#39;development&#39;</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">app.</span><span style="color:#B392F0">start</span><span style="color:#E1E4E8">();</span></span></code></pre>
+<h2 id="次のステップ">次のステップ</h2>
+<p>基本的なセットアップが完了したら、以下のことができます：</p>
+<ul>
+<li><a href="/docs-astro/ja/v1/guide/configuration">設定オプション</a>について詳しく学ぶ</li>
+<li><a href="/docs-astro/ja/v1/api/reference">APIリファレンス</a>を調べる</li>
+<li><a href="/docs-astro/ja/v1/examples">サンプル</a>を確認する</li>
+</ul>  <div class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-800 flex justify-between">  <a href="/docs-astro/ja/v1/guide/installation" class="group flex items-center ml-auto"> <span> <span class="block text-sm text-gray-500 dark:text-gray-400">次のページ</span> <span class="block font-medium group-hover:text-blue-500">インストール</span> </span> <span class="ml-2">→</span> </a> </div>  <div class="mt-8 text-sm text-gray-500 dark:text-gray-400"> <a href="https://github.com/dolphilia/docs-astro/edit/main/apps/sample-docs/src/content/docs/ja/v1/guide/getting-started.mdx" target="_blank" rel="noopener noreferrer" class="inline-flex items-center hover:text-blue-500"> <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path> </svg>
+このページをGitHubで編集
+</a> </div> </article> </div>  <div class="w-full md:w-1/4 mt-8 md:mt-0"> <div class="sticky top-4"> <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-4">このページの目次</h3> <ul class="text-sm"> <li class="mb-2"> <a href="#はじめに" class="text-gray-600 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400" style="margin-left: 0px;"> はじめに </a> </li><li class="mb-2"> <a href="#前提条件" class="text-gray-600 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400" style="margin-left: 16px;"> 前提条件 </a> </li><li class="mb-2"> <a href="#インストール" class="text-gray-600 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400" style="margin-left: 16px;"> インストール </a> </li><li class="mb-2"> <a href="#基本的な使い方" class="text-gray-600 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400" style="margin-left: 16px;"> 基本的な使い方 </a> </li><li class="mb-2"> <a href="#次のステップ" class="text-gray-600 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400" style="margin-left: 16px;"> 次のステップ </a> </li> </ul> </div> </div> </div>  </article> </div> </div>  </main> <footer class="footer p-10 bg-base-200 text-base-content"> <div>  <p>© 2025 Docs Astro. All rights reserved.</p> <div class="flex space-x-4 mt-4">  </div> </div> <nav> <h6 class="footer-title">Docs</h6> <a href="/docs-astro/ja/v1/guide/getting-started" class="link link-hover">Getting Started</a><a href="/docs-astro/ja/v1/api" class="link link-hover">API Reference</a> </nav><nav> <h6 class="footer-title">Community</h6> <a href="https://github.com" class="link link-hover">GitHub</a><a href="https://discord.com" class="link link-hover">Discord</a> </nav> </footer> </body></html>

@@ -1,5 +1,5 @@
-import { j as joinPaths, D as DEFAULT_OUTPUT_FORMAT, i as isRemotePath, V as VALID_SUPPORTED_FORMATS, a as DEFAULT_HASH_PROPS } from './_astro_content.BtQO0RK5.js';
-import { A as AstroError, E as ExpectedImage, L as LocalImageUsedWrongly, o as MissingImageDimension, p as UnsupportedImageFormat, I as IncompatibleDescriptorOptions, q as UnsupportedImageConversion, t as toStyleString, v as NoImageMetadata, w as FailedToFetchRemoteImageDimensions, x as ExpectedImageOptions, y as ExpectedNotESMImage, z as InvalidImageService, c as createAstro, a as createComponent, B as ImageMissingAlt, m as maybeRenderHead, f as addAttribute, s as spreadAttributes, b as renderTemplate, C as ExperimentalFontsNotEnabled, D as FontFamilyNotFound, u as unescapeHTML } from './astro/server.BeZcSwAP.js';
+import { j as joinPaths, D as DEFAULT_OUTPUT_FORMAT, i as isRemotePath, V as VALID_SUPPORTED_FORMATS, a as DEFAULT_HASH_PROPS } from './_astro_content.B7tdTKBB.js';
+import { A as AstroError, E as ExpectedImage, L as LocalImageUsedWrongly, o as MissingImageDimension, p as UnsupportedImageFormat, I as IncompatibleDescriptorOptions, q as UnsupportedImageConversion, t as toStyleString, v as NoImageMetadata, w as FailedToFetchRemoteImageDimensions, x as ExpectedImageOptions, y as ExpectedNotESMImage, z as InvalidImageService, d as createAstro, a as createComponent, B as ImageMissingAlt, m as maybeRenderHead, f as addAttribute, s as spreadAttributes, b as renderTemplate, C as ExperimentalFontsNotEnabled, D as FontFamilyNotFound, u as unescapeHTML } from './astro/server.D23QPF4t.js';
 
 const DEFAULT_RESOLUTIONS = [
   640,
@@ -1231,7 +1231,7 @@ async function getConfiguredImageService() {
   if (!globalThis?.astroAsset?.imageService) {
     const { default: service } = await import(
       // @ts-expect-error
-      './sharp.6Cf2M_gx.js'
+      './sharp.DIM3HfSd.js'
     ).catch((e) => {
       const error = new AstroError(InvalidImageService);
       error.cause = e;
@@ -1927,7 +1927,7 @@ const $$Astro = createAstro("https://dolphilia.github.io");
 const $$Font = createComponent(async ($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$Font;
-  const { fontsData } = await import('./internal.Dz2DMOrG.js').then(n => n.i).catch(() => {
+  const { fontsData } = await import('./internal.DOQy2PU7.js').then(n => n.i).catch(() => {
     throw new AstroError(ExperimentalFontsNotEnabled);
   });
   const { cssVariable, preload = false } = Astro2.props;

@@ -1,4 +1,4 @@
-import { e as createVNode, F as Fragment, _ as __astro_tag_component__ } from './astro/server.BeZcSwAP.js';
+import { c as createVNode, F as Fragment, _ as __astro_tag_component__ } from './astro/server.D23QPF4t.js';
 
 const frontmatter = {
   "title": "Getting Started",

@@ -1,4 +1,4 @@
-import { c as createAstro, a as createComponent, m as maybeRenderHead, f as addAttribute, s as spreadAttributes, d as renderSlot, b as renderTemplate, u as unescapeHTML, n as renderHead, r as renderComponent } from './astro/server.BeZcSwAP.js';
+import { d as createAstro, a as createComponent, m as maybeRenderHead, f as addAttribute, s as spreadAttributes, e as renderSlot, b as renderTemplate, u as unescapeHTML, n as renderHead, r as renderComponent } from './astro/server.D23QPF4t.js';
 /* empty css                         */
 
 const $$Astro$7 = createAstro("https://dolphilia.github.io");
@@ -275,4 +275,4 @@ const $$MainLayout = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`<html${addAttribute(lang, "lang")}> <head><meta charset="utf-8"><link rel="icon" type="image/svg+xml"${addAttribute(`${baseUrl}/favicon.svg`, "href")}><meta name="viewport" content="width=device-width"><meta name="generator"${addAttribute(Astro2.generator, "content")}><title>${title} | Docs</title><!-- スタイルシートを動的に読み込み -->${renderHead()}</head> <body class="min-h-screen flex flex-col"> <header class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700"> <div class="container mx-auto px-4 py-4"> <div class="flex justify-between items-center"> ${renderComponent($$result, "Navigation", $$Navigation, { "items": navItems })} ${renderComponent($$result, "LanguageSelector", $$LanguageSelector, { "currentLang": lang })} </div> </div> </header> <main class="flex-grow container mx-auto px-4 py-8"> ${renderSlot($$result, $$slots["default"])} </main> ${renderComponent($$result, "Footer", $$Footer, { "linkGroups": linkGroups, "copyright": `\xA9 ${(/* @__PURE__ */ new Date()).getFullYear()} Docs Astro. All rights reserved.` })} </body></html>`;
 }, "/home/runner/work/docs-astro/docs-astro/apps/sample-docs/src/layouts/MainLayout.astro", void 0);
 
-export { $$MainLayout as $, $$Sidebar as a, $$Card as b, $$Alert as c, $$Button as d, t };
+export { $$MainLayout as $, $$Card as a, $$Button as b, $$Sidebar as c, t };

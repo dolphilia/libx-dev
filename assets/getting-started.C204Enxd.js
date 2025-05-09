@@ -1,5 +1,5 @@
 async function getMod() {
-						return import('./getting-started.AXsrjzRk.js');
+						return import('./getting-started.D-ehcnOu.js');
 					}
 					const collectedLinks = [];
 					const collectedStyles = [];
