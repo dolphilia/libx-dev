@@ -7,6 +7,8 @@ import { SearchBar } from '@docs/search/components';
 const lang = 'ja';
 const latestVersion = 'v2';
 const versions = ['v1', 'v2'];
+// GitHub Pagesのベースパス
+const baseUrl = '/docs-astro';
 ---
 
 <MainLayout title="ドキュメント" lang={lang}>
@@ -17,7 +19,7 @@ const versions = ['v1', 'v2'];
     </p>
     
     <div class="flex justify-center gap-4 mb-12">
-      <Button href={`/${lang}/${latestVersion}/guide/getting-started`} variant="primary" size="lg">
+      <Button href={`${baseUrl}/${lang}/${latestVersion}/guide/getting-started`} variant="primary" size="lg">
         はじめる
       </Button>
       <Button href="https://github.com" variant="outline" size="lg">
@@ -33,7 +35,7 @@ const versions = ['v1', 'v2'];
       <VersionSelector 
         currentVersion={latestVersion}
         versions={versions}
-        basePath={`/${lang}`}
+        basePath={`${baseUrl}/${lang}`}
       />
     </div>
   </div>
@@ -41,42 +43,42 @@ const versions = ['v1', 'v2'];
   <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
     <Card
       title="はじめに"
-      href={`/${lang}/${latestVersion}/guide/getting-started`}
+      href={`${baseUrl}/${lang}/${latestVersion}/guide/getting-started`}
     >
       数分でプラットフォームを使い始める方法を学びます。
     </Card>
     
     <Card
       title="インストール"
-      href={`/${lang}/${latestVersion}/guide/installation`}
+      href={`${baseUrl}/${lang}/${latestVersion}/guide/installation`}
     >
       様々な環境向けのステップバイステップのインストール手順。
     </Card>
     
     <Card
       title="設定"
-      href={`/${lang}/${latestVersion}/guide/configuration`}
+      href={`${baseUrl}/${lang}/${latestVersion}/guide/configuration`}
     >
       設定オプションとプラットフォームのカスタマイズ方法について学びます。
     </Card>
     
     <Card
       title="APIリファレンス"
-      href={`/${lang}/${latestVersion}/api/reference`}
+      href={`${baseUrl}/${lang}/${latestVersion}/api/reference`}
     >
       開発者向けの詳細なAPIドキュメント。
     </Card>
     
     <Card
       title="サンプル"
-      href={`/${lang}/${latestVersion}/examples`}
+      href={`${baseUrl}/${lang}/${latestVersion}/examples`}
     >
       実際の例とコードスニペット。
     </Card>
     
     <Card
       title="よくある質問"
-      href={`/${lang}/${latestVersion}/faq`}
+      href={`${baseUrl}/${lang}/${latestVersion}/faq`}
     >
       よくある質問とトラブルシューティングのヒント。
     </Card>

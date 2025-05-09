@@ -7,6 +7,8 @@ import { SearchBar } from '@docs/search/components';
 const lang = 'en';
 const latestVersion = 'v2';
 const versions = ['v1', 'v2'];
+// GitHub Pagesのベースパス
+const baseUrl = '/docs-astro';
 ---
 
 <MainLayout title="Documentation" lang={lang}>
@@ -17,7 +19,7 @@ const versions = ['v1', 'v2'];
     </p>
     
     <div class="flex justify-center gap-4 mb-12">
-      <Button href={`/${lang}/${latestVersion}/guide/getting-started`} variant="primary" size="lg">
+      <Button href={`${baseUrl}/${lang}/${latestVersion}/guide/getting-started`} variant="primary" size="lg">
         Get Started
       </Button>
       <Button href="https://github.com" variant="outline" size="lg">
@@ -33,7 +35,7 @@ const versions = ['v1', 'v2'];
       <VersionSelector 
         currentVersion={latestVersion}
         versions={versions}
-        basePath={`/${lang}`}
+        basePath={`${baseUrl}/${lang}`}
       />
     </div>
   </div>
@@ -41,42 +43,42 @@ const versions = ['v1', 'v2'];
   <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
     <Card
       title="Getting Started"
-      href={`/${lang}/${latestVersion}/guide/getting-started`}
+      href={`${baseUrl}/${lang}/${latestVersion}/guide/getting-started`}
     >
       Learn how to get up and running with our platform in minutes.
     </Card>
     
     <Card
       title="Installation"
-      href={`/${lang}/${latestVersion}/guide/installation`}
+      href={`${baseUrl}/${lang}/${latestVersion}/guide/installation`}
     >
       Step-by-step installation instructions for various environments.
     </Card>
     
     <Card
       title="Configuration"
-      href={`/${lang}/${latestVersion}/guide/configuration`}
+      href={`${baseUrl}/${lang}/${latestVersion}/guide/configuration`}
     >
       Learn about the configuration options and how to customize the platform.
     </Card>
     
     <Card
       title="API Reference"
-      href={`/${lang}/${latestVersion}/api/reference`}
+      href={`${baseUrl}/${lang}/${latestVersion}/api/reference`}
     >
       Detailed API documentation for developers.
     </Card>
     
     <Card
       title="Examples"
-      href={`/${lang}/${latestVersion}/examples`}
+      href={`${baseUrl}/${lang}/${latestVersion}/examples`}
     >
       Real-world examples and code snippets.
     </Card>
     
     <Card
       title="FAQ"
-      href={`/${lang}/${latestVersion}/faq`}
+      href={`${baseUrl}/${lang}/${latestVersion}/faq`}
     >
       Frequently asked questions and troubleshooting tips.
     </Card>

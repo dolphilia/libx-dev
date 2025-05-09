@@ -15,22 +15,24 @@ interface Props {
 
 const { title, lang: langProp, version } = Astro.props;
 const lang = langProp as LocaleKey; // 型アサーション
+// GitHub Pagesのベースパス
+const baseUrl = '/docs-astro';
 
 // サイドバー項目の定義
 const sidebarItems = [
   {
     title: translate('docs.guide', lang),
     items: [
-      { title: translate('docs.getting_started', lang), href: `/${lang}/${version}/guide/getting-started` },
-      { title: translate('docs.installation', lang), href: `/${lang}/${version}/guide/installation` },
-      { title: translate('docs.configuration', lang), href: `/${lang}/${version}/guide/configuration` },
+      { title: translate('docs.getting_started', lang), href: `${baseUrl}/${lang}/${version}/guide/getting-started` },
+      { title: translate('docs.installation', lang), href: `${baseUrl}/${lang}/${version}/guide/installation` },
+      { title: translate('docs.configuration', lang), href: `${baseUrl}/${lang}/${version}/guide/configuration` },
     ]
   },
   {
     title: translate('navigation.api', lang),
     items: [
-      { title: translate('docs.overview', lang), href: `/${lang}/${version}/api` },
-      { title: translate('docs.reference', lang), href: `/${lang}/${version}/api/reference` },
+      { title: translate('docs.overview', lang), href: `${baseUrl}/${lang}/${version}/api` },
+      { title: translate('docs.reference', lang), href: `${baseUrl}/${lang}/${version}/api/reference` },
     ]
   }
 ];
@@ -54,7 +56,7 @@ const versions = [
         <VersionSelector 
           currentVersion={version}
           versions={versions}
-          basePath={`/${lang}`}
+          basePath={`${baseUrl}/${lang}`}
         />
         
         <Sidebar items={sidebarItems} title={translate('docs.documentation', lang)} />

@@ -13,6 +13,9 @@ const {
   className = '' 
 } = Astro.props;
 
+// GitHub Pagesのベースパス
+const baseUrl = '/docs-astro';
+
 // 言語名のマッピング
 const langNames: Record<string, string> = {
   en: 'English',
@@ -30,7 +33,7 @@ const langPaths = supportedLangs.map(langStr => {
   return {
     lang,
     name: langNames[lang] || lang,
-    path: translatePath(currentPath, lang),
+    path: `${baseUrl}${translatePath(currentPath, lang)}`,
     isCurrent: lang === currentLang
   };
 });

@@ -10,12 +10,14 @@ interface Props {
 }
 
 const { title, lang, version = 'v1' } = Astro.props;
+// GitHub Pagesのベースパス
+const baseUrl = '/docs-astro';
 
 // ナビゲーションアイテムの定義
 const navItems = [
-  { title: 'Home', href: `/${lang}` },
-  { title: 'Docs', href: `/${lang}/${version}/guide/getting-started` },
-  { title: 'API', href: `/${lang}/${version}/api` },
+  { title: 'Home', href: `${baseUrl}/${lang}` },
+  { title: 'Docs', href: `${baseUrl}/${lang}/${version}/guide/getting-started` },
+  { title: 'API', href: `${baseUrl}/${lang}/${version}/api` },
 ];
 
 // フッターリンクグループの定義
@@ -23,8 +25,8 @@ const linkGroups = [
   {
     title: 'Docs',
     links: [
-      { title: 'Getting Started', href: `/${lang}/${version}/guide/getting-started` },
-      { title: 'API Reference', href: `/${lang}/${version}/api` }
+      { title: 'Getting Started', href: `${baseUrl}/${lang}/${version}/guide/getting-started` },
+      { title: 'API Reference', href: `${baseUrl}/${lang}/${version}/api` }
     ]
   },
   {
@@ -40,7 +42,7 @@ const linkGroups = [
 <html lang={lang}>
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={`${baseUrl}/favicon.svg`} />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>{title} | Docs</title>

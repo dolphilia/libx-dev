@@ -3,6 +3,8 @@ import DocLayout from '../../../../layouts/DocLayout.astro';
 
 const lang = 'ja';
 const version = 'v1';
+// GitHub Pagesのベースパス
+const baseUrl = '/docs-astro';
 ---
 
 <DocLayout title="はじめに" lang={lang} version={version}>
@@ -10,9 +12,9 @@ const version = 'v1';
   
   <h2>前提条件</h2>
   <ul>
-    <li>Node.js 18以上</li>
-    <li>npm、yarn、またはpnpm</li>
-    <li>JavaScriptの基本的な知識</li>
+    <li><a href={`${baseUrl}/${lang}/${version}/guide/configuration`}>設定オプション</a>について詳しく学ぶ</li>
+    <li><a href={`${baseUrl}/${lang}/${version}/api/reference`}>APIリファレンス</a>を探索する</li>
+    <li>いくつかの<a href={`${baseUrl}/${lang}/${version}/examples`}>サンプル</a>を確認する</li>
   </ul>
   
   <h2>インストール</h2>
