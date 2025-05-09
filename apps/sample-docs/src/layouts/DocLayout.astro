@@ -3,45 +3,28 @@ import MainLayout from './MainLayout.astro';
 import { Sidebar } from '@docs/ui/components';
 import { VersionSelector } from '@docs/versioning/components';
 import { SearchBar, SearchResults } from '@docs/search/components';
-
-import { translate } from '@docs/i18n/utils'; // t as translate ではなく、index.ts でのエイリアスに合わせる
+import { translate } from '@docs/i18n/utils';
 import type { LocaleKey } from '@docs/i18n/locales';
+
+// 設定ファイルのインポート
+import docsConfig from '../config/docs.config';
+import versions from '../config/versions.config';
+import { getSidebar } from '../config/sidebar.config';
 
 interface Props {
   title: string;
-  lang: LocaleKey; // string から LocaleKey に変更
+  lang: LocaleKey;
   version: string;
 }
 
 const { title, lang: langProp, version } = Astro.props;
-const lang = langProp as LocaleKey; // 型アサーション
-// GitHub Pagesのベースパス
-const baseUrl = '/docs-astro';
+const lang = langProp as LocaleKey;
 
-// サイドバー項目の定義
-const sidebarItems = [
-  {
-    title: translate('docs.guide', lang),
-    items: [
-      { title: translate('docs.getting_started', lang), href: `${baseUrl}/${lang}/${version}/guide/getting-started` },
-      { title: translate('docs.installation', lang), href: `${baseUrl}/${lang}/${version}/guide/installation` },
-      { title: translate('docs.configuration', lang), href: `${baseUrl}/${lang}/${version}/guide/configuration` },
-    ]
-  },
-  {
-    title: translate('navigation.api', lang),
-    items: [
-      { title: translate('docs.overview', lang), href: `${baseUrl}/${lang}/${version}/api` },
-      { title: translate('docs.reference', lang), href: `${baseUrl}/${lang}/${version}/api/reference` },
-    ]
-  }
-];
+// ベースパスの取得
+const baseUrl = docsConfig.baseUrl;
 
-// 利用可能なバージョン
-const versions = [
-  { id: 'v1', name: 'Version 1.0', date: new Date('2024-01-01'), isLatest: false },
-  { id: 'v2', name: 'Version 2.0', date: new Date('2025-01-01'), isLatest: true }
-];
+// サイドバー項目の取得
+const sidebarItems = getSidebar(lang, version, baseUrl);
 ---
 
 <MainLayout title={title} lang={lang} version={version}>

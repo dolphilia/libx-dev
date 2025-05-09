@@ -68,7 +68,57 @@ docs-astro/
    pnpm --filter=@docs/new-project add @docs/ui @docs/theme @docs/i18n @docs/search
    ```
 
-3. プロジェクト設定の調整
+3. プロジェクト設定の調整：
+   - `astro.config.mjs`の設定
+   - 多言語対応の設定
+   - バージョン管理の設定
+   - 検索機能の設定
+
+## ドキュメント管理
+
+### 設定ファイル
+
+ドキュメントの設定は以下のファイルで管理されています：
+
+```
+apps/[project-name]/src/config/
+├── docs.config.ts      # ドキュメント全体の設定
+├── sidebar.config.ts   # サイドバー項目の設定
+└── versions.config.ts  # バージョン情報の設定
+```
+
+### 新しいバージョンの追加
+
+新しいバージョンを追加するには、以下のコマンドを実行します：
+
+```bash
+pnpm create:version [project-name] [version]
+
+# 例: sample-docsプロジェクトにv3バージョンを追加
+pnpm create:version sample-docs v3
+```
+
+このコマンドは以下の処理を行います：
+- バージョン設定ファイルの更新
+- 各言語のディレクトリ構造の作成
+- インデックスページの作成
+- 前のバージョンからのドキュメントのコピー（オプション）
+
+### 新しいドキュメントの追加
+
+新しいドキュメントを追加するには、以下のコマンドを実行します：
+
+```bash
+pnpm create:doc [project-name] [lang] [version] [slug]
+
+# 例: sample-docsプロジェクトの英語版v1にインストールガイドを追加
+pnpm create:doc sample-docs en v1 guide/installation
+```
+
+このコマンドは以下の処理を行います：
+- ドキュメントファイル（MDX）の作成
+- 前後のページへのリンクの自動生成
+- サイドバー設定の更新ガイダンスの表示
 
 ## ライセンス
 

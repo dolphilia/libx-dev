@@ -8,7 +8,9 @@
     "preview": "pnpm --filter=./apps/* preview",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "build:search-index": "node scripts/build-search-index.js"
+    "build:search-index": "node scripts/build-search-index.js",
+    "create:version": "node scripts/create-version.js",
+    "create:doc": "node scripts/create-document.js"
   },
   "devDependencies": {
     "eslint": "^8.0.0",
