@@ -1,16 +1,19 @@
 ---
 import { Card } from '@docs/ui/components';
+import { translate } from '@docs/i18n/utils';
+import type { LocaleKey } from '@docs/i18n/locales';
 
 interface Props {
   className?: string;
+  lang?: LocaleKey;
 }
 
-const { className = '' } = Astro.props;
+const { className = '', lang = 'ja' } = Astro.props;
 ---
 
 <div id="search-results" class:list={['search-results hidden', className]}>
   <div class="flex justify-between items-center mb-4">
-    <h2 class="text-xl font-bold">検索結果</h2>
+    <h2 class="text-xl font-bold">{translate('search.searchResults', lang)}</h2>
     <button id="close-search-results" class="btn btn-sm btn-circle btn-ghost">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
     </button>
@@ -20,24 +23,27 @@ const { className = '' } = Astro.props;
     <!-- 検索結果がここに動的に挿入されます -->
     <div id="search-loading" class="py-8 text-center hidden">
       <span class="loading loading-spinner loading-lg"></span>
-      <p class="mt-2 opacity-70">検索中...</p>
+      <p class="mt-2 opacity-70">{translate('common.loading', lang)}</p>
     </div>
     
     <div id="search-empty" class="py-8 text-center hidden">
       <div class="alert">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-        <span>検索結果が見つかりませんでした。</span>
+        <span id="no-results-message"></span>
       </div>
     </div>
   </div>
 </div>
 
 <script>
+  import { translate } from '@docs/i18n/utils';
+
   // 検索結果の表示と制御
   const searchResults = document.getElementById('search-results');
   const searchResultsContainer = document.getElementById('search-results-container');
   const searchLoading = document.getElementById('search-loading');
   const searchEmpty = document.getElementById('search-empty');
+  const noResultsMessage = document.getElementById('no-results-message');
   const closeSearchResults = document.getElementById('close-search-results');
   
   // 検索イベントをリッスン
@@ -107,6 +113,11 @@ const { className = '' } = Astro.props;
       if (results.length > 0) {
         searchEmpty.classList.add('hidden');
         
+        // 検索結果が見つからない場合のメッセージをクリア
+        if (noResultsMessage) {
+          noResultsMessage.textContent = '';
+        }
+        
         results.forEach((result: any) => {
           // 抜粋を作成
           let excerpt = '';
@@ -145,6 +156,12 @@ const { className = '' } = Astro.props;
         });
       } else {
         searchEmpty.classList.remove('hidden');
+        
+        // 検索結果が見つからない場合のメッセージを設定
+        if (noResultsMessage) {
+          const noResultsText = translate('search.noResults', lang as any).replace('{query}', query);
+          noResultsMessage.textContent = noResultsText;
+        }
       }
     } catch (error) {
       console.error('検索中にエラーが発生しました:', error);
@@ -156,7 +173,7 @@ const { className = '' } = Astro.props;
       errorElement.className = 'alert alert-error';
       errorElement.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-        <span>検索中にエラーが発生しました。</span>
+        <span>${translate('common.error', lang as any)}</span>
       `;
       searchResultsContainer.appendChild(errorElement);
     }

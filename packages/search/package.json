@@ -14,7 +14,8 @@
   },
   "dependencies": {
     "astro": "^3.0.0",
-    "@docs/ui": "workspace:*"
+    "@docs/ui": "workspace:*",
+    "@docs/i18n": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^18.0.0",
