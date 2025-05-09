@@ -7,6 +7,10 @@ const docsSchema = z.object({
   title: z.string(),
   // 説明（オプション）
   description: z.string().optional(),
+  // カテゴリ（オプション、指定しない場合はパスから自動取得）
+  category: z.string().optional(),
+  // カテゴリの順序（オプション）
+  categoryOrder: z.number().optional(),
   // 公開日（オプション）
   pubDate: z.date().optional(),
   // 更新日（オプション）

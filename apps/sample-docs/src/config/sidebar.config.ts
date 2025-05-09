@@ -235,33 +235,75 @@ export async function getAutoSidebar(lang: LocaleKey, version: string, baseUrl: 
   });
   
   // カテゴリごとにドキュメントを整理
-  const categories: Record<string, any[]> = {};
+  const categories: Record<string, {
+    docs: any[],
+    order: number,
+    title?: string
+  }> = {};
+  
+  // カテゴリの順序マッピング（デフォルト値）
+  const categoryOrder: Record<string, number> = {
+    'guide': 1,
+    'api': 2,
+    'examples': 3,
+    'reference': 4,
+    'advanced': 5,
+    'plugins': 6,
+    'migration': 7,
+    'faq': 8
+  };
   
   docs.forEach(doc => {
+    // フロントマターからカテゴリを取得（指定されていない場合はパスから取得）
     const parts = doc.slug.split('/');
-    if (parts.length >= 3) {
-      const category = parts[2];
-      if (!categories[category]) {
-        categories[category] = [];
-      }
-      categories[category].push(doc);
+    const pathCategory = parts.length >= 3 ? parts[2] : 'uncategorized';
+    const category = doc.data.category || pathCategory;
+    
+    // カテゴリの順序を取得（フロントマターから、または定義済みマッピングから）
+    const order = doc.data.categoryOrder !== undefined 
+      ? doc.data.categoryOrder 
+      : (categoryOrder[category] || 999);
+    
+    if (!categories[category]) {
+      categories[category] = {
+        docs: [],
+        order: order,
+        title: undefined // 後で設定
+      };
     }
+    
+    // カテゴリの順序を更新（複数のドキュメントで同じカテゴリが使用されている場合、最小の順序を使用）
+    if (order < categories[category].order) {
+      categories[category].order = order;
+    }
+    
+    categories[category].docs.push(doc);
   });
   
   // カテゴリごとにドキュメントを順序で並べ替え
   Object.keys(categories).forEach(category => {
-    categories[category].sort((a, b) => {
+    categories[category].docs.sort((a, b) => {
       const orderA = a.data.order || 999;
       const orderB = b.data.order || 999;
       return orderA - orderB;
     });
   });
   
+  // カテゴリを順序で並べ替え
+  const sortedCategories = Object.entries(categories).sort((a, b) => {
+    return a[1].order - b[1].order;
+  });
+  
   // サイドバー項目の生成
-  return Object.keys(categories).map(category => {
+  return sortedCategories.map(([category, { docs }]) => {
+    // カテゴリ名の翻訳を試みる（翻訳キーが存在しない場合はカテゴリ名をそのまま使用）
+    const categoryTitle = translate(`docs.${category}`, lang);
+    const title = categoryTitle !== `docs.${category}` ? categoryTitle : 
+                 (category.charAt(0).toUpperCase() + category.slice(1));
+    
     return {
-      title: translate(`docs.${category}`, lang) || category,
-      items: categories[category].map(doc => {
+      title,
+      items: docs.map(doc => {
         const slugParts = doc.slug.split('/').slice(2);
         return {
           title: doc.data.title,
@@ -284,7 +326,7 @@ export function getSidebar(lang: LocaleKey, version: string, baseUrl: string): S
   if (useAutoSidebar) {
     // 自動生成サイドバーは非同期関数のため、DocLayout.astroで使用する場合は注意が必要
     // ここでは手動定義のサイドバーを返します
-    console.warn('自動生成サイドバーはDocLayout.astroで非同期処理が必要です。手動定義のサイドバーを返します。');
+    console.warn('自動生成サイドバーはDocLayout.astroで非同期処理が必要です。getSidebarAsync()を使用してください。');
     return getManualSidebar(lang, version, baseUrl);
   } else {
     return getManualSidebar(lang, version, baseUrl);
