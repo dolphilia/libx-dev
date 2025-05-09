@@ -230,6 +230,19 @@ GitHub Actionsを使用して自動デプロイを行います：
 
 ## 最近の修正内容
 
+### 不要なAstroファイルの削除（2025/5/9）
+
+MDXコンテンツコレクションの実装に伴い、不要になったAstroファイルを削除しました。
+
+削除内容：
+1. 以下のAstroファイルを削除
+   - `apps/sample-docs/src/pages/en/v1/guide/getting-started.astro`
+   - `apps/sample-docs/src/pages/en/v2/guide/getting-started.astro`
+   - `apps/sample-docs/src/pages/ja/v1/guide/getting-started.astro`
+   - `apps/sample-docs/src/pages/ja/v2/guide/getting-started.astro`
+
+これらのファイルは、MDXファイルに移行され、動的ルーティングの実装（`apps/sample-docs/src/pages/[lang]/[version]/[...slug].astro`）によって表示されるようになったため、不要になりました。
+
 ### MDXコンテンツコレクションの実装（2025/5/9）
 
 Astroのコンテンツコレクション機能を使用して、MDXファイルでドキュメントを管理できるように実装しました。
