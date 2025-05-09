@@ -1,5 +1,8 @@
 {
-  "extends": "astro/tsconfigs/strict",
+  "extends": "../../config/tsconfig/astro.json",
+  "compilerOptions": {
+    // プロジェクト固有の compilerOptions があればここに追加
+  },
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"]
+  "exclude": ["dist", "node_modules"]
 }
