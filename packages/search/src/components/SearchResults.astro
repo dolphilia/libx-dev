@@ -37,145 +37,194 @@ const { className = '', lang = 'ja' } = Astro.props;
 
 <script>
   import { translate } from '@docs/i18n/utils';
+  import type { LocaleKey } from '@docs/i18n/locales';
 
-  // 検索結果の表示と制御
-  const searchResults = document.getElementById('search-results');
-  const searchResultsContainer = document.getElementById('search-results-container');
-  const searchLoading = document.getElementById('search-loading');
-  const searchEmpty = document.getElementById('search-empty');
-  const noResultsMessage = document.getElementById('no-results-message');
-  const closeSearchResults = document.getElementById('close-search-results');
-  
-  // 検索イベントをリッスン
-  document.addEventListener('docsearch', ((event: CustomEvent) => {
-    const { query } = event.detail;
-    
-    if (searchResults && searchLoading && searchEmpty && searchResultsContainer) {
-      // 検索結果を表示
-      searchResults.classList.remove('hidden');
-      
-      // ローディング表示
-      searchLoading.classList.remove('hidden');
-      searchEmpty.classList.add('hidden');
-      
-      // 既存の結果をクリア
-      const existingResults = searchResultsContainer.querySelectorAll('.search-result-item');
+  // Search document structure (example, adjust as needed)
+  interface SearchDocument {
+    title: string;
+    content: string;
+    url: string;
+    project: string;
+    version: string;
+  }
+
+  interface SearchIndex {
+    documents: SearchDocument[];
+  }
+
+  // DOM Elements
+  const dom = {
+    searchResults: document.getElementById('search-results'),
+    searchResultsContainer: document.getElementById('search-results-container'),
+    searchLoading: document.getElementById('search-loading'),
+    searchEmpty: document.getElementById('search-empty'),
+    noResultsMessage: document.getElementById('no-results-message'),
+    closeSearchResults: document.getElementById('close-search-results'),
+  };
+
+  // State Management Functions
+  function showLoading(isLoading: boolean) {
+    if (dom.searchLoading) {
+      dom.searchLoading.classList.toggle('hidden', !isLoading);
+    }
+  }
+
+  function showEmptyResults(show: boolean, query: string = '', lang: LocaleKey = 'ja') {
+    if (dom.searchEmpty && dom.noResultsMessage) {
+      dom.searchEmpty.classList.toggle('hidden', !show);
+      if (show && query) {
+        const noResultsText = translate('search.noResults', lang).replace('{query}', query);
+        dom.noResultsMessage.textContent = noResultsText;
+      } else {
+        dom.noResultsMessage.textContent = '';
+      }
+    }
+  }
+
+  function clearSearchResultsContainer() {
+    if (dom.searchResultsContainer) {
+      const existingResults = dom.searchResultsContainer.querySelectorAll('.search-result-item, .alert-error');
       existingResults.forEach(item => item.remove());
-      
-      // 検索を実行
+    }
+  }
+
+  // Event Listener for Search
+  document.addEventListener('docsearch', ((event: CustomEvent<{ query: string }>) => {
+    const { query } = event.detail;
+
+    if (dom.searchResults && dom.searchResultsContainer) {
+      dom.searchResults.classList.remove('hidden');
+      showLoading(true);
+      showEmptyResults(false);
+      clearSearchResultsContainer();
+
+      // Debounce search to avoid excessive calls
       setTimeout(() => {
         performSearch(query);
       }, 500);
     }
   }) as EventListener);
-  
-  // 閉じるボタンの処理
-  if (closeSearchResults && searchResults) {
-    closeSearchResults.addEventListener('click', () => {
-      searchResults.classList.add('hidden');
+
+  // Event Listener for Close Button
+  if (dom.closeSearchResults && dom.searchResults) {
+    dom.closeSearchResults.addEventListener('click', () => {
+      dom.searchResults!.classList.add('hidden');
     });
   }
-  
-  // 検索実行関数
-  async function performSearch(query: string) {
-    if (!searchLoading || !searchEmpty || !searchResultsContainer) return;
-    
-    // 現在のURLから言語とバージョンを取得
+
+  // Helper to get current language and version from URL
+  function getCurrentLangAndVersion(): { lang: LocaleKey; version: string } {
     const urlPath = window.location.pathname;
     const langMatch = urlPath.match(/^\/(en|ja)/);
     const versionMatch = urlPath.match(/\/(v[0-9]+)/);
-    
-    const lang = langMatch ? langMatch[1] : 'en';
-    const version = versionMatch ? versionMatch[1] : 'v1';
-    
-    try {
-      // 検索インデックスを取得
-      const indexUrl = `/search/index-${lang}-${version}.json`;
-      const response = await fetch(indexUrl);
-      
-      if (!response.ok) {
-        throw new Error(`検索インデックスの取得に失敗しました: ${response.status}`);
-      }
-      
-      const searchIndex = await response.json();
-      
-      // 検索を実行
-      const results = searchIndex.documents.filter((doc: any) => {
-        const titleMatch = doc.title.toLowerCase().includes(query.toLowerCase());
-        const contentMatch = doc.content.toLowerCase().includes(query.toLowerCase());
-        return titleMatch || contentMatch;
-      }).slice(0, 10); // 最大10件まで表示
-      
-      // ローディング非表示
-      searchLoading.classList.add('hidden');
-      
-      // 結果の表示
-      if (results.length > 0) {
-        searchEmpty.classList.add('hidden');
-        
-        // 検索結果が見つからない場合のメッセージをクリア
-        if (noResultsMessage) {
-          noResultsMessage.textContent = '';
-        }
-        
-        results.forEach((result: any) => {
-          // 抜粋を作成
-          let excerpt = '';
-          if (result.content) {
-            const contentLowerCase = result.content.toLowerCase();
-            const queryPos = contentLowerCase.indexOf(query.toLowerCase());
-            
-            if (queryPos !== -1) {
-              const start = Math.max(0, queryPos - 50);
-              const end = Math.min(result.content.length, queryPos + query.length + 50);
-              excerpt = result.content.substring(start, end);
-              
-              if (start > 0) excerpt = '...' + excerpt;
-              if (end < result.content.length) excerpt += '...';
-            } else {
-              excerpt = result.content.substring(0, 100) + '...';
-            }
-          }
-          
-          const resultElement = document.createElement('div');
-          resultElement.className = 'search-result-item';
-          resultElement.innerHTML = `
-            <a href="${result.url}" class="block">
-              <div class="card bg-base-100 shadow-sm hover:shadow-md transition-shadow">
-                <div class="card-body p-4">
-                  <div class="flex items-center justify-between">
-                    <h3 class="card-title text-base">${result.title}</h3>
-                    <div class="badge badge-sm">${result.project} ${result.version}</div>
-                  </div>
-                  <p class="text-sm opacity-70">${excerpt}</p>
-                </div>
-              </div>
-            </a>
-          `;
-          searchResultsContainer.appendChild(resultElement);
-        });
+    return {
+      lang: (langMatch ? langMatch[1] : 'en') as LocaleKey,
+      version: versionMatch ? versionMatch[1] : 'v1',
+    };
+  }
+
+  // Fetch search index
+  async function fetchSearchIndex(lang: LocaleKey, version: string): Promise<SearchIndex> {
+    const indexUrl = `/search/index-${lang}-${version}.json`;
+    const response = await fetch(indexUrl);
+    if (!response.ok) {
+      throw new Error(`検索インデックスの取得に失敗しました: ${response.status}`);
+    }
+    return response.json() as Promise<SearchIndex>;
+  }
+
+  // Filter documents based on query
+  function filterDocuments(documents: SearchDocument[], query: string): SearchDocument[] {
+    const lowerCaseQuery = query.toLowerCase();
+    return documents.filter((doc: SearchDocument) => {
+      const titleMatch = doc.title.toLowerCase().includes(lowerCaseQuery);
+      const contentMatch = doc.content.toLowerCase().includes(lowerCaseQuery);
+      return titleMatch || contentMatch;
+    }).slice(0, 10); // Max 10 results
+  }
+
+  // Create HTML for a single result item
+  function createResultItemHTML(result: SearchDocument, query: string): string {
+    let excerpt = '';
+    if (result.content) {
+      const contentLowerCase = result.content.toLowerCase();
+      const queryPos = contentLowerCase.indexOf(query.toLowerCase());
+
+      if (queryPos !== -1) {
+        const start = Math.max(0, queryPos - 50);
+        const end = Math.min(result.content.length, queryPos + query.length + 50);
+        excerpt = result.content.substring(start, end);
+        if (start > 0) excerpt = '...' + excerpt;
+        if (end < result.content.length) excerpt += '...';
       } else {
-        searchEmpty.classList.remove('hidden');
-        
-        // 検索結果が見つからない場合のメッセージを設定
-        if (noResultsMessage) {
-          const noResultsText = translate('search.noResults', lang as any).replace('{query}', query);
-          noResultsMessage.textContent = noResultsText;
-        }
+        excerpt = result.content.substring(0, 100) + '...';
       }
-    } catch (error) {
-      console.error('検索中にエラーが発生しました:', error);
-      searchLoading.classList.add('hidden');
-      searchEmpty.classList.remove('hidden');
-      
-      // エラーメッセージを表示
+    }
+
+    return `
+      <a href="${result.url}" class="block">
+        <div class="card bg-base-100 shadow-sm hover:shadow-md transition-shadow">
+          <div class="card-body p-4">
+            <div class="flex items-center justify-between">
+              <h3 class="card-title text-base">${result.title}</h3>
+              <div class="badge badge-sm">${result.project} ${result.version}</div>
+            </div>
+            <p class="text-sm opacity-70">${excerpt}</p>
+          </div>
+        </div>
+      </a>
+    `;
+  }
+
+  // Render search results to the DOM
+  function renderResults(results: SearchDocument[], query: string) {
+    if (dom.searchResultsContainer) {
+      results.forEach((result: SearchDocument) => {
+        const resultElement = document.createElement('div');
+        resultElement.className = 'search-result-item';
+        resultElement.innerHTML = createResultItemHTML(result, query);
+        dom.searchResultsContainer!.appendChild(resultElement);
+      });
+    }
+  }
+
+  // Display error message in the search results container
+  function displaySearchError(lang: LocaleKey) {
+    if (dom.searchResultsContainer) {
       const errorElement = document.createElement('div');
       errorElement.className = 'alert alert-error';
       errorElement.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-        <span>${translate('common.error', lang as any)}</span>
+        <span>${translate('common.error', lang)}</span>
       `;
-      searchResultsContainer.appendChild(errorElement);
+      dom.searchResultsContainer!.appendChild(errorElement);
+    }
+  }
+
+  // Main Search Function
+  async function performSearch(query: string) {
+    if (!dom.searchResultsContainer) return;
+
+    const { lang, version } = getCurrentLangAndVersion();
+
+    try {
+      const searchIndex = await fetchSearchIndex(lang, version);
+      const results = filterDocuments(searchIndex.documents, query);
+
+      showLoading(false);
+
+      if (results.length > 0) {
+        showEmptyResults(false);
+        renderResults(results, query);
+      } else {
+        showEmptyResults(true, query, lang);
+      }
+    } catch (error) {
+      console.error('検索中にエラーが発生しました:', error);
+      showLoading(false);
+      // Consider a more specific message for empty results after an error
+      showEmptyResults(true, query, lang);
+      displaySearchError(lang);
     }
   }
 </script>

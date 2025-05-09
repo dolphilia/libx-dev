@@ -9,7 +9,7 @@ interface Props {
 const {
   variant = 'primary',
   size = 'md',
-  class: className = '',
+  class: additionalClass = '',
   ...rest
 } = Astro.props;
 
@@ -38,7 +38,7 @@ const classes = [
   'btn',
   variantClasses[variant],
   sizeClasses[size],
-  className,
+  additionalClass,
 ];
 ---
 

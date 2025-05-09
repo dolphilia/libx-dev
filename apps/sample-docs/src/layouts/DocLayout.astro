@@ -25,6 +25,12 @@ const baseUrl = docsConfig.baseUrl;
 
 // サイドバー項目の取得（非同期）
 const sidebarItems = await getSidebarAsync(lang, version, baseUrl);
+
+// 翻訳キーの定数化
+const TRANSLATION_KEYS = {
+  SEARCH_PLACEHOLDER: 'search.placeholder',
+  DOCUMENTATION: 'docs.documentation'
+} as const;
 ---
 
 <MainLayout title={title} lang={lang} version={version}>
@@ -32,25 +38,28 @@ const sidebarItems = await getSidebarAsync(lang, version, baseUrl);
     <aside class="w-full md:w-64 shrink-0">
       <div class="sticky top-4 space-y-6">
         <div class="space-y-2">
-          <SearchBar placeholder={translate('search.placeholder', lang)} />
+          <SearchBar placeholder={translate(TRANSLATION_KEYS.SEARCH_PLACEHOLDER, lang)} />
           <SearchResults className="mt-2" lang={lang} />
         </div>
-        
+
         <VersionSelector 
           currentVersion={version}
           versions={versions}
           basePath={`${baseUrl}/${lang}`}
         />
-        
-        <Sidebar items={sidebarItems} title={translate('docs.documentation', lang)} />
+
+        <Sidebar 
+          items={sidebarItems} 
+          title={translate(TRANSLATION_KEYS.DOCUMENTATION, lang)} 
+        />
       </div>
     </aside>
     
-    <div class="flex-grow">
+    <main class="flex-grow">
       <article class="prose max-w-none">
         <h1>{title}</h1>
         <slot />
       </article>
-    </div>
+    </main>
   </div>
 </MainLayout>

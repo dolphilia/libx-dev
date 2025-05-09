@@ -24,25 +24,13 @@ const classes = [
 ---
 
 <div class:list={classes} {...rest}>
-  {title && (
-    <div class="card-body">
-      <h2 class="card-title">{title}</h2>
-      <slot />
-      {Astro.slots.has('footer') && (
-        <div class="card-actions justify-end">
-          <slot name="footer" />
-        </div>
-      )}
-    </div>
-  )}
-  {!title && (
-    <div class="card-body">
-      <slot />
-      {Astro.slots.has('footer') && (
-        <div class="card-actions justify-end">
-          <slot name="footer" />
-        </div>
-      )}
-    </div>
-  )}
+  <div class="card-body">
+    {title && <h2 class="card-title">{title}</h2>}
+    <slot />
+    {Astro.slots.has('footer') && (
+      <div class="card-actions justify-end">
+        <slot name="footer" />
+      </div>
+    )}
+  </div>
 </div>

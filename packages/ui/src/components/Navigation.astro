@@ -1,54 +1,108 @@
 ---
+/**
+ * ナビゲーション項目の型定義
+ */
 interface NavItem {
+  /** 表示タイトル */
   title: string;
+  /** リンク先URL */
   href: string;
+  /** 子ナビゲーション項目（ドロップダウンメニュー用） */
   children?: NavItem[];
 }
 
+/**
+ * コンポーネントのプロパティ
+ */
 interface Props {
+  /** ナビゲーション項目の配列 */
   items: NavItem[];
+  /** 追加のCSSクラス */
   class?: string;
 }
 
+// プロパティの分割代入
 const { items, class: className = '' } = Astro.props;
+
+/**
+ * ナビゲーション項目をレンダリングする関数
+ */
+function renderNavItems(items: NavItem[], isMobile: boolean = false) {
+  return items.map(item => `
+    <li>
+      <a 
+        href="${item.href}" 
+        role="menuitem" 
+        aria-label="${item.title}ページへ移動"
+        class="${isMobile ? '' : 'hover:bg-base-200'}"
+      >
+        ${item.title}
+      </a>
+      ${item.children && item.children.length > 0 ? `
+        <ul 
+          class="p-2 ${isMobile ? '' : 'dropdown-content'}" 
+          role="menu" 
+          aria-label="${item.title}のサブメニュー"
+        >
+          ${item.children.map(child => `
+            <li>
+              <a 
+                href="${child.href}" 
+                role="menuitem" 
+                aria-label="${child.title}ページへ移動"
+                class="${isMobile ? '' : 'hover:bg-base-200'}"
+              >
+                ${child.title}
+              </a>
+            </li>
+          `).join('')}
+        </ul>
+      ` : ''}
+    </li>
+  `).join('');
+}
 ---
 
-<div class:list={['navbar bg-base-100', className]}>
+<nav class:list={['navbar bg-base-100', className]} aria-label="メインナビゲーション">
   <div class="navbar-start">
     <div class="dropdown">
-      <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
-      </div>
-      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-        {items.map((item) => (
-          <li>
-            <a href={item.href}>{item.title}</a>
-            {item.children && item.children.length > 0 && (
-              <ul class="p-2">
-                {item.children.map((child) => (
-                  <li><a href={child.href}>{child.title}</a></li>
-                ))}
-              </ul>
-            )}
-          </li>
-        ))}
-      </ul>
+      <button 
+        type="button" 
+        aria-haspopup="true" 
+        aria-expanded="false"
+        aria-label="モバイルメニューを切り替え"
+        class="btn btn-ghost lg:hidden"
+      >
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          class="h-5 w-5" 
+          fill="none" 
+          viewBox="0 0 24 24" 
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path 
+            stroke-linecap="round" 
+            stroke-linejoin="round" 
+            stroke-width="2" 
+            d="M4 6h16M4 12h8m-8 6h16" 
+          />
+        </svg>
+      </button>
+      <ul 
+        class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+        role="menu"
+        aria-label="モバイルナビゲーション"
+        set:html={renderNavItems(items, true)}
+      />
     </div>
   </div>
   <div class="navbar-center hidden lg:flex">
-    <ul class="menu menu-horizontal px-1">
-      {items.map((item) => (
-        <li>
-          <a href={item.href}>{item.title}</a>
-          {item.children && item.children.length > 0 && (
-            <ul class="p-2">
-              {item.children.map((child) => (
-                <li><a href={child.href}>{child.title}</a></li>
-              ))}
-            </ul>
-          )}
-        </li>
-      ))}
-    </ul>
+    <ul 
+      class="menu menu-horizontal px-1" 
+      role="menubar"
+      aria-label="デスクトップナビゲーション"
+      set:html={renderNavItems(items)}
+    />
   </div>
-</div>
+</nav>
