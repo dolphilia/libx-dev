@@ -3,12 +3,14 @@ import MainLayout from '../../layouts/MainLayout.astro';
 import { Button, Card } from '@docs/ui/components';
 import { VersionSelector } from '@docs/versioning/components';
 import { SearchBar } from '@docs/search/components';
+import versions from '../../config/versions.config';
+import docsConfig from '../../config/docs.config';
+import type { LocaleKey } from '@docs/i18n/locales';
 
-const lang = 'ja';
+const lang = 'ja' as LocaleKey;
 const latestVersion = 'v2';
-const versions = ['v1', 'v2'];
 // GitHub Pagesのベースパス
-const baseUrl = '/docs-astro';
+const baseUrl = docsConfig.baseUrl;
 ---
 
 <MainLayout title="ドキュメント" lang={lang}>
@@ -28,7 +30,7 @@ const baseUrl = '/docs-astro';
     </div>
     
     <div class="max-w-md mx-auto mb-12">
-      <SearchBar lang={lang} version={latestVersion} />
+      <SearchBar placeholder={`ドキュメントを検索...`} />
     </div>
     
     <div class="max-w-xs mx-auto mb-12">

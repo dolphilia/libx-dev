@@ -9,7 +9,7 @@ import type { LocaleKey } from '@docs/i18n/locales';
 // 設定ファイルのインポート
 import docsConfig from '../config/docs.config';
 import versions from '../config/versions.config';
-import { getSidebar } from '../config/sidebar.config';
+import { getSidebarAsync } from '../config/sidebar.config';
 
 interface Props {
   title: string;
@@ -23,8 +23,8 @@ const lang = langProp as LocaleKey;
 // ベースパスの取得
 const baseUrl = docsConfig.baseUrl;
 
-// サイドバー項目の取得
-const sidebarItems = getSidebar(lang, version, baseUrl);
+// サイドバー項目の取得（非同期）
+const sidebarItems = await getSidebarAsync(lang, version, baseUrl);
 ---
 
 <MainLayout title={title} lang={lang} version={version}>

@@ -3,6 +3,7 @@
  */
 import type { LocaleKey } from '@docs/i18n/locales';
 import { translate } from '@docs/i18n/utils';
+import docsConfig from './docs.config';
 
 export type SidebarItem = {
   title: string;
@@ -12,10 +13,181 @@ export type SidebarItem = {
   }[];
 };
 
+// バージョンと言語ごとのサイドバー設定
+type SidebarConfig = {
+  [version: string]: {
+    [lang in LocaleKey]?: SidebarItem[];
+  };
+};
+
+// バージョンと言語ごとのサイドバー設定を定義
+const sidebarConfigs: SidebarConfig = {
+  // v1のサイドバー設定
+  v1: {
+    // 英語のサイドバー設定
+    en: [
+      {
+        title: 'Guide',
+        items: [
+          { 
+            title: 'Getting Started', 
+            href: `/docs-astro/en/v1/guide/getting-started` 
+          },
+          { 
+            title: 'Installation', 
+            href: `/docs-astro/en/v1/guide/installation` 
+          },
+          { 
+            title: 'Configuration', 
+            href: `/docs-astro/en/v1/guide/configuration` 
+          },
+        ]
+      },
+      {
+        title: 'API',
+        items: [
+          { 
+            title: 'Overview', 
+            href: `/docs-astro/en/v1/api` 
+          },
+          { 
+            title: 'Reference', 
+            href: `/docs-astro/en/v1/api/reference` 
+          },
+        ]
+      }
+    ],
+    // 日本語のサイドバー設定
+    ja: [
+      {
+        title: 'ガイド',
+        items: [
+          { 
+            title: '入門', 
+            href: `/docs-astro/ja/v1/guide/getting-started` 
+          },
+          { 
+            title: 'インストール', 
+            href: `/docs-astro/ja/v1/guide/installation` 
+          },
+          { 
+            title: '設定', 
+            href: `/docs-astro/ja/v1/guide/configuration` 
+          },
+        ]
+      },
+      {
+        title: 'API',
+        items: [
+          { 
+            title: '概要', 
+            href: `/docs-astro/ja/v1/api` 
+          },
+          { 
+            title: 'リファレンス', 
+            href: `/docs-astro/ja/v1/api/reference` 
+          },
+        ]
+      }
+    ]
+  },
+  // v2のサイドバー設定
+  v2: {
+    // 英語のサイドバー設定
+    en: [
+      {
+        title: 'Guide',
+        items: [
+          { 
+            title: 'Getting Started', 
+            href: `/docs-astro/en/v2/guide/getting-started` 
+          },
+          { 
+            title: 'Installation', 
+            href: `/docs-astro/en/v2/guide/installation` 
+          },
+          { 
+            title: 'Configuration', 
+            href: `/docs-astro/en/v2/guide/configuration` 
+          },
+          { 
+            title: 'Advanced Usage', 
+            href: `/docs-astro/en/v2/guide/advanced-usage` 
+          },
+        ]
+      },
+      {
+        title: 'API',
+        items: [
+          { 
+            title: 'Overview', 
+            href: `/docs-astro/en/v2/api` 
+          },
+          { 
+            title: 'Reference', 
+            href: `/docs-astro/en/v2/api/reference` 
+          },
+          { 
+            title: 'Hooks', 
+            href: `/docs-astro/en/v2/api/hooks` 
+          },
+        ]
+      }
+    ],
+    // 日本語のサイドバー設定
+    ja: [
+      {
+        title: 'ガイド',
+        items: [
+          { 
+            title: '入門', 
+            href: `/docs-astro/ja/v2/guide/getting-started` 
+          },
+          { 
+            title: 'インストール', 
+            href: `/docs-astro/ja/v2/guide/installation` 
+          },
+          { 
+            title: '設定', 
+            href: `/docs-astro/ja/v2/guide/configuration` 
+          },
+          { 
+            title: '高度な使い方', 
+            href: `/docs-astro/ja/v2/guide/advanced-usage` 
+          },
+        ]
+      },
+      {
+        title: 'API',
+        items: [
+          { 
+            title: '概要', 
+            href: `/docs-astro/ja/v2/api` 
+          },
+          { 
+            title: 'リファレンス', 
+            href: `/docs-astro/ja/v2/api/reference` 
+          },
+          { 
+            title: 'フック', 
+            href: `/docs-astro/ja/v2/api/hooks` 
+          },
+        ]
+      }
+    ]
+  }
+};
+
 /**
  * 手動で定義されたサイドバー項目を取得します
  */
 export function getManualSidebar(lang: LocaleKey, version: string, baseUrl: string): SidebarItem[] {
+  // バージョンと言語に対応するサイドバー設定があれば、それを返す
+  if (sidebarConfigs[version]?.[lang]) {
+    return sidebarConfigs[version][lang] as SidebarItem[];
+  }
+  
+  // 対応する設定がない場合は、デフォルトのサイドバー項目を返す
   return [
     {
       title: translate('docs.guide', lang),
@@ -107,13 +279,28 @@ export async function getAutoSidebar(lang: LocaleKey, version: string, baseUrl: 
 export function getSidebar(lang: LocaleKey, version: string, baseUrl: string): SidebarItem[] {
   // 自動生成サイドバーを使用するかどうか
   // 注: 自動生成サイドバーを使用する場合は、DocLayout.astroでasync/awaitを使用する必要があります
-  const useAutoSidebar = false;
+  const useAutoSidebar = docsConfig.useAutoSidebar;
   
   if (useAutoSidebar) {
     // 自動生成サイドバーは非同期関数のため、DocLayout.astroで使用する場合は注意が必要
     // ここでは手動定義のサイドバーを返します
     console.warn('自動生成サイドバーはDocLayout.astroで非同期処理が必要です。手動定義のサイドバーを返します。');
     return getManualSidebar(lang, version, baseUrl);
+  } else {
+    return getManualSidebar(lang, version, baseUrl);
+  }
+}
+
+/**
+ * 非同期でサイドバー項目を取得します
+ * DocLayout.astroで使用する場合は、このメソッドを使用してください
+ */
+export async function getSidebarAsync(lang: LocaleKey, version: string, baseUrl: string): Promise<SidebarItem[]> {
+  // 自動生成サイドバーを使用するかどうか
+  const useAutoSidebar = docsConfig.useAutoSidebar;
+  
+  if (useAutoSidebar) {
+    return await getAutoSidebar(lang, version, baseUrl);
   } else {
     return getManualSidebar(lang, version, baseUrl);
   }
