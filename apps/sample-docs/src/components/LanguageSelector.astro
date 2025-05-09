@@ -36,63 +36,20 @@ const langPaths = supportedLangs.map(langStr => {
 });
 ---
 
-<div class={`language-selector ${className}`}>
-  <div class="relative">
-    <button
-      id="language-button"
-      type="button"
-      class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-700"
-      aria-haspopup="true"
-      aria-expanded="false"
-    >
-      <span>{langNames[currentLang] || currentLang}</span>
-      <svg class="w-5 h-5 ml-2 -mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-      </svg>
-    </button>
-
-    <div
-      id="language-dropdown"
-      class="absolute right-0 z-10 hidden w-full mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800 dark:ring-gray-700"
-      role="menu"
-      aria-orientation="vertical"
-      aria-labelledby="language-button"
-      tabindex="-1"
-    >
-      <div class="py-1" role="none">
-        {langPaths.map(({ lang, name, path, isCurrent }) => (
-          <a
-            href={path}
-            class={`block px-4 py-2 text-sm ${isCurrent ? 'bg-gray-100 text-gray-900 dark:bg-gray-700 dark:text-white' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-200 dark:hover:bg-gray-700'}`}
-            role="menuitem"
-            tabindex="-1"
-          >
-            {name}
-          </a>
-        ))}
-      </div>
-    </div>
+<div class:list={['dropdown dropdown-end', className]}>
+  <div tabindex="0" role="button" class="btn btn-ghost m-1">
+    <span>{langNames[currentLang] || currentLang}</span>
+    <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+    </svg>
   </div>
+  <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+    {langPaths.map(({ lang, name, path, isCurrent }) => (
+      <li>
+        <a href={path} class={isCurrent ? 'active' : ''}>
+          {name}
+        </a>
+      </li>
+    ))}
+  </ul>
 </div>
-
-<script>
-  // 言語選択ドロップダウンの制御
-  const languageButton = document.getElementById('language-button');
-  const languageDropdown = document.getElementById('language-dropdown');
-  
-  if (languageButton && languageDropdown) {
-    languageButton.addEventListener('click', () => {
-      const expanded = languageButton.getAttribute('aria-expanded') === 'true';
-      languageButton.setAttribute('aria-expanded', (!expanded).toString());
-      languageDropdown.classList.toggle('hidden');
-    });
-    
-    // 外部クリックでドロップダウンを閉じる
-    document.addEventListener('click', (event) => {
-      if (!languageButton.contains(event.target as Node) && !languageDropdown.contains(event.target as Node)) {
-        languageButton.setAttribute('aria-expanded', 'false');
-        languageDropdown.classList.add('hidden');
-      }
-    });
-  }
-</script>

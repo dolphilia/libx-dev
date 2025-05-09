@@ -1,7 +1,7 @@
 ---
 interface Props {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
+  variant?: 'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'error' | 'ghost' | 'link' | 'outline';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   class?: string;
   [key: string]: any;
 }
@@ -13,21 +13,29 @@ const {
   ...rest
 } = Astro.props;
 
+// daisyUIのボタンクラスをマッピング
 const variantClasses = {
-  primary: 'bg-blue-600 text-white hover:bg-blue-700',
-  secondary: 'bg-gray-600 text-white hover:bg-gray-700',
-  outline: 'border border-blue-600 text-blue-600 hover:bg-blue-50',
-  ghost: 'text-blue-600 hover:bg-blue-50',
+  primary: 'btn-primary',
+  secondary: 'btn-secondary',
+  accent: 'btn-accent',
+  info: 'btn-info',
+  success: 'btn-success',
+  warning: 'btn-warning',
+  error: 'btn-error',
+  ghost: 'btn-ghost',
+  link: 'btn-link',
+  outline: 'btn-outline',
 };
 
 const sizeClasses = {
-  sm: 'text-sm px-3 py-1',
-  md: 'px-4 py-2',
-  lg: 'text-lg px-6 py-3',
+  xs: 'btn-xs',
+  sm: 'btn-sm',
+  md: '',  // デフォルトサイズ
+  lg: 'btn-lg',
 };
 
 const classes = [
-  'inline-flex items-center justify-center rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2',
+  'btn',
   variantClasses[variant],
   sizeClasses[size],
   className,

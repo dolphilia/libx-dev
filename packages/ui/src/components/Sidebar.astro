@@ -7,30 +7,27 @@ interface SidebarItem {
 }
 
 interface Props {
-  items: SidebarItem[]; // items プロパティを戻す
+  items: SidebarItem[];
   title?: string;
-  class?: string; // class プロパティも戻しておく
+  class?: string;
 }
-const { items, title, class: className = '' } = Astro.props; // items, className を受け取る
+const { items, title, class: className = '' } = Astro.props;
 ---
 
 <aside class:list={['w-64 shrink-0', className]}>
   {title && <h3 class="mb-3 font-semibold text-lg">{title}</h3>}
   <nav>
-    <ul class="space-y-4">
+    <ul class="menu bg-base-200 w-full rounded-box">
       {items.map(section => (
-        <li class="mb-4">
+        <li>
           {section.title && (
-            <h4 class="mb-2 font-medium text-gray-700 dark:text-gray-300">{section.title}</h4>
+            <h4 class="menu-title">{section.title}</h4>
           )}
           {section.items && (
-            <ul class="space-y-2 pl-2">
+            <ul>
               {section.items.map(item => (
                 <li>
-                  <a 
-                    href={item.href} 
-                    class="block py-1 text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400"
-                  >
+                  <a href={item.href}>
                     {item.title}
                   </a>
                 </li>

@@ -2,24 +2,47 @@
 interface Props {
   title?: string;
   class?: string;
+  variant?: 'default' | 'bordered' | 'image';
   [key: string]: any;
 }
 
-const { title, class: className = '', ...rest } = Astro.props;
+const { title, class: className = '', variant = 'default', ...rest } = Astro.props;
+
+const variantClasses = {
+  default: '',
+  bordered: 'card-bordered',
+  image: 'image-full',
+};
+
+const classes = [
+  'card',
+  'bg-base-100',
+  'shadow-xl',
+  variantClasses[variant],
+  className
+];
 ---
 
-<div class:list={['rounded-lg border bg-white shadow-sm', className]} {...rest}>
+<div class:list={classes} {...rest}>
   {title && (
-    <div class="border-b px-4 py-3">
-      <h3 class="text-lg font-semibold">{title}</h3>
+    <div class="card-body">
+      <h2 class="card-title">{title}</h2>
+      <slot />
+      {Astro.slots.has('footer') && (
+        <div class="card-actions justify-end">
+          <slot name="footer" />
+        </div>
+      )}
     </div>
   )}
-  <div class="p-4">
-    <slot />
-  </div>
-  {Astro.slots.has('footer') && (
-    <div class="border-t bg-gray-50 px-4 py-3">
-      <slot name="footer" />
+  {!title && (
+    <div class="card-body">
+      <slot />
+      {Astro.slots.has('footer') && (
+        <div class="card-actions justify-end">
+          <slot name="footer" />
+        </div>
+      )}
     </div>
   )}
 </div>

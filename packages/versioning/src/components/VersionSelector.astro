@@ -29,96 +29,56 @@ const sortedVersions = [...versions].sort((a, b) => {
 });
 ---
 
-<div class={`version-selector ${className}`}>
-  <div class="relative">
-    <button
-      id="version-button"
-      type="button"
-      class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-700"
-      aria-haspopup="true"
-      aria-expanded="false"
-    >
-      <span>
-        {currentVersionObj.name}
-        {currentVersionObj.isLatest && (
-          <span class="ml-2 text-xs font-normal text-primary-600 dark:text-primary-400">最新</span>
-        )}
-      </span>
-      <svg class="w-5 h-5 ml-2 -mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-      </svg>
-    </button>
-
-    <div
-      id="version-dropdown"
-      class="absolute right-0 z-10 hidden w-full mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800 dark:ring-gray-700"
-      role="menu"
-      aria-orientation="vertical"
-      aria-labelledby="version-button"
-      tabindex="-1"
-    >
-      <div class="py-1" role="none">
-        {sortedVersions.map(version => (
-          <a
-            href={`${basePath.replace(`/${currentVersion}/`, `/${version.id}/`)}`}
-            class={`block px-4 py-2 text-sm ${version.id === currentVersion ? 'bg-gray-100 text-gray-900 dark:bg-gray-700 dark:text-white' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-200 dark:hover:bg-gray-700'}`}
-            role="menuitem"
-            tabindex="-1"
-          >
+<div class:list={['dropdown', className]}>
+  <div tabindex="0" role="button" class="btn btn-ghost m-1">
+    <span>
+      {currentVersionObj.name}
+      {currentVersionObj.isLatest && (
+        <span class="badge badge-sm badge-primary ml-2">最新</span>
+      )}
+    </span>
+    <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+    </svg>
+  </div>
+  <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+    {sortedVersions.map(version => (
+      <li>
+        <a 
+          href={`${basePath.replace(`/${currentVersion}/`, `/${version.id}/`)}`}
+          class={version.id === currentVersion ? 'active' : ''}
+        >
+          <div class="flex flex-col">
             <div class="flex items-center justify-between">
               <span>{version.name}</span>
               {version.isLatest && (
-                <span class="text-xs font-normal text-primary-600 dark:text-primary-400">最新</span>
+                <span class="badge badge-xs badge-primary">最新</span>
               )}
             </div>
-            <div class="text-xs text-gray-500 dark:text-gray-400">
+            <div class="text-xs opacity-70">
               {version.date && typeof version.date.toLocaleDateString === 'function' ? version.date.toLocaleDateString() : 'N/A'}
             </div>
-          </a>
-        ))}
-      </div>
-    </div>
-  </div>
+          </div>
+        </a>
+      </li>
+    ))}
+  </ul>
   
-  {currentVersion !== 'latest' && (
-    <div class="mt-2">
+  <div class="mt-4 flex flex-col gap-2">
+    {currentVersion !== 'latest' && (
       <a
         href={`${basePath.replace(`/${currentVersion}/`, '/latest/')}`}
-        class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
+        class="link link-primary link-hover text-xs"
       >
         最新バージョンを表示
       </a>
-    </div>
-  )}
-  
-  <div class="mt-4">
+    )}
+    
     <a
       href={`/version-diff${basePath}`}
-      class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
+      class="link link-primary link-hover text-sm"
     >
       バージョン間の差分を表示
     </a>
   </div>
 </div>
-
-<script>
-  // バージョン選択ドロップダウンの制御
-  const versionButton = document.getElementById('version-button');
-  const versionDropdown = document.getElementById('version-dropdown');
-  
-  if (versionButton && versionDropdown) {
-    versionButton.addEventListener('click', () => {
-      const expanded = versionButton.getAttribute('aria-expanded') === 'true';
-      versionButton.setAttribute('aria-expanded', (!expanded).toString());
-      versionDropdown.classList.toggle('hidden');
-    });
-    
-    // 外部クリックでドロップダウンを閉じる
-    document.addEventListener('click', (event) => {
-      if (!versionButton.contains(event.target as Node) && !versionDropdown.contains(event.target as Node)) {
-        versionButton.setAttribute('aria-expanded', 'false');
-        versionDropdown.classList.add('hidden');
-      }
-    });
-  }
-</script>

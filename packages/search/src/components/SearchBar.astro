@@ -14,16 +14,16 @@ const {
 } = Astro.props;
 ---
 
-<div class={`search-bar ${className}`}>
-  <form id="search-form" class="flex">
+<div class:list={['search-bar', className]}>
+  <form id="search-form" class="join w-full">
     <input
       type="text"
       id="search-input"
       name="q"
       placeholder={placeholder}
-      class="flex-grow px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+      class="input input-bordered join-item w-full"
     />
-    <Button type="submit" class="rounded-l-none">
+    <Button type="submit" variant="primary" class="join-item rounded-l-none">
       {buttonText}
     </Button>
   </form>
