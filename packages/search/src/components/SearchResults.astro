@@ -56,7 +56,7 @@ const { className = '' } = Astro.props;
       const existingResults = searchResultsContainer.querySelectorAll('.search-result-item');
       existingResults.forEach(item => item.remove());
       
-      // 検索を実行（実際の実装ではAPIコールなど）
+      // 検索を実行
       setTimeout(() => {
         performSearch(query);
       }, 500);
@@ -70,55 +70,95 @@ const { className = '' } = Astro.props;
     });
   }
   
-  // 検索実行関数（実際の実装ではAPIコールなど）
-  function performSearch(query: string) {
+  // 検索実行関数
+  async function performSearch(query: string) {
     if (!searchLoading || !searchEmpty || !searchResultsContainer) return;
     
-    // ここでは仮のデモデータを使用
-    const demoResults = [
-      {
-        title: 'はじめに',
-        excerpt: 'このドキュメントでは、Astroプロジェクトの基本的な使い方について説明します。',
-        url: '/ja/v1/introduction',
-        project: 'Astro',
-        version: 'v1'
-      },
-      {
-        title: 'コンポーネントの作成',
-        excerpt: 'Astroコンポーネントは、UIの再利用可能な部分を定義します。',
-        url: '/ja/v1/components/creating-components',
-        project: 'Astro',
-        version: 'v1'
-      }
-    ];
+    // 現在のURLから言語とバージョンを取得
+    const urlPath = window.location.pathname;
+    const langMatch = urlPath.match(/^\/(en|ja)/);
+    const versionMatch = urlPath.match(/\/(v[0-9]+)/);
     
-    // ローディング非表示
-    searchLoading.classList.add('hidden');
+    const lang = langMatch ? langMatch[1] : 'en';
+    const version = versionMatch ? versionMatch[1] : 'v1';
     
-    // 結果の表示
-    if (demoResults.length > 0) {
-      searchEmpty.classList.add('hidden');
+    try {
+      // 検索インデックスを取得
+      const indexUrl = `/search/index-${lang}-${version}.json`;
+      const response = await fetch(indexUrl);
       
-      demoResults.forEach(result => {
-        const resultElement = document.createElement('div');
-        resultElement.className = 'search-result-item';
-        resultElement.innerHTML = `
-          <a href="${result.url}" class="block">
-            <div class="card bg-base-100 shadow-sm hover:shadow-md transition-shadow">
-              <div class="card-body p-4">
-                <div class="flex items-center justify-between">
-                  <h3 class="card-title text-base">${result.title}</h3>
-                  <div class="badge badge-sm">${result.project} ${result.version}</div>
+      if (!response.ok) {
+        throw new Error(`検索インデックスの取得に失敗しました: ${response.status}`);
+      }
+      
+      const searchIndex = await response.json();
+      
+      // 検索を実行
+      const results = searchIndex.documents.filter((doc: any) => {
+        const titleMatch = doc.title.toLowerCase().includes(query.toLowerCase());
+        const contentMatch = doc.content.toLowerCase().includes(query.toLowerCase());
+        return titleMatch || contentMatch;
+      }).slice(0, 10); // 最大10件まで表示
+      
+      // ローディング非表示
+      searchLoading.classList.add('hidden');
+      
+      // 結果の表示
+      if (results.length > 0) {
+        searchEmpty.classList.add('hidden');
+        
+        results.forEach((result: any) => {
+          // 抜粋を作成
+          let excerpt = '';
+          if (result.content) {
+            const contentLowerCase = result.content.toLowerCase();
+            const queryPos = contentLowerCase.indexOf(query.toLowerCase());
+            
+            if (queryPos !== -1) {
+              const start = Math.max(0, queryPos - 50);
+              const end = Math.min(result.content.length, queryPos + query.length + 50);
+              excerpt = result.content.substring(start, end);
+              
+              if (start > 0) excerpt = '...' + excerpt;
+              if (end < result.content.length) excerpt += '...';
+            } else {
+              excerpt = result.content.substring(0, 100) + '...';
+            }
+          }
+          
+          const resultElement = document.createElement('div');
+          resultElement.className = 'search-result-item';
+          resultElement.innerHTML = `
+            <a href="${result.url}" class="block">
+              <div class="card bg-base-100 shadow-sm hover:shadow-md transition-shadow">
+                <div class="card-body p-4">
+                  <div class="flex items-center justify-between">
+                    <h3 class="card-title text-base">${result.title}</h3>
+                    <div class="badge badge-sm">${result.project} ${result.version}</div>
+                  </div>
+                  <p class="text-sm opacity-70">${excerpt}</p>
                 </div>
-                <p class="text-sm opacity-70">${result.excerpt}</p>
               </div>
-            </div>
-          </a>
-        `;
-        searchResultsContainer.appendChild(resultElement);
-      });
-    } else {
+            </a>
+          `;
+          searchResultsContainer.appendChild(resultElement);
+        });
+      } else {
+        searchEmpty.classList.remove('hidden');
+      }
+    } catch (error) {
+      console.error('検索中にエラーが発生しました:', error);
+      searchLoading.classList.add('hidden');
       searchEmpty.classList.remove('hidden');
+      
+      // エラーメッセージを表示
+      const errorElement = document.createElement('div');
+      errorElement.className = 'alert alert-error';
+      errorElement.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        <span>検索中にエラーが発生しました。</span>
+      `;
+      searchResultsContainer.appendChild(errorElement);
     }
   }
 </script>

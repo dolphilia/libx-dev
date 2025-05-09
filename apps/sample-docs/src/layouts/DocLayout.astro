@@ -2,7 +2,7 @@
 import MainLayout from './MainLayout.astro';
 import { Sidebar } from '@docs/ui/components';
 import { VersionSelector } from '@docs/versioning/components';
-import { SearchBar } from '@docs/search/components';
+import { SearchBar, SearchResults } from '@docs/search/components';
 
 import { translate } from '@docs/i18n/utils'; // t as translate ではなく、index.ts でのエイリアスに合わせる
 import type { LocaleKey } from '@docs/i18n/locales';
@@ -46,7 +46,10 @@ const versions = [
   <div class="flex flex-col md:flex-row gap-8">
     <aside class="w-full md:w-64 shrink-0">
       <div class="sticky top-4 space-y-6">
-        <SearchBar placeholder={translate('search.placeholder', lang)} />
+        <div class="space-y-2">
+          <SearchBar placeholder={translate('search.placeholder', lang)} />
+          <SearchResults className="mt-2" />
+        </div>
         
         <VersionSelector 
           currentVersion={version}

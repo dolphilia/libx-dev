@@ -6,11 +6,14 @@
     "build": "pnpm --filter=./apps/* build",
     "preview": "pnpm --filter=./apps/* preview",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "build:search-index": "node scripts/build-search-index.js"
   },
   "devDependencies": {
-    "typescript": "^5.0.0",
     "eslint": "^8.0.0",
-    "prettier": "^3.0.0"
+    "glob": "^11.0.2",
+    "gray-matter": "^4.0.3",
+    "prettier": "^3.0.0",
+    "typescript": "^5.0.0"
   }
 }
