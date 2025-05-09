@@ -3,6 +3,11 @@
   "compilerOptions": {
     // プロジェクト固有の compilerOptions があればここに追加
   },
-  "include": [".astro/types.d.ts", "**/*"],
+  "files": [
+    ".astro/types.d.ts"
+  ],
+  "include": [
+    "src/**/*"
+  ],
   "exclude": ["dist", "node_modules"]
 }
