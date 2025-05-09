@@ -189,6 +189,34 @@ function switchLanguage(currentPath, targetLang) {
   return localizedPath(currentPath, targetLang);
 }
 
+function t(key, lang = defaultLocale, params = {}) {
+  const segments = key.split(".");
+  let translation = locales[lang];
+  if (!translation) {
+    translation = locales[defaultLocale];
+  }
+  for (const segment of segments) {
+    if (translation && typeof translation === "object" && segment in translation) {
+      translation = translation[segment];
+    } else {
+      if (lang !== defaultLocale) {
+        return t(key, defaultLocale, params);
+      }
+      return key;
+    }
+  }
+  if (typeof translation !== "string") {
+    return key;
+  }
+  return replaceParams(translation, params);
+}
+function replaceParams(text, params) {
+  return Object.entries(params).reduce((result, [key, value]) => {
+    const regex = new RegExp(`{${key}}`, "g");
+    return result.replace(regex, String(value));
+  }, text);
+}
+
 const $$Astro$5 = createAstro("https://dolphilia.github.io");
 const $$LanguageSelector = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$5, $$props, $$slots);
@@ -918,15 +946,15 @@ const $$SearchBar = createComponent(($$result, $$props, $$slots) => {
     buttonText = "\u691C\u7D22",
     className = ""
   } = Astro2.props;
-  return renderTemplate`${maybeRenderHead()}<div${addAttribute(["search-bar", className], "class:list")}> <form id="search-form" class="join w-full"> <input type="text" id="search-input" name="q"${addAttribute(placeholder, "placeholder")} class="input input-bordered join-item w-full"> ${renderComponent($$result, "Button", $$Button, { "type": "submit", "variant": "primary", "class": "join-item rounded-l-none" }, { "default": ($$result2) => renderTemplate`${buttonText}` })} </form> </div> ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/search/src/components/SearchBar.astro?astro&type=script&index=0&lang.ts")}`;
+  return renderTemplate`${maybeRenderHead()}<div${addAttribute(["search-bar", className], "class:list")}> <form id="search-form" class="w-full"> <label class="input input-bordered flex items-center gap-2 w-full"> <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor"> <circle cx="11" cy="11" r="8"></circle> <path d="m21 21-4.3-4.3"></path> </g> </svg> <input type="search" id="search-input" name="q"${addAttribute(placeholder, "placeholder")} class="grow"> <div class="flex items-center gap-1"> <kbd class="kbd kbd-sm">⌘</kbd> <kbd class="kbd kbd-sm">K</kbd> </div> </label> </form> </div> ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/search/src/components/SearchBar.astro?astro&type=script&index=0&lang.ts")}`;
 }, "/home/runner/work/docs-astro/docs-astro/packages/search/src/components/SearchBar.astro", void 0);
 
 const $$Astro = createAstro("https://dolphilia.github.io");
 const $$SearchResults = createComponent(async ($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$SearchResults;
-  const { className = "" } = Astro2.props;
-  return renderTemplate`${maybeRenderHead()}<div id="search-results"${addAttribute(["search-results hidden", className], "class:list")}> <div class="flex justify-between items-center mb-4"> <h2 class="text-xl font-bold">検索結果</h2> <button id="close-search-results" class="btn btn-sm btn-circle btn-ghost"> <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg> </button> </div> <div id="search-results-container" class="space-y-4"> <!-- 検索結果がここに動的に挿入されます --> <div id="search-loading" class="py-8 text-center hidden"> <span class="loading loading-spinner loading-lg"></span> <p class="mt-2 opacity-70">検索中...</p> </div> <div id="search-empty" class="py-8 text-center hidden"> <div class="alert"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> <span>検索結果が見つかりませんでした。</span> </div> </div> </div> </div> ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/search/src/components/SearchResults.astro?astro&type=script&index=0&lang.ts")}`;
+  const { className = "", lang = "ja" } = Astro2.props;
+  return renderTemplate`${maybeRenderHead()}<div id="search-results"${addAttribute(["search-results hidden", className], "class:list")}> <div class="flex justify-between items-center mb-4"> <h2 class="text-xl font-bold">${t("search.searchResults", lang)}</h2> <button id="close-search-results" class="btn btn-sm btn-circle btn-ghost"> <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg> </button> </div> <div id="search-results-container" class="space-y-4"> <!-- 検索結果がここに動的に挿入されます --> <div id="search-loading" class="py-8 text-center hidden"> <span class="loading loading-spinner loading-lg"></span> <p class="mt-2 opacity-70">${t("common.loading", lang)}</p> </div> <div id="search-empty" class="py-8 text-center hidden"> <div class="alert"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> <span id="no-results-message"></span> </div> </div> </div> </div> ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/search/src/components/SearchResults.astro?astro&type=script&index=0&lang.ts")}`;
 }, "/home/runner/work/docs-astro/docs-astro/packages/search/src/components/SearchResults.astro", void 0);
 
-export { $$Alert as $, $$MainLayout as a, $$Button as b, $$SearchBar as c, $$VersionSelector as d, $$Card as e, defaultLocale as f, $$SearchResults as g, $$Sidebar as h, locales as l };
+export { $$Alert as $, $$MainLayout as a, $$Button as b, $$SearchBar as c, $$VersionSelector as d, $$Card as e, $$SearchResults as f, $$Sidebar as g, t };
