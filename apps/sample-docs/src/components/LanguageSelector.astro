@@ -1,58 +1,83 @@
 ---
-import { getLanguage, translatePath } from '@docs/i18n/utils';
+import { translatePath } from '@docs/i18n/utils';
+import type { LocaleKey } from '@docs/i18n/locales';
 
+// 定数定義
+const BASE_URL = '/docs-astro';
+const LANG_NAMES: Record<string, string> = {
+  en: 'English',
+  ja: '日本語'
+};
+
+// コンポーネントのプロパティ型定義
 interface Props {
   currentLang: string;
   supportedLangs?: string[];
   className?: string;
 }
 
+// プロパティの取得と初期値設定
 const { 
   currentLang, 
   supportedLangs = ['en', 'ja'], 
   className = '' 
 } = Astro.props;
 
-// GitHub Pagesのベースパス
-const baseUrl = '/docs-astro';
-
-// 言語名のマッピング
-const langNames: Record<string, string> = {
-  en: 'English',
-  ja: '日本語'
-};
-
-// 現在のパスを取得
+// 現在のパスから相対パスを取得
 const currentPath = Astro.url.pathname;
+const relativePath = currentPath.replace(BASE_URL, '');
 
-import type { LocaleKey } from '@docs/i18n/locales';
+// 各言語のパス情報を生成
+interface LangPathInfo {
+  lang: string;
+  name: string;
+  path: string;
+  isCurrent: boolean;
+}
 
-// 各言語のパスを生成
-const langPaths = supportedLangs.map(langStr => {
-  const lang = langStr as LocaleKey; // string を LocaleKey として扱う
-  // currentPathからbaseUrlを削除して、translatePathに渡す
-  const pathWithoutBase = currentPath.replace(baseUrl, '');
+// 各言語のパス情報を生成
+const langPaths: LangPathInfo[] = supportedLangs.map(langCode => {
+  // 型変換を行い、translatePathに渡す
+  const localeKey = langCode as LocaleKey;
+  
   return {
-    lang,
-    name: langNames[lang] || lang,
-    path: `${baseUrl}${translatePath(pathWithoutBase, lang)}`,
-    isCurrent: lang === currentLang
+    lang: langCode,
+    name: LANG_NAMES[langCode] || langCode,
+    path: `${BASE_URL}${translatePath(relativePath, localeKey)}`,
+    isCurrent: langCode === currentLang
   };
 });
 ---
 
 <div class:list={['dropdown dropdown-end', className]}>
+  {/* 言語選択ボタン */}
   <div tabindex="0" role="button" class="btn btn-ghost m-1">
-    <span>{langNames[currentLang] || currentLang}</span>
-    <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-      <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+    <span>{LANG_NAMES[currentLang] || currentLang}</span>
+    <svg 
+      class="w-4 h-4 ml-2" 
+      xmlns="http://www.w3.org/2000/svg" 
+      viewBox="0 0 20 20" 
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path 
+        fill-rule="evenodd" 
+        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" 
+        clip-rule="evenodd" 
+      />
     </svg>
   </div>
+  
+  {/* ドロップダウンメニュー */}
   <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-    {langPaths.map(({ lang, name, path, isCurrent }) => (
+    {langPaths.map((pathInfo) => (
       <li>
-        <a href={path} class={isCurrent ? 'active' : ''}>
-          {name}
+        <a 
+          href={pathInfo.path} 
+          class={pathInfo.isCurrent ? 'active' : ''}
+          aria-current={pathInfo.isCurrent ? 'page' : undefined}
+        >
+          {pathInfo.name}
         </a>
       </li>
     ))}
