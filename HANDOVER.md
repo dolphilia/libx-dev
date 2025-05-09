@@ -240,3 +240,22 @@ GitHub Pagesにデプロイされたサイト（https://dolphilia.github.io/docs
 2. `apps/sample-docs/src/pages/index.astro`のリダイレクト先を絶対パス（/en）から相対パス（./en/）に変更
 
 これにより、https://dolphilia.github.io/docs-astro/ にアクセスした際に、正しく https://dolphilia.github.io/docs-astro/en/ にリダイレクトされるようになりました。
+
+### CSSファイルのパス問題の修正（2025/5/9）
+
+GitHub Pagesにデプロイされたサイトで、CSSファイルのパスが正しく解決されず、スタイルが適用されない問題を修正しました。
+
+修正内容：
+1. 各ページのリンクパスにベースパス（`/docs-astro`）を追加
+   - `apps/sample-docs/src/pages/en/index.astro`
+   - `apps/sample-docs/src/pages/ja/index.astro`
+   - `apps/sample-docs/src/pages/en/v1/guide/getting-started.astro`
+   - `apps/sample-docs/src/pages/en/v2/guide/getting-started.astro`
+   - `apps/sample-docs/src/pages/ja/v1/guide/getting-started.astro`
+   - `apps/sample-docs/src/pages/ja/v2/guide/getting-started.astro`
+2. LanguageSelectorコンポーネントのリンクパスを修正
+   - `currentPath`からベースパスを削除してから`translatePath`関数に渡すように修正
+3. VersionSelectorコンポーネントのリンクパスを修正
+   - バージョン間の差分を表示するリンクのパスを修正
+
+これにより、GitHub Pagesにデプロイされたサイトでもスタイルが正しく適用されるようになりました。
