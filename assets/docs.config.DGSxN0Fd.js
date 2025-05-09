@@ -684,4 +684,23 @@ const $$SearchResults = createComponent(async ($$result, $$props, $$slots) => {
   return renderTemplate`${maybeRenderHead()}<div id="search-results"${addAttribute(["search-results hidden", className], "class:list")}> <div class="flex justify-between items-center mb-4"> <h2 class="text-xl font-bold">${t("search.searchResults", lang)}</h2> <button id="close-search-results" class="btn btn-sm btn-circle btn-ghost"> <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg> </button> </div> <div id="search-results-container" class="space-y-4"> <!-- 検索結果がここに動的に挿入されます --> <div id="search-loading" class="py-8 text-center hidden"> <span class="loading loading-spinner loading-lg"></span> <p class="mt-2 opacity-70">${t("common.loading", lang)}</p> </div> <div id="search-empty" class="py-8 text-center hidden"> <div class="alert"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> <span id="no-results-message"></span> </div> </div> </div> </div> ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/search/src/components/SearchResults.astro?astro&type=script&index=0&lang.ts")}`;
 }, "/home/runner/work/docs-astro/docs-astro/packages/search/src/components/SearchResults.astro", void 0);
 
-export { $$SearchBar as $, $$VersionSelector as a, $$SearchResults as b };
+const versions = [
+  {
+    id: "v1",
+    name: "Version 1.0",
+    date: /* @__PURE__ */ new Date("2024-01-01"),
+    isLatest: false
+  },
+  {
+    id: "v2",
+    name: "Version 2.0",
+    date: /* @__PURE__ */ new Date("2025-01-01"),
+    isLatest: true
+  }
+];
+
+const docsConfig = {
+  // GitHub Pagesのベースパス
+  baseUrl: "/docs-astro"};
+
+export { $$SearchBar as $, $$VersionSelector as a, $$SearchResults as b, docsConfig as d, versions as v };
