@@ -75,7 +75,7 @@ const sortedVersions = [...versions].sort((a, b) => {
     )}
     
     <a
-      href={`${basePath.startsWith('/docs-astro') ? '/docs-astro' : ''}/version-diff${basePath}`}
+      href={`/docs-astro/version-diff${basePath.replace('/docs-astro', '')}`}
       class="link link-primary link-hover text-sm"
     >
       バージョン間の差分を表示

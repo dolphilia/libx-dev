@@ -30,10 +30,12 @@ import type { LocaleKey } from '@docs/i18n/locales';
 // 各言語のパスを生成
 const langPaths = supportedLangs.map(langStr => {
   const lang = langStr as LocaleKey; // string を LocaleKey として扱う
+  // currentPathからbaseUrlを削除して、translatePathに渡す
+  const pathWithoutBase = currentPath.replace(baseUrl, '');
   return {
     lang,
     name: langNames[lang] || lang,
-    path: `${baseUrl}${translatePath(currentPath, lang)}`,
+    path: `${baseUrl}${translatePath(pathWithoutBase, lang)}`,
     isCurrent: lang === currentLang
   };
 });
