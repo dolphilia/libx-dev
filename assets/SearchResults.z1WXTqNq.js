@@ -1,5 +1,5 @@
 import { a as createAstro, b as createComponent, m as maybeRenderHead, f as addAttribute, d as renderTemplate, r as renderComponent, e as renderScript, F as Fragment, u as unescapeHTML } from './astro/server.DZ9z6Le0.js';
-import { a as $$Card, t } from './versions.config.Csta55Al.js';
+import { a as $$Card, t } from './versions.config.BqTARRB-.js';
 import './_slug_.4ea271a6.l0sNRNKZ.js';
 
 const $$Astro$3 = createAstro("https://dolphilia.github.io");

@@ -221,28 +221,28 @@ const $$Astro$1 = createAstro("https://dolphilia.github.io");
 const $$LanguageSelector = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$1, $$props, $$slots);
   Astro2.self = $$LanguageSelector;
+  const BASE_URL = "/docs-astro";
+  const LANG_NAMES = {
+    en: "English",
+    ja: "\u65E5\u672C\u8A9E"
+  };
   const {
     currentLang,
     supportedLangs = ["en", "ja"],
     className = ""
   } = Astro2.props;
-  const baseUrl = "/docs-astro";
-  const langNames = {
-    en: "English",
-    ja: "\u65E5\u672C\u8A9E"
-  };
   const currentPath = Astro2.url.pathname;
-  const langPaths = supportedLangs.map((langStr) => {
-    const lang = langStr;
-    const pathWithoutBase = currentPath.replace(baseUrl, "");
+  const relativePath = currentPath.replace(BASE_URL, "");
+  const langPaths = supportedLangs.map((langCode) => {
+    const localeKey = langCode;
     return {
-      lang,
-      name: langNames[lang] || lang,
-      path: `${baseUrl}${switchLanguage(pathWithoutBase, lang)}`,
-      isCurrent: lang === currentLang
+      lang: langCode,
+      name: LANG_NAMES[langCode] || langCode,
+      path: `${BASE_URL}${switchLanguage(relativePath, localeKey)}`,
+      isCurrent: langCode === currentLang
     };
   });
-  return renderTemplate`${maybeRenderHead()}<div${addAttribute(["dropdown dropdown-end", className], "class:list")}> <div tabindex="0" role="button" class="btn btn-ghost m-1"> <span>${langNames[currentLang] || currentLang}</span> <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path> </svg> </div> <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"> ${langPaths.map(({ lang, name, path, isCurrent }) => renderTemplate`<li> <a${addAttribute(path, "href")}${addAttribute(isCurrent ? "active" : "", "class")}> ${name} </a> </li>`)} </ul> </div>`;
+  return renderTemplate`${maybeRenderHead()}<div${addAttribute(["dropdown dropdown-end", className], "class:list")}>  <div tabindex="0" role="button" class="btn btn-ghost m-1"> <span>${LANG_NAMES[currentLang] || currentLang}</span> <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"> <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path> </svg> </div>  <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"> ${langPaths.map((pathInfo) => renderTemplate`<li> <a${addAttribute(pathInfo.path, "href")}${addAttribute(pathInfo.isCurrent ? "active" : "", "class")}${addAttribute(pathInfo.isCurrent ? "page" : void 0, "aria-current")}> ${pathInfo.name} </a> </li>`)} </ul> </div>`;
 }, "/home/runner/work/docs-astro/docs-astro/apps/sample-docs/src/components/LanguageSelector.astro", void 0);
 
 const $$Astro = createAstro("https://dolphilia.github.io");
