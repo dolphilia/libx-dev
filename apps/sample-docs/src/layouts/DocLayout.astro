@@ -1,0 +1,87 @@
+---
+import MainLayout from './MainLayout.astro';
+import { Sidebar } from '../../components/Sidebar.astro';
+import { VersionSelector } from '../../components/VersionSelector.astro';
+import { SearchBar } from '../../components/SearchBar.astro';
+
+// 簡易的な翻訳関数
+function translate(key: string, lang: string): string {
+  const translations: Record<string, Record<string, string>> = {
+    en: {
+      guide: 'Guide',
+      getting_started: 'Getting Started',
+      installation: 'Installation',
+      configuration: 'Configuration',
+      api: 'API',
+      overview: 'Overview',
+      reference: 'Reference'
+    },
+    ja: {
+      guide: 'ガイド',
+      getting_started: 'はじめに',
+      installation: 'インストール',
+      configuration: '設定',
+      api: 'API',
+      overview: '概要',
+      reference: 'リファレンス'
+    }
+  };
+  
+  return translations[lang]?.[key] || key;
+}
+
+interface Props {
+  title: string;
+  lang: string;
+  version: string;
+}
+
+const { title, lang, version } = Astro.props;
+
+// サイドバー項目の定義
+const sidebarItems = [
+  {
+    title: translate('guide', lang),
+    items: [
+      { text: translate('getting_started', lang), href: `/${lang}/${version}/guide/getting-started` },
+      { text: translate('installation', lang), href: `/${lang}/${version}/guide/installation` },
+      { text: translate('configuration', lang), href: `/${lang}/${version}/guide/configuration` },
+    ]
+  },
+  {
+    title: translate('api', lang),
+    items: [
+      { text: translate('overview', lang), href: `/${lang}/${version}/api` },
+      { text: translate('reference', lang), href: `/${lang}/${version}/api/reference` },
+    ]
+  }
+];
+
+// 利用可能なバージョン
+const versions = ['v1', 'v2'];
+---
+
+<MainLayout title={title} lang={lang} version={version}>
+  <div class="flex flex-col md:flex-row gap-8">
+    <aside class="w-full md:w-64 shrink-0">
+      <div class="sticky top-4 space-y-6">
+        <SearchBar lang={lang} version={version} />
+        
+        <VersionSelector 
+          currentVersion={version}
+          versions={versions}
+          basePath={`/${lang}`}
+        />
+        
+        <Sidebar items={sidebarItems} />
+      </div>
+    </aside>
+    
+    <div class="flex-grow">
+      <article class="prose max-w-none">
+        <h1>{title}</h1>
+        <slot />
+      </article>
+    </div>
+  </div>
+</MainLayout>

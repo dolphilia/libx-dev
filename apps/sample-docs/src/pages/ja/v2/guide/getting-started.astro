@@ -1,0 +1,78 @@
+---
+import DocLayout from '../../../../layouts/DocLayout.astro';
+import { Alert } from '@docs/ui/components';
+
+const lang = 'ja';
+const version = 'v2';
+---
+
+<DocLayout title="はじめに" lang={lang} version={version}>
+  <p>ドキュメントへようこそ！このガイドでは、プラットフォームの使い方について説明します。</p>
+  
+  <Alert type="info">
+    これはバージョン2.0のドキュメントです。バージョン1.0をお使いの場合は、<a href="/ja/v1/guide/getting-started">こちらをクリック</a>してください。
+  </Alert>
+  
+  <h2>前提条件</h2>
+  <ul>
+    <li>Node.js 18以上</li>
+    <li>npm、yarn、またはpnpm</li>
+    <li>JavaScriptの基本的な知識</li>
+  </ul>
+  
+  <h2>インストール</h2>
+  <p>npmを使用してパッケージをインストールできます：</p>
+  
+  <pre><code>npm install @our-package/core@2.0.0</code></pre>
+  
+  <p>または、yarnを使用：</p>
+  
+  <pre><code>yarn add @our-package/core@2.0.0</code></pre>
+  
+  <p>または、pnpmを使用：</p>
+  
+  <pre><code>pnpm add @our-package/core@2.0.0</code></pre>
+  
+  <h2>基本的な使い方</h2>
+  <p>パッケージの使用例：</p>
+  
+  <pre><code>import { createApp } from '@our-package/core';
+
+// v2の新機能: Async/awaitサポート
+async function initializeApp() {
+  const app = await createApp({
+    // 設定オプション
+    debug: true,
+    mode: 'development',
+    // v2の新機能: 拡張オプション
+    plugins: ['logger', 'analytics'],
+    performance: {
+      monitoring: true,
+      metrics: ['cpu', 'memory']
+    }
+  });
+
+  await app.start();
+}
+
+initializeApp();</code></pre>
+  
+  <h2>v2の新機能</h2>
+  <ul>
+    <li>完全なasync/awaitサポート</li>
+    <li>拡張プラグインシステム</li>
+    <li>パフォーマンスモニタリング</li>
+    <li>改善されたエラーハンドリング</li>
+    <li>TypeScript型定義の同梱</li>
+  </ul>
+  
+  <h2>次のステップ</h2>
+  <p>基本的なセットアップが完了したら、次のことができます：</p>
+  
+  <ul>
+    <li><a href={`/${lang}/${version}/guide/configuration`}>設定オプション</a>についてさらに学ぶ</li>
+    <li><a href={`/${lang}/${version}/api/reference`}>APIリファレンス</a>を調べる</li>
+    <li>いくつかの<a href={`/${lang}/${version}/examples`}>サンプル</a>を確認する</li>
+    <li><a href={`/${lang}/${version}/guide/migration`}>v1からの移行</a>について読む</li>
+  </ul>
+</DocLayout>

@@ -1,0 +1,84 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { Button, Card } from '@docs/ui/components';
+import { VersionSelector } from '@docs/versioning/components';
+import { SearchBar } from '@docs/search/components';
+
+const lang = 'en';
+const latestVersion = 'v2';
+const versions = ['v1', 'v2'];
+---
+
+<MainLayout title="Documentation" lang={lang}>
+  <div class="text-center py-12">
+    <h1 class="text-4xl font-bold mb-4">Documentation</h1>
+    <p class="text-xl mb-8 max-w-2xl mx-auto">
+      Comprehensive guides and documentation for our platform.
+    </p>
+    
+    <div class="flex justify-center gap-4 mb-12">
+      <Button href={`/${lang}/${latestVersion}/guide/getting-started`} variant="primary" size="lg">
+        Get Started
+      </Button>
+      <Button href="https://github.com" variant="outline" size="lg">
+        GitHub
+      </Button>
+    </div>
+    
+    <div class="max-w-md mx-auto mb-12">
+      <SearchBar lang={lang} version={latestVersion} />
+    </div>
+    
+    <div class="max-w-xs mx-auto mb-12">
+      <VersionSelector 
+        currentVersion={latestVersion}
+        versions={versions}
+        basePath={`/${lang}`}
+      />
+    </div>
+  </div>
+  
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+    <Card
+      title="Getting Started"
+      href={`/${lang}/${latestVersion}/guide/getting-started`}
+    >
+      Learn how to get up and running with our platform in minutes.
+    </Card>
+    
+    <Card
+      title="Installation"
+      href={`/${lang}/${latestVersion}/guide/installation`}
+    >
+      Step-by-step installation instructions for various environments.
+    </Card>
+    
+    <Card
+      title="Configuration"
+      href={`/${lang}/${latestVersion}/guide/configuration`}
+    >
+      Learn about the configuration options and how to customize the platform.
+    </Card>
+    
+    <Card
+      title="API Reference"
+      href={`/${lang}/${latestVersion}/api/reference`}
+    >
+      Detailed API documentation for developers.
+    </Card>
+    
+    <Card
+      title="Examples"
+      href={`/${lang}/${latestVersion}/examples`}
+    >
+      Real-world examples and code snippets.
+    </Card>
+    
+    <Card
+      title="FAQ"
+      href={`/${lang}/${latestVersion}/faq`}
+    >
+      Frequently asked questions and troubleshooting tips.
+    </Card>
+  </div>
+</MainLayout>

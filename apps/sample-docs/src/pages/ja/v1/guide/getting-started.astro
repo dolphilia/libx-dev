@@ -1,0 +1,52 @@
+---
+import DocLayout from '../../../../layouts/DocLayout.astro';
+
+const lang = 'ja';
+const version = 'v1';
+---
+
+<DocLayout title="はじめに" lang={lang} version={version}>
+  <p>ドキュメントへようこそ！このガイドでは、プラットフォームの使い方について説明します。</p>
+  
+  <h2>前提条件</h2>
+  <ul>
+    <li>Node.js 18以上</li>
+    <li>npm、yarn、またはpnpm</li>
+    <li>JavaScriptの基本的な知識</li>
+  </ul>
+  
+  <h2>インストール</h2>
+  <p>npmを使用してパッケージをインストールできます：</p>
+  
+  <pre><code>npm install @our-package/core</code></pre>
+  
+  <p>または、yarnを使用：</p>
+  
+  <pre><code>yarn add @our-package/core</code></pre>
+  
+  <p>または、pnpmを使用：</p>
+  
+  <pre><code>pnpm add @our-package/core</code></pre>
+  
+  <h2>基本的な使い方</h2>
+  <p>パッケージの使用例：</p>
+  
+  <pre><code>import { createApp } from '@our-package/core';
+
+const app = createApp({
+  // 設定オプション
+  debug: true,
+  mode: 'development'
+});
+
+app.start();</code></pre>
+  
+  <h2>次のステップ</h2>
+  <p>基本的なセットアップが完了したら、次のことができます：</p>
+  
+  <ul>
+    <li><a href={`/${lang}/${version}/guide/configuration`}>設定オプション</a>についてさらに学ぶ</li>
+    <li><a href={`/${lang}/${version}/api/reference`}>APIリファレンス</a>を調べる</li>
+    <li>いくつかの<a href={`/${lang}/${version}/examples`}>サンプル</a>を確認する</li>
+  </ul>
+</DocLayout>

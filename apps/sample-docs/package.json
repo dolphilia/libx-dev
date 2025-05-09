@@ -1,0 +1,21 @@
+{
+  "name": "apps-sample-docs",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/tailwind": "^6.0.2",
+    "@docs/i18n": "workspace:*",
+    "@docs/search": "workspace:*",
+    "@docs/theme": "workspace:*",
+    "@docs/ui": "workspace:*",
+    "@docs/versioning": "workspace:*",
+    "astro": "^5.7.12",
+    "tailwindcss": "^3.4.17"
+  }
+}

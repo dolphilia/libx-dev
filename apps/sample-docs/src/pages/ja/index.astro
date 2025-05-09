@@ -1,0 +1,84 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { Button, Card } from '@docs/ui/components';
+import { VersionSelector } from '@docs/versioning/components';
+import { SearchBar } from '@docs/search/components';
+
+const lang = 'ja';
+const latestVersion = 'v2';
+const versions = ['v1', 'v2'];
+---
+
+<MainLayout title="ドキュメント" lang={lang}>
+  <div class="text-center py-12">
+    <h1 class="text-4xl font-bold mb-4">ドキュメント</h1>
+    <p class="text-xl mb-8 max-w-2xl mx-auto">
+      プラットフォームの包括的なガイドとドキュメント。
+    </p>
+    
+    <div class="flex justify-center gap-4 mb-12">
+      <Button href={`/${lang}/${latestVersion}/guide/getting-started`} variant="primary" size="lg">
+        はじめる
+      </Button>
+      <Button href="https://github.com" variant="outline" size="lg">
+        GitHub
+      </Button>
+    </div>
+    
+    <div class="max-w-md mx-auto mb-12">
+      <SearchBar lang={lang} version={latestVersion} />
+    </div>
+    
+    <div class="max-w-xs mx-auto mb-12">
+      <VersionSelector 
+        currentVersion={latestVersion}
+        versions={versions}
+        basePath={`/${lang}`}
+      />
+    </div>
+  </div>
+  
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+    <Card
+      title="はじめに"
+      href={`/${lang}/${latestVersion}/guide/getting-started`}
+    >
+      数分でプラットフォームを使い始める方法を学びます。
+    </Card>
+    
+    <Card
+      title="インストール"
+      href={`/${lang}/${latestVersion}/guide/installation`}
+    >
+      様々な環境向けのステップバイステップのインストール手順。
+    </Card>
+    
+    <Card
+      title="設定"
+      href={`/${lang}/${latestVersion}/guide/configuration`}
+    >
+      設定オプションとプラットフォームのカスタマイズ方法について学びます。
+    </Card>
+    
+    <Card
+      title="APIリファレンス"
+      href={`/${lang}/${latestVersion}/api/reference`}
+    >
+      開発者向けの詳細なAPIドキュメント。
+    </Card>
+    
+    <Card
+      title="サンプル"
+      href={`/${lang}/${latestVersion}/examples`}
+    >
+      実際の例とコードスニペット。
+    </Card>
+    
+    <Card
+      title="よくある質問"
+      href={`/${lang}/${latestVersion}/faq`}
+    >
+      よくある質問とトラブルシューティングのヒント。
+    </Card>
+  </div>
+</MainLayout>
