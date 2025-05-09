@@ -1,5 +1,6 @@
-import { d as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead, e as renderSlot } from './astro/server.XtKDsyC1.js';
-import { t, a as $$MainLayout, c as $$SearchBar, f as $$SearchResults, d as $$VersionSelector, g as $$Sidebar } from './SearchResults.GJHle-NR.js';
+import { c as createAstro, a as createComponent, r as renderComponent, b as renderTemplate, m as maybeRenderHead, d as renderSlot } from './astro/server.BeZcSwAP.js';
+import { t, $ as $$MainLayout, a as $$Sidebar } from './MainLayout.BOqWZmRq.js';
+import { $ as $$SearchBar, a as $$SearchResults, b as $$VersionSelector } from './SearchResults.CZVeRA8w.js';
 
 const $$Astro = createAstro("https://dolphilia.github.io");
 const $$DocLayout = createComponent(($$result, $$props, $$slots) => {
