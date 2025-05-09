@@ -23,86 +23,131 @@ interface Props {
 
 // プロパティの分割代入
 const { items, class: className = '' } = Astro.props;
-
-/**
- * ナビゲーション項目をレンダリングする関数
- */
-function renderNavItems(items: NavItem[], isMobile: boolean = false) {
-  return items.map(item => `
-    <li>
-      <a 
-        href="${item.href}" 
-        role="menuitem" 
-        aria-label="${item.title}ページへ移動"
-        class="${isMobile ? '' : 'hover:bg-base-200'}"
-      >
-        ${item.title}
-      </a>
-      ${item.children && item.children.length > 0 ? `
-        <ul 
-          class="p-2 ${isMobile ? '' : 'dropdown-content'}" 
-          role="menu" 
-          aria-label="${item.title}のサブメニュー"
-        >
-          ${item.children.map(child => `
-            <li>
-              <a 
-                href="${child.href}" 
-                role="menuitem" 
-                aria-label="${child.title}ページへ移動"
-                class="${isMobile ? '' : 'hover:bg-base-200'}"
-              >
-                ${child.title}
-              </a>
-            </li>
-          `).join('')}
-        </ul>
-      ` : ''}
-    </li>
-  `).join('');
-}
 ---
 
-<nav class:list={['navbar bg-base-100', className]} aria-label="メインナビゲーション">
-  <div class="navbar-start">
-    <div class="dropdown">
-      <button 
-        type="button" 
-        aria-haspopup="true" 
-        aria-expanded="false"
-        aria-label="モバイルメニューを切り替え"
-        class="btn btn-ghost lg:hidden"
-      >
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          class="h-5 w-5" 
-          fill="none" 
-          viewBox="0 0 24 24" 
-          stroke="currentColor"
-          aria-hidden="true"
-        >
-          <path 
-            stroke-linecap="round" 
-            stroke-linejoin="round" 
-            stroke-width="2" 
-            d="M4 6h16M4 12h8m-8 6h16" 
-          />
-        </svg>
-      </button>
-      <ul 
-        class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
-        role="menu"
-        aria-label="モバイルナビゲーション"
-        set:html={renderNavItems(items, true)}
-      />
+<nav class:list={['bg-white shadow', className]} aria-label="メインナビゲーション">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16">
+      <div class="flex">
+        <div class="-ml-2 mr-2 flex items-center lg:hidden">
+          <button 
+            type="button" 
+            aria-haspopup="true" 
+            aria-expanded="false"
+            aria-label="モバイルメニューを切り替え"
+            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+            id="mobile-menu-button"
+          >
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              class="h-6 w-6" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path 
+                stroke-linecap="round" 
+                stroke-linejoin="round" 
+                stroke-width="2" 
+                d="M4 6h16M4 12h8m-8 6h16" 
+              />
+            </svg>
+          </button>
+        </div>
+        <div class="hidden lg:ml-6 lg:flex lg:space-x-8">
+          <ul class="flex space-x-4" role="menubar" aria-label="デスクトップナビゲーション">
+            {items.map(item => (
+              <li class="relative group">
+                <a 
+                  href={item.href} 
+                  role="menuitem" 
+                  aria-label={`${item.title}ページへ移動`}
+                  class="px-3 py-2 text-gray-700 hover:text-gray-900 rounded-md inline-flex items-center"
+                >
+                  {item.title}
+                  {item.children && item.children.length > 0 && (
+                    <svg class="ml-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                  )}
+                </a>
+                {item.children && item.children.length > 0 && (
+                  <ul 
+                    class="absolute left-0 mt-1 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block" 
+                    role="menu" 
+                    aria-label={`${item.title}のサブメニュー`}
+                  >
+                    {item.children.map(child => (
+                      <li>
+                        <a 
+                          href={child.href} 
+                          role="menuitem" 
+                          aria-label={`${child.title}ページへ移動`}
+                          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          {child.title}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="navbar-center hidden lg:flex">
-    <ul 
-      class="menu menu-horizontal px-1" 
-      role="menubar"
-      aria-label="デスクトップナビゲーション"
-      set:html={renderNavItems(items)}
-    />
+
+  <!-- モバイルメニュー -->
+  <div class="lg:hidden hidden" id="mobile-menu">
+    <div class="pt-2 pb-3 space-y-1">
+      <ul class="px-2 pt-2 pb-3 space-y-1" role="menu" aria-label="モバイルナビゲーション">
+        {items.map(item => (
+          <li class="mb-1">
+            <a 
+              href={item.href} 
+              role="menuitem" 
+              aria-label={`${item.title}ページへ移動`}
+              class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md"
+            >
+              {item.title}
+            </a>
+            {item.children && item.children.length > 0 && (
+              <ul class="pl-4 mt-1 space-y-1" role="menu" aria-label={`${item.title}のサブメニュー`}>
+                {item.children.map(child => (
+                  <li>
+                    <a 
+                      href={child.href} 
+                      role="menuitem" 
+                      aria-label={`${child.title}ページへ移動`}
+                      class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md"
+                    >
+                      {child.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
   </div>
 </nav>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+    const mobileButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (mobileButton && mobileMenu) {
+      mobileButton.addEventListener('click', function() {
+        const expanded = mobileButton.getAttribute('aria-expanded') === 'true';
+        mobileButton.setAttribute('aria-expanded', (!expanded).toString());
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
+  });
+</script>

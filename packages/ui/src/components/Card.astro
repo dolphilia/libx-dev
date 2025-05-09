@@ -8,27 +8,27 @@ interface Props {
 
 const { title, class: className = '', variant = 'default', ...rest } = Astro.props;
 
-const variantClasses = {
+const variantStyles = {
   default: '',
-  bordered: 'card-bordered',
-  image: 'image-full',
+  bordered: 'border border-gray-200',
+  image: 'relative overflow-hidden',
 };
 
 const classes = [
-  'card',
-  'bg-base-100',
-  'shadow-xl',
-  variantClasses[variant],
+  'rounded-lg overflow-hidden bg-white shadow-md',
+  variantStyles[variant],
   className
 ];
 ---
 
 <div class:list={classes} {...rest}>
-  <div class="card-body">
-    {title && <h2 class="card-title">{title}</h2>}
-    <slot />
+  <div class="p-5">
+    {title && <h2 class="text-xl font-semibold mb-3">{title}</h2>}
+    <div class="text-gray-700">
+      <slot />
+    </div>
     {Astro.slots.has('footer') && (
-      <div class="card-actions justify-end">
+      <div class="mt-4 flex justify-end">
         <slot name="footer" />
       </div>
     )}

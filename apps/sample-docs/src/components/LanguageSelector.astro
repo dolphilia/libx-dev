@@ -49,37 +49,83 @@ const langPaths: LangPathInfo[] = supportedLangs.map(langCode => {
 });
 ---
 
-<div class:list={['dropdown dropdown-end', className]}>
+<div class:list={['relative inline-block text-left', className]}>
   {/* 言語選択ボタン */}
-  <div tabindex="0" role="button" class="btn btn-ghost m-1">
-    <span>{LANG_NAMES[currentLang] || currentLang}</span>
-    <svg 
-      class="w-4 h-4 ml-2" 
-      xmlns="http://www.w3.org/2000/svg" 
-      viewBox="0 0 20 20" 
-      fill="currentColor"
-      aria-hidden="true"
+  <div>
+    <button 
+      type="button" 
+      class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+      id="language-menu-button"
+      aria-expanded="false"
+      aria-haspopup="true"
     >
-      <path 
-        fill-rule="evenodd" 
-        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" 
-        clip-rule="evenodd" 
-      />
-    </svg>
+      <span>{LANG_NAMES[currentLang] || currentLang}</span>
+      <svg 
+        class="w-4 h-4 ml-2" 
+        xmlns="http://www.w3.org/2000/svg" 
+        viewBox="0 0 20 20" 
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <path 
+          fill-rule="evenodd" 
+          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" 
+          clip-rule="evenodd" 
+        />
+      </svg>
+    </button>
   </div>
   
-  {/* ドロップダウンメニュー */}
-  <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-    {langPaths.map((pathInfo) => (
-      <li>
+  {/* ドロップダウンメニュー (初期状態では非表示) */}
+  <div 
+    class="hidden origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+    role="menu"
+    aria-orientation="vertical"
+    aria-labelledby="language-menu-button"
+    tabindex="-1"
+    id="language-menu"
+  >
+    <div class="py-1" role="none">
+      {langPaths.map((pathInfo) => (
         <a 
           href={pathInfo.path} 
-          class={pathInfo.isCurrent ? 'active' : ''}
+          class:list={[
+            'block px-4 py-2 text-sm',
+            pathInfo.isCurrent 
+              ? 'bg-gray-100 text-gray-900' 
+              : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+          ]}
+          role="menuitem"
+          tabindex="-1"
           aria-current={pathInfo.isCurrent ? 'page' : undefined}
         >
           {pathInfo.name}
         </a>
-      </li>
-    ))}
-  </ul>
+      ))}
+    </div>
+  </div>
 </div>
+
+<script>
+  // ドロップダウンメニューの表示/非表示を切り替える
+  document.addEventListener('DOMContentLoaded', function() {
+    const button = document.getElementById('language-menu-button');
+    const menu = document.getElementById('language-menu');
+    
+    if (button && menu) {
+      button.addEventListener('click', function() {
+        const expanded = button.getAttribute('aria-expanded') === 'true';
+        button.setAttribute('aria-expanded', (!expanded).toString());
+        menu.classList.toggle('hidden');
+      });
+      
+      // 外部クリックでメニューを閉じる
+      document.addEventListener('click', function(event) {
+        if (!button.contains(event.target as Node) && !menu.contains(event.target as Node)) {
+          button.setAttribute('aria-expanded', 'false');
+          menu.classList.add('hidden');
+        }
+      });
+    }
+  });
+</script>

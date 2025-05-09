@@ -16,31 +16,35 @@ const {
 
 <div class:list={['search-bar', className]}>
   <form id="search-form" class="w-full">
-    <label class="input input-bordered flex items-center gap-2 w-full">
-      <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <g
-          stroke-linejoin="round"
-          stroke-linecap="round"
-          stroke-width="2.5"
-          fill="none"
-          stroke="currentColor"
-        >
-          <circle cx="11" cy="11" r="8"></circle>
-          <path d="m21 21-4.3-4.3"></path>
-        </g>
-      </svg>
+    <div class="relative flex items-center w-full">
+      <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+        <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <g
+            stroke-linejoin="round"
+            stroke-linecap="round"
+            stroke-width="2.5"
+            fill="none"
+            stroke="currentColor"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </g>
+        </svg>
+      </div>
       <input
         type="search"
         id="search-input"
         name="q"
         placeholder={placeholder}
-        class="grow"
+        class="w-full py-2 pl-10 pr-20 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
       />
-      <div class="flex items-center gap-1">
-        <kbd class="kbd kbd-sm">⌘</kbd>
-        <kbd class="kbd kbd-sm">K</kbd>
+      <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+        <div class="flex items-center gap-1 text-xs text-gray-500">
+          <span class="px-1.5 py-0.5 bg-gray-100 border border-gray-300 rounded text-xs">⌘</span>
+          <span class="px-1.5 py-0.5 bg-gray-100 border border-gray-300 rounded text-xs">K</span>
+        </div>
       </div>
-    </label>
+    </div>
   </form>
 </div>
 
