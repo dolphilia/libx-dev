@@ -10,6 +10,8 @@ const __dirname = path.dirname(__filename);
 
 // https://astro.build/config
 export default defineConfig({
+  // デプロイ先のサイトURL
+  site: 'https://dolphilia.github.io',
   // GitHub Pagesのサブディレクトリにデプロイするためのベースパス
   base: '/docs-astro',
   integrations: [tailwind()],
