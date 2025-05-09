@@ -10,7 +10,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import glob from 'glob';
+import { glob } from 'glob';
 import matter from 'gray-matter';
 import { createSearchIndex, exportSearchIndex } from '../packages/search/src/utils/indexer.js';
 
@@ -72,7 +72,7 @@ async function collectDocuments(lang, version) {
   const pattern = `**/*{${config.fileExtensions.join(',')}}`;
   
   // ファイルの一覧を取得
-  const files = glob.sync(pattern, { cwd: contentPath, absolute: true });
+  const files = await glob(pattern, { cwd: contentPath, absolute: true });
   
   const documents = [];
   let idCounter = 1;
