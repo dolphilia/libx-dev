@@ -6,23 +6,31 @@ import { SearchBar } from '@docs/search/components';
 import versions from '../../config/versions.config';
 import docsConfig from '../../config/docs.config';
 import type { LocaleKey } from '@docs/i18n/locales';
+import { translate } from '@docs/i18n/utils';
 
-const lang = 'ja' as LocaleKey;
-const latestVersion = 'v2';
+export function getStaticPaths() {
+  return docsConfig.supportedLangs.map(lang => ({
+    params: { lang }
+  }));
+}
+
+const { lang: langParam } = Astro.params;
+const lang = (langParam || 'en') as LocaleKey;
+const latestVersion = versions.find(v => v.isLatest)?.id || 'v2';
 // GitHub Pagesのベースパス
 const baseUrl = docsConfig.baseUrl;
 ---
 
-<MainLayout title="ドキュメント" lang={lang}>
+<MainLayout title={translate('docs.documentation', lang)} lang={lang}>
   <div class="text-center py-12">
-    <h1 class="text-4xl font-bold mb-4">ドキュメント</h1>
+    <h1 class="text-4xl font-bold mb-4">{translate('docs.documentation', lang)}</h1>
     <p class="text-xl mb-8 max-w-2xl mx-auto">
-      プラットフォームの包括的なガイドとドキュメント。
+      {translate('docs.description', lang)}
     </p>
     
     <div class="flex justify-center gap-4 mb-12">
       <Button href={`${baseUrl}/${lang}/${latestVersion}/guide/getting-started`} variant="primary" size="lg">
-        はじめる
+        {translate('docs.get_started', lang)}
       </Button>
       <Button href="https://github.com" variant="outline" size="lg">
         GitHub
@@ -30,7 +38,7 @@ const baseUrl = docsConfig.baseUrl;
     </div>
     
     <div class="max-w-md mx-auto mb-12">
-      <SearchBar placeholder={`ドキュメントを検索...`} />
+      <SearchBar placeholder={translate('search.placeholder', lang)} />
     </div>
     
     <div class="max-w-xs mx-auto mb-12">
@@ -44,45 +52,45 @@ const baseUrl = docsConfig.baseUrl;
   
   <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
     <Card
-      title="はじめに"
+      title={translate('docs.getting_started', lang)}
       href={`${baseUrl}/${lang}/${latestVersion}/guide/getting-started`}
     >
-      数分でプラットフォームを使い始める方法を学びます。
+      {translate('docs.getting_started_description', lang)}
     </Card>
     
     <Card
-      title="インストール"
+      title={translate('docs.installation', lang)}
       href={`${baseUrl}/${lang}/${latestVersion}/guide/installation`}
     >
-      様々な環境向けのステップバイステップのインストール手順。
+      {translate('docs.installation_description', lang)}
     </Card>
     
     <Card
-      title="設定"
+      title={translate('docs.configuration', lang)}
       href={`${baseUrl}/${lang}/${latestVersion}/guide/configuration`}
     >
-      設定オプションとプラットフォームのカスタマイズ方法について学びます。
+      {translate('docs.configuration_description', lang)}
     </Card>
     
     <Card
-      title="APIリファレンス"
+      title={translate('docs.api_reference', lang)}
       href={`${baseUrl}/${lang}/${latestVersion}/api/reference`}
     >
-      開発者向けの詳細なAPIドキュメント。
+      {translate('docs.api_reference_description', lang)}
     </Card>
     
     <Card
-      title="サンプル"
+      title={translate('docs.examples', lang)}
       href={`${baseUrl}/${lang}/${latestVersion}/examples`}
     >
-      実際の例とコードスニペット。
+      {translate('docs.examples_description', lang)}
     </Card>
     
     <Card
-      title="よくある質問"
+      title={translate('docs.faq', lang)}
       href={`${baseUrl}/${lang}/${latestVersion}/faq`}
     >
-      よくある質問とトラブルシューティングのヒント。
+      {translate('docs.faq_description', lang)}
     </Card>
   </div>
 </MainLayout>

@@ -4,18 +4,38 @@ import MainLayout from '../../../layouts/MainLayout.astro';
 import { Card } from '@docs/ui/components';
 import type { LocaleKey } from '@docs/i18n/locales';
 import { translate } from '@docs/i18n/utils';
-
-// 言語とバージョンの設定
-const lang: LocaleKey = 'en';
-const version = 'v1';
-
-// GitHub Pagesのベースパス
-const baseUrl = '/docs-astro';
+import docsConfig from '../../../config/docs.config';
+import versions from '../../../config/versions.config';
 
 // 型定義
 type DocEntry = CollectionEntry<'docs'>;
 
-// v1の英語ドキュメントを取得
+export async function getStaticPaths() {
+  const allVersions = versions.map(v => v.id);
+  const allLangs = docsConfig.supportedLangs;
+  
+  const paths = [];
+  
+  for (const lang of allLangs) {
+    for (const version of allVersions) {
+      paths.push({
+        params: { lang, version },
+        props: { lang, version }
+      });
+    }
+  }
+  
+  return paths;
+}
+
+const { lang: langParam, version: versionParam } = Astro.props;
+const lang = (langParam || 'en') as LocaleKey;
+const version = versionParam || 'v1';
+
+// GitHub Pagesのベースパス
+const baseUrl = docsConfig.baseUrl;
+
+// 指定された言語とバージョンのドキュメントを取得
 const docs = await getCollection('docs', (entry: DocEntry) => {
   return entry.slug.startsWith(`${lang}/${version}/`);
 });

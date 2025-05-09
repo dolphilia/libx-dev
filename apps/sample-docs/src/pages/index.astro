@@ -1,8 +1,31 @@
 ---
 // シンプルなリダイレクト
-// 本来はi18nパッケージの言語検出を使用しますが、
-// 現時点ではデフォルトの英語にリダイレクトします
+// i18nパッケージの言語検出を使用して、ブラウザの言語設定に基づいてリダイレクト
+import { getLanguage } from '@docs/i18n/utils';
+import docsConfig from '../config/docs.config';
+
+// サーバーサイドでは言語検出できないため、デフォルト言語を使用
+const defaultLang = docsConfig.defaultLang;
+// GitHub Pagesのベースパス
+const baseUrl = docsConfig.baseUrl;
 ---
 
-<!-- 相対パスを使用してリダイレクト -->
-<meta http-equiv="refresh" content="0;url=./en/" />
+<script>
+  // クライアントサイドで言語を検出
+  import { getLanguage } from '@docs/i18n/utils';
+  import docsConfig from '../config/docs.config';
+  
+  const detectedLang = getLanguage();
+  const supportedLangs = docsConfig.supportedLangs;
+  const defaultLang = docsConfig.defaultLang;
+  
+  // 検出された言語がサポートされている場合はその言語にリダイレクト
+  // そうでない場合はデフォルト言語にリダイレクト
+  const targetLang = supportedLangs.includes(detectedLang) ? detectedLang : defaultLang;
+  
+  // リダイレクト
+  window.location.href = `./${targetLang}/`;
+</script>
+
+<!-- サーバーサイドレンダリング時のフォールバック -->
+<meta http-equiv="refresh" content={`0;url=./${defaultLang}/`} />
