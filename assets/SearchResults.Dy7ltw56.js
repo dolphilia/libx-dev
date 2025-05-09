@@ -1,0 +1,932 @@
+import { d as createAstro, c as createComponent, m as maybeRenderHead, b as addAttribute, s as spreadAttributes, e as renderSlot, a as renderTemplate, u as unescapeHTML, f as renderHead, r as renderComponent, g as renderScript, F as Fragment } from './astro/server.XtKDsyC1.js';
+/* empty css                                  */
+
+const $$Astro$b = createAstro("https://dolphilia.github.io");
+const $$Button = createComponent(($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro$b, $$props, $$slots);
+  Astro2.self = $$Button;
+  const {
+    variant = "primary",
+    size = "md",
+    class: className = "",
+    ...rest
+  } = Astro2.props;
+  const variantClasses = {
+    primary: "btn-primary",
+    secondary: "btn-secondary",
+    accent: "btn-accent",
+    info: "btn-info",
+    success: "btn-success",
+    warning: "btn-warning",
+    error: "btn-error",
+    ghost: "btn-ghost",
+    link: "btn-link",
+    outline: "btn-outline"
+  };
+  const sizeClasses = {
+    xs: "btn-xs",
+    sm: "btn-sm",
+    md: "",
+    // デフォルトサイズ
+    lg: "btn-lg"
+  };
+  const classes = [
+    "btn",
+    variantClasses[variant],
+    sizeClasses[size],
+    className
+  ];
+  return renderTemplate`${rest.href ? renderTemplate`${maybeRenderHead()}<a${addAttribute(classes, "class:list")}${spreadAttributes(rest)}>${renderSlot($$result, $$slots["default"])}</a>` : renderTemplate`<button${addAttribute(classes, "class:list")}${spreadAttributes(rest)}>${renderSlot($$result, $$slots["default"])}</button>`}`;
+}, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Button.astro", void 0);
+
+const $$Astro$a = createAstro("https://dolphilia.github.io");
+const $$Card = createComponent(($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro$a, $$props, $$slots);
+  Astro2.self = $$Card;
+  const { title, class: className = "", variant = "default", ...rest } = Astro2.props;
+  const variantClasses = {
+    default: "",
+    bordered: "card-bordered",
+    image: "image-full"
+  };
+  const classes = [
+    "card",
+    "bg-base-100",
+    "shadow-xl",
+    variantClasses[variant],
+    className
+  ];
+  return renderTemplate`${maybeRenderHead()}<div${addAttribute(classes, "class:list")}${spreadAttributes(rest)}> ${title && renderTemplate`<div class="card-body"> <h2 class="card-title">${title}</h2> ${renderSlot($$result, $$slots["default"])} ${Astro2.slots.has("footer") && renderTemplate`<div class="card-actions justify-end"> ${renderSlot($$result, $$slots["footer"])} </div>`} </div>`} ${!title && renderTemplate`<div class="card-body"> ${renderSlot($$result, $$slots["default"])} ${Astro2.slots.has("footer") && renderTemplate`<div class="card-actions justify-end"> ${renderSlot($$result, $$slots["footer"])} </div>`} </div>`} </div>`;
+}, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Card.astro", void 0);
+
+const $$Astro$9 = createAstro("https://dolphilia.github.io");
+const $$Navigation = createComponent(($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro$9, $$props, $$slots);
+  Astro2.self = $$Navigation;
+  const { items, class: className = "" } = Astro2.props;
+  return renderTemplate`${maybeRenderHead()}<div${addAttribute(["navbar bg-base-100", className], "class:list")}> <div class="navbar-start"> <div class="dropdown"> <div tabindex="0" role="button" class="btn btn-ghost lg:hidden"> <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"></path></svg> </div> <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"> ${items.map((item) => renderTemplate`<li> <a${addAttribute(item.href, "href")}>${item.title}</a> ${item.children && item.children.length > 0 && renderTemplate`<ul class="p-2"> ${item.children.map((child) => renderTemplate`<li><a${addAttribute(child.href, "href")}>${child.title}</a></li>`)} </ul>`} </li>`)} </ul> </div> </div> <div class="navbar-center hidden lg:flex"> <ul class="menu menu-horizontal px-1"> ${items.map((item) => renderTemplate`<li> <a${addAttribute(item.href, "href")}>${item.title}</a> ${item.children && item.children.length > 0 && renderTemplate`<ul class="p-2"> ${item.children.map((child) => renderTemplate`<li><a${addAttribute(child.href, "href")}>${child.title}</a></li>`)} </ul>`} </li>`)} </ul> </div> </div>`;
+}, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Navigation.astro", void 0);
+
+const $$Astro$8 = createAstro("https://dolphilia.github.io");
+const $$Sidebar = createComponent(($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro$8, $$props, $$slots);
+  Astro2.self = $$Sidebar;
+  const { items, title, class: className = "" } = Astro2.props;
+  return renderTemplate`${maybeRenderHead()}<aside${addAttribute(["w-64 shrink-0", className], "class:list")}> ${title && renderTemplate`<h3 class="mb-3 font-semibold text-lg">${title}</h3>`} <nav> <ul class="menu bg-base-200 w-full rounded-box"> ${items.map((section) => renderTemplate`<li> ${section.title && renderTemplate`<h4 class="menu-title">${section.title}</h4>`} ${section.items && renderTemplate`<ul> ${section.items.map((item) => renderTemplate`<li> <a${addAttribute(item.href, "href")}> ${item.title} </a> </li>`)} </ul>`} </li>`)} </ul> </nav> </aside>`;
+}, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Sidebar.astro", void 0);
+
+const $$Astro$7 = createAstro("https://dolphilia.github.io");
+const $$Footer = createComponent(($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro$7, $$props, $$slots);
+  Astro2.self = $$Footer;
+  const {
+    copyright = `\xA9 ${(/* @__PURE__ */ new Date()).getFullYear()} Your Company. All rights reserved.`,
+    linkGroups = [],
+    class: className = ""
+  } = Astro2.props;
+  return renderTemplate`${maybeRenderHead()}<footer${addAttribute(["footer p-10 bg-base-200 text-base-content", className], "class:list")}> <div> ${renderSlot($$result, $$slots["logo"])} <p>${copyright}</p> <div class="flex space-x-4 mt-4"> ${renderSlot($$result, $$slots["social-links"])} </div> </div> ${linkGroups.map((group) => renderTemplate`<nav> <h6 class="footer-title">${group.title}</h6> ${group.links.map((link) => renderTemplate`<a${addAttribute(link.href, "href")} class="link link-hover">${link.title}</a>`)} </nav>`)} </footer>`;
+}, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Footer.astro", void 0);
+
+const $$Astro$6 = createAstro("https://dolphilia.github.io");
+const $$Alert = createComponent(($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro$6, $$props, $$slots);
+  Astro2.self = $$Alert;
+  const {
+    title,
+    variant = "info",
+    class: className = "",
+    ...rest
+  } = Astro2.props;
+  const variantClasses = {
+    info: "alert-info",
+    success: "alert-success",
+    warning: "alert-warning",
+    error: "alert-error"
+  };
+  const classes = [
+    "alert",
+    variantClasses[variant],
+    className
+  ];
+  const iconMap = {
+    info: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`,
+    success: `<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`,
+    warning: `<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>`,
+    error: `<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`
+  };
+  return renderTemplate`${maybeRenderHead()}<div${addAttribute(classes, "class:list")} role="alert"${spreadAttributes(rest)}> <div>${unescapeHTML(iconMap[variant])}</div> <div> ${title && renderTemplate`<h3 class="font-bold">${title}</h3>`} <div class="text-sm"> ${renderSlot($$result, $$slots["default"])} </div> </div> </div>`;
+}, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Alert.astro", void 0);
+
+const common$1 = {"home":"Home","search":"Search","menu":"Menu","close":"Close","back":"Back","next":"Next","previous":"Previous","loading":"Loading...","error":"Error","success":"Success","warning":"Warning","info":"Information"};
+const navigation$1 = {"docs":"Documentation","api":"API","examples":"Examples","blog":"Blog","community":"Community","github":"GitHub"};
+const footer$1 = {"copyright":"© {year} All rights reserved.","terms":"Terms of Service","privacy":"Privacy Policy","contact":"Contact Us"};
+const docs$1 = {"onThisPage":"On this page","editThisPage":"Edit this page","lastUpdated":"Last updated on {date}","version":"Version","versions":"Versions","language":"Language","languages":"Languages","toc":"Table of Contents","documentation":"Documentation","guide":"Guide","getting_started":"Getting Started","installation":"Installation","configuration":"Configuration","overview":"Overview","reference":"Reference","latest":"Latest","showLatest":"Show latest version","showDiff":"Show version differences"};
+const search$1 = {"placeholder":"Search documentation...","noResults":"No results found for '{query}'","searchResults":"Search Results","searchIn":"Search in"};
+const error$1 = {"notFound":"Page not found","notFoundDescription":"The page you are looking for does not exist or has been moved.","goHome":"Go to Home"};
+const en = {
+  common: common$1,
+  navigation: navigation$1,
+  footer: footer$1,
+  docs: docs$1,
+  search: search$1,
+  error: error$1,
+};
+
+const common = {"home":"ホーム","search":"検索","menu":"メニュー","close":"閉じる","back":"戻る","next":"次へ","previous":"前へ","loading":"読み込み中...","error":"エラー","success":"成功","warning":"警告","info":"情報"};
+const navigation = {"docs":"ドキュメント","api":"API","examples":"サンプル","blog":"ブログ","community":"コミュニティ","github":"GitHub"};
+const footer = {"copyright":"© {year} All rights reserved.","terms":"利用規約","privacy":"プライバシーポリシー","contact":"お問い合わせ"};
+const docs = {"onThisPage":"このページの内容","editThisPage":"このページを編集","lastUpdated":"最終更新日: {date}","version":"バージョン","versions":"バージョン一覧","language":"言語","languages":"言語一覧","toc":"目次","documentation":"ドキュメント","guide":"ガイド","getting_started":"はじめに","installation":"インストール","configuration":"設定","overview":"概要","reference":"リファレンス","latest":"最新","showLatest":"最新バージョンを表示","showDiff":"バージョン間の差分を表示"};
+const search = {"placeholder":"ドキュメントを検索...","noResults":"'{query}'に一致する結果が見つかりませんでした","searchResults":"検索結果","searchIn":"検索対象"};
+const error = {"notFound":"ページが見つかりません","notFoundDescription":"お探しのページは存在しないか、移動された可能性があります。","goHome":"ホームに戻る"};
+const ja = {
+  common,
+  navigation,
+  footer,
+  docs,
+  search,
+  error,
+};
+
+const locales = {
+  en,
+  ja
+};
+const defaultLocale = "en";
+const supportedLocales = ["en", "ja"];
+
+function getLanguageFromPath(path) {
+  const pathSegments = path.split("/").filter(Boolean);
+  if (pathSegments.length > 0) {
+    const potentialLang = pathSegments[0];
+    if (supportedLocales.includes(potentialLang)) {
+      return potentialLang;
+    }
+  }
+  return defaultLocale;
+}
+
+function localizedPath(path, lang) {
+  if (path === "/") {
+    return lang === defaultLocale ? "/" : `/${lang}/`;
+  }
+  const currentLang = getLanguageFromPath(path);
+  const pathWithoutLang = removeLanguagePrefix(path, currentLang);
+  if (lang === defaultLocale) {
+    return pathWithoutLang;
+  }
+  return `/${lang}${pathWithoutLang}`;
+}
+function removeLanguagePrefix(path, lang) {
+  if (path === "/" || path === `/${lang}/`) {
+    return "/";
+  }
+  if (path.startsWith(`/${lang}/`)) {
+    return path.substring(lang.length + 1);
+  }
+  return path;
+}
+function switchLanguage(currentPath, targetLang) {
+  return localizedPath(currentPath, targetLang);
+}
+
+const $$Astro$5 = createAstro("https://dolphilia.github.io");
+const $$LanguageSelector = createComponent(($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro$5, $$props, $$slots);
+  Astro2.self = $$LanguageSelector;
+  const {
+    currentLang,
+    supportedLangs = ["en", "ja"],
+    className = ""
+  } = Astro2.props;
+  const baseUrl = "/docs-astro";
+  const langNames = {
+    en: "English",
+    ja: "\u65E5\u672C\u8A9E"
+  };
+  const currentPath = Astro2.url.pathname;
+  const langPaths = supportedLangs.map((langStr) => {
+    const lang = langStr;
+    const pathWithoutBase = currentPath.replace(baseUrl, "");
+    return {
+      lang,
+      name: langNames[lang] || lang,
+      path: `${baseUrl}${switchLanguage(pathWithoutBase, lang)}`,
+      isCurrent: lang === currentLang
+    };
+  });
+  return renderTemplate`${maybeRenderHead()}<div${addAttribute(["dropdown dropdown-end", className], "class:list")}> <div tabindex="0" role="button" class="btn btn-ghost m-1"> <span>${langNames[currentLang] || currentLang}</span> <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path> </svg> </div> <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"> ${langPaths.map(({ lang, name, path, isCurrent }) => renderTemplate`<li> <a${addAttribute(path, "href")}${addAttribute(isCurrent ? "active" : "", "class")}> ${name} </a> </li>`)} </ul> </div>`;
+}, "/home/runner/work/docs-astro/docs-astro/apps/sample-docs/src/components/LanguageSelector.astro", void 0);
+
+const $$Astro$4 = createAstro("https://dolphilia.github.io");
+const $$MainLayout = createComponent(($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro$4, $$props, $$slots);
+  Astro2.self = $$MainLayout;
+  const { title, lang, version = "v1" } = Astro2.props;
+  const baseUrl = "/docs-astro";
+  const navItems = [
+    { title: "Home", href: `${baseUrl}/${lang}` },
+    { title: "Docs", href: `${baseUrl}/${lang}/${version}/guide/getting-started` },
+    { title: "API", href: `${baseUrl}/${lang}/${version}/api` }
+  ];
+  const linkGroups = [
+    {
+      title: "Docs",
+      links: [
+        { title: "Getting Started", href: `${baseUrl}/${lang}/${version}/guide/getting-started` },
+        { title: "API Reference", href: `${baseUrl}/${lang}/${version}/api` }
+      ]
+    },
+    {
+      title: "Community",
+      links: [
+        { title: "GitHub", href: "https://github.com" },
+        { title: "Discord", href: "https://discord.com" }
+      ]
+    }
+  ];
+  return renderTemplate`<html${addAttribute(lang, "lang")}> <head><meta charset="utf-8"><link rel="icon" type="image/svg+xml"${addAttribute(`${baseUrl}/favicon.svg`, "href")}><meta name="viewport" content="width=device-width"><meta name="generator"${addAttribute(Astro2.generator, "content")}><title>${title} | Docs</title><!-- スタイルシートを動的に読み込み -->${renderHead()}</head> <body class="min-h-screen flex flex-col"> <header class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700"> <div class="container mx-auto px-4 py-4"> <div class="flex justify-between items-center"> ${renderComponent($$result, "Navigation", $$Navigation, { "items": navItems })} ${renderComponent($$result, "LanguageSelector", $$LanguageSelector, { "currentLang": lang })} </div> </div> </header> <main class="flex-grow container mx-auto px-4 py-8"> ${renderSlot($$result, $$slots["default"])} </main> ${renderComponent($$result, "Footer", $$Footer, { "linkGroups": linkGroups, "copyright": `\xA9 ${(/* @__PURE__ */ new Date()).getFullYear()} Docs Astro. All rights reserved.` })} </body></html>`;
+}, "/home/runner/work/docs-astro/docs-astro/apps/sample-docs/src/layouts/MainLayout.astro", void 0);
+
+const $$Astro$3 = createAstro("https://dolphilia.github.io");
+const $$VersionSelector = createComponent(($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro$3, $$props, $$slots);
+  Astro2.self = $$VersionSelector;
+  const { versions, currentVersion, basePath, className = "" } = Astro2.props;
+  const currentVersionObj = versions.find((v) => v.id === currentVersion) || versions[0];
+  const sortedVersions = [...versions].sort((a, b) => {
+    if (a.isLatest === true && b.isLatest !== true) return -1;
+    if (b.isLatest === true && a.isLatest !== true) return 1;
+    const dateA = a.date ? a.date.getTime() : 0;
+    const dateB = b.date ? b.date.getTime() : 0;
+    return dateB - dateA;
+  });
+  return renderTemplate`${maybeRenderHead()}<div${addAttribute(["dropdown", className], "class:list")}> <div tabindex="0" role="button" class="btn btn-ghost m-1"> <span> ${currentVersionObj.name} ${currentVersionObj.isLatest && renderTemplate`<span class="badge badge-sm badge-primary ml-2">最新</span>`} </span> <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path> </svg> </div> <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"> ${sortedVersions.map((version) => renderTemplate`<li> <a${addAttribute(`${basePath.replace(`/${currentVersion}/`, `/${version.id}/`)}`, "href")}${addAttribute(version.id === currentVersion ? "active" : "", "class")}> <div class="flex flex-col"> <div class="flex items-center justify-between"> <span>${version.name}</span> ${version.isLatest && renderTemplate`<span class="badge badge-xs badge-primary">最新</span>`} </div> <div class="text-xs opacity-70"> ${version.date && typeof version.date.toLocaleDateString === "function" ? version.date.toLocaleDateString() : "N/A"} </div> </div> </a> </li>`)} </ul> <div class="mt-4 flex flex-col gap-2"> ${currentVersion !== "latest" && renderTemplate`<a${addAttribute(`${basePath.replace(`/${currentVersion}/`, "/latest/")}`, "href")} class="link link-primary link-hover text-xs">
+最新バージョンを表示
+</a>`} <a${addAttribute(`${basePath.split("/").slice(0, 2).join("/")}/version-diff${basePath.split("/").slice(2).join("/")}`, "href")} class="link link-primary link-hover text-sm">
+バージョン間の差分を表示
+</a> </div> </div>`;
+}, "/home/runner/work/docs-astro/docs-astro/packages/versioning/src/components/VersionSelector.astro", void 0);
+
+function Diff() {}
+Diff.prototype = {
+  diff: function diff(oldString, newString) {
+    var _options$timeout;
+
+    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    var callback = options.callback;
+
+    if (typeof options === 'function') {
+      callback = options;
+      options = {};
+    }
+
+    this.options = options;
+    var self = this;
+
+    function done(value) {
+      if (callback) {
+        setTimeout(function () {
+          callback(undefined, value);
+        }, 0);
+        return true;
+      } else {
+        return value;
+      }
+    } // Allow subclasses to massage the input prior to running
+
+
+    oldString = this.castInput(oldString);
+    newString = this.castInput(newString);
+    oldString = this.removeEmpty(this.tokenize(oldString));
+    newString = this.removeEmpty(this.tokenize(newString));
+    var newLen = newString.length,
+        oldLen = oldString.length;
+    var editLength = 1;
+    var maxEditLength = newLen + oldLen;
+
+    if (options.maxEditLength) {
+      maxEditLength = Math.min(maxEditLength, options.maxEditLength);
+    }
+
+    var maxExecutionTime = (_options$timeout = options.timeout) !== null && _options$timeout !== void 0 ? _options$timeout : Infinity;
+    var abortAfterTimestamp = Date.now() + maxExecutionTime;
+    var bestPath = [{
+      oldPos: -1,
+      lastComponent: undefined
+    }]; // Seed editLength = 0, i.e. the content starts with the same values
+
+    var newPos = this.extractCommon(bestPath[0], newString, oldString, 0);
+
+    if (bestPath[0].oldPos + 1 >= oldLen && newPos + 1 >= newLen) {
+      // Identity per the equality and tokenizer
+      return done([{
+        value: this.join(newString),
+        count: newString.length
+      }]);
+    } // Once we hit the right edge of the edit graph on some diagonal k, we can
+    // definitely reach the end of the edit graph in no more than k edits, so
+    // there's no point in considering any moves to diagonal k+1 any more (from
+    // which we're guaranteed to need at least k+1 more edits).
+    // Similarly, once we've reached the bottom of the edit graph, there's no
+    // point considering moves to lower diagonals.
+    // We record this fact by setting minDiagonalToConsider and
+    // maxDiagonalToConsider to some finite value once we've hit the edge of
+    // the edit graph.
+    // This optimization is not faithful to the original algorithm presented in
+    // Myers's paper, which instead pointlessly extends D-paths off the end of
+    // the edit graph - see page 7 of Myers's paper which notes this point
+    // explicitly and illustrates it with a diagram. This has major performance
+    // implications for some common scenarios. For instance, to compute a diff
+    // where the new text simply appends d characters on the end of the
+    // original text of length n, the true Myers algorithm will take O(n+d^2)
+    // time while this optimization needs only O(n+d) time.
+
+
+    var minDiagonalToConsider = -Infinity,
+        maxDiagonalToConsider = Infinity; // Main worker method. checks all permutations of a given edit length for acceptance.
+
+    function execEditLength() {
+      for (var diagonalPath = Math.max(minDiagonalToConsider, -editLength); diagonalPath <= Math.min(maxDiagonalToConsider, editLength); diagonalPath += 2) {
+        var basePath = void 0;
+        var removePath = bestPath[diagonalPath - 1],
+            addPath = bestPath[diagonalPath + 1];
+
+        if (removePath) {
+          // No one else is going to attempt to use this value, clear it
+          bestPath[diagonalPath - 1] = undefined;
+        }
+
+        var canAdd = false;
+
+        if (addPath) {
+          // what newPos will be after we do an insertion:
+          var addPathNewPos = addPath.oldPos - diagonalPath;
+          canAdd = addPath && 0 <= addPathNewPos && addPathNewPos < newLen;
+        }
+
+        var canRemove = removePath && removePath.oldPos + 1 < oldLen;
+
+        if (!canAdd && !canRemove) {
+          // If this path is a terminal then prune
+          bestPath[diagonalPath] = undefined;
+          continue;
+        } // Select the diagonal that we want to branch from. We select the prior
+        // path whose position in the old string is the farthest from the origin
+        // and does not pass the bounds of the diff graph
+        // TODO: Remove the `+ 1` here to make behavior match Myers algorithm
+        //       and prefer to order removals before insertions.
+
+
+        if (!canRemove || canAdd && removePath.oldPos + 1 < addPath.oldPos) {
+          basePath = self.addToPath(addPath, true, undefined, 0);
+        } else {
+          basePath = self.addToPath(removePath, undefined, true, 1);
+        }
+
+        newPos = self.extractCommon(basePath, newString, oldString, diagonalPath);
+
+        if (basePath.oldPos + 1 >= oldLen && newPos + 1 >= newLen) {
+          // If we have hit the end of both strings, then we are done
+          return done(buildValues(self, basePath.lastComponent, newString, oldString, self.useLongestToken));
+        } else {
+          bestPath[diagonalPath] = basePath;
+
+          if (basePath.oldPos + 1 >= oldLen) {
+            maxDiagonalToConsider = Math.min(maxDiagonalToConsider, diagonalPath - 1);
+          }
+
+          if (newPos + 1 >= newLen) {
+            minDiagonalToConsider = Math.max(minDiagonalToConsider, diagonalPath + 1);
+          }
+        }
+      }
+
+      editLength++;
+    } // Performs the length of edit iteration. Is a bit fugly as this has to support the
+    // sync and async mode which is never fun. Loops over execEditLength until a value
+    // is produced, or until the edit length exceeds options.maxEditLength (if given),
+    // in which case it will return undefined.
+
+
+    if (callback) {
+      (function exec() {
+        setTimeout(function () {
+          if (editLength > maxEditLength || Date.now() > abortAfterTimestamp) {
+            return callback();
+          }
+
+          if (!execEditLength()) {
+            exec();
+          }
+        }, 0);
+      })();
+    } else {
+      while (editLength <= maxEditLength && Date.now() <= abortAfterTimestamp) {
+        var ret = execEditLength();
+
+        if (ret) {
+          return ret;
+        }
+      }
+    }
+  },
+  addToPath: function addToPath(path, added, removed, oldPosInc) {
+    var last = path.lastComponent;
+
+    if (last && last.added === added && last.removed === removed) {
+      return {
+        oldPos: path.oldPos + oldPosInc,
+        lastComponent: {
+          count: last.count + 1,
+          added: added,
+          removed: removed,
+          previousComponent: last.previousComponent
+        }
+      };
+    } else {
+      return {
+        oldPos: path.oldPos + oldPosInc,
+        lastComponent: {
+          count: 1,
+          added: added,
+          removed: removed,
+          previousComponent: last
+        }
+      };
+    }
+  },
+  extractCommon: function extractCommon(basePath, newString, oldString, diagonalPath) {
+    var newLen = newString.length,
+        oldLen = oldString.length,
+        oldPos = basePath.oldPos,
+        newPos = oldPos - diagonalPath,
+        commonCount = 0;
+
+    while (newPos + 1 < newLen && oldPos + 1 < oldLen && this.equals(newString[newPos + 1], oldString[oldPos + 1])) {
+      newPos++;
+      oldPos++;
+      commonCount++;
+    }
+
+    if (commonCount) {
+      basePath.lastComponent = {
+        count: commonCount,
+        previousComponent: basePath.lastComponent
+      };
+    }
+
+    basePath.oldPos = oldPos;
+    return newPos;
+  },
+  equals: function equals(left, right) {
+    if (this.options.comparator) {
+      return this.options.comparator(left, right);
+    } else {
+      return left === right || this.options.ignoreCase && left.toLowerCase() === right.toLowerCase();
+    }
+  },
+  removeEmpty: function removeEmpty(array) {
+    var ret = [];
+
+    for (var i = 0; i < array.length; i++) {
+      if (array[i]) {
+        ret.push(array[i]);
+      }
+    }
+
+    return ret;
+  },
+  castInput: function castInput(value) {
+    return value;
+  },
+  tokenize: function tokenize(value) {
+    return value.split('');
+  },
+  join: function join(chars) {
+    return chars.join('');
+  }
+};
+
+function buildValues(diff, lastComponent, newString, oldString, useLongestToken) {
+  // First we convert our linked list of components in reverse order to an
+  // array in the right order:
+  var components = [];
+  var nextComponent;
+
+  while (lastComponent) {
+    components.push(lastComponent);
+    nextComponent = lastComponent.previousComponent;
+    delete lastComponent.previousComponent;
+    lastComponent = nextComponent;
+  }
+
+  components.reverse();
+  var componentPos = 0,
+      componentLen = components.length,
+      newPos = 0,
+      oldPos = 0;
+
+  for (; componentPos < componentLen; componentPos++) {
+    var component = components[componentPos];
+
+    if (!component.removed) {
+      if (!component.added && useLongestToken) {
+        var value = newString.slice(newPos, newPos + component.count);
+        value = value.map(function (value, i) {
+          var oldValue = oldString[oldPos + i];
+          return oldValue.length > value.length ? oldValue : value;
+        });
+        component.value = diff.join(value);
+      } else {
+        component.value = diff.join(newString.slice(newPos, newPos + component.count));
+      }
+
+      newPos += component.count; // Common case
+
+      if (!component.added) {
+        oldPos += component.count;
+      }
+    } else {
+      component.value = diff.join(oldString.slice(oldPos, oldPos + component.count));
+      oldPos += component.count; // Reverse add and remove so removes are output first to match common convention
+      // The diffing algorithm is tied to add then remove output and this is the simplest
+      // route to get the desired output with minimal overhead.
+
+      if (componentPos && components[componentPos - 1].added) {
+        var tmp = components[componentPos - 1];
+        components[componentPos - 1] = components[componentPos];
+        components[componentPos] = tmp;
+      }
+    }
+  } // Special case handle for when one terminal is ignored (i.e. whitespace).
+  // For this case we merge the terminal into the prior string and drop the change.
+  // This is only available for string mode.
+
+
+  var finalComponent = components[componentLen - 1];
+
+  if (componentLen > 1 && typeof finalComponent.value === 'string' && (finalComponent.added || finalComponent.removed) && diff.equals('', finalComponent.value)) {
+    components[componentLen - 2].value += finalComponent.value;
+    components.pop();
+  }
+
+  return components;
+}
+
+//
+// Ranges and exceptions:
+// Latin-1 Supplement, 0080–00FF
+//  - U+00D7  × Multiplication sign
+//  - U+00F7  ÷ Division sign
+// Latin Extended-A, 0100–017F
+// Latin Extended-B, 0180–024F
+// IPA Extensions, 0250–02AF
+// Spacing Modifier Letters, 02B0–02FF
+//  - U+02C7  ˇ &#711;  Caron
+//  - U+02D8  ˘ &#728;  Breve
+//  - U+02D9  ˙ &#729;  Dot Above
+//  - U+02DA  ˚ &#730;  Ring Above
+//  - U+02DB  ˛ &#731;  Ogonek
+//  - U+02DC  ˜ &#732;  Small Tilde
+//  - U+02DD  ˝ &#733;  Double Acute Accent
+// Latin Extended Additional, 1E00–1EFF
+
+var extendedWordChars = /^[A-Za-z\xC0-\u02C6\u02C8-\u02D7\u02DE-\u02FF\u1E00-\u1EFF]+$/;
+var reWhitespace = /\S/;
+var wordDiff = new Diff();
+
+wordDiff.equals = function (left, right) {
+  if (this.options.ignoreCase) {
+    left = left.toLowerCase();
+    right = right.toLowerCase();
+  }
+
+  return left === right || this.options.ignoreWhitespace && !reWhitespace.test(left) && !reWhitespace.test(right);
+};
+
+wordDiff.tokenize = function (value) {
+  // All whitespace symbols except newline group into one token, each newline - in separate token
+  var tokens = value.split(/([^\S\r\n]+|[()[\]{}'"\r\n]|\b)/); // Join the boundary splits that we do not consider to be boundaries. This is primarily the extended Latin character set.
+
+  for (var i = 0; i < tokens.length - 1; i++) {
+    // If we have an empty string in the next field and we have only word chars before and after, merge
+    if (!tokens[i + 1] && tokens[i + 2] && extendedWordChars.test(tokens[i]) && extendedWordChars.test(tokens[i + 2])) {
+      tokens[i] += tokens[i + 2];
+      tokens.splice(i + 1, 2);
+      i--;
+    }
+  }
+
+  return tokens;
+};
+
+var lineDiff = new Diff();
+
+lineDiff.tokenize = function (value) {
+  if (this.options.stripTrailingCr) {
+    // remove one \r before \n to match GNU diff's --strip-trailing-cr behavior
+    value = value.replace(/\r\n/g, '\n');
+  }
+
+  var retLines = [],
+      linesAndNewlines = value.split(/(\n|\r\n)/); // Ignore the final empty token that occurs if the string ends with a new line
+
+  if (!linesAndNewlines[linesAndNewlines.length - 1]) {
+    linesAndNewlines.pop();
+  } // Merge the content and line separators into single tokens
+
+
+  for (var i = 0; i < linesAndNewlines.length; i++) {
+    var line = linesAndNewlines[i];
+
+    if (i % 2 && !this.options.newlineIsToken) {
+      retLines[retLines.length - 1] += line;
+    } else {
+      if (this.options.ignoreWhitespace) {
+        line = line.trim();
+      }
+
+      retLines.push(line);
+    }
+  }
+
+  return retLines;
+};
+
+function diffLines$1(oldStr, newStr, callback) {
+  return lineDiff.diff(oldStr, newStr, callback);
+}
+
+var sentenceDiff = new Diff();
+
+sentenceDiff.tokenize = function (value) {
+  return value.split(/(\S.+?[.!?])(?=\s+|$)/);
+};
+
+var cssDiff = new Diff();
+
+cssDiff.tokenize = function (value) {
+  return value.split(/([{}:;,]|\s+)/);
+};
+
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function (obj) {
+      return typeof obj;
+    };
+  } else {
+    _typeof = function (obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+  }
+
+  return _typeof(obj);
+}
+
+var objectPrototypeToString = Object.prototype.toString;
+var jsonDiff = new Diff(); // Discriminate between two lines of pretty-printed, serialized JSON where one of them has a
+// dangling comma and the other doesn't. Turns out including the dangling comma yields the nicest output:
+
+jsonDiff.useLongestToken = true;
+jsonDiff.tokenize = lineDiff.tokenize;
+
+jsonDiff.castInput = function (value) {
+  var _this$options = this.options,
+      undefinedReplacement = _this$options.undefinedReplacement,
+      _this$options$stringi = _this$options.stringifyReplacer,
+      stringifyReplacer = _this$options$stringi === void 0 ? function (k, v) {
+    return typeof v === 'undefined' ? undefinedReplacement : v;
+  } : _this$options$stringi;
+  return typeof value === 'string' ? value : JSON.stringify(canonicalize(value, null, null, stringifyReplacer), stringifyReplacer, '  ');
+};
+
+jsonDiff.equals = function (left, right) {
+  return Diff.prototype.equals.call(jsonDiff, left.replace(/,([\r\n])/g, '$1'), right.replace(/,([\r\n])/g, '$1'));
+};
+// object that is already on the "stack" of items being processed. Accepts an optional replacer
+
+function canonicalize(obj, stack, replacementStack, replacer, key) {
+  stack = stack || [];
+  replacementStack = replacementStack || [];
+
+  if (replacer) {
+    obj = replacer(key, obj);
+  }
+
+  var i;
+
+  for (i = 0; i < stack.length; i += 1) {
+    if (stack[i] === obj) {
+      return replacementStack[i];
+    }
+  }
+
+  var canonicalizedObj;
+
+  if ('[object Array]' === objectPrototypeToString.call(obj)) {
+    stack.push(obj);
+    canonicalizedObj = new Array(obj.length);
+    replacementStack.push(canonicalizedObj);
+
+    for (i = 0; i < obj.length; i += 1) {
+      canonicalizedObj[i] = canonicalize(obj[i], stack, replacementStack, replacer, key);
+    }
+
+    stack.pop();
+    replacementStack.pop();
+    return canonicalizedObj;
+  }
+
+  if (obj && obj.toJSON) {
+    obj = obj.toJSON();
+  }
+
+  if (_typeof(obj) === 'object' && obj !== null) {
+    stack.push(obj);
+    canonicalizedObj = {};
+    replacementStack.push(canonicalizedObj);
+
+    var sortedKeys = [],
+        _key;
+
+    for (_key in obj) {
+      /* istanbul ignore else */
+      if (obj.hasOwnProperty(_key)) {
+        sortedKeys.push(_key);
+      }
+    }
+
+    sortedKeys.sort();
+
+    for (i = 0; i < sortedKeys.length; i += 1) {
+      _key = sortedKeys[i];
+      canonicalizedObj[_key] = canonicalize(obj[_key], stack, replacementStack, replacer, _key);
+    }
+
+    stack.pop();
+    replacementStack.pop();
+  } else {
+    canonicalizedObj = obj;
+  }
+
+  return canonicalizedObj;
+}
+
+var arrayDiff = new Diff();
+
+arrayDiff.tokenize = function (value) {
+  return value.slice();
+};
+
+arrayDiff.join = arrayDiff.removeEmpty = function (value) {
+  return value;
+};
+
+function diffLines(oldText, newText, options = {}) {
+  const { ignoreWhitespace = false, context = 3 } = options;
+  const changes = diffLines$1(oldText, newText, {
+    ignoreWhitespace
+  });
+  let oldLineNumber = 1;
+  let newLineNumber = 1;
+  const results = [];
+  changes.forEach((change) => {
+    const lines = change.value.split("\n");
+    if (lines[lines.length - 1] === "") {
+      lines.pop();
+    }
+    lines.forEach((line) => {
+      const result = {
+        value: line,
+        lineNumber: {}
+      };
+      if (change.added) {
+        result.type = "added";
+        result.lineNumber.new = newLineNumber++;
+      } else if (change.removed) {
+        result.type = "removed";
+        result.lineNumber.old = oldLineNumber++;
+      } else {
+        result.type = "unchanged";
+        result.lineNumber.old = oldLineNumber++;
+        result.lineNumber.new = newLineNumber++;
+      }
+      results.push(result);
+    });
+  });
+  if (context !== void 0 && context >= 0) {
+    return limitDiffContext(results, context);
+  }
+  return results;
+}
+function limitDiffContext(results, context) {
+  if (context === Infinity) {
+    return results;
+  }
+  const limitedResults = [];
+  let inChangePart = false;
+  let unchangedCount = 0;
+  for (let i = 0; i < results.length; i++) {
+    const result = results[i];
+    if (result.type !== "unchanged") {
+      if (!inChangePart && i > 0) {
+        const startIdx = Math.max(0, i - context);
+        for (let j = startIdx; j < i; j++) {
+          limitedResults.push(results[j]);
+        }
+      }
+      limitedResults.push(result);
+      inChangePart = true;
+      unchangedCount = 0;
+    } else {
+      if (inChangePart) {
+        unchangedCount++;
+        if (unchangedCount <= context) {
+          limitedResults.push(result);
+        } else {
+          inChangePart = false;
+        }
+      }
+    }
+  }
+  return limitedResults;
+}
+function createHtmlDiff(diffResults) {
+  let html = "";
+  diffResults.forEach((result) => {
+    let className = "";
+    let linePrefix = "";
+    switch (result.type) {
+      case "added":
+        className = "diff-added";
+        linePrefix = "+";
+        break;
+      case "removed":
+        className = "diff-removed";
+        linePrefix = "-";
+        break;
+      case "unchanged":
+        className = "diff-unchanged";
+        linePrefix = " ";
+        break;
+    }
+    let lineNumberHtml = "";
+    if (result.lineNumber) {
+      const oldLineNum = result.lineNumber.old || "";
+      const newLineNum = result.lineNumber.new || "";
+      lineNumberHtml = `<span class="diff-line-number">${oldLineNum}</span><span class="diff-line-number">${newLineNum}</span>`;
+    }
+    html += `<div class="diff-line ${className}">${lineNumberHtml}<span class="diff-prefix">${linePrefix}</span><span class="diff-content">${escapeHtml(result.value)}</span></div>`;
+  });
+  return html;
+}
+function escapeHtml(text) {
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
+const $$Astro$2 = createAstro("https://dolphilia.github.io");
+const $$VersionDiff = createComponent(($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro$2, $$props, $$slots);
+  Astro2.self = $$VersionDiff;
+  const {
+    versions,
+    oldVersionId,
+    newVersionId,
+    oldContent,
+    newContent,
+    title = "\u30D0\u30FC\u30B8\u30E7\u30F3\u9593\u306E\u5DEE\u5206",
+    className = ""
+  } = Astro2.props;
+  const oldVersion = versions.find((v) => v.id === oldVersionId);
+  const newVersion = versions.find((v) => v.id === newVersionId);
+  const diffResults = diffLines(oldContent, newContent, { context: 3 });
+  const diffHtml = createHtmlDiff(diffResults);
+  const addedLines = diffResults.filter((r) => r.type === "added").length;
+  const removedLines = diffResults.filter((r) => r.type === "removed").length;
+  const unchangedLines = diffResults.filter((r) => r.type === "unchanged").length;
+  return renderTemplate`${maybeRenderHead()}<div${addAttribute(`version-diff ${className}`, "class")} data-astro-cid-c4vhpv52> ${renderComponent($$result, "Card", $$Card, { "data-astro-cid-c4vhpv52": true }, { "content": ($$result2) => renderTemplate`<div data-astro-cid-c4vhpv52> <div class="mb-4 flex items-center space-x-4 text-sm" data-astro-cid-c4vhpv52> <div class="flex items-center" data-astro-cid-c4vhpv52> <span class="inline-block w-3 h-3 mr-1 bg-red-500 rounded-full" data-astro-cid-c4vhpv52></span> <span data-astro-cid-c4vhpv52>削除: ${removedLines}行</span> </div> <div class="flex items-center" data-astro-cid-c4vhpv52> <span class="inline-block w-3 h-3 mr-1 bg-green-500 rounded-full" data-astro-cid-c4vhpv52></span> <span data-astro-cid-c4vhpv52>追加: ${addedLines}行</span> </div> <div class="flex items-center" data-astro-cid-c4vhpv52> <span class="inline-block w-3 h-3 mr-1 bg-gray-300 dark:bg-gray-600 rounded-full" data-astro-cid-c4vhpv52></span> <span data-astro-cid-c4vhpv52>変更なし: ${unchangedLines}行</span> </div> </div> <div class="version-diff-controls mb-4" data-astro-cid-c4vhpv52> <label class="inline-flex items-center mr-4" data-astro-cid-c4vhpv52> <input type="checkbox" id="toggle-context" class="form-checkbox h-4 w-4 text-primary-600" checked data-astro-cid-c4vhpv52> <span class="ml-2 text-sm text-gray-700 dark:text-gray-300" data-astro-cid-c4vhpv52>コンテキストを表示</span> </label> <label class="inline-flex items-center" data-astro-cid-c4vhpv52> <input type="checkbox" id="toggle-whitespace" class="form-checkbox h-4 w-4 text-primary-600" data-astro-cid-c4vhpv52> <span class="ml-2 text-sm text-gray-700 dark:text-gray-300" data-astro-cid-c4vhpv52>空白の変更を無視</span> </label> </div> <div class="overflow-x-auto" data-astro-cid-c4vhpv52> <div class="diff-container border border-gray-200 dark:border-gray-700 rounded-md font-mono text-sm" data-astro-cid-c4vhpv52> <div class="diff-header flex bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700" data-astro-cid-c4vhpv52> <div class="w-12 py-2 px-3 text-center text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-gray-700" data-astro-cid-c4vhpv52>旧</div> <div class="w-12 py-2 px-3 text-center text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-gray-700" data-astro-cid-c4vhpv52>新</div> <div class="py-2 px-3 text-gray-500 dark:text-gray-400" data-astro-cid-c4vhpv52>コード</div> </div> <div id="diff-content" class="diff-content" data-astro-cid-c4vhpv52> ${renderComponent($$result2, "Fragment", Fragment, {}, { "default": ($$result3) => renderTemplate`${unescapeHTML(diffHtml)}` })} </div> </div> </div> </div>`, "title": ($$result2) => renderTemplate`<div class="flex items-center justify-between" data-astro-cid-c4vhpv52> <h2 class="text-xl font-bold" data-astro-cid-c4vhpv52>${title}</h2> <div class="text-sm text-gray-500 dark:text-gray-400" data-astro-cid-c4vhpv52> ${oldVersion?.name || oldVersionId} → ${newVersion?.name || newVersionId} </div> </div>` })} </div>  ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/versioning/src/components/VersionDiff.astro?astro&type=script&index=0&lang.ts")}`;
+}, "/home/runner/work/docs-astro/docs-astro/packages/versioning/src/components/VersionDiff.astro", void 0);
+
+const $$Astro$1 = createAstro("https://dolphilia.github.io");
+const $$SearchBar = createComponent(($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro$1, $$props, $$slots);
+  Astro2.self = $$SearchBar;
+  const {
+    placeholder = "\u691C\u7D22...",
+    buttonText = "\u691C\u7D22",
+    className = ""
+  } = Astro2.props;
+  return renderTemplate`${maybeRenderHead()}<div${addAttribute(["search-bar", className], "class:list")}> <form id="search-form" class="join w-full"> <input type="text" id="search-input" name="q"${addAttribute(placeholder, "placeholder")} class="input input-bordered join-item w-full"> ${renderComponent($$result, "Button", $$Button, { "type": "submit", "variant": "primary", "class": "join-item rounded-l-none" }, { "default": ($$result2) => renderTemplate`${buttonText}` })} </form> </div> ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/search/src/components/SearchBar.astro?astro&type=script&index=0&lang.ts")}`;
+}, "/home/runner/work/docs-astro/docs-astro/packages/search/src/components/SearchBar.astro", void 0);
+
+const $$Astro = createAstro("https://dolphilia.github.io");
+const $$SearchResults = createComponent(async ($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
+  Astro2.self = $$SearchResults;
+  const { className = "" } = Astro2.props;
+  return renderTemplate`${maybeRenderHead()}<div id="search-results"${addAttribute(["search-results hidden", className], "class:list")}> <div class="flex justify-between items-center mb-4"> <h2 class="text-xl font-bold">検索結果</h2> <button id="close-search-results" class="btn btn-sm btn-circle btn-ghost"> <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg> </button> </div> <div id="search-results-container" class="space-y-4"> <!-- 検索結果がここに動的に挿入されます --> <div id="search-loading" class="py-8 text-center hidden"> <span class="loading loading-spinner loading-lg"></span> <p class="mt-2 opacity-70">検索中...</p> </div> <div id="search-empty" class="py-8 text-center hidden"> <div class="alert"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> <span>検索結果が見つかりませんでした。</span> </div> </div> </div> </div> ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/search/src/components/SearchResults.astro?astro&type=script&index=0&lang.ts")}`;
+}, "/home/runner/work/docs-astro/docs-astro/packages/search/src/components/SearchResults.astro", void 0);
+
+export { $$Alert as $, $$MainLayout as a, $$Button as b, $$SearchBar as c, $$VersionSelector as d, $$Card as e, defaultLocale as f, $$SearchResults as g, $$Sidebar as h, locales as l };

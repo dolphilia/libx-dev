@@ -1,0 +1,1 @@
+const t=document.getElementById("search-form"),s=document.getElementById("search-input");t&&t.addEventListener("submit",n=>{n.preventDefault();const e=s.value.trim();if(e){const c=new CustomEvent("docsearch",{detail:{query:e}});document.dispatchEvent(c)}});
