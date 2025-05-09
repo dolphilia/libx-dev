@@ -1,7 +1,7 @@
 // コンポーネントのエクスポート
-export * from './Button';
-export * from './Card';
-export * from './Navigation';
-export * from './Sidebar';
-export * from './Footer';
-export * from './Alert';
+export { default as Button } from './Button.astro';
+export { default as Card } from './Card.astro';
+export { default as Navigation } from './Navigation.astro';
+export { default as Sidebar } from './Sidebar.astro';
+export { default as Footer } from './Footer.astro';
+export { default as Alert } from './Alert.astro';

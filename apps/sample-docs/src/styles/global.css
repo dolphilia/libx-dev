@@ -1,6 +1,6 @@
 /* グローバルスタイル */
-@import '@docs/theme/src/css/variables.css';
-@import '@docs/theme/src/css/base.css';
+@import '@docs/theme/css/base.css';
+@import '@docs/theme/css/variables.css';
 
 /* Tailwind ディレクティブ */
 @tailwind base;

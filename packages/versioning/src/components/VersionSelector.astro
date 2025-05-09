@@ -17,11 +17,15 @@ const currentVersionObj = versions.find(v => v.id === currentVersion) || version
 // バージョンリストを日付順にソート
 const sortedVersions = [...versions].sort((a, b) => {
   // 最新バージョンは常に先頭
-  if (a.isLatest) return -1;
-  if (b.isLatest) return 1;
+  if (a.isLatest === true && b.isLatest !== true) return -1;
+  if (b.isLatest === true && a.isLatest !== true) return 1;
   
+  // date プロパティの存在を確認
+  const dateA = a.date ? a.date.getTime() : 0;
+  const dateB = b.date ? b.date.getTime() : 0;
+
   // 日付の新しい順
-  return b.date.getTime() - a.date.getTime();
+  return dateB - dateA;
 });
 ---
 
@@ -68,7 +72,7 @@ const sortedVersions = [...versions].sort((a, b) => {
               )}
             </div>
             <div class="text-xs text-gray-500 dark:text-gray-400">
-              {version.date.toLocaleDateString()}
+              {version.date && typeof version.date.toLocaleDateString === 'function' ? version.date.toLocaleDateString() : 'N/A'}
             </div>
           </a>
         ))}

@@ -1,6 +1,5 @@
 ---
-import { getLanguage } from '@docs/i18n/src/utils/getLanguage';
-import { translatePath } from '@docs/i18n/src/utils/translatePath';
+import { getLanguage, translatePath } from '@docs/i18n/utils';
 
 interface Props {
   currentLang: string;
@@ -23,8 +22,11 @@ const langNames: Record<string, string> = {
 // 現在のパスを取得
 const currentPath = Astro.url.pathname;
 
+import type { LocaleKey } from '@docs/i18n/locales';
+
 // 各言語のパスを生成
-const langPaths = supportedLangs.map(lang => {
+const langPaths = supportedLangs.map(langStr => {
+  const lang = langStr as LocaleKey; // string を LocaleKey として扱う
   return {
     lang,
     name: langNames[lang] || lang,

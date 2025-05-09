@@ -1,18 +1,20 @@
 ---
 import MainLayout from './MainLayout.astro';
-import { Sidebar } from '@docs/ui/src/components/Sidebar.astro';
-import { VersionSelector } from '@docs/versioning/src/components/VersionSelector.astro';
-import { SearchBar } from '@docs/search/src/components/SearchBar.astro';
+import { Sidebar } from '@docs/ui/components';
+import { VersionSelector } from '@docs/versioning/components';
+import { SearchBar } from '@docs/search/components';
 
-import { t as translate } from '@docs/i18n/src/utils/translate';
+import { translate } from '@docs/i18n/utils'; // t as translate ではなく、index.ts でのエイリアスに合わせる
+import type { LocaleKey } from '@docs/i18n/locales';
 
 interface Props {
   title: string;
-  lang: string;
+  lang: LocaleKey; // string から LocaleKey に変更
   version: string;
 }
 
-const { title, lang, version } = Astro.props;
+const { title, lang: langProp, version } = Astro.props;
+const lang = langProp as LocaleKey; // 型アサーション
 
 // サイドバー項目の定義
 const sidebarItems = [

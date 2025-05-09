@@ -4,7 +4,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
-    }
+      "@/*": ["src/*"],
+      "@docs/ui/*": ["../ui/src/*"], // @docs/ui へのパスを追加
+      "@docs/ui/components": ["../ui/src/components/index.ts"] // 具体的なエントリポイントも指定
+    },
+    "types": ["astro/client"]
   }
 }

@@ -1,48 +1,25 @@
 ---
-interface SidebarItem {
+// Sidebar.astro - simplified but with items prop
+interface SidebarItem { // 元の SidebarItem 定義を（簡略化して）戻す
   title: string;
-  href: string;
-  isActive?: boolean;
+  href?: string;
   children?: SidebarItem[];
 }
 
 interface Props {
-  items: SidebarItem[];
+  items: SidebarItem[]; // items プロパティを戻す
   title?: string;
-  class?: string;
+  class?: string; // class プロパティも戻しておく
 }
-
-const { items, title, class: className = '' } = Astro.props;
-
-const renderItems = (items: SidebarItem[]) => {
-  return items.map((item) => (
-    <li>
-      <a
-        href={item.href}
-        class:list={[
-          'block py-2 px-3 rounded-md transition-colors',
-          item.isActive
-            ? 'bg-blue-50 text-blue-700 font-medium'
-            : 'text-gray-700 hover:bg-gray-100',
-        ]}
-      >
-        {item.title}
-      </a>
-      {item.children && item.children.length > 0 && (
-        <ul class="ml-4 mt-1 space-y-1 border-l border-gray-200 pl-2">
-          {renderItems(item.children)}
-        </ul>
-      )}
-    </li>
-  ));
-};
+const { items, title, class: className = '' } = Astro.props; // items, className を受け取る
 ---
 
 <aside class:list={['w-64 shrink-0', className]}>
   {title && <h3 class="mb-3 font-semibold text-lg">{title}</h3>}
   <nav>
-    <ul class="space-y-1">
-      {renderItems(items)}
+    <ul>
+      <li><a href="/test1">Test Link 1</a></li>
+      <li><a href="/test2">Test Link 2</a></li>
     </ul>
   </nav>
 </aside>

@@ -8,7 +8,9 @@
     "./colors": "./src/colors.ts",
     "./typography": "./src/typography.ts",
     "./spacing": "./src/spacing.ts",
-    "./css": "./src/css/index.ts"
+    "./css": "./src/css/index.ts",
+    "./css/variables.css": "./src/css/variables.css",
+    "./css/base.css": "./src/css/base.css"
   },
   "scripts": {
     "lint": "eslint .",

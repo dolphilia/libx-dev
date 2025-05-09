@@ -4,7 +4,7 @@
   "compilerOptions": {
     "target": "ES2022",
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "allowJs": true,
     "removeComments": true,
     "esModuleInterop": true,
@@ -15,7 +15,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "types": ["astro/client"]
   },
   "exclude": ["node_modules", "dist"]
 }
