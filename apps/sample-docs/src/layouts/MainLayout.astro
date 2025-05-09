@@ -1,63 +1,9 @@
 ---
 import '../styles/global.css';
+import { Navigation } from '@docs/ui/src/components/Navigation.astro';
+import { Footer } from '@docs/ui/src/components/Footer.astro';
+import { LanguageSelector } from '../components/LanguageSelector.astro';
 ---
-
-<script>
-  // 簡易的なスタイルを追加
-  document.addEventListener('DOMContentLoaded', () => {
-    if (!document.getElementById('tailwind-style')) {
-      const style = document.createElement('style');
-      style.id = 'tailwind-style';
-      style.textContent = `
-        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
-        .flex { display: flex; }
-        .flex-col { flex-direction: column; }
-        .flex-row { flex-direction: row; }
-        .flex-grow { flex-grow: 1; }
-        .min-h-screen { min-height: 100vh; }
-        .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
-        .px-4 { padding-left: 1rem; padding-right: 1rem; }
-        .mx-auto { margin-left: auto; margin-right: auto; }
-        .text-center { text-align: center; }
-        .text-4xl { font-size: 2.25rem; }
-        .font-bold { font-weight: 700; }
-        .mb-4 { margin-bottom: 1rem; }
-        .mb-8 { margin-bottom: 2rem; }
-        .gap-4 { gap: 1rem; }
-        .justify-center { justify-content: center; }
-        .grid { display: grid; }
-        .md\\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        .lg\\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-        .gap-6 { gap: 1.5rem; }
-        .max-w-6xl { max-width: 72rem; }
-        .max-w-2xl { max-width: 42rem; }
-        .max-w-md { max-width: 28rem; }
-        .max-w-xs { max-width: 20rem; }
-        .text-xl { font-size: 1.25rem; }
-        .md\\:flex-row { flex-direction: row; }
-        .md\\:w-64 { width: 16rem; }
-        .w-full { width: 100%; }
-        .shrink-0 { flex-shrink: 0; }
-        .sticky { position: sticky; }
-        .top-4 { top: 1rem; }
-        .space-y-6 > * + * { margin-top: 1.5rem; }
-        .prose { max-width: 65ch; }
-        .max-w-none { max-width: none; }
-        
-        @media (min-width: 768px) {
-          .md\\:flex-row { flex-direction: row; }
-          .md\\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-          .md\\:w-64 { width: 16rem; }
-        }
-        
-        @media (min-width: 1024px) {
-          .lg\\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  });
-</script>
 
 interface Props {
   title: string;
@@ -66,6 +12,31 @@ interface Props {
 }
 
 const { title, lang, version = 'v1' } = Astro.props;
+
+// ナビゲーションアイテムの定義
+const navItems = [
+  { title: 'Home', href: `/${lang}` },
+  { title: 'Docs', href: `/${lang}/${version}/guide/getting-started` },
+  { title: 'API', href: `/${lang}/${version}/api` },
+];
+
+// フッターリンクグループの定義
+const linkGroups = [
+  {
+    title: 'Docs',
+    links: [
+      { title: 'Getting Started', href: `/${lang}/${version}/guide/getting-started` },
+      { title: 'API Reference', href: `/${lang}/${version}/api` }
+    ]
+  },
+  {
+    title: 'Community',
+    links: [
+      { title: 'GitHub', href: 'https://github.com' },
+      { title: 'Discord', href: 'https://discord.com' }
+    ]
+  }
+];
 ---
 
 <html lang={lang}>
@@ -77,38 +48,22 @@ const { title, lang, version = 'v1' } = Astro.props;
     <title>{title} | Docs</title>
   </head>
   <body class="min-h-screen flex flex-col">
-    <Navigation 
-      lang={lang}
-      version={version}
-      items={[
-        { text: 'Home', href: `/${lang}` },
-        { text: 'Docs', href: `/${lang}/${version}/guide/getting-started` },
-        { text: 'API', href: `/${lang}/${version}/api` },
-      ]}
-    />
+    <header class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+      <div class="container mx-auto px-4 py-4">
+        <div class="flex justify-between items-center">
+          <Navigation items={navItems} />
+          <LanguageSelector currentLang={lang} />
+        </div>
+      </div>
+    </header>
     
     <main class="flex-grow container mx-auto px-4 py-8">
       <slot />
     </main>
     
     <Footer 
-      lang={lang}
-      linkGroups={[
-        {
-          title: 'Docs',
-          links: [
-            { text: 'Getting Started', href: `/${lang}/${version}/guide/getting-started` },
-            { text: 'API Reference', href: `/${lang}/${version}/api` },
-          ]
-        },
-        {
-          title: 'Community',
-          links: [
-            { text: 'GitHub', href: 'https://github.com' },
-            { text: 'Discord', href: 'https://discord.com' },
-          ]
-        }
-      ]}
+      linkGroups={linkGroups}
+      copyright={`© ${new Date().getFullYear()} Docs Astro. All rights reserved.`}
     />
   </body>
 </html>

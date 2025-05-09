@@ -1,34 +1,10 @@
 ---
 import MainLayout from './MainLayout.astro';
-import { Sidebar } from '../../components/Sidebar.astro';
-import { VersionSelector } from '../../components/VersionSelector.astro';
-import { SearchBar } from '../../components/SearchBar.astro';
+import { Sidebar } from '@docs/ui/src/components/Sidebar.astro';
+import { VersionSelector } from '@docs/versioning/src/components/VersionSelector.astro';
+import { SearchBar } from '@docs/search/src/components/SearchBar.astro';
 
-// 簡易的な翻訳関数
-function translate(key: string, lang: string): string {
-  const translations: Record<string, Record<string, string>> = {
-    en: {
-      guide: 'Guide',
-      getting_started: 'Getting Started',
-      installation: 'Installation',
-      configuration: 'Configuration',
-      api: 'API',
-      overview: 'Overview',
-      reference: 'Reference'
-    },
-    ja: {
-      guide: 'ガイド',
-      getting_started: 'はじめに',
-      installation: 'インストール',
-      configuration: '設定',
-      api: 'API',
-      overview: '概要',
-      reference: 'リファレンス'
-    }
-  };
-  
-  return translations[lang]?.[key] || key;
-}
+import { t as translate } from '@docs/i18n/src/utils/translate';
 
 interface Props {
   title: string;
@@ -41,31 +17,34 @@ const { title, lang, version } = Astro.props;
 // サイドバー項目の定義
 const sidebarItems = [
   {
-    title: translate('guide', lang),
+    title: translate('docs.guide', lang),
     items: [
-      { text: translate('getting_started', lang), href: `/${lang}/${version}/guide/getting-started` },
-      { text: translate('installation', lang), href: `/${lang}/${version}/guide/installation` },
-      { text: translate('configuration', lang), href: `/${lang}/${version}/guide/configuration` },
+      { title: translate('docs.getting_started', lang), href: `/${lang}/${version}/guide/getting-started` },
+      { title: translate('docs.installation', lang), href: `/${lang}/${version}/guide/installation` },
+      { title: translate('docs.configuration', lang), href: `/${lang}/${version}/guide/configuration` },
     ]
   },
   {
-    title: translate('api', lang),
+    title: translate('navigation.api', lang),
     items: [
-      { text: translate('overview', lang), href: `/${lang}/${version}/api` },
-      { text: translate('reference', lang), href: `/${lang}/${version}/api/reference` },
+      { title: translate('docs.overview', lang), href: `/${lang}/${version}/api` },
+      { title: translate('docs.reference', lang), href: `/${lang}/${version}/api/reference` },
     ]
   }
 ];
 
 // 利用可能なバージョン
-const versions = ['v1', 'v2'];
+const versions = [
+  { id: 'v1', name: 'Version 1.0', date: new Date('2024-01-01'), isLatest: false },
+  { id: 'v2', name: 'Version 2.0', date: new Date('2025-01-01'), isLatest: true }
+];
 ---
 
 <MainLayout title={title} lang={lang} version={version}>
   <div class="flex flex-col md:flex-row gap-8">
     <aside class="w-full md:w-64 shrink-0">
       <div class="sticky top-4 space-y-6">
-        <SearchBar lang={lang} version={version} />
+        <SearchBar placeholder={translate('search.placeholder', lang)} />
         
         <VersionSelector 
           currentVersion={version}
@@ -73,7 +52,7 @@ const versions = ['v1', 'v2'];
           basePath={`/${lang}`}
         />
         
-        <Sidebar items={sidebarItems} />
+        <Sidebar items={sidebarItems} title={translate('docs.documentation', lang)} />
       </div>
     </aside>
     

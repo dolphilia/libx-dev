@@ -35,7 +35,17 @@
     "versions": "Versions",
     "language": "Language",
     "languages": "Languages",
-    "toc": "Table of Contents"
+    "toc": "Table of Contents",
+    "documentation": "Documentation",
+    "guide": "Guide",
+    "getting_started": "Getting Started",
+    "installation": "Installation",
+    "configuration": "Configuration",
+    "overview": "Overview",
+    "reference": "Reference",
+    "latest": "Latest",
+    "showLatest": "Show latest version",
+    "showDiff": "Show version differences"
   },
   "search": {
     "placeholder": "Search documentation...",
