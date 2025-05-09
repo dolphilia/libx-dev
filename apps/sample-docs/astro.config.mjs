@@ -25,6 +25,18 @@ export default defineConfig({
         '@docs/i18n': path.resolve(__dirname, '../../packages/i18n/src'),
       },
     },
+    build: {
+      // CSSとJSのパスを絶対パスに変更
+      assetsInlineLimit: 0,
+      cssCodeSplit: false,
+      rollupOptions: {
+        output: {
+          assetFileNames: 'assets/[name].[hash].[ext]',
+          chunkFileNames: 'assets/[name].[hash].js',
+          entryFileNames: 'assets/[name].[hash].js',
+        }
+      }
+    },
   },
   // 多言語対応の設定
   i18n: {
