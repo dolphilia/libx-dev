@@ -1,6 +1,7 @@
 {
   "name": "docs-astro",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "pnpm --filter=./apps/* dev",
     "build": "pnpm --filter=./apps/* build",
