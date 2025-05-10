@@ -6,14 +6,16 @@ interface Props {
   versions: Version[];
   currentVersion: string;
   basePath: string;
+  currentSlug?: string; // 追加
   className?: string;
   showVersionHistory?: boolean;
 }
 
-const { 
-  versions, 
-  currentVersion, 
-  basePath, 
+const {
+  versions,
+  currentVersion,
+  basePath,
+  currentSlug = '', // 追加
   className = '',
   showVersionHistory = false
 } = Astro.props;
@@ -61,12 +63,35 @@ function getVersionTag(version: Version): { text: string; type: 'latest' | 'stab
 
 // バージョン間のパス生成
 function getVersionPath(versionId: string): string {
-  return basePath.replace(`/${currentVersion}/`, `/${versionId}/`);
+  let path = `${basePath}/${versionId}`;
+  if (currentSlug) {
+    path += `/${currentSlug}`;
+  }
+  // パスの末尾がスラッシュでない場合、スラッシュを追加 (ただし、ベースパスのみの場合は除く)
+  if (!path.endsWith('/') && path !== basePath) {
+    path += '/';
+  }
+  return path;
 }
 
 // 差分表示用のパス生成
 function getDiffPath(): string {
-  return `${basePath.split('/').slice(0, 2).join('/')}/version-diff${basePath.split('/').slice(2).join('/')}`;
+  // TODO: 差分表示パスの生成ロジックを要確認
+  // 現在の実装では、言語直下に version-diff が来てしまう
+  // 例: /docs-astro/en/version-diff/v1/guide/getting-started
+  // 本来は /docs-astro/en/v1/version-diff/guide/getting-started のようになるべきか？
+  // もしくは、専用の差分表示ページ /docs-astro/version-diff?from=v1&to=v2&page=guide/getting-started
+  let diffBasePath = basePath;
+  // basePath からバージョン情報を除去する試み（より堅牢な方法が必要）
+  if (currentVersion && diffBasePath.includes(`/${currentVersion}`)) {
+    diffBasePath = diffBasePath.replace(`/${currentVersion}`, '');
+  } else {
+    // currentVersion が basePath に含まれない場合、単純に末尾に追加
+    // これは理想的ではないが、一旦のフォールバック
+  }
+  // スラッグの前に version-diff を挿入する
+  const slugPart = currentSlug ? `/${currentSlug}` : '';
+  return `${diffBasePath}/version-diff${slugPart}`;
 }
 ---
 

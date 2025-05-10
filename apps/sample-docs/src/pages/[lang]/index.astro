@@ -19,7 +19,7 @@ const latestVersion = versions.find(v => v.isLatest)?.id || 'v2';
 const baseUrl = docsConfig.baseUrl;
 ---
 
-<MainLayout title={translate('docs.documentation', lang)} lang={lang} showSearch={true} showVersionSelector={true}>
+<MainLayout title={translate('docs.documentation', lang)} lang={lang} showSearch={true} showVersionSelector={false}>
   <div class="hero-section">
     <h1 class="hero-title">{translate('docs.documentation', lang)}</h1>
     <p class="hero-description">

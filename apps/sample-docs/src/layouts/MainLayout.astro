@@ -144,10 +144,11 @@ if (hasSidebar) htmlDataAttributes['data-has-sidebar'] = '';
             <div class="sl-hidden md:sl-flex print:hidden right-group">
               {showVersionSelector && version && (
                 <div class="version-selector-container">
-                  <VersionSelector 
+                  <VersionSelector
                     currentVersion={version}
                     versions={versions}
                     basePath={`${BASE_URL}/${lang}`}
+                    currentSlug={Astro.url.pathname.split('/').slice(4).join('/')}
                   />
                 </div>
               )}
