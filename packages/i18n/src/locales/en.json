@@ -50,8 +50,15 @@
   "search": {
     "placeholder": "Search documentation...",
     "noResults": "No results found for '{query}'",
+    "oneResult": "1 result for '{query}'",
+    "manyResults": "{count} results for '{query}'",
     "searchResults": "Search Results",
-    "searchIn": "Search in"
+    "searchIn": "Search in",
+    "searching": "Searching...",
+    "closeSearch": "Close",
+    "error": "Search error",
+    "label": "Search",
+    "ctrlKey": "Ctrl"
   },
   "error": {
     "notFound": "Page not found",

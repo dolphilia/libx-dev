@@ -50,8 +50,15 @@
   "search": {
     "placeholder": "ドキュメントを検索...",
     "noResults": "'{query}'に一致する結果が見つかりませんでした",
+    "oneResult": "'{query}'の検索結果: 1件",
+    "manyResults": "'{query}'の検索結果: {count}件",
     "searchResults": "検索結果",
-    "searchIn": "検索対象"
+    "searchIn": "検索対象",
+    "searching": "検索中...",
+    "closeSearch": "閉じる",
+    "error": "検索エラー",
+    "label": "検索",
+    "ctrlKey": "Ctrl"
   },
   "error": {
     "notFound": "ページが見つかりません",
