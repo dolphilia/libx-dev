@@ -782,8 +782,15 @@ const $$Astro$5 = createAstro("https://dolphilia.github.io");
 const $$VersionSelector = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$5, $$props, $$slots);
   Astro2.self = $$VersionSelector;
-  const { versions, currentVersion, basePath, className = "" } = Astro2.props;
+  const {
+    versions,
+    currentVersion,
+    basePath,
+    className = "",
+    showVersionHistory = false
+  } = Astro2.props;
   const currentVersionObj = versions.find((v) => v.id === currentVersion) || versions[0];
+  const latestVersion = versions.find((v) => v.isLatest) || versions[0];
   const sortedVersions = [...versions].sort((a, b) => {
     if (a.isLatest === true && b.isLatest !== true) return -1;
     if (b.isLatest === true && a.isLatest !== true) return 1;
@@ -791,13 +798,39 @@ const $$VersionSelector = createComponent(($$result, $$props, $$slots) => {
     const dateB = b.date ? b.date.getTime() : 0;
     return dateB - dateA;
   });
-  return renderTemplate`${maybeRenderHead()}<div${addAttribute(["version-selector", className], "class:list")} data-astro-cid-kqgt6mya> ${renderComponent($$result, "Dropdown", $$Dropdown, { "label": currentVersionObj.name, "align": "right", "width": "14rem", "data-astro-cid-kqgt6mya": true }, { "default": ($$result2) => renderTemplate`${sortedVersions.map((version) => renderTemplate`${renderComponent($$result2, "DropdownItem", $$DropdownItem, { "label": version.name, "href": `${basePath.replace(`/${currentVersion}/`, `/${version.id}/`)}`, "isActive": version.id === currentVersion, "data-astro-cid-kqgt6mya": true }, { "after-label": ($$result3) => renderTemplate`${version.isLatest && renderTemplate`<span class="latest-badge" data-astro-cid-kqgt6mya>
-最新
-</span>`}`, "default": ($$result3) => renderTemplate`<div class="version-date" data-astro-cid-kqgt6mya> ${version.date && typeof version.date.toLocaleDateString === "function" ? version.date.toLocaleDateString() : "N/A"} </div> ` })}`)}` })} <div class="version-links" data-astro-cid-kqgt6mya> ${currentVersion !== "latest" && renderTemplate`<a${addAttribute(`${basePath.replace(`/${currentVersion}/`, "/latest/")}`, "href")} class="latest-link" data-astro-cid-kqgt6mya>
-最新バージョンを表示
-</a>`} <a${addAttribute(`${basePath.split("/").slice(0, 2).join("/")}/version-diff${basePath.split("/").slice(2).join("/")}`, "href")} class="diff-link" data-astro-cid-kqgt6mya>
+  function getVersionTag(version) {
+    if (version.isLatest) {
+      return { text: "\u6700\u65B0", type: "latest" };
+    }
+    if (version.tag) {
+      if (version.tag.includes("beta")) {
+        return { text: "\u30D9\u30FC\u30BF", type: "beta" };
+      } else if (version.tag.includes("alpha")) {
+        return { text: "\u30A2\u30EB\u30D5\u30A1", type: "alpha" };
+      } else if (version.tag.includes("dev")) {
+        return { text: "\u958B\u767A\u7248", type: "dev" };
+      } else if (version.tag.includes("stable")) {
+        return { text: "\u5B89\u5B9A\u7248", type: "stable" };
+      }
+    }
+    return null;
+  }
+  function getVersionPath(versionId) {
+    return basePath.replace(`/${currentVersion}/`, `/${versionId}/`);
+  }
+  function getDiffPath() {
+    return `${basePath.split("/").slice(0, 2).join("/")}/version-diff${basePath.split("/").slice(2).join("/")}`;
+  }
+  return renderTemplate`${maybeRenderHead()}<div${addAttribute(["version-selector", className], "class:list")} data-astro-cid-kqgt6mya> ${renderComponent($$result, "Dropdown", $$Dropdown, { "label": currentVersionObj.name, "align": "right", "width": "14rem", "class": "version-dropdown", "data-astro-cid-kqgt6mya": true }, { "after-items": ($$result2) => renderTemplate`<div class="version-dropdown-footer" data-astro-cid-kqgt6mya> <a${addAttribute(getDiffPath(), "href")} class="version-footer-link" data-astro-cid-kqgt6mya> ${renderComponent($$result2, "Icon", $$Icon, { "name": "code", "class": "version-footer-icon", "data-astro-cid-kqgt6mya": true })}
 バージョン間の差分を表示
-</a> </div> </div> `;
+</a> </div>`, "before-items": ($$result2) => renderTemplate`<div class="version-dropdown-header" data-astro-cid-kqgt6mya> ${renderComponent($$result2, "Icon", $$Icon, { "name": "document", "class": "version-icon", "data-astro-cid-kqgt6mya": true })} <span data-astro-cid-kqgt6mya>バージョンを選択</span> </div>`, "default": ($$result2) => renderTemplate`  ${sortedVersions.map((version) => {
+    const tag = getVersionTag(version);
+    return renderTemplate`${renderComponent($$result2, "DropdownItem", $$DropdownItem, { "label": version.name, "href": getVersionPath(version.id), "isActive": version.id === currentVersion, "data-astro-cid-kqgt6mya": true }, { "after-label": ($$result3) => renderTemplate`${tag && renderTemplate`<span${addAttribute(`version-badge version-badge-${tag.type}`, "class")} data-astro-cid-kqgt6mya> ${tag.text} </span>`}`, "default": ($$result3) => renderTemplate`<div class="version-meta" data-astro-cid-kqgt6mya> <div class="version-date" data-astro-cid-kqgt6mya> ${version.date && typeof version.date.toLocaleDateString === "function" ? version.date.toLocaleDateString("ja-JP", { year: "numeric", month: "short", day: "numeric" }) : "N/A"} </div> ${version.description && renderTemplate`<div class="version-description" data-astro-cid-kqgt6mya>${version.description}</div>`} </div> ` })}`;
+  })} ` })} <div class="version-info" data-astro-cid-kqgt6mya> ${currentVersion !== latestVersion.id && renderTemplate`<div class="version-alert" data-astro-cid-kqgt6mya> ${renderComponent($$result, "Icon", $$Icon, { "name": "warning", "class": "version-alert-icon", "data-astro-cid-kqgt6mya": true })} <span data-astro-cid-kqgt6mya>
+これは最新バージョンではありません。
+<a${addAttribute(getVersionPath(latestVersion.id), "href")} class="version-alert-link" data-astro-cid-kqgt6mya>
+最新バージョン（${latestVersion.name}）を表示
+</a> </span> </div>`} ${showVersionHistory && renderTemplate`<div class="version-history" data-astro-cid-kqgt6mya> <h3 class="version-history-title" data-astro-cid-kqgt6mya>バージョン履歴</h3> <ul class="version-history-list" data-astro-cid-kqgt6mya> ${sortedVersions.slice(0, 3).map((version) => renderTemplate`<li class="version-history-item" data-astro-cid-kqgt6mya> <a${addAttribute(getVersionPath(version.id), "href")}${addAttribute(["version-history-link", { "is-current": version.id === currentVersion }], "class:list")} data-astro-cid-kqgt6mya> <span class="version-history-name" data-astro-cid-kqgt6mya>${version.name}</span> ${getVersionTag(version) && renderTemplate`<span${addAttribute(`version-badge version-badge-${getVersionTag(version)?.type}`, "class")} data-astro-cid-kqgt6mya> ${getVersionTag(version)?.text} </span>`} <span class="version-history-date" data-astro-cid-kqgt6mya> ${version.date && typeof version.date.toLocaleDateString === "function" ? version.date.toLocaleDateString("ja-JP", { year: "numeric", month: "short", day: "numeric" }) : "N/A"} </span> </a> </li>`)} </ul> ${versions.length > 3 && renderTemplate`<a href="#" class="version-history-more" data-astro-cid-kqgt6mya>すべてのバージョンを表示</a>`} </div>`} </div> </div>  ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/versioning/src/components/VersionSelector.astro?astro&type=script&index=0&lang.ts")}`;
 }, "/home/runner/work/docs-astro/docs-astro/packages/versioning/src/components/VersionSelector.astro", void 0);
 
 function Diff() {}
@@ -1439,7 +1472,11 @@ const $$VersionDiff = createComponent(($$result, $$props, $$slots) => {
   const addedLines = diffResults.filter((r) => r.type === "added").length;
   const removedLines = diffResults.filter((r) => r.type === "removed").length;
   const unchangedLines = diffResults.filter((r) => r.type === "unchanged").length;
-  return renderTemplate`${maybeRenderHead()}<div${addAttribute(`version-diff ${className}`, "class")} data-astro-cid-c4vhpv52> ${renderComponent($$result, "Card", $$Card, { "data-astro-cid-c4vhpv52": true }, { "content": ($$result2) => renderTemplate`<div data-astro-cid-c4vhpv52> <div class="diff-stats" data-astro-cid-c4vhpv52> <div class="diff-stat-item" data-astro-cid-c4vhpv52> <span class="diff-stat-indicator diff-stat-removed" data-astro-cid-c4vhpv52></span> <span data-astro-cid-c4vhpv52>削除: ${removedLines}行</span> </div> <div class="diff-stat-item" data-astro-cid-c4vhpv52> <span class="diff-stat-indicator diff-stat-added" data-astro-cid-c4vhpv52></span> <span data-astro-cid-c4vhpv52>追加: ${addedLines}行</span> </div> <div class="diff-stat-item" data-astro-cid-c4vhpv52> <span class="diff-stat-indicator diff-stat-unchanged" data-astro-cid-c4vhpv52></span> <span data-astro-cid-c4vhpv52>変更なし: ${unchangedLines}行</span> </div> </div> <div class="version-diff-controls" data-astro-cid-c4vhpv52> <label class="diff-control-label" data-astro-cid-c4vhpv52> <input type="checkbox" id="toggle-context" class="diff-control-checkbox" checked data-astro-cid-c4vhpv52> <span class="diff-control-text" data-astro-cid-c4vhpv52>コンテキストを表示</span> </label> <label class="diff-control-label" data-astro-cid-c4vhpv52> <input type="checkbox" id="toggle-whitespace" class="diff-control-checkbox" data-astro-cid-c4vhpv52> <span class="diff-control-text" data-astro-cid-c4vhpv52>空白の変更を無視</span> </label> </div> <div class="diff-scroll-container" data-astro-cid-c4vhpv52> <div class="diff-container" data-astro-cid-c4vhpv52> <div class="diff-header" data-astro-cid-c4vhpv52> <div class="diff-header-old" data-astro-cid-c4vhpv52>旧</div> <div class="diff-header-new" data-astro-cid-c4vhpv52>新</div> <div class="diff-header-code" data-astro-cid-c4vhpv52>コード</div> </div> <div id="diff-content" class="diff-content" data-astro-cid-c4vhpv52> ${renderComponent($$result2, "Fragment", Fragment, {}, { "default": ($$result3) => renderTemplate`${unescapeHTML(diffHtml)}` })} </div> </div> </div> </div>`, "title": ($$result2) => renderTemplate`<div class="diff-title-container" data-astro-cid-c4vhpv52> <h2 class="diff-title" data-astro-cid-c4vhpv52>${title}</h2> <div class="diff-version-info" data-astro-cid-c4vhpv52> ${oldVersion?.name || oldVersionId} → ${newVersion?.name || newVersionId} </div> </div>` })} </div>   ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/versioning/src/components/VersionDiff.astro?astro&type=script&index=0&lang.ts")}`;
+  return renderTemplate`${maybeRenderHead()}<div${addAttribute(`version-diff ${className}`, "class")} data-astro-cid-c4vhpv52> ${renderComponent($$result, "Card", $$Card, { "data-astro-cid-c4vhpv52": true }, { "content": ($$result2) => renderTemplate`<div data-astro-cid-c4vhpv52> <div class="diff-stats" data-astro-cid-c4vhpv52> <div class="diff-stat-item diff-stat-removed" data-astro-cid-c4vhpv52> ${renderComponent($$result2, "Icon", $$Icon, { "name": "error", "class": "diff-stat-icon", "data-astro-cid-c4vhpv52": true })} <span data-astro-cid-c4vhpv52>削除: ${removedLines}行</span> </div> <div class="diff-stat-item diff-stat-added" data-astro-cid-c4vhpv52> ${renderComponent($$result2, "Icon", $$Icon, { "name": "check", "class": "diff-stat-icon", "data-astro-cid-c4vhpv52": true })} <span data-astro-cid-c4vhpv52>追加: ${addedLines}行</span> </div> <div class="diff-stat-item diff-stat-unchanged" data-astro-cid-c4vhpv52> ${renderComponent($$result2, "Icon", $$Icon, { "name": "check", "class": "diff-stat-icon", "data-astro-cid-c4vhpv52": true })} <span data-astro-cid-c4vhpv52>変更なし: ${unchangedLines}行</span> </div> </div> <div class="version-diff-controls" data-astro-cid-c4vhpv52> <div class="diff-control-group" data-astro-cid-c4vhpv52> <label class="diff-control-label" data-astro-cid-c4vhpv52> <input type="checkbox" id="toggle-context" class="diff-control-checkbox" checked data-astro-cid-c4vhpv52> <span class="diff-control-text" data-astro-cid-c4vhpv52>コンテキストを表示</span> </label> <label class="diff-control-label" data-astro-cid-c4vhpv52> <input type="checkbox" id="toggle-whitespace" class="diff-control-checkbox" data-astro-cid-c4vhpv52> <span class="diff-control-text" data-astro-cid-c4vhpv52>空白の変更を無視</span> </label> </div> <div class="diff-version-meta" data-astro-cid-c4vhpv52> ${oldVersion?.date && newVersion?.date && renderTemplate`<div class="diff-date-range" data-astro-cid-c4vhpv52> ${renderComponent($$result2, "Icon", $$Icon, { "name": "document", "class": "diff-meta-icon", "data-astro-cid-c4vhpv52": true })} <span data-astro-cid-c4vhpv52> ${oldVersion.date.toLocaleDateString("ja-JP", { year: "numeric", month: "short", day: "numeric" })}
+から
+${newVersion.date.toLocaleDateString("ja-JP", { year: "numeric", month: "short", day: "numeric" })}
+まで
+</span> </div>`} </div> </div> <div class="diff-scroll-container" data-astro-cid-c4vhpv52> <div class="diff-container" data-astro-cid-c4vhpv52> <div class="diff-header" data-astro-cid-c4vhpv52> <div class="diff-header-old" data-astro-cid-c4vhpv52>旧</div> <div class="diff-header-new" data-astro-cid-c4vhpv52>新</div> <div class="diff-header-code" data-astro-cid-c4vhpv52>コード</div> </div> <div id="diff-content" class="diff-content" data-astro-cid-c4vhpv52> ${renderComponent($$result2, "Fragment", Fragment, {}, { "default": ($$result3) => renderTemplate`${unescapeHTML(diffHtml)}` })} </div> </div> </div> </div>`, "title": ($$result2) => renderTemplate`<div class="diff-title-container" data-astro-cid-c4vhpv52> <h2 class="diff-title" data-astro-cid-c4vhpv52> ${renderComponent($$result2, "Icon", $$Icon, { "name": "code", "class": "diff-title-icon", "data-astro-cid-c4vhpv52": true })} ${title} </h2> <div class="diff-version-info" data-astro-cid-c4vhpv52> <span class="diff-version-old" data-astro-cid-c4vhpv52>${oldVersion?.name || oldVersionId}</span> ${renderComponent($$result2, "Icon", $$Icon, { "name": "right-arrow", "class": "diff-arrow-icon", "data-astro-cid-c4vhpv52": true })} <span class="diff-version-new" data-astro-cid-c4vhpv52>${newVersion?.name || newVersionId}</span> </div> </div>` })} </div>   ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/versioning/src/components/VersionDiff.astro?astro&type=script&index=0&lang.ts")}`;
 }, "/home/runner/work/docs-astro/docs-astro/packages/versioning/src/components/VersionDiff.astro", void 0);
 
 const common$1 = {"home":"Home","search":"Search","menu":"Menu","close":"Close","back":"Back","next":"Next","previous":"Previous","loading":"Loading...","error":"Error","success":"Success","warning":"Warning","info":"Information"};
@@ -1583,23 +1620,52 @@ const $$LanguageSelector = createComponent(($$result, $$props, $$slots) => {
     en: "English",
     ja: "\u65E5\u672C\u8A9E"
   };
+  const LANG_FLAGS = {
+    en: "\u{1F1FA}\u{1F1F8}",
+    ja: "\u{1F1EF}\u{1F1F5}"
+  };
   const {
     currentLang,
+    currentVersion,
     supportedLangs = ["en", "ja"],
-    className = ""
+    className = "",
+    showLanguageInfo = false
   } = Astro2.props;
   const currentPath = Astro2.url.pathname;
   const relativePath = currentPath.replace(BASE_URL, "");
+  const versionMatch = relativePath.match(/\/([^\/]+)\/v([^\/]+)/);
+  const hasVersionInPath = !!versionMatch;
   const langPaths = supportedLangs.map((langCode) => {
     const localeKey = langCode;
+    let translatedPath = switchLanguage(relativePath, localeKey);
+    if (hasVersionInPath && currentVersion) {
+      translatedPath = translatedPath.replace(/\/([^\/]+)\/v([^\/]+)/, `/${langCode}/v${versionMatch[2]}`);
+    }
     return {
       lang: langCode,
       name: LANG_NAMES[langCode] || langCode,
-      path: `${BASE_URL}${switchLanguage(relativePath, localeKey)}`,
+      flag: LANG_FLAGS[langCode] || "\u{1F310}",
+      path: `${BASE_URL}${translatedPath}`,
       isCurrent: langCode === currentLang
     };
   });
-  return renderTemplate`${renderComponent($$result, "Dropdown", $$Dropdown, { "label": LANG_NAMES[currentLang] || currentLang, "align": "right", "width": "14rem", "class": className }, { "default": ($$result2) => renderTemplate`${langPaths.map((pathInfo) => renderTemplate`${renderComponent($$result2, "DropdownItem", $$DropdownItem, { "label": pathInfo.name, "href": pathInfo.path, "isActive": pathInfo.isCurrent })}`)}` })}`;
+  const languageInfo = {
+    en: {
+      nativeName: "English",
+      englishName: "English",
+      direction: "ltr",
+      description: "Official documentation in English"
+    },
+    ja: {
+      nativeName: "\u65E5\u672C\u8A9E",
+      englishName: "Japanese",
+      direction: "ltr",
+      description: "\u65E5\u672C\u8A9E\u306E\u516C\u5F0F\u30C9\u30AD\u30E5\u30E1\u30F3\u30C8"
+    }
+  };
+  return renderTemplate`${maybeRenderHead()}<div class="language-selector-container" data-astro-cid-ltpqzwiw> ${renderComponent($$result, "Dropdown", $$Dropdown, { "label": LANG_NAMES[currentLang] || currentLang, "align": "right", "width": "14rem", "class": `language-dropdown ${className}`, "data-astro-cid-ltpqzwiw": true }, { "after-items": ($$result2) => renderTemplate`<div class="language-dropdown-footer" data-astro-cid-ltpqzwiw> <a href="https://github.com/dolphilia/docs-astro/tree/main/packages/i18n" class="language-footer-link" target="_blank" rel="noopener" data-astro-cid-ltpqzwiw> ${renderComponent($$result2, "Icon", $$Icon, { "name": "external-link", "class": "language-footer-icon", "data-astro-cid-ltpqzwiw": true })}
+翻訳に貢献する
+</a> </div>`, "before-items": ($$result2) => renderTemplate`<div class="language-dropdown-header" data-astro-cid-ltpqzwiw> ${renderComponent($$result2, "Icon", $$Icon, { "name": "document", "class": "language-icon", "data-astro-cid-ltpqzwiw": true })} <span data-astro-cid-ltpqzwiw>言語を選択</span> </div>`, "default": ($$result2) => renderTemplate`  ${langPaths.map((pathInfo) => renderTemplate`${renderComponent($$result2, "DropdownItem", $$DropdownItem, { "label": pathInfo.name, "href": pathInfo.path, "isActive": pathInfo.isCurrent, "data-astro-cid-ltpqzwiw": true }, { "after-label": ($$result3) => renderTemplate`${pathInfo.isCurrent && renderTemplate`<span class="language-current-badge" data-astro-cid-ltpqzwiw>現在</span>`}`, "before-label": ($$result3) => renderTemplate`<span class="language-flag" data-astro-cid-ltpqzwiw>${pathInfo.flag}</span>`, "default": ($$result3) => renderTemplate`  ${showLanguageInfo && languageInfo[pathInfo.lang] && renderTemplate`<div class="language-info" data-astro-cid-ltpqzwiw> <div class="language-native-name" data-astro-cid-ltpqzwiw> ${languageInfo[pathInfo.lang].nativeName} ${languageInfo[pathInfo.lang].nativeName !== languageInfo[pathInfo.lang].englishName && renderTemplate`<span class="language-english-name" data-astro-cid-ltpqzwiw>(${languageInfo[pathInfo.lang].englishName})</span>`} </div> <div class="language-description" data-astro-cid-ltpqzwiw>${languageInfo[pathInfo.lang].description}</div> </div>`}` })}`)} ` })} ${showLanguageInfo && renderTemplate`<div class="language-info-panel" data-astro-cid-ltpqzwiw> <h3 class="language-info-title" data-astro-cid-ltpqzwiw>現在の言語: ${LANG_NAMES[currentLang]}</h3> <div class="language-info-content" data-astro-cid-ltpqzwiw> <p class="language-info-description" data-astro-cid-ltpqzwiw> ${languageInfo[currentLang]?.description || ""} </p> <div class="language-info-meta" data-astro-cid-ltpqzwiw> <div class="language-info-item" data-astro-cid-ltpqzwiw> <span class="language-info-label" data-astro-cid-ltpqzwiw>ネイティブ名:</span> <span class="language-info-value" data-astro-cid-ltpqzwiw>${languageInfo[currentLang]?.nativeName || currentLang}</span> </div> <div class="language-info-item" data-astro-cid-ltpqzwiw> <span class="language-info-label" data-astro-cid-ltpqzwiw>英語名:</span> <span class="language-info-value" data-astro-cid-ltpqzwiw>${languageInfo[currentLang]?.englishName || currentLang}</span> </div> <div class="language-info-item" data-astro-cid-ltpqzwiw> <span class="language-info-label" data-astro-cid-ltpqzwiw>テキスト方向:</span> <span class="language-info-value" data-astro-cid-ltpqzwiw>${languageInfo[currentLang]?.direction === "rtl" ? "\u53F3\u304B\u3089\u5DE6" : "\u5DE6\u304B\u3089\u53F3"}</span> </div> </div> </div> </div>`} </div>  ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/apps/sample-docs/src/components/LanguageSelector.astro?astro&type=script&index=0&lang.ts")}`;
 }, "/home/runner/work/docs-astro/docs-astro/apps/sample-docs/src/components/LanguageSelector.astro", void 0);
 
 const versions = [
