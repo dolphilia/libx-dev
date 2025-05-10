@@ -9,6 +9,8 @@ export interface Version {
   name: string;
   date: Date;
   isLatest?: boolean;
+  tag?: string;
+  description?: string;
 }
 
 export interface VersionedDocument {

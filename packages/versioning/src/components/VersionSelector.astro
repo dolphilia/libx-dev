@@ -1,5 +1,5 @@
 ---
-import { Dropdown, DropdownItem } from '@docs/ui/components';
+import { Dropdown, DropdownItem, Icon } from '@docs/ui/components';
 import type { Version } from '../utils/version';
 
 interface Props {
@@ -7,12 +7,22 @@ interface Props {
   currentVersion: string;
   basePath: string;
   className?: string;
+  showVersionHistory?: boolean;
 }
 
-const { versions, currentVersion, basePath, className = '' } = Astro.props;
+const { 
+  versions, 
+  currentVersion, 
+  basePath, 
+  className = '',
+  showVersionHistory = false
+} = Astro.props;
 
 // 現在のバージョンオブジェクトを取得
 const currentVersionObj = versions.find(v => v.id === currentVersion) || versions[0];
+
+// 最新バージョンを取得
+const latestVersion = versions.find(v => v.isLatest) || versions[0];
 
 // バージョンリストを日付順にソート
 const sortedVersions = [...versions].sort((a, b) => {
@@ -27,6 +37,37 @@ const sortedVersions = [...versions].sort((a, b) => {
   // 日付の新しい順
   return dateB - dateA;
 });
+
+// バージョンタグの取得
+function getVersionTag(version: Version): { text: string; type: 'latest' | 'stable' | 'beta' | 'alpha' | 'dev' } | null {
+  if (version.isLatest) {
+    return { text: '最新', type: 'latest' };
+  }
+  
+  if (version.tag) {
+    if (version.tag.includes('beta')) {
+      return { text: 'ベータ', type: 'beta' };
+    } else if (version.tag.includes('alpha')) {
+      return { text: 'アルファ', type: 'alpha' };
+    } else if (version.tag.includes('dev')) {
+      return { text: '開発版', type: 'dev' };
+    } else if (version.tag.includes('stable')) {
+      return { text: '安定版', type: 'stable' };
+    }
+  }
+  
+  return null;
+}
+
+// バージョン間のパス生成
+function getVersionPath(versionId: string): string {
+  return basePath.replace(`/${currentVersion}/`, `/${versionId}/`);
+}
+
+// 差分表示用のパス生成
+function getDiffPath(): string {
+  return `${basePath.split('/').slice(0, 2).join('/')}/version-diff${basePath.split('/').slice(2).join('/')}`;
+}
 ---
 
 <div class:list={['version-selector', className]}>
@@ -34,41 +75,88 @@ const sortedVersions = [...versions].sort((a, b) => {
     label={currentVersionObj.name}
     align="right"
     width="14rem"
+    class="version-dropdown"
   >
-    {sortedVersions.map(version => (
-      <DropdownItem 
-        label={version.name}
-        href={`${basePath.replace(`/${currentVersion}/`, `/${version.id}/`)}`}
-        isActive={version.id === currentVersion}
-      >
-        {version.isLatest && (
-          <span slot="after-label" class="latest-badge">
-            最新
-          </span>
-        )}
-        <div class="version-date">
-          {version.date && typeof version.date.toLocaleDateString === 'function' ? version.date.toLocaleDateString() : 'N/A'}
-        </div>
-      </DropdownItem>
-    ))}
+    <div class="version-dropdown-header" slot="before-items">
+      <Icon name="document" class="version-icon" />
+      <span>バージョンを選択</span>
+    </div>
+    
+    {sortedVersions.map(version => {
+      const tag = getVersionTag(version);
+      return (
+        <DropdownItem 
+          label={version.name}
+          href={getVersionPath(version.id)}
+          isActive={version.id === currentVersion}
+        >
+          {tag && (
+            <span slot="after-label" class={`version-badge version-badge-${tag.type}`}>
+              {tag.text}
+            </span>
+          )}
+          <div class="version-meta">
+            <div class="version-date">
+              {version.date && typeof version.date.toLocaleDateString === 'function' 
+                ? version.date.toLocaleDateString('ja-JP', { year: 'numeric', month: 'short', day: 'numeric' }) 
+                : 'N/A'}
+            </div>
+            {version.description && (
+              <div class="version-description">{version.description}</div>
+            )}
+          </div>
+        </DropdownItem>
+      );
+    })}
+    
+    <div class="version-dropdown-footer" slot="after-items">
+      <a href={getDiffPath()} class="version-footer-link">
+        <Icon name="code" class="version-footer-icon" />
+        バージョン間の差分を表示
+      </a>
+    </div>
   </Dropdown>
   
-  <div class="version-links">
-    {currentVersion !== 'latest' && (
-      <a
-        href={`${basePath.replace(`/${currentVersion}/`, '/latest/')}`}
-        class="latest-link"
-      >
-        最新バージョンを表示
-      </a>
+  <div class="version-info">
+    {currentVersion !== latestVersion.id && (
+      <div class="version-alert">
+        <Icon name="warning" class="version-alert-icon" />
+        <span>
+          これは最新バージョンではありません。
+          <a href={getVersionPath(latestVersion.id)} class="version-alert-link">
+            最新バージョン（{latestVersion.name}）を表示
+          </a>
+        </span>
+      </div>
     )}
     
-    <a
-      href={`${basePath.split('/').slice(0, 2).join('/')}/version-diff${basePath.split('/').slice(2).join('/')}`}
-      class="diff-link"
-    >
-      バージョン間の差分を表示
-    </a>
+    {showVersionHistory && (
+      <div class="version-history">
+        <h3 class="version-history-title">バージョン履歴</h3>
+        <ul class="version-history-list">
+          {sortedVersions.slice(0, 3).map(version => (
+            <li class="version-history-item">
+              <a href={getVersionPath(version.id)} class:list={['version-history-link', { 'is-current': version.id === currentVersion }]}>
+                <span class="version-history-name">{version.name}</span>
+                {getVersionTag(version) && (
+                  <span class={`version-badge version-badge-${getVersionTag(version)?.type}`}>
+                    {getVersionTag(version)?.text}
+                  </span>
+                )}
+                <span class="version-history-date">
+                  {version.date && typeof version.date.toLocaleDateString === 'function' 
+                    ? version.date.toLocaleDateString('ja-JP', { year: 'numeric', month: 'short', day: 'numeric' }) 
+                    : 'N/A'}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        {versions.length > 3 && (
+          <a href="#" class="version-history-more">すべてのバージョンを表示</a>
+        )}
+      </div>
+    )}
   </div>
 </div>
 
@@ -77,48 +165,349 @@ const sortedVersions = [...versions].sort((a, b) => {
     display: inline-block;
   }
 
-  .latest-badge {
+  .version-dropdown {
+    position: relative;
+  }
+
+  .version-dropdown-header {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--sl-color-gray-5, #6b7280);
+    border-bottom: 1px solid var(--sl-color-gray-2, #e5e7eb);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .version-dropdown-footer {
+    padding: 0.5rem 1rem;
+    border-top: 1px solid var(--sl-color-gray-2, #e5e7eb);
+  }
+
+  .version-footer-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--sl-color-primary, #2563eb);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .version-footer-link:hover {
+    color: var(--sl-color-primary-dark, #1d4ed8);
+    text-decoration: underline;
+  }
+
+  .version-footer-icon {
+    font-size: 1rem;
+    color: currentColor;
+  }
+
+  .version-icon {
+    font-size: 1rem;
+    color: var(--sl-color-gray-4, #9ca3af);
+  }
+
+  .version-badge {
     display: inline-flex;
     align-items: center;
-    margin-left: 0.5rem;
-    padding: 0.125rem 0.625rem;
+    padding: 0.125rem 0.5rem;
     border-radius: 9999px;
     font-size: 0.75rem;
     font-weight: 500;
-    background-color: #dbeafe;
-    color: #1e40af;
+    line-height: 1;
+  }
+
+  .version-badge-latest {
+    background-color: var(--sl-color-green-2, #dcfce7);
+    color: var(--sl-color-green-9, #166534);
+  }
+
+  .version-badge-stable {
+    background-color: var(--sl-color-blue-2, #dbeafe);
+    color: var(--sl-color-blue-9, #1e40af);
+  }
+
+  .version-badge-beta {
+    background-color: var(--sl-color-purple-2, #f3e8ff);
+    color: var(--sl-color-purple-9, #6b21a8);
+  }
+
+  .version-badge-alpha {
+    background-color: var(--sl-color-orange-2, #ffedd5);
+    color: var(--sl-color-orange-9, #9a3412);
+  }
+
+  .version-badge-dev {
+    background-color: var(--sl-color-gray-2, #f3f4f6);
+    color: var(--sl-color-gray-9, #111827);
+  }
+
+  .version-meta {
+    margin-top: 0.25rem;
   }
 
   .version-date {
     font-size: 0.75rem;
-    color: #6b7280;
-    margin-top: 0.25rem;
+    color: var(--sl-color-gray-5, #6b7280);
   }
 
-  .version-links {
-    margin-top: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .latest-link {
+  .version-description {
     font-size: 0.75rem;
-    color: #2563eb;
+    color: var(--sl-color-gray-6, #4b5563);
+    margin-top: 0.125rem;
+    line-height: 1.25;
   }
 
-  .latest-link:hover {
-    color: #1d4ed8;
-    text-decoration: underline;
+  .version-info {
+    margin-top: 1rem;
   }
 
-  .diff-link {
+  .version-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    background-color: var(--sl-color-amber-2, #fef3c7);
+    color: var(--sl-color-amber-9, #92400e);
     font-size: 0.875rem;
-    color: #2563eb;
+    line-height: 1.4;
+    margin-bottom: 1rem;
   }
 
-  .diff-link:hover {
-    color: #1d4ed8;
+  .version-alert-icon {
+    flex-shrink: 0;
+    margin-top: 0.125rem;
+    font-size: 1rem;
+  }
+
+  .version-alert-link {
+    color: var(--sl-color-amber-9, #92400e);
     text-decoration: underline;
+    font-weight: 500;
+  }
+
+  .version-alert-link:hover {
+    color: var(--sl-color-amber-10, #78350f);
+  }
+
+  .version-history {
+    border: 1px solid var(--sl-color-gray-2, #e5e7eb);
+    border-radius: 0.375rem;
+    overflow: hidden;
+  }
+
+  .version-history-title {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    background-color: var(--sl-color-gray-1, #f9fafb);
+    border-bottom: 1px solid var(--sl-color-gray-2, #e5e7eb);
+    margin: 0;
+  }
+
+  .version-history-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .version-history-item {
+    border-bottom: 1px solid var(--sl-color-gray-2, #e5e7eb);
+  }
+
+  .version-history-item:last-child {
+    border-bottom: none;
+  }
+
+  .version-history-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    color: var(--sl-color-gray-9, #111827);
+    transition: background-color 0.2s ease;
+  }
+
+  .version-history-link:hover {
+    background-color: var(--sl-color-gray-1, #f9fafb);
+  }
+
+  .version-history-link.is-current {
+    background-color: var(--sl-color-blue-1, #eff6ff);
+  }
+
+  .version-history-name {
+    font-weight: 500;
+    margin-right: 0.5rem;
+  }
+
+  .version-history-date {
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: var(--sl-color-gray-5, #6b7280);
+  }
+
+  .version-history-more {
+    display: block;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--sl-color-primary, #2563eb);
+    background-color: var(--sl-color-gray-1, #f9fafb);
+    text-decoration: none;
+    border-top: 1px solid var(--sl-color-gray-2, #e5e7eb);
+    transition: background-color 0.2s ease;
+  }
+
+  .version-history-more:hover {
+    background-color: var(--sl-color-gray-2, #e5e7eb);
+    text-decoration: underline;
+  }
+
+  /* ダークモード対応 */
+  :global(.dark) .version-dropdown-header,
+  :global(.dark) .version-dropdown-footer {
+    border-color: var(--sl-color-gray-7, #374151);
+  }
+
+  :global(.dark) .version-badge-latest {
+    background-color: rgba(22, 101, 52, 0.2);
+    color: var(--sl-color-green-3, #86efac);
+  }
+
+  :global(.dark) .version-badge-stable {
+    background-color: rgba(30, 64, 175, 0.2);
+    color: var(--sl-color-blue-3, #93c5fd);
+  }
+
+  :global(.dark) .version-badge-beta {
+    background-color: rgba(107, 33, 168, 0.2);
+    color: var(--sl-color-purple-3, #d8b4fe);
+  }
+
+  :global(.dark) .version-badge-alpha {
+    background-color: rgba(154, 52, 18, 0.2);
+    color: var(--sl-color-orange-3, #fdba74);
+  }
+
+  :global(.dark) .version-badge-dev {
+    background-color: rgba(17, 24, 39, 0.2);
+    color: var(--sl-color-gray-3, #d1d5db);
+  }
+
+  :global(.dark) .version-date,
+  :global(.dark) .version-icon {
+    color: var(--sl-color-gray-4, #9ca3af);
+  }
+
+  :global(.dark) .version-description {
+    color: var(--sl-color-gray-3, #d1d5db);
+  }
+
+  :global(.dark) .version-history {
+    border-color: var(--sl-color-gray-7, #374151);
+  }
+
+  :global(.dark) .version-history-title {
+    background-color: var(--sl-color-gray-8, #1f2937);
+    border-color: var(--sl-color-gray-7, #374151);
+  }
+
+  :global(.dark) .version-history-item {
+    border-color: var(--sl-color-gray-7, #374151);
+  }
+
+  :global(.dark) .version-history-link {
+    color: var(--sl-color-gray-1, #f9fafb);
+  }
+
+  :global(.dark) .version-history-link:hover {
+    background-color: var(--sl-color-gray-8, #1f2937);
+  }
+
+  :global(.dark) .version-history-link.is-current {
+    background-color: rgba(30, 64, 175, 0.15);
+  }
+
+  :global(.dark) .version-history-more {
+    background-color: var(--sl-color-gray-8, #1f2937);
+    border-color: var(--sl-color-gray-7, #374151);
+  }
+
+  :global(.dark) .version-history-more:hover {
+    background-color: var(--sl-color-gray-7, #374151);
+  }
+
+  :global(.dark) .version-alert {
+    background-color: rgba(146, 64, 14, 0.15);
+    color: var(--sl-color-amber-3, #fcd34d);
+  }
+
+  :global(.dark) .version-alert-link {
+    color: var(--sl-color-amber-3, #fcd34d);
+  }
+
+  :global(.dark) .version-alert-link:hover {
+    color: var(--sl-color-amber-2, #fef3c7);
+  }
+
+  /* アニメーション */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-0.25rem); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .version-dropdown :global(.dropdown-content) {
+    animation: fadeIn 0.2s ease-out;
   }
 </style>
+
+<script>
+  // バージョン履歴の「すべてのバージョンを表示」リンクの処理
+  document.addEventListener('DOMContentLoaded', () => {
+    const moreLinks = document.querySelectorAll('.version-history-more');
+    moreLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const historyList = link.closest('.version-history')?.querySelector('.version-history-list');
+        const historyItems = historyList?.querySelectorAll('.version-history-item');
+        
+        if (historyItems) {
+          historyItems.forEach(item => {
+            if (item.classList.contains('hidden')) {
+              item.classList.remove('hidden');
+            }
+          });
+          
+          // 「すべて表示」リンクを「折りたたむ」に変更
+          link.textContent = '折りたたむ';
+          link.classList.add('is-expanded');
+          
+          // クリック時の動作を切り替え
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (link.classList.contains('is-expanded')) {
+              // 3つ目以降を非表示
+              Array.from(historyItems).slice(3).forEach(item => {
+                item.classList.add('hidden');
+              });
+              link.textContent = 'すべてのバージョンを表示';
+              link.classList.remove('is-expanded');
+            } else {
+              // すべて表示
+              historyItems.forEach(item => {
+                item.classList.remove('hidden');
+              });
+              link.textContent = '折りたたむ';
+              link.classList.add('is-expanded');
+            }
+          }, { once: true });
+        }
+      });
+    });
+  });
+</script>
