@@ -1,5 +1,5 @@
 import { c as createVNode, F as Fragment, _ as __astro_tag_component__ } from './astro/server.CcJSDeTb.js';
-import { $ as $$Icon } from './MainLayout.B4XBwN1S.js';
+import { $ as $$Icon } from './MainLayout.D2l3WEbg.js';
 
 const frontmatter = {
   "title": "Icons Example",
