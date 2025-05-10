@@ -679,7 +679,7 @@ const common$1 = {"home":"Home","search":"Search","menu":"Menu","close":"Close",
 const navigation$1 = {"docs":"Documentation","api":"API","examples":"Examples","blog":"Blog","community":"Community","github":"GitHub"};
 const footer$1 = {"copyright":"© {year} All rights reserved.","terms":"Terms of Service","privacy":"Privacy Policy","contact":"Contact Us"};
 const docs$1 = {"onThisPage":"On this page","editThisPage":"Edit this page","lastUpdated":"Last updated on {date}","version":"Version","versions":"Versions","language":"Language","languages":"Languages","toc":"Table of Contents","documentation":"Documentation","guide":"Guide","getting_started":"Getting Started","installation":"Installation","configuration":"Configuration","overview":"Overview","reference":"Reference","latest":"Latest","showLatest":"Show latest version","showDiff":"Show version differences"};
-const search$1 = {"placeholder":"Search documentation...","noResults":"No results found for '{query}'","searchResults":"Search Results","searchIn":"Search in"};
+const search$1 = {"placeholder":"Search documentation...","noResults":"No results found for '{query}'","oneResult":"1 result for '{query}'","manyResults":"{count} results for '{query}'","searchResults":"Search Results","searchIn":"Search in","searching":"Searching...","closeSearch":"Close","error":"Search error","label":"Search","ctrlKey":"Ctrl"};
 const error$1 = {"notFound":"Page not found","notFoundDescription":"The page you are looking for does not exist or has been moved.","goHome":"Go to Home"};
 const en = {
   common: common$1,
@@ -694,7 +694,7 @@ const common = {"home":"ホーム","search":"検索","menu":"メニュー","clos
 const navigation = {"docs":"ドキュメント","api":"API","examples":"サンプル","blog":"ブログ","community":"コミュニティ","github":"GitHub"};
 const footer = {"copyright":"© {year} All rights reserved.","terms":"利用規約","privacy":"プライバシーポリシー","contact":"お問い合わせ"};
 const docs = {"onThisPage":"このページの内容","editThisPage":"このページを編集","lastUpdated":"最終更新日: {date}","version":"バージョン","versions":"バージョン一覧","language":"言語","languages":"言語一覧","toc":"目次","documentation":"ドキュメント","guide":"ガイド","getting_started":"はじめに","installation":"インストール","configuration":"設定","overview":"概要","reference":"リファレンス","latest":"最新","showLatest":"最新バージョンを表示","showDiff":"バージョン間の差分を表示"};
-const search = {"placeholder":"ドキュメントを検索...","noResults":"'{query}'に一致する結果が見つかりませんでした","searchResults":"検索結果","searchIn":"検索対象"};
+const search = {"placeholder":"ドキュメントを検索...","noResults":"'{query}'に一致する結果が見つかりませんでした","oneResult":"'{query}'の検索結果: 1件","manyResults":"'{query}'の検索結果: {count}件","searchResults":"検索結果","searchIn":"検索対象","searching":"検索中...","closeSearch":"閉じる","error":"検索エラー","label":"検索","ctrlKey":"Ctrl"};
 const error = {"notFound":"ページが見つかりません","notFoundDescription":"お探しのページは存在しないか、移動された可能性があります。","goHome":"ホームに戻る"};
 const ja = {
   common,

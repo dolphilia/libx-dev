@@ -1,1 +1,0 @@
-const n=document.getElementById("search-form"),c=document.getElementById("search-input");n&&n.addEventListener("submit",e=>{e.preventDefault();const t=c.value.trim();if(t){const s=new CustomEvent("docsearch",{detail:{query:t}});document.dispatchEvent(s)}});document.addEventListener("keydown",e=>{(e.metaKey||e.ctrlKey)&&e.key==="k"&&(e.preventDefault(),c.focus())});

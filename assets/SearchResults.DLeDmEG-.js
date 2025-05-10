@@ -1,6 +1,6 @@
 import { a as createAstro, b as createComponent, m as maybeRenderHead, f as addAttribute, e as renderScript, d as renderTemplate, r as renderComponent, F as Fragment, u as unescapeHTML } from './astro/server.DgO4_T66.js';
 /* empty css                         */
-import { d as $$Card, t } from './versions.config.Bep6EMDs.js';
+import { d as $$Card, t, $ as $$Icon } from './versions.config.BbiHKAp6.js';
 
 const $$Astro$3 = createAstro("https://dolphilia.github.io");
 const $$VersionSelector = createComponent(($$result, $$props, $$slots) => {
@@ -672,15 +672,27 @@ const $$VersionDiff = createComponent(($$result, $$props, $$slots) => {
 }, "/home/runner/work/docs-astro/docs-astro/packages/versioning/src/components/VersionDiff.astro", void 0);
 
 const $$Astro$1 = createAstro("https://dolphilia.github.io");
-const $$SearchBar = createComponent(($$result, $$props, $$slots) => {
+const $$SearchBar = createComponent(async ($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$1, $$props, $$slots);
   Astro2.self = $$SearchBar;
   const {
-    placeholder = "\u691C\u7D22...",
-    buttonText = "\u691C\u7D22",
+    lang,
+    placeholder = t("search.placeholder", lang),
     className = ""
   } = Astro2.props;
-  return renderTemplate`${maybeRenderHead()}<div${addAttribute(["search-bar", className], "class:list")} data-astro-cid-perfc75k> <form id="search-form" data-astro-cid-perfc75k> <div class="search-container" data-astro-cid-perfc75k> <div class="search-icon" data-astro-cid-perfc75k> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-astro-cid-perfc75k> <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor" data-astro-cid-perfc75k> <circle cx="11" cy="11" r="8" data-astro-cid-perfc75k></circle> <path d="m21 21-4.3-4.3" data-astro-cid-perfc75k></path> </g> </svg> </div> <input type="search" id="search-input" name="q"${addAttribute(placeholder, "placeholder")} data-astro-cid-perfc75k> <div class="shortcut-hint" data-astro-cid-perfc75k> <div class="shortcut-keys" data-astro-cid-perfc75k> <span class="key" data-astro-cid-perfc75k>⌘</span> <span class="key" data-astro-cid-perfc75k>K</span> </div> </div> </div> </form> </div>  ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/search/src/components/SearchBar.astro?astro&type=script&index=0&lang.ts")}`;
+  const translations = {
+    placeholder,
+    searchResults: t("search.searchResults", lang),
+    noResults: t("search.noResults", lang),
+    oneResult: t("search.oneResult", lang),
+    manyResults: t("search.manyResults", lang),
+    searching: t("search.searching", lang),
+    closeSearch: t("search.closeSearch", lang),
+    searchError: t("search.error", lang),
+    ctrlKey: "Ctrl",
+    slashKey: "/"
+  };
+  return renderTemplate`${renderComponent($$result, "site-search", "site-search", { "class": className, "data-translations": JSON.stringify(translations), "data-astro-cid-perfc75k": true }, { "default": () => renderTemplate` ${maybeRenderHead()}<button data-open-modal disabled${addAttribute(t("search.label", lang), "aria-label")} aria-keyshortcuts="Control+K /" data-astro-cid-perfc75k> ${renderComponent($$result, "Icon", $$Icon, { "name": "search", "data-astro-cid-perfc75k": true })} <span class="search-text" data-astro-cid-perfc75k>${t("search.label", lang)}</span> <kbd class="shortcut-hint" data-astro-cid-perfc75k> <kbd class="platform-key" data-astro-cid-perfc75k>${translations.ctrlKey}</kbd><kbd data-astro-cid-perfc75k>K</kbd> </kbd> </button> <dialog style="padding:0"${addAttribute(t("search.label", lang), "aria-label")} data-astro-cid-perfc75k> <div class="dialog-frame" data-astro-cid-perfc75k> <div class="dialog-header" data-astro-cid-perfc75k> <div class="search-input-container" data-astro-cid-perfc75k> ${renderComponent($$result, "Icon", $$Icon, { "name": "search", "class": "search-icon", "data-astro-cid-perfc75k": true })} <input type="search" id="search-input"${addAttribute(placeholder, "placeholder")} autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-astro-cid-perfc75k> </div> <button data-close-modal class="close-button" data-astro-cid-perfc75k> ${renderComponent($$result, "Icon", $$Icon, { "name": "close", "data-astro-cid-perfc75k": true })} <span class="sr-only" data-astro-cid-perfc75k>${translations.closeSearch}</span> </button> </div> <div class="search-results" data-astro-cid-perfc75k> <div id="search-results-container" class="results-container" data-astro-cid-perfc75k> <div class="loading-indicator" data-astro-cid-perfc75k> <div class="loading-spinner" data-astro-cid-perfc75k></div> <p data-astro-cid-perfc75k>${t("search.searching", lang)}</p> </div> </div> </div> </div> </dialog> ` })}  ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/search/src/components/SearchBar.astro?astro&type=script&index=0&lang.ts")} `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/search/src/components/SearchBar.astro", void 0);
 
 const $$Astro = createAstro("https://dolphilia.github.io");
