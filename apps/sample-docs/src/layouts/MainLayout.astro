@@ -76,23 +76,7 @@ const currentYear = new Date().getFullYear();
     <meta name="description" content="Documentation site built with Astro" />
     <title>{title} | Docs</title>
     
-    <!-- フォールバックスタイル定義 -->
-    <style is:global>
-      body {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        margin: 0;
-        padding: 0;
-        line-height: 1.5;
-        color: #333;
-      }
-      
-      @media (prefers-color-scheme: dark) {
-        body {
-          color: #f0f0f0;
-          background-color: #121212;
-        }
-      }
-    </style>
+
   </head>
   <body>
     <header>
@@ -120,6 +104,22 @@ const currentYear = new Date().getFullYear();
 </html>
 
 <style>
+  /* フォールバックスタイル定義 */
+  :global(body) {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+    color: #333;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    :global(body) {
+      color: #f0f0f0;
+      background-color: #121212;
+    }
+  }
+
   body {
     min-height: 100vh;
     display: flex;
