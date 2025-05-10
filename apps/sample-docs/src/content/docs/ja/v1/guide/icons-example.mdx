@@ -17,13 +17,22 @@ import { Icon } from '@docs/ui';
 
 ## アイコンのサイズ
 
-アイコンにはさまざまなサイズを指定できます：
+アイコンにはさまざまな単位でサイズを指定できます：
 
 <div style="display: flex; align-items: center; gap: 1rem;">
-  <Icon name="info" size={16} />
-  <Icon name="info" size={24} />
-  <Icon name="info" size={32} />
-  <Icon name="info" size={48} />
+  <Icon name="info" size="1em" />
+  <Icon name="info" size="1.5em" />
+  <Icon name="info" size="2em" />
+  <Icon name="info" size="3em" />
+</div>
+
+ピクセル単位でも指定できます：
+
+<div style="display: flex; align-items: center; gap: 1rem;">
+  <Icon name="info" size="16px" />
+  <Icon name="info" size="24px" />
+  <Icon name="info" size="32px" />
+  <Icon name="info" size="48px" />
 </div>
 
 ## アイコンの色
@@ -34,65 +43,131 @@ import { Icon } from '@docs/ui';
   <Icon name="info" color="#007bff" />
   <Icon name="warning" color="#ffc107" />
   <Icon name="error" color="#dc3545" />
-  <Icon name="check" color="#28a745" />
+  <Icon name="success" color="#28a745" />
 </div>
 
 ## 利用可能なアイコン
 
 利用可能なすべてのアイコン：
 
+### 基本アイコン
+
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
   <div style="display: flex; flex-direction: column; align-items: center;">
     <Icon name="info" />
-    <span>info</span>
+    <span>info（情報）</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
     <Icon name="setting" />
-    <span>setting</span>
+    <span>setting（設定）</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
     <Icon name="warning" />
-    <span>warning</span>
+    <span>warning（警告）</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
     <Icon name="error" />
-    <span>error</span>
+    <span>error（エラー）</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
     <Icon name="check" />
-    <span>check</span>
+    <span>check（チェック）</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
     <Icon name="code" />
-    <span>code</span>
+    <span>code（コード）</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
     <Icon name="document" />
-    <span>document</span>
+    <span>document（文書）</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
     <Icon name="search" />
-    <span>search</span>
+    <span>search（検索）</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
     <Icon name="close" />
-    <span>close</span>
+    <span>close（閉じる）</span>
   </div>
+</div>
+
+### ナビゲーションアイコン
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
   <div style="display: flex; flex-direction: column; align-items: center;">
     <Icon name="right-arrow" />
-    <span>right-arrow</span>
+    <span>right-arrow（右矢印）</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
     <Icon name="left-arrow" />
-    <span>left-arrow</span>
+    <span>left-arrow（左矢印）</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
     <Icon name="down-arrow" />
-    <span>down-arrow</span>
+    <span>down-arrow（下矢印）</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
     <Icon name="up-arrow" />
-    <span>up-arrow</span>
+    <span>up-arrow（上矢印）</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="external-link" />
+    <span>external-link（外部リンク）</span>
+  </div>
+</div>
+
+### アクションアイコン
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="edit" />
+    <span>edit（編集）</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="copy" />
+    <span>copy（コピー）</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="download" />
+    <span>download（ダウンロード）</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="success" />
+    <span>success（成功）</span>
+  </div>
+</div>
+
+### ドキュメントアイコン
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="note" />
+    <span>note（ノート）</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="tip" />
+    <span>tip（ヒント）</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="important" />
+    <span>important（重要）</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="caution" />
+    <span>caution（注意）</span>
+  </div>
+</div>
+
+### テーマアイコン
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="light" />
+    <span>light（ライト）</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="dark" />
+    <span>dark（ダーク）</span>
   </div>
 </div>
 
@@ -106,10 +181,12 @@ import { Icon } from '@docs/ui';
 
 これはエラー <Icon name="error" color="#dc3545" /> メッセージです。
 
-これは成功 <Icon name="check" color="#28a745" /> メッセージです。
+これは成功 <Icon name="success" color="#28a745" /> メッセージです。
 
 ## アクセシビリティ
 
 アクセシビリティのために、アイコンにラベルを提供できます：
 
 <Icon name="info" label="情報" />
+
+ラベルが提供されると、アイコンはスクリーンリーダーによって読み上げられます。ラベルがない場合、アイコンは装飾的なものとして扱われ、スクリーンリーダーによって無視されます。

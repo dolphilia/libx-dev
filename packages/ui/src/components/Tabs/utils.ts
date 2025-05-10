@@ -112,11 +112,46 @@ export function getTabsScript(): string {
               this.switchTab(e.currentTarget, i);
             }
           });
+
+          // キーボードイベント - Starlightスタイルのキーボードナビゲーション
+          tab.addEventListener('keydown', (e) => {
+            const index = this.tabs.indexOf(e.currentTarget);
+            // ユーザーが押したキーに基づいて新しいタブのインデックスを計算
+            const nextIndex =
+              e.key === 'ArrowLeft'
+                ? index - 1
+                : e.key === 'ArrowRight'
+                  ? index + 1
+                  : e.key === 'Home'
+                    ? 0
+                    : e.key === 'End'
+                      ? this.tabs.length - 1
+                      : null;
+            if (nextIndex === null) return;
+            if (this.tabs[nextIndex]) {
+              e.preventDefault();
+              this.switchTab(this.tabs[nextIndex], nextIndex);
+            }
+          });
         });
+
+        // ローカルストレージから同期タブの状態を復元
+        if (this.syncKey && typeof localStorage !== 'undefined') {
+          const storedLabel = localStorage.getItem('docs-synced-tabs__' + this.syncKey);
+          if (storedLabel) {
+            const tabIndex = this.tabs.findIndex(tab => tab.textContent.trim() === storedLabel);
+            if (tabIndex > 0) { // 最初のタブ以外の場合のみ切り替え
+              this.switchTab(this.tabs[tabIndex], tabIndex, false);
+            }
+          }
+        }
       }
 
       switchTab(newTab, index, shouldSync = true) {
         if (!newTab) return;
+
+        // タブ切り替え前のスクロール位置を保存
+        const previousTabsOffset = shouldSync ? this.getBoundingClientRect().top : 0;
 
         // すべてのタブを非アクティブにし、すべてのパネルを非表示にする
         this.tabs.forEach((tab) => {
@@ -133,9 +168,15 @@ export function getTabsScript(): string {
         newTab.removeAttribute('tabindex');
         newTab.setAttribute('aria-selected', 'true');
         
-        if (shouldSync && this.syncKey) {
+        if (shouldSync) {
           newTab.focus();
           this.syncTabs(newTab);
+          
+          // スクロール位置を調整して、タブ切り替え後も同じ位置に表示されるようにする
+          window.scrollTo({
+            top: window.scrollY + (this.getBoundingClientRect().top - previousTabsOffset),
+            behavior: 'instant'
+          });
         }
       }
 

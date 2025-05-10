@@ -2,6 +2,7 @@
 /**
  * アイコンコンポーネント
  * 指定されたアイコン名に対応するSVGを表示します
+ * Starlightスタイルに合わせて改善
  */
 import { Icons, type IconName } from './Icons';
 
@@ -12,10 +13,10 @@ interface Props {
   name: IconName;
   
   /**
-   * アイコンのサイズ（ピクセル単位）
-   * @default 24
+   * アイコンのサイズ（em、rem、pxなどの単位で指定可能）
+   * @default "1em"
    */
-  size?: number;
+  size?: string;
   
   /**
    * アイコンの色
@@ -25,6 +26,8 @@ interface Props {
   
   /**
    * アイコンのラベル（アクセシビリティ用）
+   * 指定すると、スクリーンリーダーでラベルが読み上げられます
+   * 指定しない場合、アイコンは装飾的なものとして扱われます
    */
   label?: string;
   
@@ -36,33 +39,39 @@ interface Props {
 
 const { 
   name, 
-  size = 24, 
-  color = 'currentColor',
+  size = '1em', 
+  color,
   label,
   class: className = '',
 } = Astro.props;
 
-const iconPath = Icons[name];
+// ラベルが指定されている場合はaria-labelを設定、そうでない場合はaria-hiddenを設定
+const a11yAttrs = label ? ({ 'aria-label': label } as const) : ({ 'aria-hidden': 'true' } as const);
+
+/**
+ * フラグメントを使用して余分な空白を避ける
+ * @see https://github.com/withastro/compiler/issues/1003
+ */
 ---
 
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  width={size}
-  height={size}
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke={color}
-  stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
-  aria-hidden={!label}
-  aria-label={label}
-  class={`icon ${className}`}
-  set:html={iconPath}
-/>
+<>
+  <svg
+    {...a11yAttrs}
+    class={`icon ${className}`}
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    set:html={Icons[name]}
+  />
+</>
 
-<style>
+<style define:vars={{ 'icon-color': color, 'icon-size': size }}>
   .icon {
+    color: var(--icon-color, currentColor);
+    font-size: var(--icon-size, 1em);
+    width: 1em;
+    height: 1em;
     vertical-align: middle;
     overflow: visible;
   }

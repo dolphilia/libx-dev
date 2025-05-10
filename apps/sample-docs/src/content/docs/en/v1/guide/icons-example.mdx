@@ -17,13 +17,22 @@ Here's a basic example of using the Icon component:
 
 ## Icon Sizes
 
-You can specify different sizes for icons:
+You can specify different sizes for icons using various units:
 
 <div style="display: flex; align-items: center; gap: 1rem;">
-  <Icon name="info" size={16} />
-  <Icon name="info" size={24} />
-  <Icon name="info" size={32} />
-  <Icon name="info" size={48} />
+  <Icon name="info" size="1em" />
+  <Icon name="info" size="1.5em" />
+  <Icon name="info" size="2em" />
+  <Icon name="info" size="3em" />
+</div>
+
+You can also use pixel units:
+
+<div style="display: flex; align-items: center; gap: 1rem;">
+  <Icon name="info" size="16px" />
+  <Icon name="info" size="24px" />
+  <Icon name="info" size="32px" />
+  <Icon name="info" size="48px" />
 </div>
 
 ## Icon Colors
@@ -34,12 +43,14 @@ You can customize the color of icons:
   <Icon name="info" color="#007bff" />
   <Icon name="warning" color="#ffc107" />
   <Icon name="error" color="#dc3545" />
-  <Icon name="check" color="#28a745" />
+  <Icon name="success" color="#28a745" />
 </div>
 
 ## Available Icons
 
 Here are all the available icons:
+
+### Basic Icons
 
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
   <div style="display: flex; flex-direction: column; align-items: center;">
@@ -78,6 +89,11 @@ Here are all the available icons:
     <Icon name="close" />
     <span>close</span>
   </div>
+</div>
+
+### Navigation Icons
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
   <div style="display: flex; flex-direction: column; align-items: center;">
     <Icon name="right-arrow" />
     <span>right-arrow</span>
@@ -94,6 +110,65 @@ Here are all the available icons:
     <Icon name="up-arrow" />
     <span>up-arrow</span>
   </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="external-link" />
+    <span>external-link</span>
+  </div>
+</div>
+
+### Action Icons
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="edit" />
+    <span>edit</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="copy" />
+    <span>copy</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="download" />
+    <span>download</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="success" />
+    <span>success</span>
+  </div>
+</div>
+
+### Documentation Icons
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="note" />
+    <span>note</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="tip" />
+    <span>tip</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="important" />
+    <span>important</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="caution" />
+    <span>caution</span>
+  </div>
+</div>
+
+### Theme Icons
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="light" />
+    <span>light</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="dark" />
+    <span>dark</span>
+  </div>
 </div>
 
 ## Using Icons in Text
@@ -106,10 +181,12 @@ This is a warning <Icon name="warning" color="#ffc107" /> message.
 
 This is an error <Icon name="error" color="#dc3545" /> message.
 
-This is a success <Icon name="check" color="#28a745" /> message.
+This is a success <Icon name="success" color="#28a745" /> message.
 
 ## Accessibility
 
 For accessibility purposes, you can provide a label for the icon:
 
 <Icon name="info" label="Information" />
+
+When a label is provided, the icon will be announced by screen readers. Without a label, the icon is treated as decorative and will be ignored by screen readers.
