@@ -25,22 +25,21 @@ interface Props {
 const { items, class: className = '' } = Astro.props;
 ---
 
-<nav class:list={['bg-white shadow', className]} aria-label="メインナビゲーション">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between h-16">
-      <div class="flex">
-        <div class="-ml-2 mr-2 flex items-center lg:hidden">
+<nav class:list={['navigation', className]} aria-label="メインナビゲーション">
+  <div class="container">
+    <div class="nav-wrapper">
+      <div class="nav-content">
+        <div class="mobile-menu-toggle">
           <button 
             type="button" 
             aria-haspopup="true" 
             aria-expanded="false"
             aria-label="モバイルメニューを切り替え"
-            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
             id="mobile-menu-button"
           >
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
-              class="h-6 w-6" 
+              class="menu-icon" 
               fill="none" 
               viewBox="0 0 24 24" 
               stroke="currentColor"
@@ -55,26 +54,26 @@ const { items, class: className = '' } = Astro.props;
             </svg>
           </button>
         </div>
-        <div class="hidden lg:ml-6 lg:flex lg:space-x-8">
-          <ul class="flex space-x-4" role="menubar" aria-label="デスクトップナビゲーション">
+        <div class="desktop-menu">
+          <ul class="menu-list" role="menubar" aria-label="デスクトップナビゲーション">
             {items.map(item => (
-              <li class="relative group">
+              <li class="menu-item">
                 <a 
                   href={item.href} 
                   role="menuitem" 
                   aria-label={`${item.title}ページへ移動`}
-                  class="px-3 py-2 text-gray-700 hover:text-gray-900 rounded-md inline-flex items-center"
+                  class="menu-link"
                 >
                   {item.title}
                   {item.children && item.children.length > 0 && (
-                    <svg class="ml-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <svg class="dropdown-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                       <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                     </svg>
                   )}
                 </a>
                 {item.children && item.children.length > 0 && (
                   <ul 
-                    class="absolute left-0 mt-1 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block" 
+                    class="dropdown-menu" 
                     role="menu" 
                     aria-label={`${item.title}のサブメニュー`}
                   >
@@ -84,7 +83,7 @@ const { items, class: className = '' } = Astro.props;
                           href={child.href} 
                           role="menuitem" 
                           aria-label={`${child.title}ページへ移動`}
-                          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          class="dropdown-item"
                         >
                           {child.title}
                         </a>
@@ -101,28 +100,28 @@ const { items, class: className = '' } = Astro.props;
   </div>
 
   <!-- モバイルメニュー -->
-  <div class="lg:hidden hidden" id="mobile-menu">
-    <div class="pt-2 pb-3 space-y-1">
-      <ul class="px-2 pt-2 pb-3 space-y-1" role="menu" aria-label="モバイルナビゲーション">
+  <div class="mobile-menu hidden" id="mobile-menu">
+    <div class="mobile-menu-content">
+      <ul class="mobile-menu-list" role="menu" aria-label="モバイルナビゲーション">
         {items.map(item => (
-          <li class="mb-1">
+          <li class="mobile-menu-item">
             <a 
               href={item.href} 
               role="menuitem" 
               aria-label={`${item.title}ページへ移動`}
-              class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md"
+              class="mobile-menu-link"
             >
               {item.title}
             </a>
             {item.children && item.children.length > 0 && (
-              <ul class="pl-4 mt-1 space-y-1" role="menu" aria-label={`${item.title}のサブメニュー`}>
+              <ul class="mobile-submenu" role="menu" aria-label={`${item.title}のサブメニュー`}>
                 {item.children.map(child => (
                   <li>
                     <a 
                       href={child.href} 
                       role="menuitem" 
                       aria-label={`${child.title}ページへ移動`}
-                      class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md"
+                      class="mobile-submenu-link"
                     >
                       {child.title}
                     </a>
@@ -136,6 +135,208 @@ const { items, class: className = '' } = Astro.props;
     </div>
   </div>
 </nav>
+
+<style>
+  .navigation {
+    background-color: white;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  }
+
+  .container {
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+
+  .nav-wrapper {
+    display: flex;
+    justify-content: space-between;
+    height: 4rem;
+  }
+
+  .nav-content {
+    display: flex;
+  }
+
+  .mobile-menu-toggle {
+    margin-left: -0.5rem;
+    margin-right: 0.5rem;
+    display: flex;
+    align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .mobile-menu-toggle {
+      display: none;
+    }
+  }
+
+  .mobile-menu-toggle button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    color: #9ca3af;
+  }
+
+  .mobile-menu-toggle button:hover {
+    color: #6b7280;
+    background-color: #f3f4f6;
+  }
+
+  .mobile-menu-toggle button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #e5e7eb, 0 0 0 4px #3b82f6;
+  }
+
+  .menu-icon {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+
+  .desktop-menu {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .desktop-menu {
+      display: block;
+      margin-left: 1.5rem;
+    }
+  }
+
+  .menu-list {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .menu-item {
+    position: relative;
+  }
+
+  .menu-item:hover .dropdown-menu {
+    display: block;
+  }
+
+  .menu-link {
+    padding: 0.5rem 0.75rem;
+    color: #4b5563;
+    border-radius: 0.375rem;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .menu-link:hover {
+    color: #111827;
+  }
+
+  .dropdown-icon {
+    margin-left: 0.25rem;
+    height: 1rem;
+    width: 1rem;
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    left: 0;
+    margin-top: 0.25rem;
+    width: 12rem;
+    background-color: white;
+    border-radius: 0.375rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    padding: 0.25rem 0;
+    z-index: 10;
+    display: none;
+  }
+
+  .dropdown-item {
+    display: block;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    color: #4b5563;
+  }
+
+  .dropdown-item:hover {
+    background-color: #f3f4f6;
+  }
+
+  .mobile-menu {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .mobile-menu {
+      display: none !important;
+    }
+  }
+
+  .mobile-menu-content {
+    padding-top: 0.5rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .mobile-menu-list {
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .mobile-menu-item {
+    margin-bottom: 0.25rem;
+  }
+
+  .mobile-menu-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: #4b5563;
+    border-radius: 0.375rem;
+  }
+
+  .mobile-menu-link:hover {
+    background-color: #f3f4f6;
+  }
+
+  .mobile-submenu {
+    padding-left: 1rem;
+    margin-top: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .mobile-submenu-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: #4b5563;
+    border-radius: 0.375rem;
+  }
+
+  .mobile-submenu-link:hover {
+    background-color: #f3f4f6;
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', function() {

@@ -26,14 +26,14 @@ const {
 ---
 
 <footer 
-  class:list={['bg-gray-100 py-10 px-4', className]}
+  class:list={['footer', className]}
   role="contentinfo"
 >
-  <div class="footer-content max-w-7xl mx-auto">
+  <div class="footer-content">
     <div class="brand-section">
       <slot name="logo" />
-      <p class="text-gray-600 mt-2">{copyright}</p>
-      <div class="social-links flex space-x-4 mt-4">
+      <p class="copyright">{copyright}</p>
+      <div class="social-links">
         <slot name="social-links" />
       </div>
     </div>
@@ -41,17 +41,17 @@ const {
     {linkGroups.map((group) => (
       <nav class="link-group" aria-labelledby={`footer-${group.title.toLowerCase().replace(/\s+/g, '-')}`}>
         <h6 
-          class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4" 
+          class="group-title" 
           id={`footer-${group.title.toLowerCase().replace(/\s+/g, '-')}`}
         >
           {group.title}
         </h6>
         <ul class="link-list">
           {group.links.map((link) => (
-            <li class="mb-2">
+            <li class="link-item">
               <a 
                 href={link.href} 
-                class="text-gray-600 hover:text-gray-900 transition-colors"
+                class="link"
                 aria-label={link.ariaLabel || link.title}
               >
                 {link.title}
@@ -65,10 +65,18 @@ const {
 </footer>
 
 <style>
+  .footer {
+    background-color: #f3f4f6;
+    padding: 2.5rem 1rem;
+  }
+
   .footer-content {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 2rem;
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .brand-section {
@@ -77,10 +85,30 @@ const {
     gap: 1rem;
   }
 
+  .copyright {
+    color: #4b5563;
+    margin-top: 0.5rem;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
   .link-group {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+  }
+
+  .group-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #111827;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
   }
 
   .link-list {
@@ -90,5 +118,18 @@ const {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+  }
+
+  .link-item {
+    margin-bottom: 0.5rem;
+  }
+
+  .link {
+    color: #4b5563;
+    transition: color 0.2s;
+  }
+
+  .link:hover {
+    color: #111827;
   }
 </style>

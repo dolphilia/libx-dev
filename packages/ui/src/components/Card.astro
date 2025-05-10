@@ -8,29 +8,61 @@ interface Props {
 
 const { title, class: className = '', variant = 'default', ...rest } = Astro.props;
 
-const variantStyles = {
-  default: '',
-  bordered: 'border border-gray-200',
-  image: 'relative overflow-hidden',
-};
-
 const classes = [
-  'rounded-lg overflow-hidden bg-white shadow-md',
-  variantStyles[variant],
+  'card',
+  `card-${variant}`,
   className
 ];
 ---
 
 <div class:list={classes} {...rest}>
-  <div class="p-5">
-    {title && <h2 class="text-xl font-semibold mb-3">{title}</h2>}
-    <div class="text-gray-700">
+  <div class="card-body">
+    {title && <h2 class="card-title">{title}</h2>}
+    <div class="card-content">
       <slot />
     </div>
     {Astro.slots.has('footer') && (
-      <div class="mt-4 flex justify-end">
+      <div class="card-footer">
         <slot name="footer" />
       </div>
     )}
   </div>
 </div>
+
+<style>
+  .card {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background-color: white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  .card-bordered {
+    border: 1px solid #e5e7eb;
+  }
+
+  .card-image {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-body {
+    padding: 1.25rem;
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .card-content {
+    color: #4b5563;
+  }
+
+  .card-footer {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
+  }
+</style>

@@ -94,10 +94,10 @@ const currentYear = new Date().getFullYear();
       }
     </style>
   </head>
-  <body class="min-h-screen flex flex-col">
-    <header class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-      <div class="container mx-auto px-4 py-4">
-        <div class="flex justify-between items-center">
+  <body>
+    <header>
+      <div class="header-container">
+        <div class="header-content">
           <nav aria-label="メインナビゲーション">
             <Navigation items={navItems} />
           </nav>
@@ -108,7 +108,7 @@ const currentYear = new Date().getFullYear();
       </div>
     </header>
     
-    <main id="main-content" class="flex-grow container mx-auto px-4 py-8">
+    <main id="main-content">
       <slot />
     </main>
     
@@ -118,3 +118,40 @@ const currentYear = new Date().getFullYear();
     />
   </body>
 </html>
+
+<style>
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    background-color: white;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  :global(.dark) header {
+    background-color: #1f2937;
+    border-bottom-color: #374151;
+  }
+
+  .header-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  main {
+    flex-grow: 1;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+</style>

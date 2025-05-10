@@ -72,20 +72,20 @@ const categoryNames: Record<string, string> = {
 ---
 
 <MainLayout title={`${translate('docs.documentation', lang)} (${version})`} lang={lang} version={version}>
-  <div class="max-w-4xl mx-auto">
-    <h1 class="text-3xl font-bold mb-8">{translate('docs.documentation', lang)} - {version}</h1>
+  <div class="container">
+    <h1 class="page-title">{translate('docs.documentation', lang)} - {version}</h1>
     
-    <div class="space-y-12">
+    <div class="category-list">
       {Object.keys(categories).map(category => (
-        <div>
-          <h2 class="text-2xl font-semibold mb-4">{categoryNames[category] || category}</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="category-item">
+          <h2 class="category-title">{categoryNames[category] || category}</h2>
+          <div class="doc-grid">
             {categories[category].map((doc: DocEntry) => (
               <Card
                 title={doc.data.title}
                 href={`${baseUrl}/${lang}/${version}/${doc.slug.split('/').slice(2).join('/')}`}
               >
-                <p class="text-gray-600 dark:text-gray-400">{doc.data.description}</p>
+                <p class="doc-description">{doc.data.description}</p>
               </Card>
             ))}
           </div>
@@ -94,9 +94,67 @@ const categoryNames: Record<string, string> = {
     </div>
     
     {Object.keys(categories).length === 0 && (
-      <div class="text-center py-12">
-        <p class="text-gray-600 dark:text-gray-400">{translate('docs.no_documents', lang)}</p>
+      <div class="empty-state">
+        <p>{translate('docs.no_documents', lang)}</p>
       </div>
     )}
   </div>
 </MainLayout>
+
+<style>
+  .container {
+    max-width: 64rem;
+    margin: 0 auto;
+  }
+
+  .page-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+  }
+
+  .category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .category-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .doc-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .doc-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .doc-description {
+    color: #4b5563;
+  }
+
+  :global(.dark) .doc-description {
+    color: #9ca3af;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 0;
+  }
+
+  .empty-state p {
+    color: #4b5563;
+  }
+
+  :global(.dark) .empty-state p {
+    color: #9ca3af;
+  }
+</style>

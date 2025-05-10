@@ -1,6 +1,5 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
 
 import path from 'path';
@@ -16,7 +15,6 @@ export default defineConfig({
   // GitHub Pagesのサブディレクトリにデプロイするためのベースパス
   base: '/docs-astro',
   integrations: [
-    tailwind(),
     mdx({
       // シンタックスハイライトの設定
       syntaxHighlight: 'shiki',
