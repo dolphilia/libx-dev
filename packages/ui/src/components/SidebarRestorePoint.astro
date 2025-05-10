@@ -1,0 +1,31 @@
+---
+/**
+ * このコンポーネントは、サイドバーの各セクションの状態を復元するためのものです。
+ * 各detailsタグ内に配置され、セッションストレージから状態を復元する際に使用されます。
+ */
+
+// グローバル変数の型定義
+declare global {
+  var sidebarGroupIndex: number;
+}
+
+// 現在のグループインデックスを保存するためのシンボル
+const currentGroupIndexSymbol = Symbol.for('sidebar-group-index');
+
+// ローカル変数にインデックスを保存
+const locals = Astro.locals as Record<symbol, number> | undefined;
+const index = locals?.[currentGroupIndexSymbol] || 0;
+
+// 次のインスタンスのためにインデックスをインクリメント
+if (locals) {
+  locals[currentGroupIndexSymbol] = index + 1;
+} else {
+  // Astro.localsが利用できない場合は、グローバル変数を使用
+  globalThis.sidebarGroupIndex = (globalThis.sidebarGroupIndex || 0) + 1;
+}
+
+// 実際に使用するインデックス
+const usedIndex = locals ? index : (globalThis.sidebarGroupIndex - 1);
+---
+
+<sl-sidebar-restore data-index={usedIndex}></sl-sidebar-restore>

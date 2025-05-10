@@ -1,0 +1,266 @@
+---
+/**
+ * サイドバーのリサイズ機能を提供するコンポーネント
+ * ドラッグによるサイドバー幅の調整と完全折りたたみ機能を実装
+ */
+
+interface Props {
+  /**
+   * 最小幅（px）
+   * @default 200
+   */
+  minWidth?: number;
+  
+  /**
+   * 最大幅（px）
+   * @default 400
+   */
+  maxWidth?: number;
+  
+  /**
+   * 初期幅（px）
+   * @default 280
+   */
+  initialWidth?: number;
+  
+  /**
+   * 折りたたみ時の幅（px）
+   * @default 50
+   */
+  collapsedWidth?: number;
+  
+  /**
+   * ローカルストレージのキー
+   * @default "sidebar-width"
+   */
+  storageKey?: string;
+}
+
+const {
+  minWidth = 200,
+  maxWidth = 400,
+  initialWidth = 280,
+  collapsedWidth = 50,
+  storageKey = "sidebar-width"
+} = Astro.props;
+---
+
+<div class="sidebar-resizer" aria-hidden="true">
+  <div class="resizer-handle" title="サイドバーの幅を調整">
+    <div class="handle-line"></div>
+  </div>
+  <button class="collapse-button" title="サイドバーを折りたたむ/展開する">
+    <span class="collapse-icon"></span>
+  </button>
+</div>
+
+<style define:vars={{ minWidth, maxWidth, initialWidth, collapsedWidth }}>
+  .sidebar-resizer {
+    position: absolute;
+    top: 0;
+    right: -5px;
+    width: 10px;
+    height: 100%;
+    cursor: col-resize;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .resizer-handle {
+    flex: 1;
+    width: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .handle-line {
+    width: 2px;
+    height: 100%;
+    background-color: var(--sl-color-gray-5);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  
+  .sidebar-resizer:hover .handle-line,
+  .sidebar-resizer:active .handle-line,
+  .sidebar-resizer.resizing .handle-line {
+    opacity: 1;
+  }
+  
+  .collapse-button {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: var(--sl-color-gray-6);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    transition: background-color 0.2s ease;
+  }
+  
+  .collapse-button:hover {
+    background-color: var(--sl-color-gray-5);
+  }
+  
+  .collapse-icon {
+    width: 12px;
+    height: 12px;
+    position: relative;
+  }
+  
+  .collapse-icon::before,
+  .collapse-icon::after {
+    content: "";
+    position: absolute;
+    background-color: var(--sl-color-gray-1);
+    transition: transform 0.2s ease;
+  }
+  
+  .collapse-icon::before {
+    width: 12px;
+    height: 2px;
+    top: 5px;
+    left: 0;
+  }
+  
+  .collapse-icon::after {
+    width: 2px;
+    height: 12px;
+    top: 0;
+    left: 5px;
+  }
+  
+  .sidebar-collapsed .collapse-icon::after {
+    transform: scaleY(0);
+  }
+  
+  @media (max-width: 50rem) {
+    .sidebar-resizer {
+      display: none;
+    }
+  }
+</style>
+
+<script define:vars={{ minWidth, maxWidth, initialWidth, collapsedWidth, storageKey }}>
+document.addEventListener('DOMContentLoaded', () => {
+  const sidebar = document.getElementById('sidebar');
+  const resizer = document.querySelector('.sidebar-resizer');
+  const collapseButton = document.querySelector('.collapse-button');
+  
+  if (!sidebar || !resizer || !collapseButton) return;
+  
+  // ローカルストレージから幅と折りたたみ状態を取得
+  const savedWidth = localStorage.getItem(storageKey);
+  const savedCollapsed = localStorage.getItem(`${storageKey}-collapsed`) === 'true';
+  
+  // 初期幅を設定
+  let sidebarWidth = savedWidth ? parseInt(savedWidth) : initialWidth;
+  
+  // 初期状態を設定
+  if (savedCollapsed) {
+    sidebar.classList.add('sidebar-collapsed');
+    sidebarWidth = collapsedWidth;
+  }
+  
+  // サイドバーの幅を設定
+  sidebar.style.width = `${sidebarWidth}px`;
+  
+  // リサイズ処理
+  let isResizing = false;
+  let startX = 0;
+  let startWidth = 0;
+  
+  // リサイズ開始
+  const startResize = (e) => {
+    isResizing = true;
+    startX = e.clientX || e.touches[0].clientX;
+    startWidth = parseInt(sidebar.offsetWidth);
+    resizer.classList.add('resizing');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    
+    // イベントリスナーを追加
+    document.addEventListener('mousemove', resize);
+    document.addEventListener('touchmove', resize, { passive: false });
+    document.addEventListener('mouseup', stopResize);
+    document.addEventListener('touchend', stopResize);
+  };
+  
+  // リサイズ中
+  const resize = (e) => {
+    if (!isResizing) return;
+    
+    e.preventDefault();
+    
+    const clientX = e.clientX || e.touches[0].clientX;
+    let newWidth = startWidth + (clientX - startX);
+    
+    // 最小幅と最大幅の制限
+    newWidth = Math.max(minWidth, Math.min(maxWidth, newWidth));
+    
+    // サイドバーの幅を更新
+    sidebar.style.width = `${newWidth}px`;
+    
+    // 折りたたみ状態を解除
+    if (sidebar.classList.contains('sidebar-collapsed') && newWidth > collapsedWidth) {
+      sidebar.classList.remove('sidebar-collapsed');
+      localStorage.setItem(`${storageKey}-collapsed`, 'false');
+    }
+  };
+  
+  // リサイズ終了
+  const stopResize = () => {
+    if (!isResizing) return;
+    
+    isResizing = false;
+    resizer.classList.remove('resizing');
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+    
+    // 現在の幅をローカルストレージに保存
+    if (!sidebar.classList.contains('sidebar-collapsed')) {
+      localStorage.setItem(storageKey, sidebar.offsetWidth);
+    }
+    
+    // イベントリスナーを削除
+    document.removeEventListener('mousemove', resize);
+    document.removeEventListener('touchmove', resize);
+    document.removeEventListener('mouseup', stopResize);
+    document.removeEventListener('touchend', stopResize);
+  };
+  
+  // 折りたたみ/展開ボタンのクリックイベント
+  const toggleCollapse = () => {
+    const isCollapsed = sidebar.classList.toggle('sidebar-collapsed');
+    
+    if (isCollapsed) {
+      // 現在の幅を一時保存
+      if (!localStorage.getItem(`${storageKey}-width-before-collapse`)) {
+        localStorage.setItem(`${storageKey}-width-before-collapse`, sidebar.offsetWidth);
+      }
+      
+      // 折りたたみ幅に設定
+      sidebar.style.width = `${collapsedWidth}px`;
+    } else {
+      // 以前の幅に戻す
+      const widthBeforeCollapse = localStorage.getItem(`${storageKey}-width-before-collapse`) || initialWidth;
+      sidebar.style.width = `${widthBeforeCollapse}px`;
+      localStorage.removeItem(`${storageKey}-width-before-collapse`);
+    }
+    
+    // 折りたたみ状態をローカルストレージに保存
+    localStorage.setItem(`${storageKey}-collapsed`, isCollapsed);
+  };
+  
+  // イベントリスナーを設定
+  resizer.addEventListener('mousedown', startResize);
+  resizer.addEventListener('touchstart', startResize, { passive: false });
+  collapseButton.addEventListener('click', toggleCollapse);
+});
+</script>

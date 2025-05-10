@@ -1,0 +1,144 @@
+---
+/*
+  このコンポーネントは、サイドバーの状態を保存するためのものです。
+  
+  主な機能：
+  - サイドバーツリーを `<sl-sidebar-state-persist>` カスタム要素でラップ
+  - ツリーがレンダリングされる前に、状態をロードし、`<sl-sidebar-restore>` カスタム要素の動作を定義するインラインスクリプトを追加
+  - ツリーがレンダリングされた後、サイドバーのスクロール状態を復元するインラインスクリプトを追加
+  
+  注意点：
+  - 小さいビューポートでは、サイドバーはメニュー内に折りたたまれるため、状態の復元はスキップされます
+  - 状態はセッションストレージから解析され、復元されます
+  - これは段階的な拡張機能であるため、エラーは静かに無視されます
+*/
+
+interface Props {
+  hash?: string;
+}
+
+const { hash = 'sidebar-hash' } = Astro.props;
+
+declare global {
+  interface Window {
+    /** 復元されたスクロール位置。インラインスクリプト間で渡すために一時的にwindowグローバルに保存 */
+    _sidebarScrollRestore?: number;
+  }
+}
+---
+
+<sl-sidebar-state-persist data-hash={hash}>
+  <script is:inline aria-hidden="true">
+    (() => {
+      try {
+        if (!matchMedia('(min-width: 50em)').matches) return;
+        /** @type {HTMLElement | null} */
+        const target = document.querySelector('sl-sidebar-state-persist');
+        const state = JSON.parse(sessionStorage.getItem('sidebar-state') || '0');
+        if (!target || !state || target.dataset.hash !== state.hash) return;
+        window._sidebarScrollRestore = state.scroll;
+        customElements.define(
+          'sl-sidebar-restore',
+          class SidebarRestore extends HTMLElement {
+            connectedCallback() {
+              try {
+                const idx = parseInt(this.dataset.index || '');
+                const details = this.closest('details');
+                if (details && typeof state.open[idx] === 'boolean') details.open = state.open[idx];
+              } catch {}
+            }
+          }
+        );
+      } catch {}
+    })();
+  </script>
+
+  <slot />
+
+  <script is:inline aria-hidden="true">
+    (() => {
+      const scroller = document.getElementById('sidebar');
+      if (!window._sidebarScrollRestore || !scroller) return;
+      scroller.scrollTop = window._sidebarScrollRestore;
+      delete window._sidebarScrollRestore;
+    })();
+  </script>
+</sl-sidebar-state-persist>
+
+<script>
+  // DOM要素の取得
+  const scroller = document.getElementById('sidebar');
+  const target = scroller?.querySelector<HTMLElement>('sl-sidebar-state-persist');
+
+  /** サイドバーの状態を保存するためのキー */
+  const storageKey = 'sidebar-state';
+
+  /** サイドバーの状態を保存するための型 */
+  interface SidebarState {
+    hash: string;
+    open: Array<boolean | null>;
+    scroll: number;
+  }
+
+  /**
+   * 現在のサイドバーの状態を取得
+   */
+  const getState = (): SidebarState => {
+    let open: Array<boolean | null> = [];
+    const hash = target?.dataset.hash || '';
+    try {
+      const rawStoredState = sessionStorage.getItem(storageKey);
+      const storedState = JSON.parse(rawStoredState || '{}');
+      if (Array.isArray(storedState.open) && storedState.hash === hash) open = storedState.open;
+    } catch {}
+    return {
+      hash,
+      open,
+      scroll: scroller?.scrollTop || 0,
+    };
+  };
+
+  /** サイドバーの状態をセッションストレージに保存 */
+  const storeState = (state: SidebarState): void => {
+    try {
+      sessionStorage.setItem(storageKey, JSON.stringify(state));
+    } catch {}
+  };
+
+  /** `open`状態を変更せずにサイドバーの状態を更新 */
+  const updateState = (): void => storeState(getState());
+
+  /** 特定の`<details>`要素の新しい値を含むようにサイドバーの状態を更新 */
+  const setToggleState = (open: boolean, detailsIndex: number): void => {
+    const state = getState();
+    state.open[detailsIndex] = open;
+    storeState(state);
+  };
+
+  // ユーザーが`<details>`グループと対話するたびに現在の`open`状態を保存
+  target?.addEventListener('click', (event) => {
+    if (!(event.target instanceof Element)) return;
+    // 最も近い`<summary>`とその親`<details>`を検索
+    // これにより、`<summary>`の外側のクリックが除外され、トグルがトリガーされません
+    const toggledDetails = event.target.closest('summary')?.closest('details');
+    if (!toggledDetails) return;
+    const restoreElement = toggledDetails.querySelector<HTMLElement>('sl-sidebar-restore');
+    const index = parseInt(restoreElement?.dataset.index || '');
+    if (isNaN(index)) return;
+    setToggleState(!toggledDetails.open, index);
+  });
+
+  // ナビゲーション前にサイドバーの状態を保存
+  // タブのぼかしなどでも保存されますが、一部のブラウザでback/forward cacheに問題を引き起こす可能性がある
+  // `beforeunload`イベントの使用は避けています
+  addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') updateState();
+  });
+  addEventListener('pageHide', updateState);
+</script>
+
+<style>
+  sl-sidebar-state-persist {
+    display: contents;
+  }
+</style>

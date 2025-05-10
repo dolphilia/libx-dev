@@ -1,7 +1,13 @@
 ---
 /**
- * ナビゲーション項目の型定義 - Starlightスタイルに基づいたナビゲーション
+ * ナビゲーションコンポーネント - Starlightスタイルに基づいたナビゲーション
+ * 改善: スティッキーヘッダー、モバイルメニューのアニメーション、アクティブ状態の視覚的強調
  */
+import Icon from './icons/Icon.astro';
+import { ThemeToggle } from './index';
+// 検索機能は後で実装
+// import SearchBar from '../../../packages/search/src/components/SearchBar.astro';
+
 interface NavItem {
   /** 表示タイトル */
   title: string;
@@ -11,20 +17,49 @@ interface NavItem {
   children?: NavItem[];
   /** 現在のページかどうか */
   isCurrent?: boolean;
+  /** アイコン名（オプション） */
+  icon?: string;
 }
 
-/**
- * コンポーネントのプロパティ
- */
+interface SocialLink {
+  label: string;
+  href: string;
+  icon: string;
+}
+
 interface Props {
   /** ナビゲーション項目の配列 */
   items: NavItem[];
+  /** サイトのタイトル */
+  siteTitle?: string;
+  /** サイトのロゴURL（オプション） */
+  logoUrl?: string;
+  /** ソーシャルリンク */
+  socialLinks?: SocialLink[];
+  /** 検索機能を表示するかどうか */
+  showSearch?: boolean;
+  /** テーマ切り替えを表示するかどうか */
+  showThemeToggle?: boolean;
+  /** スティッキーヘッダーにするかどうか */
+  sticky?: boolean;
+  /** スクロール時に背景色を変更するかどうか */
+  changeOnScroll?: boolean;
   /** 追加のCSSクラス */
   class?: string;
 }
 
 // プロパティの分割代入
-const { items, class: className = '' } = Astro.props;
+const { 
+  items, 
+  siteTitle = 'ドキュメント',
+  logoUrl,
+  socialLinks = [],
+  showSearch = false, // デフォルトで無効化
+  showThemeToggle = true,
+  sticky = true,
+  changeOnScroll = true,
+  class: className = '' 
+} = Astro.props;
 
 // 現在のページかどうかを判定するヘルパー関数
 function isCurrentPage(item: NavItem): boolean {
@@ -32,50 +67,72 @@ function isCurrentPage(item: NavItem): boolean {
 }
 ---
 
-<nav class:list={['navigation', className]} aria-label="メインナビゲーション">
-  <div class="nav-items">
-    {items.map(item => (
-      <a 
-        href={item.href} 
-        class:list={['nav-item', { active: isCurrentPage(item) }]}
-        aria-current={isCurrentPage(item) ? 'page' : undefined}
-      >
-        {item.title}
-      </a>
-    ))}
+<header class:list={['header', className, { 'header-sticky': sticky, 'header-with-scroll': changeOnScroll }]}>
+  <div class="header-container">
+    <div class="header-content">
+      <div class="site-title-wrapper">
+        <a href="/" class="site-title">
+          {logoUrl && <img src={logoUrl} alt={siteTitle} class="site-logo" />}
+          <span>{siteTitle}</span>
+        </a>
+      </div>
+      
+      <nav class="navigation" aria-label="メインナビゲーション">
+        <div class="nav-items">
+          {items.map(item => (
+            <a 
+              href={item.href} 
+              class:list={['nav-item', { active: isCurrentPage(item) }]}
+              aria-current={isCurrentPage(item) ? 'page' : undefined}
+            >
+              {item.icon && <Icon name={item.icon as any} />}
+              <span>{item.title}</span>
+            </a>
+          ))}
+        </div>
+      </nav>
+      
+      <div class="header-actions">
+        {/* 検索機能は後で実装 */}
+        {/* {showSearch && <div class="search-wrapper"><SearchBar /></div>} */}
+        
+        <div class="header-right">
+          {socialLinks.length > 0 && (
+            <div class="social-links">
+              {socialLinks.map(({ label, href, icon }) => (
+                <a href={href} rel="me" class="social-link" aria-label={label} title={label}>
+                  <Icon name={icon as any} />
+                </a>
+              ))}
+            </div>
+          )}
+          
+          {showThemeToggle && <ThemeToggle />}
+        </div>
+        
+        <docs-menu-button>
+          <button 
+            type="button" 
+            aria-expanded="false"
+            aria-label="モバイルメニューを切り替え"
+            aria-controls="mobile-menu"
+            class="menu-toggle-button"
+          >
+            <Icon name="bars" class="open-icon" />
+            <Icon name="close" class="close-icon" />
+          </button>
+        </docs-menu-button>
+      </div>
+    </div>
   </div>
-  
-  <div class="menu-toggle">
-    <button 
-      type="button" 
-      aria-expanded="false"
-      aria-label="モバイルメニューを切り替え"
-      id="mobile-menu-button"
-    >
-      <svg 
-        xmlns="http://www.w3.org/2000/svg" 
-        class="menu-icon" 
-        width="24" 
-        height="24" 
-        viewBox="0 0 24 24" 
-        fill="none" 
-        stroke="currentColor" 
-        stroke-width="2" 
-        stroke-linecap="round" 
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
-        <line x1="3" y1="12" x2="21" y2="12"></line>
-        <line x1="3" y1="6" x2="21" y2="6"></line>
-        <line x1="3" y1="18" x2="21" y2="18"></line>
-      </svg>
-    </button>
-  </div>
-</nav>
+</header>
 
 <!-- モバイルメニュー -->
-<div class="mobile-menu hidden" id="mobile-menu">
+<div class="mobile-menu" id="mobile-menu">
   <div class="mobile-menu-content">
+    {/* 検索機能は後で実装 */}
+    {/* {showSearch && <div class="mobile-search"><SearchBar /></div>} */}
+    
     <ul class="mobile-nav-items">
       {items.map(item => (
         <li>
@@ -84,55 +141,172 @@ function isCurrentPage(item: NavItem): boolean {
             class:list={['mobile-nav-item', { active: isCurrentPage(item) }]}
             aria-current={isCurrentPage(item) ? 'page' : undefined}
           >
-            {item.title}
+            {item.icon && <Icon name={item.icon as any} />}
+            <span>{item.title}</span>
           </a>
         </li>
       ))}
     </ul>
+    
+    {socialLinks.length > 0 && (
+      <div class="mobile-social-links">
+        {socialLinks.map(({ label, href, icon }) => (
+          <a href={href} rel="me" class="mobile-social-link" aria-label={label} title={label}>
+            <Icon name={icon as any} />
+            <span>{label}</span>
+          </a>
+        ))}
+      </div>
+    )}
   </div>
 </div>
 
 <style>
-  /* Starlightスタイルに基づくナビゲーションスタイル */
-  .navigation {
+  /* Starlightスタイルに基づくヘッダーとナビゲーションスタイル - 改善版 */
+  .header {
+    background-color: var(--sl-color-bg-nav);
+    border-bottom: 1px solid var(--sl-color-hairline);
+    height: var(--sl-nav-height);
+    padding: 0 var(--sl-nav-pad-x);
+    z-index: var(--sl-z-index-navbar);
+  }
+
+  .header-sticky {
+    position: sticky;
+    top: 0;
+  }
+
+  .header-with-scroll {
+    transition: background-color 0.2s, box-shadow 0.2s;
+  }
+
+  .header-with-scroll.scrolled {
+    background-color: var(--sl-color-bg-nav-scrolled, var(--sl-color-bg-nav));
+    box-shadow: var(--sl-shadow-sm);
+  }
+
+  .header-container {
+    max-width: var(--sl-content-width);
+    margin: 0 auto;
+    height: 100%;
+  }
+
+  .header-content {
     display: flex;
+    justify-content: space-between;
     align-items: center;
+    height: 100%;
     gap: 1rem;
   }
 
-  .nav-items {
+  .site-title-wrapper {
+    flex-shrink: 0;
+    overflow: hidden;
+    padding: 0.25rem;
+    margin: -0.25rem;
+  }
+
+  .site-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--sl-color-white);
+    font-size: var(--sl-text-lg);
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .site-logo {
+    height: 2rem;
+    width: auto;
+  }
+
+  .navigation {
     display: none;
   }
 
+  .nav-items {
+    display: flex;
+    gap: 1rem;
+  }
+
   .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
     padding: 0.5rem;
     color: var(--sl-color-gray-3);
     font-size: var(--sl-text-sm);
     font-weight: 500;
     text-decoration: none;
     border-radius: 0.25rem;
-    transition: color 0.2s ease;
+    transition: color 0.2s ease, background-color 0.2s ease;
   }
 
   .nav-item:hover,
   .nav-item:focus {
     color: var(--sl-color-white);
+    background-color: var(--sl-color-gray-6);
   }
 
   .nav-item.active {
     color: var(--sl-color-text-accent);
     font-weight: 600;
+    position: relative;
   }
 
-  .menu-toggle {
+  .nav-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: -0.25rem;
+    left: 0.5rem;
+    right: 0.5rem;
+    height: 2px;
+    background-color: var(--sl-color-text-accent);
+    border-radius: 1px;
+  }
+
+  .header-actions {
     display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .search-wrapper {
+    display: none;
+  }
+
+  .header-right {
+    display: none;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 0.5rem;
     align-items: center;
   }
 
-  .menu-toggle button {
+  .social-link {
+    color: var(--sl-color-text-accent);
+    padding: 0.5em;
+    margin: -0.5em;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: opacity 0.2s;
+  }
+
+  .social-link:hover {
+    opacity: 0.66;
+  }
+
+  .menu-toggle-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
     padding: 0.5rem;
     background: transparent;
     border: none;
@@ -141,14 +315,22 @@ function isCurrentPage(item: NavItem): boolean {
     cursor: pointer;
   }
 
-  .menu-toggle button:hover {
+  .menu-toggle-button:hover {
     color: var(--sl-color-white);
     background-color: var(--sl-color-gray-5);
   }
 
-  .menu-icon {
+  .open-icon, .close-icon {
     width: 1.5rem;
     height: 1.5rem;
+  }
+
+  [aria-expanded='true'] .open-icon {
+    display: none;
+  }
+
+  [aria-expanded='false'] .close-icon {
+    display: none;
   }
 
   /* モバイルメニュースタイル */
@@ -161,10 +343,27 @@ function isCurrentPage(item: NavItem): boolean {
     background-color: var(--sl-color-bg-nav);
     z-index: var(--sl-z-index-menu);
     overflow-y: auto;
+    transform: translateY(-100%);
+    visibility: hidden;
+    opacity: 0;
+    transition: transform 0.3s ease, visibility 0.3s, opacity 0.3s;
+  }
+
+  .mobile-menu.visible {
+    transform: translateY(0);
+    visibility: visible;
+    opacity: 1;
   }
 
   .mobile-menu-content {
-    padding: 1rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .mobile-search {
+    margin-bottom: 1rem;
   }
 
   .mobile-nav-items {
@@ -177,13 +376,16 @@ function isCurrentPage(item: NavItem): boolean {
   }
 
   .mobile-nav-item {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     padding: 0.75rem 1rem;
     color: var(--sl-color-gray-2);
     font-size: var(--sl-text-base);
     font-weight: 500;
     text-decoration: none;
     border-radius: 0.25rem;
+    transition: color 0.2s ease, background-color 0.2s ease;
   }
 
   .mobile-nav-item:hover,
@@ -195,40 +397,117 @@ function isCurrentPage(item: NavItem): boolean {
   .mobile-nav-item.active {
     color: var(--sl-color-text-accent);
     font-weight: 600;
+    background-color: var(--sl-color-gray-6);
   }
 
-  .hidden {
-    display: none;
+  .mobile-social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--sl-color-hairline-light);
+  }
+
+  .mobile-social-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: var(--sl-color-gray-2);
+    font-size: var(--sl-text-base);
+    text-decoration: none;
+    border-radius: 0.25rem;
+  }
+
+  .mobile-social-link:hover {
+    color: var(--sl-color-white);
+    background-color: var(--sl-color-gray-5);
   }
 
   /* レスポンシブスタイル */
   @media (min-width: 50em) {
-    .nav-items {
+    .navigation {
+      display: block;
+    }
+
+    .search-wrapper {
+      display: block;
+      width: 100%;
+      max-width: 24rem;
+    }
+
+    .header-right {
       display: flex;
+      align-items: center;
       gap: 1rem;
     }
 
-    .menu-toggle {
+    .menu-toggle-button {
       display: none;
     }
 
-    .mobile-menu {
-      display: none !important;
+    .header-content {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
     }
   }
 </style>
 
-<script is:inline>
-  document.addEventListener('DOMContentLoaded', function() {
-    const mobileButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
-    
-    if (mobileButton && mobileMenu) {
-      mobileButton.addEventListener('click', function() {
-        const expanded = mobileButton.getAttribute('aria-expanded') === 'true';
-        mobileButton.setAttribute('aria-expanded', (!expanded).toString());
-        mobileMenu.classList.toggle('hidden');
-      });
+<script>
+  class DocsMenuButton extends HTMLElement {
+    button: HTMLButtonElement;
+    mobileMenu: HTMLElement | null;
+
+    constructor() {
+      super();
+      this.button = this.querySelector('button')!;
+      this.mobileMenu = document.getElementById('mobile-menu');
+
+      // ボタンクリック時の処理
+      this.button.addEventListener('click', () => this.toggleMenu());
+
+      // ESCキーでメニューを閉じる
+      document.addEventListener('keyup', (e) => this.closeOnEscape(e));
     }
-  });
+
+    toggleMenu() {
+      const expanded = this.button.getAttribute('aria-expanded') === 'true';
+      this.setExpanded(!expanded);
+    }
+
+    setExpanded(expanded: boolean) {
+      this.button.setAttribute('aria-expanded', String(expanded));
+      
+      if (this.mobileMenu) {
+        if (expanded) {
+          this.mobileMenu.classList.add('visible');
+          document.body.style.overflow = 'hidden';
+        } else {
+          this.mobileMenu.classList.remove('visible');
+          document.body.style.overflow = '';
+        }
+      }
+    }
+
+    closeOnEscape(e: KeyboardEvent) {
+      if (e.key === 'Escape' && this.button.getAttribute('aria-expanded') === 'true') {
+        this.setExpanded(false);
+        this.button.focus();
+      }
+    }
+  }
+
+  customElements.define('docs-menu-button', DocsMenuButton);
+
+  // スクロール時のヘッダースタイル変更
+  const header = document.querySelector('.header-with-scroll');
+  if (header) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 10) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+  }
 </script>

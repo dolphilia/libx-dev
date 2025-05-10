@@ -1,7 +1,12 @@
 ---
 /**
  * フッターコンポーネント - Starlightスタイルに基づいたフッター
+ * 改善: ソーシャルアイコンのサポート、レスポンシブデザインの強化、スティッキーフッターオプション
  */
+import Icon from './icons/Icon.astro';
+import { EditLink } from './index';
+import { Pagination } from './index';
+
 interface Link {
   title: string;
   href: string;
@@ -14,18 +19,44 @@ interface LinkGroup {
   links: Link[];
 }
 
+interface SocialLink {
+  label: string;
+  href: string;
+  icon: string;
+}
+
 interface Props {
   linkGroups?: LinkGroup[];
   copyright?: string;
+  socialLinks?: SocialLink[];
+  showEditLink?: boolean;
+  editUrl?: string;
+  showPagination?: boolean;
+  prevPage?: { title: string; url: string };
+  nextPage?: { title: string; url: string };
+  sticky?: boolean;
   class?: string;
 }
 
-const { linkGroups = [], copyright = '', class: className = '' } = Astro.props;
+const { 
+  linkGroups = [], 
+  copyright = '', 
+  socialLinks = [],
+  showEditLink = false,
+  editUrl = '',
+  showPagination = false,
+  prevPage,
+  nextPage,
+  sticky = false,
+  class: className = '' 
+} = Astro.props;
 ---
 
-<footer class:list={['footer', className]}>
+<footer class:list={['footer', className, { 'footer-sticky': sticky }]}>
   <div class="footer-container">
     <div class="footer-content">
+      {showPagination && <Pagination prev={prevPage} next={nextPage} />}
+      
       {linkGroups.length > 0 && (
         <div class="footer-links">
           {linkGroups.map((group) => (
@@ -51,19 +82,38 @@ const { linkGroups = [], copyright = '', class: className = '' } = Astro.props;
       )}
       
       <div class="footer-bottom">
-        {copyright && <p class="copyright">{copyright}</p>}
+        <div class="footer-meta">
+          {showEditLink && <EditLink url={editUrl} />}
+          {copyright && <p class="copyright">{copyright}</p>}
+        </div>
+        
+        {socialLinks.length > 0 && (
+          <div class="social-links">
+            {socialLinks.map(({ label, href, icon }) => (
+              <a href={href} rel="me" class="social-link" aria-label={label} title={label}>
+                <Icon name={icon as any} />
+              </a>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   </div>
 </footer>
 
 <style>
-  /* Starlightスタイルに基づくフッタースタイル */
+  /* Starlightスタイルに基づくフッタースタイル - 改善版 */
   .footer {
     background-color: var(--sl-color-bg-nav);
     border-top: 1px solid var(--sl-color-hairline);
     padding: 3rem 0;
     margin-top: 4rem;
+  }
+
+  .footer-sticky {
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
   }
 
   .footer-container {
@@ -115,20 +165,60 @@ const { linkGroups = [], copyright = '', class: className = '' } = Astro.props;
 
   .footer-bottom {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    gap: 1.5rem;
     padding-top: 1.5rem;
     border-top: 1px solid var(--sl-color-hairline-light);
+  }
+
+  .footer-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
   }
 
   .copyright {
     color: var(--sl-color-gray-3);
     font-size: var(--sl-text-xs);
+    margin: 0;
+  }
+
+  .social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .social-link {
+    color: var(--sl-color-text-accent);
+    padding: 0.5em;
+    margin: -0.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s;
+  }
+
+  .social-link:hover {
+    opacity: 0.66;
   }
 
   @media (min-width: 50em) {
     .footer-links {
       grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+
+    .footer-bottom {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-meta {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 3rem;
     }
   }
 </style>

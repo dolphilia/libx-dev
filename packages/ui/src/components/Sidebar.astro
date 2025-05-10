@@ -1,19 +1,30 @@
 ---
 // Sidebar.astro - Starlightスタイルに基づいたサイドバーコンポーネント
+import SidebarPersister from './SidebarPersister.astro';
+import SidebarRestorePoint from './SidebarRestorePoint.astro';
+import SidebarResizer from './SidebarResizer.astro';
+import Icon from './icons/Icon.astro';
+
 interface SidebarItem {
   title: string;
   href?: string;
   items?: SidebarItem[];
   isCurrent?: boolean;
+  badge?: {
+    text: string;
+    variant?: 'default' | 'success' | 'caution' | 'danger' | 'note';
+    class?: string;
+  };
 }
 
 interface Props {
   items: SidebarItem[];
   title?: string;
   class?: string;
+  hash?: string;
 }
 
-const { items, title, class: className = '' } = Astro.props;
+const { items, title, class: className = '', hash = 'sidebar-hash' } = Astro.props;
 
 // 現在のページかどうかを判定するヘルパー関数
 function isCurrentPage(item: SidebarItem): boolean {
@@ -25,13 +36,28 @@ function shouldBeOpen(section: SidebarItem): boolean {
   if (!section.items) return false;
   return section.items.some(item => isCurrentPage(item) || (item.items && shouldBeOpen(item)));
 }
+
+// サイドバー内のすべてのアイテムをフラット化するヘルパー関数
+function flattenSidebar(items: SidebarItem[]): SidebarItem[] {
+  return items.flatMap(item => [item, ...(item.items ? flattenSidebar(item.items) : [])]);
+}
+
+// サイドバーのハッシュを生成するヘルパー関数
+function getSidebarHash(items: SidebarItem[]): string {
+  return hash || 'sidebar-' + Math.random().toString(36).substring(2, 9);
+}
+
+const sidebarHash = getSidebarHash(items);
 ---
 
 <aside 
   class:list={['sidebar', className]}
   role="complementary"
   aria-label={title || 'サイドナビゲーション'}
+  id="sidebar"
+  style="position: relative;"
 >
+  <SidebarResizer />
   {title && (
     <h3 class="sidebar-title" id="sidebar-title">
       {title}
@@ -39,55 +65,140 @@ function shouldBeOpen(section: SidebarItem): boolean {
   )}
   
   <nav aria-labelledby="sidebar-title">
-    <ul class="top-level">
-      {items.map((section, index) => (
-        <li>
-          {section.href ? (
-            <a 
-              href={section.href}
-              aria-current={isCurrentPage(section) ? 'page' : undefined}
-              class="large"
-            >
-              <span>{section.title}</span>
-            </a>
-          ) : (
-            <details open={shouldBeOpen(section)}>
-              <summary>
-                <div class="group-label">
-                  <span class="large">{section.title}</span>
-                </div>
-                <svg class="caret" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </summary>
-              
-              {section.items && (
-                <ul>
-                  {section.items.map((item) => (
-                    <li>
-                      <a 
-                        href={item.href}
-                        aria-current={isCurrentPage(item) ? 'page' : undefined}
-                      >
-                        <span>{item.title}</span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </details>
-          )}
-        </li>
-      ))}
-    </ul>
+    <SidebarPersister hash={sidebarHash}>
+      <ul class="top-level">
+        {items.map((section) => (
+          <li>
+            {section.href ? (
+              <a 
+                href={section.href}
+                aria-current={isCurrentPage(section) ? 'page' : undefined}
+                class:list={["large", { active: isCurrentPage(section) }]}
+              >
+                <span>{section.title}</span>
+                {section.badge && (
+                  <span class:list={["badge", section.badge.variant || 'default', section.badge.class]}>
+                    {section.badge.text}
+                  </span>
+                )}
+              </a>
+            ) : (
+              <details open={shouldBeOpen(section)}>
+                <SidebarRestorePoint />
+                <summary>
+                  <div class="group-label">
+                    <span class="large">{section.title}</span>
+                    {section.badge && (
+                      <span class:list={["badge", section.badge.variant || 'default', section.badge.class]}>
+                        {section.badge.text}
+                      </span>
+                    )}
+                  </div>
+                  <Icon name="right-arrow" class="caret" size="1.25rem" />
+                </summary>
+                
+                {section.items && (
+                  <ul>
+                    {section.items.map((item) => (
+                      <li>
+                        {item.href ? (
+                          <a 
+                            href={item.href}
+                            aria-current={isCurrentPage(item) ? 'page' : undefined}
+                            class:list={[{ active: isCurrentPage(item) }]}
+                          >
+                            <span>{item.title}</span>
+                            {item.badge && (
+                              <span class:list={["badge", item.badge.variant || 'default', item.badge.class]}>
+                                {item.badge.text}
+                              </span>
+                            )}
+                          </a>
+                        ) : (
+                          <details open={shouldBeOpen(item)}>
+                            <SidebarRestorePoint />
+                            <summary>
+                              <div class="group-label">
+                                <span>{item.title}</span>
+                                {item.badge && (
+                                  <span class:list={["badge", item.badge.variant || 'default', item.badge.class]}>
+                                    {item.badge.text}
+                                  </span>
+                                )}
+                              </div>
+                              <Icon name="right-arrow" class="caret" size="1rem" />
+                            </summary>
+                            
+                            {item.items && (
+                              <ul>
+                                {item.items.map((subItem) => (
+                                  <li>
+                                    <a 
+                                      href={subItem.href}
+                                      aria-current={isCurrentPage(subItem) ? 'page' : undefined}
+                                      class:list={[{ active: isCurrentPage(subItem) }]}
+                                    >
+                                      <span>{subItem.title}</span>
+                                      {subItem.badge && (
+                                        <span class:list={["badge", subItem.badge.variant || 'default', subItem.badge.class]}>
+                                          {subItem.badge.text}
+                                        </span>
+                                      )}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </details>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </details>
+            )}
+          </li>
+        ))}
+      </ul>
+    </SidebarPersister>
   </nav>
 </aside>
 
 <style>
   /* Starlightスタイルに基づくサイドバースタイル */
   .sidebar {
-    width: var(--sl-sidebar-width);
+    width: var(--sl-sidebar-width, 18rem);
     flex-shrink: 0;
+    height: 100%;
+    overflow-y: auto;
+    position: sticky;
+    top: var(--sl-nav-height, 4rem);
+    max-height: calc(100vh - var(--sl-nav-height, 4rem));
+    padding: 1rem 0.5rem 1rem 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--sl-color-gray-5) transparent;
+    transition: width 0.2s ease-in-out;
+  }
+  
+  /* 折りたたみ状態のスタイル */
+  .sidebar.sidebar-collapsed {
+    width: 50px;
+    overflow-x: hidden;
+  }
+  
+  .sidebar.sidebar-collapsed .sidebar-title,
+  .sidebar.sidebar-collapsed nav {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .sidebar::-webkit-scrollbar {
+    width: 0.25rem;
+  }
+
+  .sidebar::-webkit-scrollbar-thumb {
+    background-color: var(--sl-color-gray-5);
+    border-radius: 0.125rem;
   }
 
   .sidebar-title {
@@ -95,6 +206,7 @@ function shouldBeOpen(section: SidebarItem): boolean {
     font-weight: 600;
     font-size: var(--sl-text-lg);
     color: var(--sl-color-white);
+    padding-left: 0.5rem;
   }
 
   ul {
@@ -131,10 +243,15 @@ function shouldBeOpen(section: SidebarItem): boolean {
     line-height: 1.4;
     cursor: pointer;
     user-select: none;
+    border-radius: 0.25rem;
   }
   summary::marker,
   summary::-webkit-details-marker {
     display: none;
+  }
+
+  summary:hover {
+    background-color: var(--sl-color-gray-7, rgba(255, 255, 255, 0.05));
   }
 
   .caret {
@@ -155,16 +272,21 @@ function shouldBeOpen(section: SidebarItem): boolean {
     color: var(--sl-color-gray-2);
     padding: 0.3em var(--sl-sidebar-item-padding-inline);
     line-height: 1.4;
+    transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
   }
 
   a:hover,
   a:focus {
     color: var(--sl-color-white);
+    background-color: var(--sl-color-gray-7, rgba(255, 255, 255, 0.05));
   }
 
   [aria-current='page'],
   [aria-current='page']:hover,
-  [aria-current='page']:focus {
+  [aria-current='page']:focus,
+  .active,
+  .active:hover,
+  .active:focus {
     font-weight: 600;
     color: var(--sl-color-text-invert);
     background-color: var(--sl-color-text-accent);
@@ -173,6 +295,74 @@ function shouldBeOpen(section: SidebarItem): boolean {
   a > *:not(:last-child),
   .group-label > *:not(:last-child) {
     margin-inline-end: 0.25em;
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: 0.75em;
+    padding: 0.1em 0.5em;
+    border-radius: 1em;
+    font-weight: 600;
+    text-transform: uppercase;
+    background-color: var(--sl-color-gray-6);
+    color: var(--sl-color-gray-1);
+  }
+
+  .badge.success {
+    background-color: var(--sl-color-green-high);
+    color: var(--sl-color-green-low);
+  }
+
+  .badge.caution {
+    background-color: var(--sl-color-orange-high);
+    color: var(--sl-color-orange-low);
+  }
+
+  .badge.danger {
+    background-color: var(--sl-color-red-high);
+    color: var(--sl-color-red-low);
+  }
+
+  .badge.note {
+    background-color: var(--sl-color-blue-high);
+    color: var(--sl-color-blue-low);
+  }
+
+  /* モバイル表示の最適化 */
+  @media (max-width: 50rem) {
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      max-height: 100vh;
+      padding: 1rem;
+      background-color: var(--sl-color-bg);
+      z-index: 20;
+      transform: translateX(-100%);
+      transition: transform 0.2s ease-in-out;
+      overflow-y: auto;
+    }
+
+    .sidebar.mobile-visible {
+      transform: translateX(0);
+    }
+
+    .sidebar-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .close-button {
+      background: none;
+      border: none;
+      color: var(--sl-color-text);
+      cursor: pointer;
+      padding: 0.5rem;
+      margin: -0.5rem;
+    }
   }
 
   @media (min-width: 50rem) {
@@ -187,3 +377,39 @@ function shouldBeOpen(section: SidebarItem): boolean {
     }
   }
 </style>
+
+<script>
+  // モバイルメニューの開閉処理
+  document.addEventListener('DOMContentLoaded', () => {
+    const sidebar = document.getElementById('sidebar');
+    const toggleButton = document.getElementById('sidebar-toggle');
+    const closeButton = document.getElementById('sidebar-close');
+
+    if (toggleButton) {
+      toggleButton.addEventListener('click', () => {
+        sidebar?.classList.add('mobile-visible');
+        document.body.style.overflow = 'hidden'; // スクロール防止
+      });
+    }
+
+    if (closeButton) {
+      closeButton.addEventListener('click', () => {
+        sidebar?.classList.remove('mobile-visible');
+        document.body.style.overflow = ''; // スクロール許可
+      });
+    }
+
+    // 画面外クリックでメニューを閉じる
+    document.addEventListener('click', (e) => {
+      if (
+        sidebar?.classList.contains('mobile-visible') && 
+        e.target instanceof Node &&
+        !sidebar.contains(e.target) && 
+        e.target !== toggleButton
+      ) {
+        sidebar.classList.remove('mobile-visible');
+        document.body.style.overflow = '';
+      }
+    });
+  });
+</script>

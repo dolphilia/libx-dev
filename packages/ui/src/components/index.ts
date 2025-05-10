@@ -3,6 +3,9 @@ export { default as Button } from './Button.astro';
 export { default as Card } from './Card.astro';
 export { default as Navigation } from './Navigation.astro';
 export { default as Sidebar } from './Sidebar.astro';
+export { default as SidebarPersister } from './SidebarPersister.astro';
+export { default as SidebarRestorePoint } from './SidebarRestorePoint.astro';
+export { default as SidebarResizer } from './SidebarResizer.astro';
 export { default as Footer } from './Footer.astro';
 export { default as Alert } from './Alert.astro';
 
