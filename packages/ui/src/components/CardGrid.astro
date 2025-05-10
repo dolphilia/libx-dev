@@ -1,0 +1,36 @@
+---
+interface Props {
+  class?: string;
+  stagger?: boolean;
+  [key: string]: any;
+}
+
+const { class: className, stagger = false, ...attrs } = Astro.props;
+---
+
+<div class:list={['card-grid', stagger && 'stagger', className]} {...attrs}>
+  <slot />
+</div>
+
+<style>
+  .card-grid {
+    display: grid;
+    gap: 1rem;
+    padding: 0;
+  }
+
+  @media (min-width: 50rem) {
+    .card-grid {
+      grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+      gap: 1.5rem;
+    }
+
+    .stagger {
+      grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    }
+
+    .stagger :global(.link-card:nth-child(odd)) {
+      transform: translateY(1rem);
+    }
+  }
+</style>

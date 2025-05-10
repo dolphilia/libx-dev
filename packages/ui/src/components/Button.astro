@@ -1,8 +1,11 @@
 ---
 interface Props {
-  variant?: 'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'error' | 'ghost' | 'link' | 'outline';
+  variant?: 'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'error' | 'ghost' | 'link' | 'outline' | 'minimal';
   size?: 'xs' | 'sm' | 'md' | 'lg';
   class?: string;
+  icon?: string;
+  iconPlacement?: 'start' | 'end';
+  href?: string;
   [key: string]: any;
 }
 
@@ -10,11 +13,14 @@ const {
   variant = 'primary',
   size = 'md',
   class: additionalClass = '',
+  icon,
+  iconPlacement = 'end',
+  href,
   ...rest
 } = Astro.props;
 
 // リンクスタイルの場合は一部のスタイルを適用しない
-const isLink = variant === 'link';
+const isLink = variant === 'link' || variant === 'minimal';
 
 const classes = [
   'btn',
@@ -24,13 +30,25 @@ const classes = [
 ];
 ---
 
-{rest.href ? (
-  <a class:list={classes} {...rest}>
+{href ? (
+  <a class:list={classes} href={href} {...rest}>
+    {icon && iconPlacement === 'start' && (
+      <span class="icon icon-start" aria-hidden="true" set:html={icon} />
+    )}
     <slot />
+    {icon && iconPlacement === 'end' && (
+      <span class="icon icon-end" aria-hidden="true" set:html={icon} />
+    )}
   </a>
 ) : (
   <button class:list={classes} {...rest}>
+    {icon && iconPlacement === 'start' && (
+      <span class="icon icon-start" aria-hidden="true" set:html={icon} />
+    )}
     <slot />
+    {icon && iconPlacement === 'end' && (
+      <span class="icon icon-end" aria-hidden="true" set:html={icon} />
+    )}
   </button>
 )}
 
@@ -39,20 +57,34 @@ const classes = [
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 0.5em;
     font-weight: 500;
     border-radius: 0.375rem;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+    text-decoration: none;
+    cursor: pointer;
+    outline-offset: 0.25rem;
+    border: 1px solid transparent;
+    transition: color 0.2s ease-in-out, 
+                background-color 0.2s ease-in-out, 
+                border-color 0.2s ease-in-out, 
+                box-shadow 0.2s ease-in-out,
+                transform 0.1s ease-in-out;
   }
 
-  .btn:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1), 0 0 0 4px rgba(59, 130, 246, 0.5);
+  .btn:focus-visible {
+    outline: 2px solid var(--focus-ring-color, rgba(59, 130, 246, 0.5));
+    outline-offset: 2px;
+  }
+
+  .btn:active {
+    transform: translateY(1px);
   }
 
   /* サイズバリエーション */
   .btn-xs {
     font-size: 0.75rem;
     padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
   }
 
   .btn-sm {
@@ -72,86 +104,137 @@ const classes = [
 
   /* カラーバリエーション */
   .btn-primary {
-    background-color: #2563eb;
+    background-color: var(--primary-color, #2563eb);
     color: white;
   }
   .btn-primary:hover {
-    background-color: #1d4ed8;
+    background-color: var(--primary-hover, #1d4ed8);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 
   .btn-secondary {
-    background-color: #4b5563;
+    background-color: var(--secondary-color, #4b5563);
     color: white;
   }
   .btn-secondary:hover {
-    background-color: #374151;
+    background-color: var(--secondary-hover, #374151);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 
   .btn-accent {
-    background-color: #8b5cf6;
+    background-color: var(--accent-color, #8b5cf6);
     color: white;
   }
   .btn-accent:hover {
-    background-color: #7c3aed;
+    background-color: var(--accent-hover, #7c3aed);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 
   .btn-info {
-    background-color: #0ea5e9;
+    background-color: var(--info-color, #0ea5e9);
     color: white;
   }
   .btn-info:hover {
-    background-color: #0284c7;
+    background-color: var(--info-hover, #0284c7);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 
   .btn-success {
-    background-color: #22c55e;
+    background-color: var(--success-color, #22c55e);
     color: white;
   }
   .btn-success:hover {
-    background-color: #16a34a;
+    background-color: var(--success-hover, #16a34a);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 
   .btn-warning {
-    background-color: #f59e0b;
+    background-color: var(--warning-color, #f59e0b);
     color: white;
   }
   .btn-warning:hover {
-    background-color: #d97706;
+    background-color: var(--warning-hover, #d97706);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 
   .btn-error {
-    background-color: #ef4444;
+    background-color: var(--error-color, #ef4444);
     color: white;
   }
   .btn-error:hover {
-    background-color: #dc2626;
+    background-color: var(--error-hover, #dc2626);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 
   .btn-ghost {
     background-color: transparent;
-    color: #4b5563;
+    color: var(--text-color, #4b5563);
   }
   .btn-ghost:hover {
-    background-color: #f3f4f6;
-    color: #1f2937;
+    background-color: var(--ghost-hover, #f3f4f6);
+    color: var(--text-hover, #1f2937);
   }
 
   .btn-link {
     background-color: transparent;
-    color: #2563eb;
+    color: var(--link-color, #2563eb);
     padding: 0;
   }
   .btn-link:hover {
-    color: #1d4ed8;
+    color: var(--link-hover, #1d4ed8);
     text-decoration: underline;
   }
 
   .btn-outline {
     background-color: transparent;
     border: 1px solid currentColor;
-    color: #4b5563;
+    color: var(--outline-color, #4b5563);
   }
   .btn-outline:hover {
-    background-color: #f3f4f6;
+    background-color: var(--outline-hover, #f3f4f6);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  .btn-minimal {
+    background-color: transparent;
+    color: var(--link-color, #2563eb);
+    padding-inline: 0;
+  }
+  .btn-minimal:hover {
+    color: var(--link-hover, #1d4ed8);
+  }
+
+  /* アイコン */
+  .icon {
+    display: inline-flex;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+  }
+
+  .icon-start {
+    margin-right: 0.25em;
+  }
+
+  .icon-end {
+    margin-left: 0.25em;
+  }
+
+  /* ダークモード対応 */
+  @media (prefers-color-scheme: dark) {
+    .btn-ghost {
+      color: var(--dark-text-color, #e5e7eb);
+    }
+    .btn-ghost:hover {
+      background-color: var(--dark-ghost-hover, #374151);
+      color: var(--dark-text-hover, #f9fafb);
+    }
+    
+    .btn-outline {
+      color: var(--dark-outline-color, #e5e7eb);
+    }
+    .btn-outline:hover {
+      background-color: var(--dark-outline-hover, #374151);
+    }
   }
 </style>

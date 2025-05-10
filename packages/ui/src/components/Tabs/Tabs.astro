@@ -1,0 +1,188 @@
+---
+interface Props {
+  class?: string;
+  [key: string]: any;
+}
+
+const { class: className, ...attrs } = Astro.props;
+---
+
+<div class:list={['tabs', className]} {...attrs}>
+  <slot />
+</div>
+
+<script>
+  // タブの状態を管理するためのクラス
+  class TabsManager extends HTMLElement {
+    private tabButtons: HTMLElement[];
+    private tabPanels: HTMLElement[];
+
+    constructor() {
+      super();
+      this.tabButtons = Array.from(this.querySelectorAll('[role="tab"]')) as HTMLElement[];
+      this.tabPanels = Array.from(this.querySelectorAll('[role="tabpanel"]')) as HTMLElement[];
+      
+      // 初期化
+      this.init();
+    }
+
+    private init(): void {
+      // タブボタンにイベントリスナーを追加
+      this.tabButtons.forEach((button: HTMLElement) => {
+        button.addEventListener('click', () => this.activateTab(button.id));
+        button.addEventListener('keydown', (e: KeyboardEvent) => this.handleKeyDown(e));
+      });
+
+      // 最初のタブをアクティブにする（すでにアクティブなタブがなければ）
+      const activeTab = this.tabButtons.find((tab: HTMLElement) => tab.getAttribute('aria-selected') === 'true');
+      if (!activeTab && this.tabButtons.length > 0) {
+        this.activateTab(this.tabButtons[0].id);
+      }
+
+      // ローカルストレージからタブの状態を復元
+      this.restoreActiveTabFromStorage();
+    }
+
+    private activateTab(tabId: string): void {
+      // すべてのタブを非アクティブにする
+      this.tabButtons.forEach((button: HTMLElement) => {
+        const isSelected = button.id === tabId;
+        button.setAttribute('aria-selected', isSelected.toString());
+        button.setAttribute('tabindex', isSelected ? '0' : '-1');
+      });
+
+      // 対応するパネルを表示/非表示にする
+      this.tabPanels.forEach((panel: HTMLElement) => {
+        const shouldShow = panel.getAttribute('aria-labelledby') === tabId;
+        panel.hidden = !shouldShow;
+      });
+
+      // ローカルストレージに状態を保存
+      this.saveActiveTabToStorage(tabId);
+    }
+
+    private handleKeyDown(event: KeyboardEvent): void {
+      const { key } = event;
+      const activeElement = document.activeElement as HTMLElement | null;
+      
+      if (!activeElement) return;
+      
+      const currentIndex = this.tabButtons.findIndex((tab: HTMLElement) => tab.id === activeElement.id);
+      
+      if (currentIndex === -1) return;
+
+      let newIndex: number;
+      
+      switch (key) {
+        case 'ArrowRight':
+          newIndex = (currentIndex + 1) % this.tabButtons.length;
+          break;
+        case 'ArrowLeft':
+          newIndex = (currentIndex - 1 + this.tabButtons.length) % this.tabButtons.length;
+          break;
+        case 'Home':
+          newIndex = 0;
+          break;
+        case 'End':
+          newIndex = this.tabButtons.length - 1;
+          break;
+        default:
+          return;
+      }
+
+      // 新しいタブにフォーカスを移動し、アクティブにする
+      this.tabButtons[newIndex].focus();
+      this.activateTab(this.tabButtons[newIndex].id);
+      event.preventDefault();
+    }
+
+    // ローカルストレージに状態を保存
+    private saveActiveTabToStorage(tabId: string): void {
+      const storageKey = this.getStorageKey();
+      if (storageKey) {
+        try {
+          localStorage.setItem(storageKey, tabId);
+        } catch (e) {
+          // ローカルストレージが利用できない場合は無視
+        }
+      }
+    }
+
+    // ローカルストレージから状態を復元
+    private restoreActiveTabFromStorage(): void {
+      const storageKey = this.getStorageKey();
+      if (!storageKey) return;
+
+      try {
+        const savedTabId = localStorage.getItem(storageKey);
+        if (savedTabId && this.tabButtons.some((tab: HTMLElement) => tab.id === savedTabId)) {
+          this.activateTab(savedTabId);
+        }
+      } catch (e) {
+        // ローカルストレージが利用できない場合は無視
+      }
+    }
+
+    // ストレージキーを取得（タブグループごとにユニークなキー）
+    private getStorageKey(): string | null {
+      const tabGroup = this.getAttribute('data-tab-group');
+      return tabGroup ? `docs-tabs-${tabGroup}` : null;
+    }
+  }
+
+  // カスタム要素として登録
+  customElements.define('tabs-manager', TabsManager);
+
+  // ページ内のすべてのタブを初期化
+  document.addEventListener('DOMContentLoaded', () => {
+    const tabsContainers = document.querySelectorAll('.tabs');
+    tabsContainers.forEach((container: Element) => {
+      // すでに初期化されていない場合のみ
+      if (!container.classList.contains('tabs-initialized')) {
+        // タブマネージャーとして機能するラッパー要素を作成
+        const tabsManager = document.createElement('tabs-manager');
+        
+        // タブコンテナの属性を保持
+        Array.from(container.attributes).forEach((attr: Attr) => {
+          if (attr.name !== 'class') {
+            tabsManager.setAttribute(attr.name, attr.value);
+          }
+        });
+        
+        // クラスを追加
+        tabsManager.className = container.className;
+        tabsManager.classList.add('tabs-initialized');
+        
+        // 子要素を移動
+        while (container.firstChild) {
+          tabsManager.appendChild(container.firstChild);
+        }
+        
+        // DOMを置き換え
+        const parent = container.parentNode;
+        if (parent) {
+          parent.replaceChild(tabsManager, container);
+        }
+      }
+    });
+  });
+</script>
+
+<style>
+  .tabs {
+    margin: 1rem 0;
+    border: 1px solid var(--tabs-border-color, #e5e7eb);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: var(--tabs-shadow, 0 1px 3px rgba(0, 0, 0, 0.1));
+    background-color: var(--tabs-bg, white);
+  }
+
+  /* ダークモード対応 */
+  @media (prefers-color-scheme: dark) {
+    .tabs {
+      border-color: var(--dark-tabs-border-color, #374151);
+      background-color: var(--dark-tabs-bg, #1f2937);
+    }
+  }
+</style>

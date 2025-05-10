@@ -1,0 +1,45 @@
+---
+import Card from './Card.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  href: string;
+  icon?: string;
+  class?: string;
+  [key: string]: any;
+}
+
+const { title, description, href, icon, class: className, ...rest } = Astro.props;
+---
+
+<Card
+  variant="link"
+  href={href}
+  title={title}
+  icon={icon}
+  class:list={['link-card', className]}
+  {...rest}
+>
+  {description && <p class="link-card-description">{description}</p>}
+</Card>
+
+<style>
+  .link-card {
+    height: 100%;
+    display: flex;
+  }
+
+  .link-card-description {
+    margin: 0.5rem 0 0;
+    line-height: 1.5;
+    color: var(--card-description-color, #6b7280);
+  }
+
+  /* ダークモード対応 */
+  @media (prefers-color-scheme: dark) {
+    .link-card-description {
+      color: var(--dark-card-description-color, #9ca3af);
+    }
+  }
+</style>

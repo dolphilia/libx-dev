@@ -20,3 +20,8 @@ export { default as ContentNotice } from './ContentNotice.astro';
 export { default as Hero } from './Hero.astro';
 export { default as ThemeToggle } from './ThemeToggle.astro';
 export { default as TwoColumnContent } from './TwoColumnContent.astro';
+
+// 今回追加したStarlightスタイルのコンポーネント
+export { default as LinkCard } from './LinkCard.astro';
+export { default as CardGrid } from './CardGrid.astro';
+export { Tabs, TabItem } from './Tabs';

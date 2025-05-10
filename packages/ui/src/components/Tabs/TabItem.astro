@@ -1,0 +1,107 @@
+---
+interface Props {
+  label: string;
+  value?: string;
+  icon?: string;
+  class?: string;
+  [key: string]: any;
+}
+
+const {
+  label,
+  value = label.toLowerCase().replace(/\s+/g, '-'),
+  icon,
+  class: className = '',
+  ...attrs
+} = Astro.props;
+
+// タブIDを生成（ユニークなIDを保証するため）
+const tabId = `tab-${value}-${Math.random().toString(36).slice(2, 9)}`;
+const panelId = `panel-${value}-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<div class:list={['tab-item', className]} {...attrs}>
+  <button
+    id={tabId}
+    role="tab"
+    aria-selected="false"
+    aria-controls={panelId}
+    tabindex="-1"
+    class="tab-button"
+  >
+    {icon && <span class="tab-icon" set:html={icon} />}
+    <span class="tab-label">{label}</span>
+  </button>
+  <div
+    id={panelId}
+    role="tabpanel"
+    aria-labelledby={tabId}
+    class="tab-panel"
+    hidden
+  >
+    <slot />
+  </div>
+</div>
+
+<style>
+  .tab-item {
+    display: contents;
+  }
+
+  .tab-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: none;
+    background-color: transparent;
+    color: var(--tab-text-color, #4b5563);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+    border-bottom: 2px solid transparent;
+  }
+
+  .tab-button:hover {
+    color: var(--tab-hover-color, #111827);
+    background-color: var(--tab-hover-bg, rgba(0, 0, 0, 0.05));
+  }
+
+  .tab-button[aria-selected="true"] {
+    color: var(--tab-active-color, #2563eb);
+    border-bottom-color: var(--tab-active-border, #2563eb);
+  }
+
+  .tab-icon {
+    display: flex;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .tab-panel {
+    padding: 1rem;
+    border-top: 1px solid var(--tab-border-color, #e5e7eb);
+  }
+
+  /* ダークモード対応 */
+  @media (prefers-color-scheme: dark) {
+    .tab-button {
+      color: var(--dark-tab-text-color, #9ca3af);
+    }
+
+    .tab-button:hover {
+      color: var(--dark-tab-hover-color, #f9fafb);
+      background-color: var(--dark-tab-hover-bg, rgba(255, 255, 255, 0.05));
+    }
+
+    .tab-button[aria-selected="true"] {
+      color: var(--dark-tab-active-color, #60a5fa);
+      border-bottom-color: var(--dark-tab-active-border, #60a5fa);
+    }
+
+    .tab-panel {
+      border-top-color: var(--dark-tab-border-color, #374151);
+    }
+  }
+</style>
