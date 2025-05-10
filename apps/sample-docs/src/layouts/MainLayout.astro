@@ -4,7 +4,11 @@
  * Starlightスタイルに基づいたレイアウト
  */
 import { Navigation, Footer } from '@docs/ui/components';
+import { VersionSelector } from '@docs/versioning/components';
+import { SearchBar } from '@docs/search/components';
 import LanguageSelector from '../components/LanguageSelector.astro';
+import versions from '../config/versions.config';
+import type { LocaleKey } from '@docs/i18n/locales';
 import '../styles/global.css';
 
 // 定数定義
@@ -15,13 +19,17 @@ interface Props {
   /** ページタイトル */
   title: string;
   /** 言語コード */
-  lang: string;
+  lang: LocaleKey;
   /** ドキュメントバージョン */
   version?: string;
   /** サイドバーを表示するか */
   hasSidebar?: boolean;
   /** 目次を表示するか */
   hasToc?: boolean;
+  /** 検索バーを表示するか */
+  showSearch?: boolean;
+  /** バージョンセレクターを表示するか */
+  showVersionSelector?: boolean;
 }
 
 // プロパティの取得
@@ -30,8 +38,13 @@ const {
   lang, 
   version = 'v1', 
   hasSidebar = false,
-  hasToc = false
+  hasToc = false,
+  showSearch = true,
+  showVersionSelector = true
 } = Astro.props;
+
+// 最新バージョンを取得
+const latestVersion = versions.find(v => v.isLatest)?.id || version;
 
 // ナビゲーション項目の定義
 interface NavItem {
@@ -122,9 +135,22 @@ if (hasSidebar) htmlDataAttributes['data-has-sidebar'] = '';
               <a href={`${BASE_URL}/${lang}`} class="site-title">Docs Astro</a>
             </div>
             <div class="sl-flex print:hidden">
-              <!-- 検索コンポーネントがここに入る予定 -->
+              {showSearch && (
+                <div class="search-container">
+                  <SearchBar lang={lang} placeholder={`ドキュメントを検索...`} />
+                </div>
+              )}
             </div>
             <div class="sl-hidden md:sl-flex print:hidden right-group">
+              {showVersionSelector && version && (
+                <div class="version-selector-container">
+                  <VersionSelector 
+                    currentVersion={version}
+                    versions={versions}
+                    basePath={`${BASE_URL}/${lang}`}
+                  />
+                </div>
+              )}
               <div aria-label="言語選択">
                 <LanguageSelector currentLang={lang} />
               </div>
@@ -199,6 +225,16 @@ if (hasSidebar) htmlDataAttributes['data-has-sidebar'] = '';
   .right-group {
     gap: 1rem;
     align-items: center;
+  }
+
+  .search-container {
+    width: 100%;
+    max-width: 20rem;
+    margin-right: 1rem;
+  }
+
+  .version-selector-container {
+    margin-right: 0.5rem;
   }
 
   .main-frame {

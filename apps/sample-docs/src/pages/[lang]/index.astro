@@ -1,8 +1,6 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
 import { Button, Card } from '@docs/ui/components';
-import { VersionSelector } from '@docs/versioning/components';
-import { SearchBar } from '@docs/search/components';
 import versions from '../../config/versions.config';
 import docsConfig from '../../config/docs.config';
 import type { LocaleKey } from '@docs/i18n/locales';
@@ -21,7 +19,7 @@ const latestVersion = versions.find(v => v.isLatest)?.id || 'v2';
 const baseUrl = docsConfig.baseUrl;
 ---
 
-<MainLayout title={translate('docs.documentation', lang)} lang={lang}>
+<MainLayout title={translate('docs.documentation', lang)} lang={lang} showSearch={true} showVersionSelector={true}>
   <div class="hero-section">
     <h1 class="hero-title">{translate('docs.documentation', lang)}</h1>
     <p class="hero-description">
@@ -37,17 +35,6 @@ const baseUrl = docsConfig.baseUrl;
       </Button>
     </div>
     
-    <div class="search-container">
-      <SearchBar lang={lang} placeholder={translate('search.placeholder', lang)} />
-    </div>
-    
-    <div class="version-selector-container">
-      <VersionSelector 
-        currentVersion={latestVersion}
-        versions={versions}
-        basePath={`${baseUrl}/${lang}`}
-      />
-    </div>
   </div>
   
   <div class="card-grid">
@@ -122,15 +109,6 @@ const baseUrl = docsConfig.baseUrl;
     margin-bottom: 3rem;
   }
 
-  .search-container {
-    max-width: 28rem;
-    margin: 0 auto 3rem;
-  }
-
-  .version-selector-container {
-    max-width: 20rem;
-    margin: 0 auto 3rem;
-  }
 
   .card-grid {
     display: grid;

@@ -53,66 +53,38 @@ const tableOfContents: TOCItem[] = headings.filter((heading: Heading) => heading
 ---
 
 <DocLayout title={entry.data.title} lang={lang} version={version}>
-  <div class="content-layout">
-    <div class="main-column">
-      <article class="article">
-        <h1>{entry.data.title}</h1>
-        {entry.data.description && <p class="article-description">{entry.data.description}</p>}
-        
-        <Content />
-        
-        {/* ページナビゲーション */}
-        <div class="navigation-container">
-          <Pagination 
-            prev={entry.data.prev ? { title: entry.data.prev.text, url: entry.data.prev.link } : undefined}
-            next={entry.data.next ? { title: entry.data.next.text, url: entry.data.next.link } : undefined}
-          />
-        </div>
-        
-        {/* 編集リンク */}
-        <div class="edit-link-container">
-          <EditLink 
-            url={`https://github.com/dolphilia/docs-astro/edit/main/apps/sample-docs/src/content/docs/${entry.slug}.mdx`}
-            text="このページをGitHubで編集"
-          />
-        </div>
-      </article>
-    </div>
-    
-    {/* 目次は DocLayout のスロットに渡す */}
-    <TableOfContents 
-      headings={headings.map(h => ({ depth: h.depth, text: h.text, slug: h.slug, children: [] }))}
-      minLevel={2}
-      maxLevel={3}
-      lang={lang}
-      slot="toc"
+  <h1>{entry.data.title}</h1>
+  {entry.data.description && <p class="article-description">{entry.data.description}</p>}
+  
+  <Content />
+  
+  {/* ページナビゲーション */}
+  <div class="navigation-container">
+    <Pagination 
+      prev={entry.data.prev ? { title: entry.data.prev.text, url: entry.data.prev.link } : undefined}
+      next={entry.data.next ? { title: entry.data.next.text, url: entry.data.next.link } : undefined}
     />
   </div>
+  
+  {/* 編集リンク */}
+  <div class="edit-link-container">
+    <EditLink 
+      url={`https://github.com/dolphilia/docs-astro/edit/main/apps/sample-docs/src/content/docs/${entry.slug}.mdx`}
+      text="このページをGitHubで編集"
+    />
+  </div>
+  
+  {/* 目次は DocLayout のスロットに渡す */}
+  <TableOfContents 
+    headings={headings.map(h => ({ depth: h.depth, text: h.text, slug: h.slug, children: [] }))}
+    minLevel={2}
+    maxLevel={3}
+    lang={lang}
+    slot="toc"
+  />
 </DocLayout>
 
 <style>
-  .content-layout {
-    display: flex;
-    flex-direction: column;
-  }
-
-  @media (min-width: 768px) {
-    .content-layout {
-      flex-direction: row;
-    }
-  }
-
-  .main-column {
-    width: 100%;
-  }
-
-  @media (min-width: 768px) {
-    .main-column {
-      width: 75%;
-      padding-right: 2rem;
-    }
-  }
-
   .article-description {
     font-size: 1.125rem;
     color: #4b5563;
@@ -122,7 +94,6 @@ const tableOfContents: TOCItem[] = headings.filter((heading: Heading) => heading
   :global(.dark) .article-description {
     color: #9ca3af;
   }
-
 
   .navigation-container {
     margin-top: 3rem;
@@ -141,6 +112,5 @@ const tableOfContents: TOCItem[] = headings.filter((heading: Heading) => heading
   :global(.dark) .edit-link-container {
     color: #9ca3af;
   }
-
 
 </style>

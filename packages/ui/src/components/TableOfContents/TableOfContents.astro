@@ -178,6 +178,7 @@ customElements.define('starlight-toc', StarlightTOC);
 <style>
   starlight-toc {
     display: block;
+    width: 100%;
   }
   
   .starlight-toc-wrapper {
@@ -221,7 +222,8 @@ customElements.define('starlight-toc', StarlightTOC);
     border-inline-start: none;
   }
   
-  @media (min-width: 72rem) {
+  /* デスクトップ表示 */
+  @media (min-width: 50rem) {
     starlight-toc {
       display: block;
       position: sticky;
