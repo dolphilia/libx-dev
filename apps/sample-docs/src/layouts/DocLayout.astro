@@ -9,6 +9,19 @@ import docsConfig from '../config/docs.config';
 import versions from '../config/versions.config';
 import { getSidebarAsync } from '../config/sidebar.config';
 
+// Sidebarコンポーネントで使用されるSidebarItem型を定義
+interface SidebarItem {
+  title: string;
+  href?: string;
+  items?: SidebarItem[];
+  isCurrent?: boolean;
+  badge?: {
+    text: string;
+    variant?: 'default' | 'success' | 'caution' | 'danger' | 'note';
+    class?: string;
+  };
+}
+
 interface Props {
   title: string;
   lang: LocaleKey;
@@ -21,8 +34,38 @@ const lang = langProp as LocaleKey;
 // ベースパスの取得
 const baseUrl = docsConfig.baseUrl;
 
+// 現在のパスを取得
+const currentPath = Astro.url.pathname;
+
 // サイドバー項目の取得（非同期）
 const sidebarItems = await getSidebarAsync(lang, version, baseUrl);
+
+// 現在のページに対応するサイドバー項目にisCurrent=trueを設定
+function markCurrentPage(items: SidebarItem[]): SidebarItem[] {
+  return items.map(section => {
+    // セクション自体のhrefがあり、現在のパスと一致する場合
+    if (section.href && (section.href === currentPath || currentPath.endsWith(section.href))) {
+      return { ...section, isCurrent: true };
+    }
+    
+    // 子項目がある場合は再帰的に処理
+    if (section.items && section.items.length > 0) {
+      const updatedItems = section.items.map(item => {
+        if (item.href && (item.href === currentPath || currentPath.endsWith(item.href))) {
+          return { ...item, isCurrent: true };
+        }
+        return item;
+      });
+      
+      return { ...section, items: updatedItems };
+    }
+    
+    return section;
+  });
+}
+
+// 現在のページをマーク
+const markedSidebarItems = markCurrentPage(sidebarItems);
 
 // 翻訳キーの定数化
 const TRANSLATION_KEYS = {
@@ -39,7 +82,7 @@ const hasToc = true;
     <aside class="sidebar-column print:hidden">
       <div class="sidebar-content">
         <Sidebar 
-          items={sidebarItems} 
+          items={markedSidebarItems} 
           title={translate(TRANSLATION_KEYS.DOCUMENTATION, lang)} 
         />
       </div>

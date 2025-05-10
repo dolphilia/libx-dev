@@ -3,6 +3,8 @@
  * Starlightのアイコン実装を参考にしています
  */
 export const Icons = {
+  // シェブロンアイコン（サイドバーの折りたたみ用）
+  'chevron': '<path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
   // メニューバーアイコン
   'bars': '<path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
   // 情報アイコン

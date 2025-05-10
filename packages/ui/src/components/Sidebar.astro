@@ -94,7 +94,11 @@ const sidebarHash = getSidebarHash(items);
                       </span>
                     )}
                   </div>
-                  <Icon name="right-arrow" class="caret" size="1.25rem" />
+                  <span class="caret-container">
+                    <span class="caret-wrapper">
+                      <Icon name="chevron" size="1.25rem" />
+                    </span>
+                  </span>
                 </summary>
                 
                 {section.items && (
@@ -126,7 +130,11 @@ const sidebarHash = getSidebarHash(items);
                                   </span>
                                 )}
                               </div>
-                              <Icon name="right-arrow" class="caret" size="1rem" />
+                              <span class="caret-container">
+                                <span class="caret-wrapper">
+                                  <Icon name="chevron" size="1rem" />
+                                </span>
+                              </span>
                             </summary>
                             
                             {item.items && (
@@ -254,15 +262,30 @@ const sidebarHash = getSidebarHash(items);
     background-color: var(--sl-color-gray-7, rgba(255, 255, 255, 0.05));
   }
 
-  .caret {
-    transition: transform 0.2s ease-in-out;
-    flex-shrink: 0;
+  .caret-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem; /* アイコンサイズに合わせる */
+    height: 1.25rem; /* アイコンサイズに合わせる */
   }
-  [dir='rtl'] .caret {
-    transform: rotateZ(180deg);
+
+  .caret-wrapper {
+    display: inline-flex;
+    transition: transform 0.3s ease-in-out;
+    transform: rotate(0deg);
   }
-  [open] > summary .caret {
-    transform: rotateZ(90deg);
+
+  .caret-wrapper.rotated {
+    transform: rotate(90deg);
+  }
+
+  /* RTLの場合の調整（必要であれば） */
+  [dir='rtl'] .caret-wrapper {
+    transform: rotate(180deg);
+  }
+  [dir='rtl'] .caret-wrapper.rotated {
+    transform: rotate(270deg);
   }
 
   a {
@@ -288,8 +311,43 @@ const sidebarHash = getSidebarHash(items);
   .active:hover,
   .active:focus {
     font-weight: 600;
-    color: var(--sl-color-text-invert);
-    background-color: var(--sl-color-text-accent);
+    /* color: var(--sl-color-text-invert, #ffffff); */
+    /* background-color: var(--sl-color-gray-7, rgba(255, 255, 255, 0.05)); */
+    /* box-shadow: 0 0 0 1px var(--sl-color-accent-high, #3b82f6); */
+    position: relative;
+    transition: all 0.2s ease-in-out;
+  }
+
+  html.dark .active {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  html:not(.dark) .active {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  [aria-current='page']::before,
+  .active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    /* background-color: var(--sl-color-accent-high, #3b82f6); */
+    border-radius: 0 2px 2px 0;
+    animation: slideIn 0.2s ease-out;
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
   }
 
   a > *:not(:last-child),
@@ -402,13 +460,43 @@ const sidebarHash = getSidebarHash(items);
     // 画面外クリックでメニューを閉じる
     document.addEventListener('click', (e) => {
       if (
-        sidebar?.classList.contains('mobile-visible') && 
+        sidebar?.classList.contains('mobile-visible') &&
         e.target instanceof Node &&
-        !sidebar.contains(e.target) && 
+        !sidebar.contains(e.target) &&
         e.target !== toggleButton
       ) {
         sidebar.classList.remove('mobile-visible');
         document.body.style.overflow = '';
+      }
+    });
+
+    // details要素の開閉を監視してsummaryに属性を付与
+    const detailsElements = document.querySelectorAll<HTMLDetailsElement>('.sidebar details');
+    detailsElements.forEach(details => {
+      const summary = details.querySelector('summary');
+      const caretWrapper = summary?.querySelector('.caret-wrapper');
+      
+      if (summary) {
+        // 初期状態を設定
+        summary.setAttribute('data-open', details.open.toString());
+        
+        // アイコンラッパーの回転を初期状態に合わせて設定
+        if (caretWrapper && details.open) {
+          caretWrapper.classList.add('rotated');
+        }
+
+        details.addEventListener('toggle', () => {
+          summary.setAttribute('data-open', details.open.toString());
+          
+          // アイコンラッパーの回転をトグル状態に合わせて設定
+          if (caretWrapper) {
+            if (details.open) {
+              caretWrapper.classList.add('rotated');
+            } else {
+              caretWrapper.classList.remove('rotated');
+            }
+          }
+        });
       }
     });
   });
