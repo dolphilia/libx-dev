@@ -1,59 +1,59 @@
 import { c as createVNode, F as Fragment, _ as __astro_tag_component__ } from './astro/server.CcJSDeTb.js';
-import { $ as $$Icon } from './MainLayout.DMoHKiHX.js';
+import { $ as $$Icon } from './MainLayout.B4XBwN1S.js';
 
 const frontmatter = {
-  "title": "アイコンの例",
-  "description": "アイコンコンポーネントの使用例"
+  "title": "Icons Example",
+  "description": "Examples of using the Icon component"
 };
 function getHeadings() {
   return [{
     "depth": 1,
-    "slug": "アイコンコンポーネントの例",
-    "text": "アイコンコンポーネントの例"
+    "slug": "icon-component-examples",
+    "text": "Icon Component Examples"
   }, {
     "depth": 2,
-    "slug": "基本的な使い方",
-    "text": "基本的な使い方"
+    "slug": "basic-usage",
+    "text": "Basic Usage"
   }, {
     "depth": 2,
-    "slug": "アイコンのサイズ",
-    "text": "アイコンのサイズ"
+    "slug": "icon-sizes",
+    "text": "Icon Sizes"
   }, {
     "depth": 2,
-    "slug": "アイコンの色",
-    "text": "アイコンの色"
+    "slug": "icon-colors",
+    "text": "Icon Colors"
   }, {
     "depth": 2,
-    "slug": "利用可能なアイコン",
-    "text": "利用可能なアイコン"
+    "slug": "available-icons",
+    "text": "Available Icons"
   }, {
     "depth": 3,
-    "slug": "基本アイコン",
-    "text": "基本アイコン"
+    "slug": "basic-icons",
+    "text": "Basic Icons"
   }, {
     "depth": 3,
-    "slug": "ナビゲーションアイコン",
-    "text": "ナビゲーションアイコン"
+    "slug": "navigation-icons",
+    "text": "Navigation Icons"
   }, {
     "depth": 3,
-    "slug": "アクションアイコン",
-    "text": "アクションアイコン"
+    "slug": "action-icons",
+    "text": "Action Icons"
   }, {
     "depth": 3,
-    "slug": "ドキュメントアイコン",
-    "text": "ドキュメントアイコン"
+    "slug": "documentation-icons",
+    "text": "Documentation Icons"
   }, {
     "depth": 3,
-    "slug": "テーマアイコン",
-    "text": "テーマアイコン"
+    "slug": "theme-icons",
+    "text": "Theme Icons"
   }, {
     "depth": 2,
-    "slug": "テキスト内でのアイコンの使用",
-    "text": "テキスト内でのアイコンの使用"
+    "slug": "using-icons-in-text",
+    "text": "Using Icons in Text"
   }, {
     "depth": 2,
-    "slug": "アクセシビリティ",
-    "text": "アクセシビリティ"
+    "slug": "accessibility",
+    "text": "Accessibility"
   }];
 }
 function _createMdxContent(props) {
@@ -66,22 +66,22 @@ function _createMdxContent(props) {
   };
   return createVNode(Fragment, {
     children: [createVNode(_components.h1, {
-      id: "アイコンコンポーネントの例",
-      children: "アイコンコンポーネントの例"
+      id: "icon-component-examples",
+      children: "Icon Component Examples"
     }), "\n", createVNode(_components.p, {
-      children: "アイコンコンポーネントを使用すると、ドキュメント内にさまざまなアイコンを表示できます。"
+      children: "The Icon component allows you to display various icons in your documentation."
     }), "\n", createVNode(_components.h2, {
-      id: "基本的な使い方",
-      children: "基本的な使い方"
+      id: "basic-usage",
+      children: "Basic Usage"
     }), "\n", createVNode(_components.p, {
-      children: "アイコンコンポーネントの基本的な使用例："
+      children: "Here’s a basic example of using the Icon component:"
     }), "\n", createVNode($$Icon, {
       name: "info"
     }), "\n", createVNode(_components.h2, {
-      id: "アイコンのサイズ",
-      children: "アイコンのサイズ"
+      id: "icon-sizes",
+      children: "Icon Sizes"
     }), "\n", createVNode(_components.p, {
-      children: "アイコンにはさまざまな単位でサイズを指定できます："
+      children: "You can specify different sizes for icons using various units:"
     }), "\n", createVNode("div", {
       style: "display: flex; align-items: center; gap: 1rem;",
       children: [createVNode($$Icon, {
@@ -98,7 +98,7 @@ function _createMdxContent(props) {
         size: "3em"
       })]
     }), "\n", createVNode(_components.p, {
-      children: "ピクセル単位でも指定できます："
+      children: "You can also use pixel units:"
     }), "\n", createVNode("div", {
       style: "display: flex; align-items: center; gap: 1rem;",
       children: [createVNode($$Icon, {
@@ -115,10 +115,10 @@ function _createMdxContent(props) {
         size: "48px"
       })]
     }), "\n", createVNode(_components.h2, {
-      id: "アイコンの色",
-      children: "アイコンの色"
+      id: "icon-colors",
+      children: "Icon Colors"
     }), "\n", createVNode(_components.p, {
-      children: "アイコンの色をカスタマイズできます："
+      children: "You can customize the color of icons:"
     }), "\n", createVNode("div", {
       style: "display: flex; align-items: center; gap: 1rem;",
       children: [createVNode($$Icon, {
@@ -135,13 +135,13 @@ function _createMdxContent(props) {
         color: "#28a745"
       })]
     }), "\n", createVNode(_components.h2, {
-      id: "利用可能なアイコン",
-      children: "利用可能なアイコン"
+      id: "available-icons",
+      children: "Available Icons"
     }), "\n", createVNode(_components.p, {
-      children: "利用可能なすべてのアイコン："
+      children: "Here are all the available icons:"
     }), "\n", createVNode(_components.h3, {
-      id: "基本アイコン",
-      children: "基本アイコン"
+      id: "basic-icons",
+      children: "Basic Icons"
     }), "\n", createVNode("div", {
       style: "display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;",
       children: [createVNode("div", {
@@ -149,68 +149,68 @@ function _createMdxContent(props) {
         children: [createVNode($$Icon, {
           name: "info"
         }), createVNode("span", {
-          children: "info（情報）"
+          children: "info"
         })]
       }), createVNode("div", {
         style: "display: flex; flex-direction: column; align-items: center;",
         children: [createVNode($$Icon, {
           name: "setting"
         }), createVNode("span", {
-          children: "setting（設定）"
+          children: "setting"
         })]
       }), createVNode("div", {
         style: "display: flex; flex-direction: column; align-items: center;",
         children: [createVNode($$Icon, {
           name: "warning"
         }), createVNode("span", {
-          children: "warning（警告）"
+          children: "warning"
         })]
       }), createVNode("div", {
         style: "display: flex; flex-direction: column; align-items: center;",
         children: [createVNode($$Icon, {
           name: "error"
         }), createVNode("span", {
-          children: "error（エラー）"
+          children: "error"
         })]
       }), createVNode("div", {
         style: "display: flex; flex-direction: column; align-items: center;",
         children: [createVNode($$Icon, {
           name: "check"
         }), createVNode("span", {
-          children: "check（チェック）"
+          children: "check"
         })]
       }), createVNode("div", {
         style: "display: flex; flex-direction: column; align-items: center;",
         children: [createVNode($$Icon, {
           name: "code"
         }), createVNode("span", {
-          children: "code（コード）"
+          children: "code"
         })]
       }), createVNode("div", {
         style: "display: flex; flex-direction: column; align-items: center;",
         children: [createVNode($$Icon, {
           name: "document"
         }), createVNode("span", {
-          children: "document（文書）"
+          children: "document"
         })]
       }), createVNode("div", {
         style: "display: flex; flex-direction: column; align-items: center;",
         children: [createVNode($$Icon, {
           name: "search"
         }), createVNode("span", {
-          children: "search（検索）"
+          children: "search"
         })]
       }), createVNode("div", {
         style: "display: flex; flex-direction: column; align-items: center;",
         children: [createVNode($$Icon, {
           name: "close"
         }), createVNode("span", {
-          children: "close（閉じる）"
+          children: "close"
         })]
       })]
     }), "\n", createVNode(_components.h3, {
-      id: "ナビゲーションアイコン",
-      children: "ナビゲーションアイコン"
+      id: "navigation-icons",
+      children: "Navigation Icons"
     }), "\n", createVNode("div", {
       style: "display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;",
       children: [createVNode("div", {
@@ -218,40 +218,40 @@ function _createMdxContent(props) {
         children: [createVNode($$Icon, {
           name: "right-arrow"
         }), createVNode("span", {
-          children: "right-arrow（右矢印）"
+          children: "right-arrow"
         })]
       }), createVNode("div", {
         style: "display: flex; flex-direction: column; align-items: center;",
         children: [createVNode($$Icon, {
           name: "left-arrow"
         }), createVNode("span", {
-          children: "left-arrow（左矢印）"
+          children: "left-arrow"
         })]
       }), createVNode("div", {
         style: "display: flex; flex-direction: column; align-items: center;",
         children: [createVNode($$Icon, {
           name: "down-arrow"
         }), createVNode("span", {
-          children: "down-arrow（下矢印）"
+          children: "down-arrow"
         })]
       }), createVNode("div", {
         style: "display: flex; flex-direction: column; align-items: center;",
         children: [createVNode($$Icon, {
           name: "up-arrow"
         }), createVNode("span", {
-          children: "up-arrow（上矢印）"
+          children: "up-arrow"
         })]
       }), createVNode("div", {
         style: "display: flex; flex-direction: column; align-items: center;",
         children: [createVNode($$Icon, {
           name: "external-link"
         }), createVNode("span", {
-          children: "external-link（外部リンク）"
+          children: "external-link"
         })]
       })]
     }), "\n", createVNode(_components.h3, {
-      id: "アクションアイコン",
-      children: "アクションアイコン"
+      id: "action-icons",
+      children: "Action Icons"
     }), "\n", createVNode("div", {
       style: "display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;",
       children: [createVNode("div", {
@@ -259,33 +259,33 @@ function _createMdxContent(props) {
         children: [createVNode($$Icon, {
           name: "edit"
         }), createVNode("span", {
-          children: "edit（編集）"
+          children: "edit"
         })]
       }), createVNode("div", {
         style: "display: flex; flex-direction: column; align-items: center;",
         children: [createVNode($$Icon, {
           name: "copy"
         }), createVNode("span", {
-          children: "copy（コピー）"
+          children: "copy"
         })]
       }), createVNode("div", {
         style: "display: flex; flex-direction: column; align-items: center;",
         children: [createVNode($$Icon, {
           name: "download"
         }), createVNode("span", {
-          children: "download（ダウンロード）"
+          children: "download"
         })]
       }), createVNode("div", {
         style: "display: flex; flex-direction: column; align-items: center;",
         children: [createVNode($$Icon, {
           name: "success"
         }), createVNode("span", {
-          children: "success（成功）"
+          children: "success"
         })]
       })]
     }), "\n", createVNode(_components.h3, {
-      id: "ドキュメントアイコン",
-      children: "ドキュメントアイコン"
+      id: "documentation-icons",
+      children: "Documentation Icons"
     }), "\n", createVNode("div", {
       style: "display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;",
       children: [createVNode("div", {
@@ -293,33 +293,33 @@ function _createMdxContent(props) {
         children: [createVNode($$Icon, {
           name: "note"
         }), createVNode("span", {
-          children: "note（ノート）"
+          children: "note"
         })]
       }), createVNode("div", {
         style: "display: flex; flex-direction: column; align-items: center;",
         children: [createVNode($$Icon, {
           name: "tip"
         }), createVNode("span", {
-          children: "tip（ヒント）"
+          children: "tip"
         })]
       }), createVNode("div", {
         style: "display: flex; flex-direction: column; align-items: center;",
         children: [createVNode($$Icon, {
           name: "important"
         }), createVNode("span", {
-          children: "important（重要）"
+          children: "important"
         })]
       }), createVNode("div", {
         style: "display: flex; flex-direction: column; align-items: center;",
         children: [createVNode($$Icon, {
           name: "caution"
         }), createVNode("span", {
-          children: "caution（注意）"
+          children: "caution"
         })]
       })]
     }), "\n", createVNode(_components.h3, {
-      id: "テーマアイコン",
-      children: "テーマアイコン"
+      id: "theme-icons",
+      children: "Theme Icons"
     }), "\n", createVNode("div", {
       style: "display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;",
       children: [createVNode("div", {
@@ -327,50 +327,50 @@ function _createMdxContent(props) {
         children: [createVNode($$Icon, {
           name: "light"
         }), createVNode("span", {
-          children: "light（ライト）"
+          children: "light"
         })]
       }), createVNode("div", {
         style: "display: flex; flex-direction: column; align-items: center;",
         children: [createVNode($$Icon, {
           name: "dark"
         }), createVNode("span", {
-          children: "dark（ダーク）"
+          children: "dark"
         })]
       })]
     }), "\n", createVNode(_components.h2, {
-      id: "テキスト内でのアイコンの使用",
-      children: "テキスト内でのアイコンの使用"
+      id: "using-icons-in-text",
+      children: "Using Icons in Text"
     }), "\n", createVNode(_components.p, {
-      children: "アイコンはテキスト内でインラインで使用できます："
+      children: "Icons can be used inline with text:"
     }), "\n", createVNode(_components.p, {
-      children: ["これは情報 ", createVNode($$Icon, {
+      children: ["This is an information ", createVNode($$Icon, {
         name: "info"
-      }), " メッセージです。"]
+      }), " message."]
     }), "\n", createVNode(_components.p, {
-      children: ["これは警告 ", createVNode($$Icon, {
+      children: ["This is a warning ", createVNode($$Icon, {
         name: "warning",
         color: "#ffc107"
-      }), " メッセージです。"]
+      }), " message."]
     }), "\n", createVNode(_components.p, {
-      children: ["これはエラー ", createVNode($$Icon, {
+      children: ["This is an error ", createVNode($$Icon, {
         name: "error",
         color: "#dc3545"
-      }), " メッセージです。"]
+      }), " message."]
     }), "\n", createVNode(_components.p, {
-      children: ["これは成功 ", createVNode($$Icon, {
+      children: ["This is a success ", createVNode($$Icon, {
         name: "success",
         color: "#28a745"
-      }), " メッセージです。"]
+      }), " message."]
     }), "\n", createVNode(_components.h2, {
-      id: "アクセシビリティ",
-      children: "アクセシビリティ"
+      id: "accessibility",
+      children: "Accessibility"
     }), "\n", createVNode(_components.p, {
-      children: "アクセシビリティのために、アイコンにラベルを提供できます："
+      children: "For accessibility purposes, you can provide a label for the icon:"
     }), "\n", createVNode($$Icon, {
       name: "info",
-      label: "情報"
+      label: "Information"
     }), "\n", createVNode(_components.p, {
-      children: "ラベルが提供されると、アイコンはスクリーンリーダーによって読み上げられます。ラベルがない場合、アイコンは装飾的なものとして扱われ、スクリーンリーダーによって無視されます。"
+      children: "When a label is provided, the icon will be announced by screen readers. Without a label, the icon is treated as decorative and will be ignored by screen readers."
     })]
   });
 }
@@ -384,15 +384,15 @@ function MDXContent(props = {}) {
   }) : _createMdxContent(props);
 }
 
-const url = "src/content/docs/ja/v1/guide/icons-example.mdx";
-const file = "/home/runner/work/docs-astro/docs-astro/apps/sample-docs/src/content/docs/ja/v1/guide/icons-example.mdx";
+const url = "src/content/docs/en/v1/guide/icons-example.mdx";
+const file = "/home/runner/work/docs-astro/docs-astro/apps/sample-docs/src/content/docs/en/v1/guide/icons-example.mdx";
 const Content = (props = {}) => MDXContent({
   ...props,
   components: { Fragment: Fragment, ...props.components, },
 });
 Content[Symbol.for('mdx-component')] = true;
 Content[Symbol.for('astro.needsHeadRendering')] = !Boolean(frontmatter.layout);
-Content.moduleId = "/home/runner/work/docs-astro/docs-astro/apps/sample-docs/src/content/docs/ja/v1/guide/icons-example.mdx";
+Content.moduleId = "/home/runner/work/docs-astro/docs-astro/apps/sample-docs/src/content/docs/en/v1/guide/icons-example.mdx";
 __astro_tag_component__(Content, 'astro:jsx');
 
 export { Content, Content as default, file, frontmatter, getHeadings, url };
