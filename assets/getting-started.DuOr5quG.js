@@ -1,40 +1,44 @@
-import { c as createVNode, F as Fragment, _ as __astro_tag_component__ } from './astro/server.DZ9z6Le0.js';
+import { c as createVNode, F as Fragment, _ as __astro_tag_component__ } from './astro/server.DKee8O4h.js';
 
 const frontmatter = {
-  "title": "Getting Started",
-  "description": "Learn how to get started with our platform",
+  "title": "入門",
+  "description": "プラットフォームの使い方を学ぶ（v2）",
   "category": "guide",
   "categoryOrder": 1,
-  "pubDate": "2024-01-01T00:00:00.000Z",
+  "pubDate": "2025-01-01T00:00:00.000Z",
   "updatedDate": "2025-01-01T00:00:00.000Z",
-  "author": "Docs Team",
+  "author": "ドキュメントチーム",
   "order": 1,
   "next": {
-    "text": "Installation",
-    "link": "/docs-astro/en/v1/guide/installation"
+    "text": "インストール",
+    "link": "/docs-astro/ja/v2/guide/installation"
   }
 };
 function getHeadings() {
   return [{
     "depth": 1,
-    "slug": "getting-started",
-    "text": "Getting Started"
+    "slug": "v2ではじめる",
+    "text": "v2ではじめる"
   }, {
     "depth": 2,
-    "slug": "prerequisites",
-    "text": "Prerequisites"
+    "slug": "前提条件",
+    "text": "前提条件"
   }, {
     "depth": 2,
-    "slug": "installation",
-    "text": "Installation"
+    "slug": "インストール",
+    "text": "インストール"
   }, {
     "depth": 2,
-    "slug": "basic-usage",
-    "text": "Basic Usage"
+    "slug": "基本的な使い方",
+    "text": "基本的な使い方"
   }, {
     "depth": 2,
-    "slug": "next-steps",
-    "text": "Next Steps"
+    "slug": "v2の新機能",
+    "text": "v2の新機能"
+  }, {
+    "depth": 2,
+    "slug": "次のステップ",
+    "text": "次のステップ"
   }];
 }
 function _createMdxContent(props) {
@@ -47,31 +51,32 @@ function _createMdxContent(props) {
     p: "p",
     pre: "pre",
     span: "span",
+    strong: "strong",
     ul: "ul",
     ...props.components
   };
   return createVNode(Fragment, {
     children: [createVNode(_components.h1, {
-      id: "getting-started",
-      children: "Getting Started"
+      id: "v2ではじめる",
+      children: "v2ではじめる"
     }), "\n", createVNode(_components.p, {
-      children: "Welcome to our documentation! This guide will help you get started with our platform."
+      children: "バージョン2のドキュメントへようこそ！このガイドでは、プラットフォームの使い方について説明します。"
     }), "\n", createVNode(_components.h2, {
-      id: "prerequisites",
-      children: "Prerequisites"
+      id: "前提条件",
+      children: "前提条件"
     }), "\n", createVNode(_components.ul, {
       children: ["\n", createVNode(_components.li, {
-        children: "Node.js 18 or higher"
+        children: "Node.js 18以上"
       }), "\n", createVNode(_components.li, {
-        children: "npm, yarn, or pnpm"
+        children: "npm、yarn、またはpnpm"
       }), "\n", createVNode(_components.li, {
-        children: "Basic knowledge of JavaScript"
+        children: "JavaScriptとTypeScriptの基本的な知識"
       }), "\n"]
     }), "\n", createVNode(_components.h2, {
-      id: "installation",
-      children: "Installation"
+      id: "インストール",
+      children: "インストール"
     }), "\n", createVNode(_components.p, {
-      children: "You can install our package using npm:"
+      children: "npmを使用してパッケージをインストールできます："
     }), "\n", createVNode(_components.pre, {
       class: "astro-code github-dark",
       style: {
@@ -100,12 +105,12 @@ function _createMdxContent(props) {
             style: {
               color: "#9ECBFF"
             },
-            children: " @our-package/core"
+            children: " @our-package/core@2"
           })]
         })
       })
     }), "\n", createVNode(_components.p, {
-      children: "Or using yarn:"
+      children: "または、yarnを使用："
     }), "\n", createVNode(_components.pre, {
       class: "astro-code github-dark",
       style: {
@@ -134,12 +139,12 @@ function _createMdxContent(props) {
             style: {
               color: "#9ECBFF"
             },
-            children: " @our-package/core"
+            children: " @our-package/core@2"
           })]
         })
       })
     }), "\n", createVNode(_components.p, {
-      children: "Or using pnpm:"
+      children: "または、pnpmを使用："
     }), "\n", createVNode(_components.pre, {
       class: "astro-code github-dark",
       style: {
@@ -168,15 +173,15 @@ function _createMdxContent(props) {
             style: {
               color: "#9ECBFF"
             },
-            children: " @our-package/core"
+            children: " @our-package/core@2"
           })]
         })
       })
     }), "\n", createVNode(_components.h2, {
-      id: "basic-usage",
-      children: "Basic Usage"
+      id: "基本的な使い方",
+      children: "基本的な使い方"
     }), "\n", createVNode(_components.p, {
-      children: "Here’s a simple example of how to use our package:"
+      children: "TypeScriptを使用したパッケージの使用例："
     }), "\n", createVNode(_components.pre, {
       class: "astro-code github-dark",
       style: {
@@ -187,7 +192,7 @@ function _createMdxContent(props) {
         wordWrap: "break-word"
       },
       tabindex: "0",
-      "data-language": "javascript",
+      "data-language": "typescript",
       children: createVNode(_components.code, {
         children: [createVNode(_components.span, {
           class: "line",
@@ -200,7 +205,17 @@ function _createMdxContent(props) {
             style: {
               color: "#E1E4E8"
             },
-            children: " { createApp } "
+            children: " { createApp, "
+          }), createVNode(_components.span, {
+            style: {
+              color: "#F97583"
+            },
+            children: "type"
+          }), createVNode(_components.span, {
+            style: {
+              color: "#E1E4E8"
+            },
+            children: " AppOptions } "
           }), createVNode(_components.span, {
             style: {
               color: "#F97583"
@@ -230,7 +245,17 @@ function _createMdxContent(props) {
             style: {
               color: "#79B8FF"
             },
-            children: " app"
+            children: " options"
+          }), createVNode(_components.span, {
+            style: {
+              color: "#F97583"
+            },
+            children: ":"
+          }), createVNode(_components.span, {
+            style: {
+              color: "#B392F0"
+            },
+            children: " AppOptions"
           }), createVNode(_components.span, {
             style: {
               color: "#F97583"
@@ -238,14 +263,9 @@ function _createMdxContent(props) {
             children: " ="
           }), createVNode(_components.span, {
             style: {
-              color: "#B392F0"
-            },
-            children: " createApp"
-          }), createVNode(_components.span, {
-            style: {
               color: "#E1E4E8"
             },
-            children: "({"
+            children: " {"
           })]
         }), "\n", createVNode(_components.span, {
           class: "line",
@@ -253,7 +273,7 @@ function _createMdxContent(props) {
             style: {
               color: "#6A737D"
             },
-            children: "  // Configuration options"
+            children: "  // 設定オプション"
           })
         }), "\n", createVNode(_components.span, {
           class: "line",
@@ -285,6 +305,40 @@ function _createMdxContent(props) {
               color: "#9ECBFF"
             },
             children: "'development'"
+          }), createVNode(_components.span, {
+            style: {
+              color: "#E1E4E8"
+            },
+            children: ","
+          })]
+        }), "\n", createVNode(_components.span, {
+          class: "line",
+          children: createVNode(_components.span, {
+            style: {
+              color: "#6A737D"
+            },
+            children: "  // v2の新機能"
+          })
+        }), "\n", createVNode(_components.span, {
+          class: "line",
+          children: createVNode(_components.span, {
+            style: {
+              color: "#E1E4E8"
+            },
+            children: "  plugins: [],"
+          })
+        }), "\n", createVNode(_components.span, {
+          class: "line",
+          children: [createVNode(_components.span, {
+            style: {
+              color: "#E1E4E8"
+            },
+            children: "  theme: "
+          }), createVNode(_components.span, {
+            style: {
+              color: "#9ECBFF"
+            },
+            children: "'light'"
           })]
         }), "\n", createVNode(_components.span, {
           class: "line",
@@ -292,8 +346,38 @@ function _createMdxContent(props) {
             style: {
               color: "#E1E4E8"
             },
-            children: "});"
+            children: "};"
           })
+        }), "\n", createVNode(_components.span, {
+          class: "line"
+        }), "\n", createVNode(_components.span, {
+          class: "line",
+          children: [createVNode(_components.span, {
+            style: {
+              color: "#F97583"
+            },
+            children: "const"
+          }), createVNode(_components.span, {
+            style: {
+              color: "#79B8FF"
+            },
+            children: " app"
+          }), createVNode(_components.span, {
+            style: {
+              color: "#F97583"
+            },
+            children: " ="
+          }), createVNode(_components.span, {
+            style: {
+              color: "#B392F0"
+            },
+            children: " createApp"
+          }), createVNode(_components.span, {
+            style: {
+              color: "#E1E4E8"
+            },
+            children: "(options);"
+          })]
         }), "\n", createVNode(_components.span, {
           class: "line"
         }), "\n", createVNode(_components.span, {
@@ -317,26 +401,54 @@ function _createMdxContent(props) {
         })]
       })
     }), "\n", createVNode(_components.h2, {
-      id: "next-steps",
-      children: "Next Steps"
+      id: "v2の新機能",
+      children: "v2の新機能"
     }), "\n", createVNode(_components.p, {
-      children: "Now that you have the basics set up, you can:"
+      children: "バージョン2では、いくつかの新機能が導入されています："
     }), "\n", createVNode(_components.ul, {
       children: ["\n", createVNode(_components.li, {
-        children: ["Learn more about ", createVNode(_components.a, {
-          href: "/docs-astro/en/v1/guide/configuration",
-          children: "configuration options"
-        })]
+        children: [createVNode(_components.strong, {
+          children: "TypeScriptサポート"
+        }), ": 型定義を含む完全なTypeScriptサポート"]
       }), "\n", createVNode(_components.li, {
-        children: ["Explore the ", createVNode(_components.a, {
-          href: "/docs-astro/en/v1/api/reference",
-          children: "API reference"
-        })]
+        children: [createVNode(_components.strong, {
+          children: "プラグインシステム"
+        }), ": プラグインで機能を拡張"]
       }), "\n", createVNode(_components.li, {
-        children: ["Check out some ", createVNode(_components.a, {
-          href: "/docs-astro/en/v1/examples",
-          children: "examples"
-        })]
+        children: [createVNode(_components.strong, {
+          children: "テーマ機能"
+        }), ": 組み込みのテーマサポート"]
+      }), "\n", createVNode(_components.li, {
+        children: [createVNode(_components.strong, {
+          children: "パフォーマンスの向上"
+        }), ": v1より50%高速化"]
+      }), "\n"]
+    }), "\n", createVNode(_components.h2, {
+      id: "次のステップ",
+      children: "次のステップ"
+    }), "\n", createVNode(_components.p, {
+      children: "基本的なセットアップが完了したら、以下のことができます："
+    }), "\n", createVNode(_components.ul, {
+      children: ["\n", createVNode(_components.li, {
+        children: [createVNode(_components.a, {
+          href: "/docs-astro/ja/v2/guide/configuration",
+          children: "設定オプション"
+        }), "について詳しく学ぶ"]
+      }), "\n", createVNode(_components.li, {
+        children: [createVNode(_components.a, {
+          href: "/docs-astro/ja/v2/api/reference",
+          children: "APIリファレンス"
+        }), "を調べる"]
+      }), "\n", createVNode(_components.li, {
+        children: [createVNode(_components.a, {
+          href: "/docs-astro/ja/v2/examples",
+          children: "サンプル"
+        }), "を確認する"]
+      }), "\n", createVNode(_components.li, {
+        children: [createVNode(_components.a, {
+          href: "/docs-astro/ja/v2/guide/migration",
+          children: "v1からの移行"
+        }), "について読む"]
       }), "\n"]
     })]
   });
@@ -351,15 +463,15 @@ function MDXContent(props = {}) {
   }) : _createMdxContent(props);
 }
 
-const url = "src/content/docs/en/v1/guide/getting-started.mdx";
-const file = "/home/runner/work/docs-astro/docs-astro/apps/sample-docs/src/content/docs/en/v1/guide/getting-started.mdx";
+const url = "src/content/docs/ja/v2/guide/getting-started.mdx";
+const file = "/home/runner/work/docs-astro/docs-astro/apps/sample-docs/src/content/docs/ja/v2/guide/getting-started.mdx";
 const Content = (props = {}) => MDXContent({
   ...props,
   components: { Fragment: Fragment, ...props.components, },
 });
 Content[Symbol.for('mdx-component')] = true;
 Content[Symbol.for('astro.needsHeadRendering')] = !Boolean(frontmatter.layout);
-Content.moduleId = "/home/runner/work/docs-astro/docs-astro/apps/sample-docs/src/content/docs/en/v1/guide/getting-started.mdx";
+Content.moduleId = "/home/runner/work/docs-astro/docs-astro/apps/sample-docs/src/content/docs/ja/v2/guide/getting-started.mdx";
 __astro_tag_component__(Content, 'astro:jsx');
 
 export { Content, Content as default, file, frontmatter, getHeadings, url };

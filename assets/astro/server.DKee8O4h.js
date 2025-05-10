@@ -2475,6 +2475,18 @@ function spreadAttributes(values = {}, _name, { class: scopedClassName } = {}) {
   }
   return markHTMLString(output);
 }
+function defineStyleVars(defs) {
+  let output = "";
+  let arr = !Array.isArray(defs) ? [defs] : defs;
+  for (const vars of arr) {
+    for (const [key, value] of Object.entries(vars)) {
+      if (value || value === 0) {
+        output += `--${key}: ${value};`;
+      }
+    }
+  }
+  return markHTMLString(output);
+}
 
 const AstroJSX = "astro:jsx";
 const Empty = Symbol("empty");
@@ -2543,4 +2555,4 @@ function createVNode(type, props) {
   return vnode;
 }
 
-export { AstroError as A, ExpectedImageOptions as B, ExpectedNotESMImage as C, InvalidImageService as D, ExpectedImage as E, Fragment as F, ImageMissingAlt as G, ExperimentalFontsNotEnabled as H, IncompatibleDescriptorOptions as I, FontFamilyNotFound as J, LocalImageUsedWrongly as L, MissingSharp as M, NOOP_MIDDLEWARE_HEADER as N, RenderUndefinedEntryError as R, UnknownContentCollectionError as U, __astro_tag_component__ as _, createAstro as a, createComponent as b, createVNode as c, renderTemplate as d, renderScript as e, addAttribute as f, renderJSX as g, AstroJSX as h, AstroUserError as i, renderSlot as j, decodeKey as k, escape as l, maybeRenderHead as m, renderUniqueStylesheet as n, renderScriptElement as o, createHeadAndContent as p, renderHead as q, renderComponent as r, spreadAttributes as s, MissingImageDimension as t, unescapeHTML as u, UnsupportedImageFormat as v, UnsupportedImageConversion as w, toStyleString as x, NoImageMetadata as y, FailedToFetchRemoteImageDimensions as z };
+export { AstroError as A, FailedToFetchRemoteImageDimensions as B, ExpectedImageOptions as C, ExpectedNotESMImage as D, ExpectedImage as E, Fragment as F, InvalidImageService as G, ImageMissingAlt as H, IncompatibleDescriptorOptions as I, ExperimentalFontsNotEnabled as J, FontFamilyNotFound as K, LocalImageUsedWrongly as L, MissingSharp as M, NOOP_MIDDLEWARE_HEADER as N, RenderUndefinedEntryError as R, UnknownContentCollectionError as U, __astro_tag_component__ as _, createAstro as a, createComponent as b, createVNode as c, renderTemplate as d, renderScript as e, addAttribute as f, renderJSX as g, AstroJSX as h, AstroUserError as i, renderSlot as j, decodeKey as k, escape as l, maybeRenderHead as m, renderUniqueStylesheet as n, renderScriptElement as o, createHeadAndContent as p, defineStyleVars as q, renderComponent as r, spreadAttributes as s, renderHead as t, unescapeHTML as u, MissingImageDimension as v, UnsupportedImageFormat as w, UnsupportedImageConversion as x, toStyleString as y, NoImageMetadata as z };

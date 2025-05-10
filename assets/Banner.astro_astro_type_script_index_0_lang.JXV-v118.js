@@ -1,0 +1,1 @@
+document.addEventListener("DOMContentLoaded",()=>{document.querySelectorAll("[data-dismiss-banner]").forEach(n=>{n.addEventListener("click",()=>{const e=n.closest(".sl-banner");if(e){e.remove();try{const s=e.classList[1]?.replace("sl-banner-","")||"";s&&localStorage.setItem(`banner-dismissed-${s}`,"true")}catch{}}})})});
