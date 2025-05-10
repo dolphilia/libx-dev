@@ -114,23 +114,23 @@ const menuId = `dropdown-menu-${Math.random().toString(36).substring(2, 11)}`;
     justify-content: center;
     width: 100%;
     border-radius: 0.375rem;
-    border: 1px solid var(--dropdown-border-color, #d1d5db);
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--color-border-default); /* Updated */
+    box-shadow: var(--shadow-sm); /* Updated */
     padding: 0.5rem 1rem;
-    background-color: var(--dropdown-bg-color, white);
-    font-size: 0.875rem;
+    background-color: var(--color-bg-secondary); /* Updated */
+    font-size: var(--font-size-sm); /* Updated */
     font-weight: 500;
-    color: var(--dropdown-text-color, #374151);
+    color: var(--color-text-primary); /* Updated */
     transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
   }
 
   .dropdown-button:hover {
-    background-color: var(--dropdown-hover-bg-color, #f9fafb);
+    background-color: var(--color-bg-tertiary); /* Updated */
   }
 
   .dropdown-button:focus {
     outline: none;
-    box-shadow: 0 0 0 2px #f9fafb, 0 0 0 4px #3b82f6;
+    box-shadow: 0 0 0 2px var(--color-bg-tertiary), 0 0 0 4px var(--color-brand-primary); /* Updated */
   }
 
   .dropdown-label {
@@ -150,9 +150,9 @@ const menuId = `dropdown-menu-${Math.random().toString(36).substring(2, 11)}`;
     z-index: 10;
     margin-top: 0.5rem;
     border-radius: 0.375rem;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    background-color: var(--dropdown-menu-bg-color, white);
-    border: 1px solid var(--dropdown-menu-border-color, rgba(0, 0, 0, 0.05));
+    box-shadow: var(--shadow-lg); /* Updated */
+    background-color: var(--color-bg-secondary); /* Updated */
+    border: 1px solid var(--color-border-default); /* Updated */
     transform-origin: top var(--align, right);
   }
 
@@ -172,21 +172,7 @@ const menuId = `dropdown-menu-${Math.random().toString(36).substring(2, 11)}`;
     display: none;
   }
 
-  /* ダークモード対応 */
-  @media (prefers-color-scheme: dark) {
-    .dropdown-button {
-      border-color: var(--dark-dropdown-border-color, #4b5563);
-      background-color: var(--dark-dropdown-bg-color, #1f2937);
-      color: var(--dark-dropdown-text-color, #e5e7eb);
-    }
-
-    .dropdown-button:hover {
-      background-color: var(--dark-dropdown-hover-bg-color, #374151);
-    }
-
-    .dropdown-menu {
-      background-color: var(--dark-dropdown-menu-bg-color, #1f2937);
-      border-color: var(--dark-dropdown-menu-border-color, #4b5563);
-    }
-  }
+  /* ThemeToggleによるテーマ切り替え対応 */
+  /* No need for :global(.dark) or :global(:not(.dark)) specific overrides here if variables.css is correctly set up */
+  /* The component will automatically use the updated global CSS variables based on the html.dark class */
 </style>

@@ -42,4 +42,15 @@ const { title, description, href, icon, class: className, ...rest } = Astro.prop
       color: var(--dark-card-description-color, #9ca3af);
     }
   }
+
+  /* ThemeToggleによるテーマ切り替え対応 */
+  /* ダークモード */
+  :global(.dark) .link-card-description {
+    color: var(--dark-card-description-color, #9ca3af);
+  }
+
+  /* ライトモード */
+  :global(:not(.dark)) .link-card-description {
+    color: var(--card-description-color, #6b7280);
+  }
 </style>

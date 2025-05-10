@@ -72,7 +72,7 @@ const classes = [
   }
 
   .btn:focus-visible {
-    outline: 2px solid var(--focus-ring-color, rgba(59, 130, 246, 0.5));
+    outline: 2px solid var(--sl-color-accent); /* Updated */
     outline-offset: 2px;
   }
 
@@ -104,104 +104,125 @@ const classes = [
 
   /* カラーバリエーション */
   .btn-primary {
-    background-color: var(--primary-color, #2563eb);
-    color: white;
+    background-color: var(--color-brand-primary); /* Updated */
+    color: var(--sl-color-black); /* Updated - Assuming white text on dark, black text on light */
+  }
+  html.dark .btn-primary {
+    color: var(--sl-color-white); /* Updated */
   }
   .btn-primary:hover {
-    background-color: var(--primary-hover, #1d4ed8);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    filter: brightness(0.9); /* Simplified hover */
+    box-shadow: var(--shadow-md); /* Updated */
   }
 
   .btn-secondary {
-    background-color: var(--secondary-color, #4b5563);
-    color: white;
+    background-color: var(--color-brand-secondary); /* Updated */
+    color: var(--sl-color-black); /* Updated */
+  }
+  html.dark .btn-secondary {
+    color: var(--sl-color-white); /* Updated */
   }
   .btn-secondary:hover {
-    background-color: var(--secondary-hover, #374151);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    filter: brightness(0.9); /* Simplified hover */
+    box-shadow: var(--shadow-md); /* Updated */
   }
 
   .btn-accent {
-    background-color: var(--accent-color, #8b5cf6);
-    color: white;
+    background-color: var(--color-brand-accent); /* Updated */
+    color: var(--sl-color-black); /* Updated */
+  }
+  html.dark .btn-accent {
+    color: var(--sl-color-white); /* Updated */
   }
   .btn-accent:hover {
-    background-color: var(--accent-hover, #7c3aed);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    filter: brightness(0.9); /* Simplified hover */
+    box-shadow: var(--shadow-md); /* Updated */
   }
 
   .btn-info {
-    background-color: var(--info-color, #0ea5e9);
-    color: white;
+    background-color: var(--color-status-info); /* Updated */
+    color: var(--sl-color-black); /* Updated */
+  }
+  html.dark .btn-info {
+    color: var(--sl-color-white); /* Updated */
   }
   .btn-info:hover {
-    background-color: var(--info-hover, #0284c7);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    filter: brightness(0.9); /* Simplified hover */
+    box-shadow: var(--shadow-md); /* Updated */
   }
 
   .btn-success {
-    background-color: var(--success-color, #22c55e);
-    color: white;
+    background-color: var(--color-status-success); /* Updated */
+    color: var(--sl-color-black); /* Updated */
+  }
+  html.dark .btn-success {
+    color: var(--sl-color-white); /* Updated */
   }
   .btn-success:hover {
-    background-color: var(--success-hover, #16a34a);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    filter: brightness(0.9); /* Simplified hover */
+    box-shadow: var(--shadow-md); /* Updated */
   }
 
   .btn-warning {
-    background-color: var(--warning-color, #f59e0b);
-    color: white;
+    background-color: var(--color-status-warning); /* Updated */
+    color: var(--sl-color-black); /* Updated */
+  }
+  html.dark .btn-warning {
+    color: var(--sl-color-white); /* Updated */
   }
   .btn-warning:hover {
-    background-color: var(--warning-hover, #d97706);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    filter: brightness(0.9); /* Simplified hover */
+    box-shadow: var(--shadow-md); /* Updated */
   }
 
   .btn-error {
-    background-color: var(--error-color, #ef4444);
-    color: white;
+    background-color: var(--color-status-error); /* Updated */
+    color: var(--sl-color-black); /* Updated */
+  }
+  html.dark .btn-error {
+    color: var(--sl-color-white); /* Updated */
   }
   .btn-error:hover {
-    background-color: var(--error-hover, #dc2626);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    filter: brightness(0.9); /* Simplified hover */
+    box-shadow: var(--shadow-md); /* Updated */
   }
 
   .btn-ghost {
     background-color: transparent;
-    color: var(--text-color, #4b5563);
+    color: var(--color-text-primary); /* Updated */
   }
   .btn-ghost:hover {
-    background-color: var(--ghost-hover, #f3f4f6);
-    color: var(--text-hover, #1f2937);
+    background-color: var(--color-bg-tertiary); /* Updated */
+    color: var(--color-text-accent); /* Updated */
   }
 
   .btn-link {
     background-color: transparent;
-    color: var(--link-color, #2563eb);
+    color: var(--color-text-accent); /* Updated */
     padding: 0;
   }
   .btn-link:hover {
-    color: var(--link-hover, #1d4ed8);
+    filter: brightness(0.9); /* Simplified hover */
     text-decoration: underline;
   }
 
   .btn-outline {
     background-color: transparent;
     border: 1px solid currentColor;
-    color: var(--outline-color, #4b5563);
+    color: var(--color-text-primary); /* Updated */
   }
   .btn-outline:hover {
-    background-color: var(--outline-hover, #f3f4f6);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    background-color: var(--color-bg-tertiary); /* Updated */
+    box-shadow: var(--shadow-md); /* Updated */
   }
 
   .btn-minimal {
     background-color: transparent;
-    color: var(--link-color, #2563eb);
+    color: var(--color-text-accent); /* Updated */
     padding-inline: 0;
   }
   .btn-minimal:hover {
-    color: var(--link-hover, #1d4ed8);
+    filter: brightness(0.9); /* Simplified hover */
   }
 
   /* アイコン */
@@ -221,20 +242,5 @@ const classes = [
   }
 
   /* ダークモード対応 */
-  @media (prefers-color-scheme: dark) {
-    .btn-ghost {
-      color: var(--dark-text-color, #e5e7eb);
-    }
-    .btn-ghost:hover {
-      background-color: var(--dark-ghost-hover, #374151);
-      color: var(--dark-text-hover, #f9fafb);
-    }
-    
-    .btn-outline {
-      color: var(--dark-outline-color, #e5e7eb);
-    }
-    .btn-outline:hover {
-      background-color: var(--dark-outline-hover, #374151);
-    }
-  }
+  /* No longer needed due to global variable changes and html.dark scoping for text colors */
 </style>

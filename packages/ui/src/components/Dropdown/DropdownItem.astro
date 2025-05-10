@@ -79,8 +79,8 @@ const {
     align-items: center;
     width: 100%;
     padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-    color: var(--dropdown-item-text-color, #4b5563);
+    font-size: var(--font-size-sm); /* Updated */
+    color: var(--color-text-secondary); /* Updated */
     text-align: left;
     background-color: transparent;
     border: none;
@@ -89,13 +89,13 @@ const {
   }
 
   .dropdown-item:hover {
-    background-color: var(--dropdown-item-hover-bg, #f3f4f6);
-    color: var(--dropdown-item-hover-text-color, #111827);
+    background-color: var(--color-bg-tertiary); /* Updated */
+    color: var(--color-text-primary); /* Updated */
   }
 
   .dropdown-item-active {
-    background-color: var(--dropdown-item-active-bg, #f3f4f6);
-    color: var(--dropdown-item-active-text-color, #111827);
+    background-color: var(--color-bg-tertiary); /* Updated */
+    color: var(--color-text-primary); /* Updated */
     font-weight: 500;
   }
 
@@ -103,20 +103,7 @@ const {
     flex: 1;
   }
 
-  /* ダークモード対応 */
-  @media (prefers-color-scheme: dark) {
-    .dropdown-item {
-      color: var(--dark-dropdown-item-text-color, #9ca3af);
-    }
-
-    .dropdown-item:hover {
-      background-color: var(--dark-dropdown-item-hover-bg, #374151);
-      color: var(--dark-dropdown-item-hover-text-color, #f9fafb);
-    }
-
-    .dropdown-item-active {
-      background-color: var(--dark-dropdown-item-active-bg, #374151);
-      color: var(--dark-dropdown-item-active-text-color, #f9fafb);
-    }
-  }
+  /* ThemeToggleによるテーマ切り替え対応 */
+  /* No need for :global(.dark) or :global(:not(.dark)) specific overrides here if variables.css is correctly set up */
+  /* The component will automatically use the updated global CSS variables based on the html.dark class */
 </style>

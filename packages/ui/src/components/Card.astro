@@ -61,9 +61,9 @@ const linkProps = href ? { href } : {};
   .card {
     border-radius: 0.5rem;
     overflow: hidden;
-    background-color: var(--card-bg, white);
-    border: 1px solid var(--card-border, rgba(0, 0, 0, 0.15));
-    box-shadow: var(--card-shadow, 0 1px 3px rgba(0, 0, 0, 0.1));
+    background-color: var(--color-bg-secondary); /* Updated */
+    border: 1px solid var(--color-border-default); /* Updated */
+    box-shadow: var(--shadow-sm); /* Updated */
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     position: relative;
   }
@@ -76,12 +76,12 @@ const linkProps = href ? { href } : {};
 
   .card-interactive:hover {
     transform: translateY(-2px);
-    box-shadow: var(--card-shadow-hover, 0 4px 6px rgba(0, 0, 0, 0.1));
-    border-color: var(--card-border-hover, rgba(0, 0, 0, 0.25));
+    box-shadow: var(--shadow-md); /* Updated */
+    border-color: var(--color-border-dark); /* Updated */
   }
 
   .card-bordered {
-    border: 1px solid var(--card-border-color, #e5e7eb);
+    border: 1px solid var(--color-border-default); /* Updated */
   }
 
   .card-image {
@@ -113,18 +113,18 @@ const linkProps = href ? { href } : {};
     justify-content: center;
     width: 1.5rem;
     height: 1.5rem;
-    color: var(--card-icon-color, #4b5563);
+    color: var(--color-text-secondary); /* Updated */
   }
 
   .card-title {
-    font-size: 1.25rem;
+    font-size: var(--font-size-xl); /* Updated */
     font-weight: 600;
-    color: var(--card-title-color, #111827);
+    color: var(--color-text-primary); /* Updated */
     margin: 0;
   }
 
   .card-content {
-    color: var(--card-content-color, #4b5563);
+    color: var(--color-text-secondary); /* Updated */
   }
 
   .card-footer {
@@ -144,7 +144,7 @@ const linkProps = href ? { href } : {};
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--card-cta-color, #2563eb);
+    color: var(--color-brand-primary); /* Updated */
     transition: transform 0.2s ease;
   }
 
@@ -152,23 +152,7 @@ const linkProps = href ? { href } : {};
     transform: translateX(4px);
   }
 
-  /* ダークモード対応 */
-  @media (prefers-color-scheme: dark) {
-    .card {
-      background-color: var(--dark-card-bg, #1f2937);
-      border-color: var(--dark-card-border, rgba(255, 255, 255, 0.1));
-    }
-
-    .card-title {
-      color: var(--dark-card-title-color, #f9fafb);
-    }
-
-    .card-content {
-      color: var(--dark-card-content-color, #d1d5db);
-    }
-
-    .card-cta-icon {
-      color: var(--dark-card-cta-color, #60a5fa);
-    }
-  }
+  /* ThemeToggleによるテーマ切り替え対応 */
+  /* No need for media query or :global(.dark) / :global(:not(.dark)) specific overrides */
+  /* if variables.css is correctly set up and global variables are used. */
 </style>
