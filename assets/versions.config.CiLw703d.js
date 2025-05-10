@@ -370,11 +370,46 @@ function getTabsScript() {
               this.switchTab(e.currentTarget, i);
             }
           });
+
+          // キーボードイベント - Starlightスタイルのキーボードナビゲーション
+          tab.addEventListener('keydown', (e) => {
+            const index = this.tabs.indexOf(e.currentTarget);
+            // ユーザーが押したキーに基づいて新しいタブのインデックスを計算
+            const nextIndex =
+              e.key === 'ArrowLeft'
+                ? index - 1
+                : e.key === 'ArrowRight'
+                  ? index + 1
+                  : e.key === 'Home'
+                    ? 0
+                    : e.key === 'End'
+                      ? this.tabs.length - 1
+                      : null;
+            if (nextIndex === null) return;
+            if (this.tabs[nextIndex]) {
+              e.preventDefault();
+              this.switchTab(this.tabs[nextIndex], nextIndex);
+            }
+          });
         });
+
+        // ローカルストレージから同期タブの状態を復元
+        if (this.syncKey && typeof localStorage !== 'undefined') {
+          const storedLabel = localStorage.getItem('docs-synced-tabs__' + this.syncKey);
+          if (storedLabel) {
+            const tabIndex = this.tabs.findIndex(tab => tab.textContent.trim() === storedLabel);
+            if (tabIndex > 0) { // 最初のタブ以外の場合のみ切り替え
+              this.switchTab(this.tabs[tabIndex], tabIndex, false);
+            }
+          }
+        }
       }
 
       switchTab(newTab, index, shouldSync = true) {
         if (!newTab) return;
+
+        // タブ切り替え前のスクロール位置を保存
+        const previousTabsOffset = shouldSync ? this.getBoundingClientRect().top : 0;
 
         // すべてのタブを非アクティブにし、すべてのパネルを非表示にする
         this.tabs.forEach((tab) => {
@@ -391,9 +426,15 @@ function getTabsScript() {
         newTab.removeAttribute('tabindex');
         newTab.setAttribute('aria-selected', 'true');
         
-        if (shouldSync && this.syncKey) {
+        if (shouldSync) {
           newTab.focus();
           this.syncTabs(newTab);
+          
+          // スクロール位置を調整して、タブ切り替え後も同じ位置に表示されるようにする
+          window.scrollTo({
+            top: window.scrollY + (this.getBoundingClientRect().top - previousTabsOffset),
+            behavior: 'instant'
+          });
         }
       }
 
@@ -490,7 +531,29 @@ const Icons = {
   // 下矢印アイコン
   "down-arrow": '<path d="M17.71 11.29a1 1 0 0 0-1.42 0L13 14.59V7a1 1 0 0 0-2 0v7.59l-3.29-3.3a1 1 0 0 0-1.42 1.42l5 5a1 1 0 0 0 .33.21.94.94 0 0 0 .76 0 1 1 0 0 0 .33-.21l5-5a1 1 0 0 0 0-1.42Z"/>',
   // 上矢印アイコン
-  "up-arrow": '<path d="m17.71 11.29-5-5a1 1 0 0 0-.33-.21 1 1 0 0 0-.76 0 1 1 0 0 0-.33.21l-5 5a1 1 0 0 0 1.42 1.42L11 9.41V17a1 1 0 0 0 2 0V9.41l3.29 3.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42Z"/>'
+  "up-arrow": '<path d="m17.71 11.29-5-5a1 1 0 0 0-.33-.21 1 1 0 0 0-.76 0 1 1 0 0 0-.33.21l-5 5a1 1 0 0 0 1.42 1.42L11 9.41V17a1 1 0 0 0 2 0V9.41l3.29 3.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42Z"/>',
+  // 外部リンクアイコン - Starlightスタイル
+  "external-link": '<path d="M19.5 8.25h-4.5a.75.75 0 0 0 0 1.5h2.69L8.91 18.53a.75.75 0 0 0 1.06 1.06L18.75 10.8v2.7a.75.75 0 0 0 1.5 0v-4.5a.75.75 0 0 0-.75-.75Z"/><path d="M8.25 6.75a.75.75 0 0 0-.75.75v10.5a.75.75 0 0 0 .75.75h10.5a.75.75 0 0 0 0-1.5H9v-9.75a.75.75 0 0 0-.75-.75Z"/>',
+  // 編集アイコン
+  "edit": '<path d="M19.4 7.34 16.66 4.6A2 2 0 0 0 14 4.53l-9 9a2 2 0 0 0-.57 1.21L4 18.91a1 1 0 0 0 .29.8A1 1 0 0 0 5 20h.09l4.17-.38a2 2 0 0 0 1.21-.57l9-9a1.92 1.92 0 0 0-.07-2.71ZM9.08 17.62l-3 .28.27-3L12 9.32l2.7 2.7-5.62 5.6Zm8.35-8.36-1.91 1.91-2.7-2.7 1.91-1.91a.93.93 0 0 1 1.3 0l1.4 1.4a.93.93 0 0 1 0 1.3Z"/>',
+  // コピーアイコン
+  "copy": '<path d="M20 2H10a2 2 0 0 0-2 2v4H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4h4a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2ZM14 18H4V10h10v8Zm6-6h-4v-2a2 2 0 0 0-2-2h-2V4h8v8Z"/>',
+  // 成功アイコン
+  "success": '<path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm3.36-11.71a1 1 0 0 0-1.41 0l-3.36 3.37-1.17-1.17a1 1 0 0 0-1.41 1.41l1.87 1.87a1 1 0 0 0 1.41 0l4.07-4.07a1 1 0 0 0 0-1.41Z"/>',
+  // ノートアイコン
+  "note": '<path d="M19 4H5a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm1 13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v10Z"/><path d="M7 12h10a1 1 0 0 0 0-2H7a1 1 0 0 0 0 2Zm0 2h7a1 1 0 0 0 0-2H7a1 1 0 0 0 0 2Z"/>',
+  // ヒントアイコン
+  "tip": '<path d="M12 7a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V8a1 1 0 0 0-1-1Zm0-3a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm0-2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8 8.01 8.01 0 0 1-8 8Z"/>',
+  // 重要アイコン
+  "important": '<path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8 8.01 8.01 0 0 1-8 8Z"/><path d="M12 7a1 1 0 0 0-1 1v5a1 1 0 0 0 2 0V8a1 1 0 0 0-1-1Zm0 8a1 1 0 1 0 1 1 1 1 0 0 0-1-1Z"/>',
+  // 注意アイコン
+  "caution": '<path d="M12 7.5a1 1 0 0 0-1 1v5a1 1 0 0 0 2 0v-5a1 1 0 0 0-1-1Zm0 10a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5ZM21.49 19.67 13 4.48a1.39 1.39 0 0 0-2 0l-8.49 15.19A1.4 1.4 0 0 0 3.52 21h16.96a1.4 1.4 0 0 0 1.01-1.33ZM4.77 19 12 5.93 19.23 19H4.77Z"/>',
+  // ダウンロードアイコン
+  "download": '<path d="M12 16a1 1 0 0 1-.64-.23l-6-5a1 1 0 1 1 1.28-1.54L12 13.71l5.36-4.32a1 1 0 0 1 1.41.15 1 1 0 0 1-.14 1.46l-6 4.83A1 1 0 0 1 12 16Z"/><path d="M12 16a1 1 0 0 1-1-1V5a1 1 0 0 1 2 0v10a1 1 0 0 1-1 1Z"/><path d="M19 20H5a1 1 0 0 1 0-2h14a1 1 0 0 1 0 2Z"/>',
+  // ライトテーマアイコン
+  "light": '<path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0-8a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm-1 11h2a1 1 0 0 0 0-2h-2a1 1 0 0 0 0 2Zm0-18h2a1 1 0 0 0 0-2h-2a1 1 0 0 0 0 2Zm9 9a1 1 0 0 0 0-2h-2a1 1 0 0 0 0 2h2ZM6 12H4a1 1 0 0 0 0 2h2a1 1 0 0 0 0-2Zm11.66-5.66a1 1 0 0 0 0-1.41l-1.42-1.42a1 1 0 1 0-1.41 1.41l1.41 1.42a1 1 0 0 0 1.42 0Zm-12.02 12a1 1 0 0 0-1.41 0l-1.42 1.42a1 1 0 1 0 1.41 1.41l1.42-1.41a1 1 0 0 0 0-1.42Zm12.02 0-1.42 1.42a1 1 0 0 0 1.42 1.41l1.41-1.41a1 1 0 0 0-1.41-1.42Zm-12.02-12 1.42-1.42a1 1 0 0 0-1.42-1.41L4.64 4.93a1 1 0 0 0 1.41 1.41Z"/>',
+  // ダークテーマアイコン
+  "dark": '<path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/>'
 };
 
 const $$Astro$2 = createAstro("https://dolphilia.github.io");
@@ -499,13 +562,14 @@ const $$Icon = createComponent(($$result, $$props, $$slots) => {
   Astro2.self = $$Icon;
   const {
     name,
-    size = 24,
-    color = "currentColor",
+    size = "1em",
+    color,
     label,
     class: className = ""
   } = Astro2.props;
-  const iconPath = Icons[name];
-  return renderTemplate`${maybeRenderHead()}<svg xmlns="http://www.w3.org/2000/svg"${addAttribute(size, "width")}${addAttribute(size, "height")} viewBox="0 0 24 24" fill="none"${addAttribute(color, "stroke")} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"${addAttribute(!label, "aria-hidden")}${addAttribute(label, "aria-label")}${addAttribute(`icon ${className}`, "class")} data-astro-cid-7zy7jqun>${unescapeHTML(iconPath)}</svg> `;
+  const a11yAttrs = label ? { "aria-label": label } : { "aria-hidden": "true" };
+  const $$definedVars = defineStyleVars([{ "icon-color": color, "icon-size": size }]);
+  return renderTemplate`${renderComponent($$result, "Fragment", Fragment, { "data-astro-cid-7zy7jqun": true, "style": $$definedVars }, { "default": ($$result2) => renderTemplate`${maybeRenderHead()}<svg${spreadAttributes(a11yAttrs)}${addAttribute(`icon ${className}`, "class")} width="16" height="16" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-7zy7jqun${addAttribute($$definedVars, "style")}>${unescapeHTML(Icons[name])}</svg>` })}`;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/icons/Icon.astro", void 0);
 
 const common$1 = {"home":"Home","search":"Search","menu":"Menu","close":"Close","back":"Back","next":"Next","previous":"Previous","loading":"Loading...","error":"Error","success":"Success","warning":"Warning","info":"Information"};
