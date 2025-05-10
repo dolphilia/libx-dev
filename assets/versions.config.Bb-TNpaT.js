@@ -1,9 +1,31 @@
-import { a as createAstro, b as createComponent, m as maybeRenderHead, f as addAttribute, s as spreadAttributes, j as renderSlot, u as unescapeHTML, d as renderTemplate, r as renderComponent, q as defineStyleVars, e as renderScript, t as renderHead } from './astro/server.DKee8O4h.js';
+import { a as createAstro, b as createComponent, m as maybeRenderHead, f as addAttribute, s as spreadAttributes, j as renderSlot, u as unescapeHTML, d as renderTemplate, r as renderComponent, q as defineStyleVars, e as renderScript, F as Fragment, t as renderHead } from './astro/server.DKee8O4h.js';
+/* empty css                                                             */
+/* empty css                                                           */
+/* empty css                                                                 */
+/* empty css                                                              */
+/* empty css                                                             */
+import './Alert_astro_astro_type_style_index_0_lang.6009b11b.l0sNRNKZ.js';
+import './ContentPanel_astro_astro_type_style_index_0_lang.681033bb.l0sNRNKZ.js';
+/* empty css                                                                          */
+/* empty css                                                                      */
+/* empty css                                                                 */
+/* empty css                                                               */
+import './AnchorHeading_astro_astro_type_style_index_0_lang.b9f2af13.l0sNRNKZ.js';
+import './Banner_astro_astro_type_style_index_0_lang.8a6cba30.l0sNRNKZ.js';
+import './ContentNotice_astro_astro_type_style_index_0_lang.cd256761.l0sNRNKZ.js';
+import './Hero_astro_astro_type_style_index_0_lang.11d5116d.l0sNRNKZ.js';
+import './ThemeToggle_astro_astro_type_style_index_0_lang.332396ea.l0sNRNKZ.js';
+import './TwoColumnContent_astro_astro_type_style_index_0_lang.64f9b8ce.l0sNRNKZ.js';
+import './LinkCard_astro_astro_type_style_index_0_lang.ceda4718.l0sNRNKZ.js';
+import './CardGrid_astro_astro_type_style_index_0_lang.c4bdb400.l0sNRNKZ.js';
+/* empty css                                                           */
+/* empty css                                                              */
+/* empty css                                                           */
 /* empty css                         */
 
-const $$Astro$l = createAstro("https://dolphilia.github.io");
+const $$Astro$m = createAstro("https://dolphilia.github.io");
 const $$Button = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$l, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$m, $$props, $$slots);
   Astro2.self = $$Button;
   const {
     variant = "primary",
@@ -24,9 +46,9 @@ const $$Button = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${href ? renderTemplate`${maybeRenderHead()}<a${addAttribute(classes, "class:list")}${addAttribute(href, "href")}${spreadAttributes(rest)} data-astro-cid-vdt45vlw>${icon && iconPlacement === "start" && renderTemplate`<span class="icon icon-start" aria-hidden="true" data-astro-cid-vdt45vlw>${unescapeHTML(icon)}</span>`}${renderSlot($$result, $$slots["default"])}${icon && iconPlacement === "end" && renderTemplate`<span class="icon icon-end" aria-hidden="true" data-astro-cid-vdt45vlw>${unescapeHTML(icon)}</span>`}</a>` : renderTemplate`<button${addAttribute(classes, "class:list")}${spreadAttributes(rest)} data-astro-cid-vdt45vlw>${icon && iconPlacement === "start" && renderTemplate`<span class="icon icon-start" aria-hidden="true" data-astro-cid-vdt45vlw>${unescapeHTML(icon)}</span>`}${renderSlot($$result, $$slots["default"])}${icon && iconPlacement === "end" && renderTemplate`<span class="icon icon-end" aria-hidden="true" data-astro-cid-vdt45vlw>${unescapeHTML(icon)}</span>`}</button>`}`;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Button.astro", void 0);
 
-const $$Astro$k = createAstro("https://dolphilia.github.io");
+const $$Astro$l = createAstro("https://dolphilia.github.io");
 const $$Card = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$k, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$l, $$props, $$slots);
   Astro2.self = $$Card;
   const {
     title,
@@ -47,24 +69,24 @@ const $$Card = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${renderComponent($$result, "Tag", Tag, { "class:list": classes, ...linkProps, ...rest, "data-astro-cid-acjo2zw3": true }, { "default": ($$result2) => renderTemplate` ${maybeRenderHead()}<div class="card-body" data-astro-cid-acjo2zw3> ${title && renderTemplate`<div class="card-header" data-astro-cid-acjo2zw3> ${icon && renderTemplate`<span class="card-icon" data-astro-cid-acjo2zw3>${unescapeHTML(icon)}</span>`} <h2 class="card-title" data-astro-cid-acjo2zw3>${title}</h2> </div>`} <div class="card-content" data-astro-cid-acjo2zw3> ${renderSlot($$result2, $$slots["default"])} </div> ${Astro2.slots.has("footer") && renderTemplate`<div class="card-footer" data-astro-cid-acjo2zw3> ${renderSlot($$result2, $$slots["footer"])} </div>`} </div> ${href && variant === "link" && renderTemplate`<div class="card-cta" data-astro-cid-acjo2zw3> <span class="card-cta-icon" data-astro-cid-acjo2zw3> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-acjo2zw3> <path d="M5 12h14" data-astro-cid-acjo2zw3></path> <path d="m12 5 7 7-7 7" data-astro-cid-acjo2zw3></path> </svg> </span> </div>`}` })} `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Card.astro", void 0);
 
-var __freeze = Object.freeze;
-var __defProp = Object.defineProperty;
-var __template = (cooked, raw) => __freeze(__defProp(cooked, "raw", { value: __freeze(cooked.slice()) }));
-var _a;
-const $$Astro$j = createAstro("https://dolphilia.github.io");
+var __freeze$1 = Object.freeze;
+var __defProp$1 = Object.defineProperty;
+var __template$1 = (cooked, raw) => __freeze$1(__defProp$1(cooked, "raw", { value: __freeze$1(cooked.slice()) }));
+var _a$1;
+const $$Astro$k = createAstro("https://dolphilia.github.io");
 const $$Navigation = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$j, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$k, $$props, $$slots);
   Astro2.self = $$Navigation;
   const { items, class: className = "" } = Astro2.props;
   function isCurrentPage(item) {
     return item.isCurrent || false;
   }
-  return renderTemplate(_a || (_a = __template(["", "<nav", ' aria-label="\u30E1\u30A4\u30F3\u30CA\u30D3\u30B2\u30FC\u30B7\u30E7\u30F3" data-astro-cid-pclxhes2> <div class="nav-items" data-astro-cid-pclxhes2> ', ' </div> <div class="menu-toggle" data-astro-cid-pclxhes2> <button type="button" aria-expanded="false" aria-label="\u30E2\u30D0\u30A4\u30EB\u30E1\u30CB\u30E5\u30FC\u3092\u5207\u308A\u66FF\u3048" id="mobile-menu-button" data-astro-cid-pclxhes2> <svg xmlns="http://www.w3.org/2000/svg" class="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-pclxhes2> <line x1="3" y1="12" x2="21" y2="12" data-astro-cid-pclxhes2></line> <line x1="3" y1="6" x2="21" y2="6" data-astro-cid-pclxhes2></line> <line x1="3" y1="18" x2="21" y2="18" data-astro-cid-pclxhes2></line> </svg> </button> </div> </nav> <!-- \u30E2\u30D0\u30A4\u30EB\u30E1\u30CB\u30E5\u30FC --> <div class="mobile-menu hidden" id="mobile-menu" data-astro-cid-pclxhes2> <div class="mobile-menu-content" data-astro-cid-pclxhes2> <ul class="mobile-nav-items" data-astro-cid-pclxhes2> ', " </ul> </div> </div>  <script>\n  document.addEventListener('DOMContentLoaded', function() {\n    const mobileButton = document.getElementById('mobile-menu-button');\n    const mobileMenu = document.getElementById('mobile-menu');\n    \n    if (mobileButton && mobileMenu) {\n      mobileButton.addEventListener('click', function() {\n        const expanded = mobileButton.getAttribute('aria-expanded') === 'true';\n        mobileButton.setAttribute('aria-expanded', (!expanded).toString());\n        mobileMenu.classList.toggle('hidden');\n      });\n    }\n  });\n<\/script>"])), maybeRenderHead(), addAttribute(["navigation", className], "class:list"), items.map((item) => renderTemplate`<a${addAttribute(item.href, "href")}${addAttribute(["nav-item", { active: isCurrentPage(item) }], "class:list")}${addAttribute(isCurrentPage(item) ? "page" : void 0, "aria-current")} data-astro-cid-pclxhes2> ${item.title} </a>`), items.map((item) => renderTemplate`<li data-astro-cid-pclxhes2> <a${addAttribute(item.href, "href")}${addAttribute(["mobile-nav-item", { active: isCurrentPage(item) }], "class:list")}${addAttribute(isCurrentPage(item) ? "page" : void 0, "aria-current")} data-astro-cid-pclxhes2> ${item.title} </a> </li>`));
+  return renderTemplate(_a$1 || (_a$1 = __template$1(["", "<nav", ' aria-label="\u30E1\u30A4\u30F3\u30CA\u30D3\u30B2\u30FC\u30B7\u30E7\u30F3" data-astro-cid-pclxhes2> <div class="nav-items" data-astro-cid-pclxhes2> ', ' </div> <div class="menu-toggle" data-astro-cid-pclxhes2> <button type="button" aria-expanded="false" aria-label="\u30E2\u30D0\u30A4\u30EB\u30E1\u30CB\u30E5\u30FC\u3092\u5207\u308A\u66FF\u3048" id="mobile-menu-button" data-astro-cid-pclxhes2> <svg xmlns="http://www.w3.org/2000/svg" class="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-pclxhes2> <line x1="3" y1="12" x2="21" y2="12" data-astro-cid-pclxhes2></line> <line x1="3" y1="6" x2="21" y2="6" data-astro-cid-pclxhes2></line> <line x1="3" y1="18" x2="21" y2="18" data-astro-cid-pclxhes2></line> </svg> </button> </div> </nav> <!-- \u30E2\u30D0\u30A4\u30EB\u30E1\u30CB\u30E5\u30FC --> <div class="mobile-menu hidden" id="mobile-menu" data-astro-cid-pclxhes2> <div class="mobile-menu-content" data-astro-cid-pclxhes2> <ul class="mobile-nav-items" data-astro-cid-pclxhes2> ', " </ul> </div> </div>  <script>\n  document.addEventListener('DOMContentLoaded', function() {\n    const mobileButton = document.getElementById('mobile-menu-button');\n    const mobileMenu = document.getElementById('mobile-menu');\n    \n    if (mobileButton && mobileMenu) {\n      mobileButton.addEventListener('click', function() {\n        const expanded = mobileButton.getAttribute('aria-expanded') === 'true';\n        mobileButton.setAttribute('aria-expanded', (!expanded).toString());\n        mobileMenu.classList.toggle('hidden');\n      });\n    }\n  });\n<\/script>"])), maybeRenderHead(), addAttribute(["navigation", className], "class:list"), items.map((item) => renderTemplate`<a${addAttribute(item.href, "href")}${addAttribute(["nav-item", { active: isCurrentPage(item) }], "class:list")}${addAttribute(isCurrentPage(item) ? "page" : void 0, "aria-current")} data-astro-cid-pclxhes2> ${item.title} </a>`), items.map((item) => renderTemplate`<li data-astro-cid-pclxhes2> <a${addAttribute(item.href, "href")}${addAttribute(["mobile-nav-item", { active: isCurrentPage(item) }], "class:list")}${addAttribute(isCurrentPage(item) ? "page" : void 0, "aria-current")} data-astro-cid-pclxhes2> ${item.title} </a> </li>`));
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Navigation.astro", void 0);
 
-const $$Astro$i = createAstro("https://dolphilia.github.io");
+const $$Astro$j = createAstro("https://dolphilia.github.io");
 const $$Sidebar = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$i, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$j, $$props, $$slots);
   Astro2.self = $$Sidebar;
   const { items, title, class: className = "" } = Astro2.props;
   function isCurrentPage(item) {
@@ -77,17 +99,17 @@ const $$Sidebar = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${maybeRenderHead()}<aside${addAttribute(["sidebar", className], "class:list")} role="complementary"${addAttribute(title || "\u30B5\u30A4\u30C9\u30CA\u30D3\u30B2\u30FC\u30B7\u30E7\u30F3", "aria-label")} data-astro-cid-7hrmydxt> ${title && renderTemplate`<h3 class="sidebar-title" id="sidebar-title" data-astro-cid-7hrmydxt> ${title} </h3>`} <nav aria-labelledby="sidebar-title" data-astro-cid-7hrmydxt> <ul class="top-level" data-astro-cid-7hrmydxt> ${items.map((section, index) => renderTemplate`<li data-astro-cid-7hrmydxt> ${section.href ? renderTemplate`<a${addAttribute(section.href, "href")}${addAttribute(isCurrentPage(section) ? "page" : void 0, "aria-current")} class="large" data-astro-cid-7hrmydxt> <span data-astro-cid-7hrmydxt>${section.title}</span> </a>` : renderTemplate`<details${addAttribute(shouldBeOpen(section), "open")} data-astro-cid-7hrmydxt> <summary data-astro-cid-7hrmydxt> <div class="group-label" data-astro-cid-7hrmydxt> <span class="large" data-astro-cid-7hrmydxt>${section.title}</span> </div> <svg class="caret" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" data-astro-cid-7hrmydxt> <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-7hrmydxt></path> </svg> </summary> ${section.items && renderTemplate`<ul data-astro-cid-7hrmydxt> ${section.items.map((item) => renderTemplate`<li data-astro-cid-7hrmydxt> <a${addAttribute(item.href, "href")}${addAttribute(isCurrentPage(item) ? "page" : void 0, "aria-current")} data-astro-cid-7hrmydxt> <span data-astro-cid-7hrmydxt>${item.title}</span> </a> </li>`)} </ul>`} </details>`} </li>`)} </ul> </nav> </aside> `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Sidebar.astro", void 0);
 
-const $$Astro$h = createAstro("https://dolphilia.github.io");
+const $$Astro$i = createAstro("https://dolphilia.github.io");
 const $$Footer = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$h, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$i, $$props, $$slots);
   Astro2.self = $$Footer;
   const { linkGroups = [], copyright = "", class: className = "" } = Astro2.props;
   return renderTemplate`${maybeRenderHead()}<footer${addAttribute(["footer", className], "class:list")} data-astro-cid-v2payc3g> <div class="footer-container" data-astro-cid-v2payc3g> <div class="footer-content" data-astro-cid-v2payc3g> ${linkGroups.length > 0 && renderTemplate`<div class="footer-links" data-astro-cid-v2payc3g> ${linkGroups.map((group) => renderTemplate`<div class="footer-group" data-astro-cid-v2payc3g> <h3 class="group-title" data-astro-cid-v2payc3g>${group.title}</h3> <ul class="group-links" data-astro-cid-v2payc3g> ${group.links.map((link) => renderTemplate`<li data-astro-cid-v2payc3g> <a${addAttribute(link.href, "href")}${addAttribute(link.target, "target")}${addAttribute(link.rel, "rel")} class="footer-link" data-astro-cid-v2payc3g> ${link.title} </a> </li>`)} </ul> </div>`)} </div>`} <div class="footer-bottom" data-astro-cid-v2payc3g> ${copyright && renderTemplate`<p class="copyright" data-astro-cid-v2payc3g>${copyright}</p>`} </div> </div> </div> </footer> `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Footer.astro", void 0);
 
-const $$Astro$g = createAstro("https://dolphilia.github.io");
+const $$Astro$h = createAstro("https://dolphilia.github.io");
 const $$Alert = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$g, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$h, $$props, $$slots);
   Astro2.self = $$Alert;
   const {
     title,
@@ -118,9 +140,9 @@ const $$Alert = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${maybeRenderHead()}<div${addAttribute(["alert", `alert-${variant}`, className], "class:list")} role="alert"${addAttribute(ariaLabel, "aria-label")}${spreadAttributes(rest)} data-astro-cid-ndlnvn3i> <div class="alert-icon" data-astro-cid-ndlnvn3i> ${variant === "info" && renderTemplate`<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-ndlnvn3i> <path d="M12 11a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0v-4a1 1 0 0 0-1-1Zm.38-3.92a1 1 0 0 0-.76 0 1 1 0 0 0-.33.21 1.15 1.15 0 0 0-.21.33 1 1 0 0 0 .21 1.09c.097.088.209.16.33.21A1 1 0 0 0 13 8a1.05 1.05 0 0 0-.29-.71 1 1 0 0 0-.33-.21ZM12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 18a8 8 0 1 1 0-16.001A8 8 0 0 1 12 20Z" fill="currentColor" data-astro-cid-ndlnvn3i></path> </svg>`} ${variant === "success" && renderTemplate`<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-ndlnvn3i> <path d="m14.72 8.79-4.29 4.3-1.65-1.65a1 1 0 1 0-1.41 1.41l2.35 2.36a1 1 0 0 0 1.41 0l5-5a1.002 1.002 0 1 0-1.41-1.42ZM12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 18a8 8 0 1 1 0-16.001A8 8 0 0 1 12 20Z" fill="currentColor" data-astro-cid-ndlnvn3i></path> </svg>`} ${variant === "warning" && renderTemplate`<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-ndlnvn3i> <path d="M12 16a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm10.67 1.47-8.05-14a3 3 0 0 0-5.24 0l-8 14A3 3 0 0 0 3.94 22h16.12a3 3 0 0 0 2.61-4.53Zm-1.73 2a1 1 0 0 1-.88.51H3.94a1 1 0 0 1-.88-.51 1 1 0 0 1 0-1l8-14a1 1 0 0 1 1.78 0l8.05 14a1 1 0 0 1 .05 1.02v-.02ZM12 8a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V9a1 1 0 0 0-1-1Z" fill="currentColor" data-astro-cid-ndlnvn3i></path> </svg>`} ${variant === "error" && renderTemplate`<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-ndlnvn3i> <path d="M12 7a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V8a1 1 0 0 0-1-1Zm0 8a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm9.71-7.44-5.27-5.27a1.05 1.05 0 0 0-.71-.29H8.27a1.05 1.05 0 0 0-.71.29L2.29 7.56a1.05 1.05 0 0 0-.29.71v7.46c.004.265.107.518.29.71l5.27 5.27c.192.183.445.286.71.29h7.46a1.05 1.05 0 0 0 .71-.29l5.27-5.27a1.05 1.05 0 0 0 .29-.71V8.27a1.05 1.05 0 0 0-.29-.71ZM20 15.31 15.31 20H8.69L4 15.31V8.69L8.69 4h6.62L20 8.69v6.62Z" fill="currentColor" data-astro-cid-ndlnvn3i></path> </svg>`} </div> <div class="alert-content" data-astro-cid-ndlnvn3i> ${title && renderTemplate`<p class="alert-title" data-astro-cid-ndlnvn3i>${title}</p>`} <div class="alert-message" data-astro-cid-ndlnvn3i> ${renderSlot($$result, $$slots["default"])} </div> </div> </div> `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Alert.astro", void 0);
 
-const $$Astro$f = createAstro("https://dolphilia.github.io");
+const $$Astro$g = createAstro("https://dolphilia.github.io");
 const $$ContentPanel = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$f, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$g, $$props, $$slots);
   Astro2.self = $$ContentPanel;
   const {
     maxWidth = "var(--sl-content-width)",
@@ -132,17 +154,17 @@ const $$ContentPanel = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${maybeRenderHead()}<div${addAttribute(["content-panel", className, { "with-border": withBorder }], "class:list")} data-astro-cid-uk277ml2${addAttribute($$definedVars, "style")}> <div class="sl-container" data-astro-cid-uk277ml2${addAttribute($$definedVars, "style")}> ${renderSlot($$result, $$slots["default"])} </div> </div> `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/ContentPanel.astro", void 0);
 
-const $$Astro$e = createAstro("https://dolphilia.github.io");
+const $$Astro$f = createAstro("https://dolphilia.github.io");
 const $$TableOfContentsList = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$e, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$f, $$props, $$slots);
   Astro2.self = $$TableOfContentsList;
   const { toc, depth = 0, isMobile = false } = Astro2.props;
   return renderTemplate`${maybeRenderHead()}<ul${addAttribute(["starlight-toc__list", { "starlight-toc__list--mobile": isMobile }], "class:list")} data-astro-cid-athkbvwp> ${toc.map((heading) => renderTemplate`<li class="starlight-toc__item" data-astro-cid-athkbvwp> <a class="starlight-toc__link"${addAttribute("#" + heading.slug, "href")}${addAttribute(depth, "data-depth")} data-astro-cid-athkbvwp> <span data-astro-cid-athkbvwp>${heading.text}</span> </a> ${heading.children.length > 0 && renderTemplate`${renderComponent($$result, "Astro.self", Astro2.self, { "toc": heading.children, "depth": depth + 1, "isMobile": isMobile, "data-astro-cid-athkbvwp": true })}`} </li>`)} </ul> `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/TableOfContents/TableOfContentsList.astro", void 0);
 
-const $$Astro$d = createAstro("https://dolphilia.github.io");
+const $$Astro$e = createAstro("https://dolphilia.github.io");
 const $$TableOfContents = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$d, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$e, $$props, $$slots);
   Astro2.self = $$TableOfContents;
   function translate(key, locale = "en") {
     const translations = {
@@ -167,9 +189,9 @@ const $$TableOfContents = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${filteredHeadings.length > 0 && renderTemplate`${renderComponent($$result, "starlight-toc", "starlight-toc", { "data-min-h": minLevel, "data-max-h": maxLevel, "class:list": { "starlight-toc--mobile": isMobile }, "data-astro-cid-hjm4xq65": true }, { "default": () => renderTemplate`${maybeRenderHead()}<div class="starlight-toc-wrapper" data-astro-cid-hjm4xq65><nav aria-labelledby="starlight-toc-heading" data-astro-cid-hjm4xq65><h2 id="starlight-toc-heading" class="starlight-toc-heading" data-astro-cid-hjm4xq65>${translate(TOC_TITLE, lang)}</h2><div class="starlight-toc-list" data-astro-cid-hjm4xq65>${renderComponent($$result, "TableOfContentsList", $$TableOfContentsList, { "toc": filteredHeadings, "isMobile": isMobile, "data-astro-cid-hjm4xq65": true })}</div></nav></div>` })}`}${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/TableOfContents/TableOfContents.astro?astro&type=script&index=0&lang.ts")}`;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/TableOfContents/TableOfContents.astro", void 0);
 
-const $$Astro$c = createAstro("https://dolphilia.github.io");
+const $$Astro$d = createAstro("https://dolphilia.github.io");
 const $$Pagination = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$c, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$d, $$props, $$slots);
   Astro2.self = $$Pagination;
   const { prev, next, dir = "ltr" } = Astro2.props;
   const isRtl = dir === "rtl";
@@ -178,9 +200,9 @@ const $$Pagination = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${maybeRenderHead()}<div class="pagination-links"${addAttribute(dir, "dir")} data-astro-cid-2vx2ddwg> ${prev && renderTemplate`<a${addAttribute(prev.url, "href")} rel="prev" data-astro-cid-2vx2ddwg> <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" data-astro-cid-2vx2ddwg> <path fill="currentColor"${addAttribute(isRtl ? "M13.3 17.3L9.7 13.7c-.4-.4-.4-1 0-1.4l3.6-3.6c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4L11.4 13l3.3 3.3c.4.4.4 1 0 1.4-.2.2-.4.3-.7.3-.3 0-.5-.1-.7-.3z" : "M10.7 17.3c-.4.4-1 .4-1.4 0-.4-.4-.4-1 0-1.4L12.6 13 9.3 9.7c-.4-.4-.4-1 0-1.4.4-.4 1-.4 1.4 0l3.6 3.6c.4.4.4 1 0 1.4l-3.6 3.6z", "d")} data-astro-cid-2vx2ddwg></path> </svg> <span data-astro-cid-2vx2ddwg> ${prevText} <br data-astro-cid-2vx2ddwg> <span class="link-title" data-astro-cid-2vx2ddwg>${prev.title}</span> </span> </a>`} ${next && renderTemplate`<a${addAttribute(next.url, "href")} rel="next" data-astro-cid-2vx2ddwg> <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" data-astro-cid-2vx2ddwg> <path fill="currentColor"${addAttribute(isRtl ? "M10.7 17.3c-.4.4-1 .4-1.4 0-.4-.4-.4-1 0-1.4L12.6 13 9.3 9.7c-.4-.4-.4-1 0-1.4.4-.4 1-.4 1.4 0l3.6 3.6c.4.4.4 1 0 1.4l-3.6 3.6z" : "M13.3 17.3L9.7 13.7c-.4-.4-.4-1 0-1.4l3.6-3.6c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4L11.4 13l3.3 3.3c.4.4.4 1 0 1.4-.2.2-.4.3-.7.3-.3 0-.5-.1-.7-.3z", "d")} data-astro-cid-2vx2ddwg></path> </svg> <span data-astro-cid-2vx2ddwg> ${nextText} <br data-astro-cid-2vx2ddwg> <span class="link-title" data-astro-cid-2vx2ddwg>${next.title}</span> </span> </a>`} </div> `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Pagination.astro", void 0);
 
-const $$Astro$b = createAstro("https://dolphilia.github.io");
+const $$Astro$c = createAstro("https://dolphilia.github.io");
 const $$EditLink = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$b, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$c, $$props, $$slots);
   Astro2.self = $$EditLink;
   const {
     url,
@@ -190,9 +212,9 @@ const $$EditLink = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${url && renderTemplate`${maybeRenderHead()}<a${addAttribute(url, "href")} class="edit-link" data-astro-cid-or7fkga6>${showIcon && renderTemplate`<svg class="edit-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" data-astro-cid-or7fkga6><path fill="currentColor" d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83l3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z" data-astro-cid-or7fkga6></path></svg>`}${text}</a>`}`;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/EditLink.astro", void 0);
 
-const $$Astro$a = createAstro("https://dolphilia.github.io");
+const $$Astro$b = createAstro("https://dolphilia.github.io");
 const $$AnchorHeading = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$a, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$b, $$props, $$slots);
   Astro2.self = $$AnchorHeading;
   const { level, id, class: className } = Astro2.props;
   if (!id) {
@@ -201,18 +223,18 @@ const $$AnchorHeading = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${maybeRenderHead()}<div${addAttribute(`heading-wrapper level-h${level}`, "class")} data-astro-cid-avvu5fbz> ${level === 1 && renderTemplate`<h1${addAttribute(id, "id")}${addAttribute(className, "class")} data-astro-cid-avvu5fbz>${renderSlot($$result, $$slots["default"])}</h1>`} ${level === 2 && renderTemplate`<h2${addAttribute(id, "id")}${addAttribute(className, "class")} data-astro-cid-avvu5fbz>${renderSlot($$result, $$slots["default"])}</h2>`} ${level === 3 && renderTemplate`<h3${addAttribute(id, "id")}${addAttribute(className, "class")} data-astro-cid-avvu5fbz>${renderSlot($$result, $$slots["default"])}</h3>`} ${level === 4 && renderTemplate`<h4${addAttribute(id, "id")}${addAttribute(className, "class")} data-astro-cid-avvu5fbz>${renderSlot($$result, $$slots["default"])}</h4>`} ${level === 5 && renderTemplate`<h5${addAttribute(id, "id")}${addAttribute(className, "class")} data-astro-cid-avvu5fbz>${renderSlot($$result, $$slots["default"])}</h5>`} ${level === 6 && renderTemplate`<h6${addAttribute(id, "id")}${addAttribute(className, "class")} data-astro-cid-avvu5fbz>${renderSlot($$result, $$slots["default"])}</h6>`} <a class="anchor-link"${addAttribute(`#${id}`, "href")} data-astro-cid-avvu5fbz> <span aria-hidden="true" class="anchor-icon" data-astro-cid-avvu5fbz> <svg width="16" height="16" viewBox="0 0 24 24" data-astro-cid-avvu5fbz> <path fill="currentcolor" d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 0 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 1 0-1.42-1.42Zm8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 0 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 1 0 1.42 1.42l3.88-3.89a4.49 4.49 0 0 0 0-6.33ZM8.83 15.17a1 1 0 0 0 1.1.22 1 1 0 0 0 .32-.22l4.92-4.92a1 1 0 0 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42Z" data-astro-cid-avvu5fbz></path> </svg> </span> <span class="sr-only" data-astro-cid-avvu5fbz>このセクションへのリンク</span> </a> </div> `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/AnchorHeading.astro", void 0);
 
-const $$Astro$9 = createAstro("https://dolphilia.github.io");
+const $$Astro$a = createAstro("https://dolphilia.github.io");
 const $$Banner = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$9, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$a, $$props, $$slots);
   Astro2.self = $$Banner;
   const { type = "info", dismissible = false } = Astro2.props;
   const bannerClass = `sl-banner sl-banner-${type}`;
   return renderTemplate`${maybeRenderHead()}<div${addAttribute(bannerClass, "class")} role="alert" data-astro-cid-woj6bprr> <div class="sl-banner-container" data-astro-cid-woj6bprr> <div class="sl-banner-content" data-astro-cid-woj6bprr> ${renderSlot($$result, $$slots["default"])} </div> ${dismissible && renderTemplate`<button class="sl-banner-close-button" aria-label="閉じる" data-dismiss-banner data-astro-cid-woj6bprr> <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-woj6bprr> <path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z" fill="currentColor" data-astro-cid-woj6bprr></path> </svg> </button>`} </div> </div>  ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Banner.astro?astro&type=script&index=0&lang.ts")}`;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Banner.astro", void 0);
 
-const $$Astro$8 = createAstro("https://dolphilia.github.io");
+const $$Astro$9 = createAstro("https://dolphilia.github.io");
 const $$ContentNotice = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$8, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$9, $$props, $$slots);
   Astro2.self = $$ContentNotice;
   const { type = "draft" } = Astro2.props;
   const typeConfig = {
@@ -237,9 +259,9 @@ const $$ContentNotice = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${maybeRenderHead()}<div class="starlight-aside starlight-aside--notice"${addAttribute(type, "data-type")} data-astro-cid-vwh4f2k5> <div class="starlight-aside__title" data-astro-cid-vwh4f2k5> <span class="starlight-aside__icon" data-astro-cid-vwh4f2k5> ${type === "draft" && renderTemplate`<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-vwh4f2k5> <path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z" fill="currentColor" data-astro-cid-vwh4f2k5></path> </svg>`} ${type === "deprecated" && renderTemplate`<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-vwh4f2k5> <path d="M12 7a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V8a1 1 0 0 0-1-1Zm0 8a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm9.71-7.44-5.27-5.27a1.05 1.05 0 0 0-.71-.29H8.27a1.05 1.05 0 0 0-.71.29L2.29 7.56a1.05 1.05 0 0 0-.29.71v7.46c.004.265.107.518.29.71l5.27 5.27c.192.183.445.286.71.29h7.46a1.05 1.05 0 0 0 .71-.29l5.27-5.27a1.05 1.05 0 0 0 .29-.71V8.27a1.05 1.05 0 0 0-.29-.71ZM20 15.31 15.31 20H8.69L4 15.31V8.69L8.69 4h6.62L20 8.69v6.62Z" fill="currentColor" data-astro-cid-vwh4f2k5></path> </svg>`} ${type === "wip" && renderTemplate`<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-vwh4f2k5> <path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z" fill="currentColor" data-astro-cid-vwh4f2k5></path> </svg>`} ${type === "translation" && renderTemplate`<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-vwh4f2k5> <path fill-rule="evenodd" d="M8.516 3a.94.94 0 0 0-.941.94v1.15H2.94a.94.94 0 1 0 0 1.882h7.362a7.422 7.422 0 0 1-1.787 3.958 7.42 7.42 0 0 1-1.422-2.425.94.94 0 1 0-1.774.627 9.303 9.303 0 0 0 1.785 3.043 7.422 7.422 0 0 1-4.164 1.278.94.94 0 1 0 0 1.881 9.303 9.303 0 0 0 5.575-1.855 9.303 9.303 0 0 0 4.11 1.74l-.763 1.525a.968.968 0 0 0-.016.034l-1.385 2.77a.94.94 0 1 0 1.683.841l1.133-2.267h5.806l1.134 2.267a.94.94 0 0 0 1.683-.841l-1.385-2.769a.95.95 0 0 0-.018-.036l-3.476-6.951a.94.94 0 0 0-1.682 0l-1.82 3.639a7.423 7.423 0 0 1-3.593-1.256 9.303 9.303 0 0 0 2.27-5.203h1.894a.94.94 0 0 0 0-1.881H9.456V3.94A.94.94 0 0 0 8.516 3Zm6.426 11.794a1.068 1.068 0 0 1-.02.039l-.703 1.407h3.924l-1.962-3.924-1.24 2.478Z" clip-rule="evenodd" fill="currentColor" data-astro-cid-vwh4f2k5></path> </svg>`} </span> <span data-astro-cid-vwh4f2k5>${config.label}</span> </div> <div class="starlight-aside__content" data-astro-cid-vwh4f2k5> ${renderSlot($$result, $$slots["default"])} </div> </div> `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/ContentNotice.astro", void 0);
 
-const $$Astro$7 = createAstro("https://dolphilia.github.io");
+const $$Astro$8 = createAstro("https://dolphilia.github.io");
 const $$Hero = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$7, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$8, $$props, $$slots);
   Astro2.self = $$Hero;
   const { title, tagline, image, actions = [] } = Astro2.props;
   return renderTemplate`${maybeRenderHead()}<div class="hero" data-astro-cid-3piqs2o6> ${image && renderTemplate`<div class="hero-image" data-astro-cid-3piqs2o6> <img${addAttribute(image.src, "src")}${addAttribute(image.alt, "alt")} width="400" height="400" loading="eager" decoding="async" data-astro-cid-3piqs2o6> </div>`} <div class="hero-content" data-astro-cid-3piqs2o6> <div class="hero-text" data-astro-cid-3piqs2o6> <h1 id="page-title" data-astro-cid-3piqs2o6>${unescapeHTML(title)}</h1> ${tagline && renderTemplate`<div class="hero-tagline" data-astro-cid-3piqs2o6>${unescapeHTML(tagline)}</div>`} </div> ${actions.length > 0 && renderTemplate`<div class="hero-actions" data-astro-cid-3piqs2o6> ${actions.map(({ text, link, variant = "primary", icon }) => renderTemplate`<a${addAttribute(link, "href")}${addAttribute(`hero-action hero-action-${variant}`, "class")} data-astro-cid-3piqs2o6> <span data-astro-cid-3piqs2o6>${text}</span> ${icon && renderTemplate`<span class="hero-action-icon" aria-hidden="true" data-astro-cid-3piqs2o6> <span class="icon" data-astro-cid-3piqs2o6>${icon}</span> </span>`} </a>`)} </div>`} </div> </div> `;
@@ -249,53 +271,242 @@ createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${renderComponent($$result, "theme-toggle", "theme-toggle", { "data-astro-cid-34jcewsu": true }, { "default": () => renderTemplate` ${maybeRenderHead()}<button class="theme-toggle" type="button" aria-label="テーマを切り替える" data-astro-cid-34jcewsu> <span class="theme-toggle-icon" data-astro-cid-34jcewsu> <!-- 太陽アイコン（ライトモード用） --> <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-34jcewsu> <circle cx="12" cy="12" r="5" data-astro-cid-34jcewsu></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-34jcewsu></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-34jcewsu></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-34jcewsu></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-34jcewsu></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-34jcewsu></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-34jcewsu></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-34jcewsu></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-34jcewsu></line> </svg> <!-- 月アイコン（ダークモード用） --> <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-34jcewsu> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-34jcewsu></path> </svg> </span> </button> ` })}  ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/ThemeToggle.astro?astro&type=script&index=0&lang.ts")}`;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/ThemeToggle.astro", void 0);
 
-const $$Astro$6 = createAstro("https://dolphilia.github.io");
+const $$Astro$7 = createAstro("https://dolphilia.github.io");
 const $$TwoColumnContent = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$6, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$7, $$props, $$slots);
   Astro2.self = $$TwoColumnContent;
   const { leftWidth = "50%", gap = "1rem" } = Astro2.props;
   return renderTemplate`${maybeRenderHead()}<div class="two-column-content"${addAttribute(`--left-width: ${leftWidth}; --column-gap: ${gap};`, "style")} data-astro-cid-ava4ouzk> <div class="left-column" data-astro-cid-ava4ouzk> ${renderSlot($$result, $$slots["left"])} </div> <div class="right-column" data-astro-cid-ava4ouzk> ${renderSlot($$result, $$slots["right"])} </div> </div> `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/TwoColumnContent.astro", void 0);
 
-const $$Astro$5 = createAstro("https://dolphilia.github.io");
+const $$Astro$6 = createAstro("https://dolphilia.github.io");
 const $$LinkCard = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$5, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$6, $$props, $$slots);
   Astro2.self = $$LinkCard;
   const { title, description, href, icon, class: className, ...rest } = Astro2.props;
   return renderTemplate`${renderComponent($$result, "Card", $$Card, { "variant": "link", "href": href, "title": title, "icon": icon, "class:list": ["link-card", className], ...rest, "data-astro-cid-f2kkmdj7": true }, { "default": ($$result2) => renderTemplate`${description && renderTemplate`${maybeRenderHead()}<p class="link-card-description" data-astro-cid-f2kkmdj7>${description}</p>`}` })} `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/LinkCard.astro", void 0);
 
-const $$Astro$4 = createAstro("https://dolphilia.github.io");
+const $$Astro$5 = createAstro("https://dolphilia.github.io");
 const $$CardGrid = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$4, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$5, $$props, $$slots);
   Astro2.self = $$CardGrid;
   const { class: className, stagger = false, ...attrs } = Astro2.props;
   return renderTemplate`${maybeRenderHead()}<div${addAttribute(["card-grid", stagger && "stagger", className], "class:list")}${spreadAttributes(attrs)} data-astro-cid-h53xvnyp> ${renderSlot($$result, $$slots["default"])} </div> `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/CardGrid.astro", void 0);
 
-const $$Astro$3 = createAstro("https://dolphilia.github.io");
-const $$Tabs = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$3, $$props, $$slots);
+let count = 0;
+const getIDs = () => {
+  const id = count++;
+  return { panelId: "tab-panel-" + id, tabId: "tab-" + id };
+};
+function processPanels(html) {
+  const panels = [];
+  const regex = /<docs-tab-item[^>]*?data-label="([^"]*)"[^>]*?(?:data-icon="([^"]*)")?[^>]*?>([\s\S]*?)<\/docs-tab-item>/g;
+  const iconRegex = /data-icon="([^"]*)"/;
+  let match;
+  let isFirst = true;
+  let processedHtml = html;
+  while ((match = regex.exec(html)) !== null) {
+    const fullMatch = match[0];
+    const label = match[1];
+    let icon = match[2] || void 0;
+    const content = match[3];
+    if (!icon) {
+      const iconMatch = fullMatch.match(iconRegex);
+      if (iconMatch && iconMatch[1]) {
+        icon = iconMatch[1];
+      }
+    }
+    const ids = getIDs();
+    const panel = {
+      ...ids,
+      label
+    };
+    if (icon) {
+      panel.icon = icon;
+    }
+    panels.push(panel);
+    const hiddenAttr = isFirst ? "" : "hidden";
+    const replacement = `<div id="${ids.panelId}" aria-labelledby="${ids.tabId}" role="tabpanel" ${hiddenAttr}>${content}</div>`;
+    processedHtml = processedHtml.replace(fullMatch, replacement);
+    isFirst = false;
+  }
+  return {
+    panels,
+    html: processedHtml
+  };
+}
+function getTabsScript() {
+  return `
+  document.addEventListener('DOMContentLoaded', () => {
+    class DocsTabs extends HTMLElement {
+      // 同期キーごとのタブグループを追跡するマップ
+      static syncedTabs = new Map();
+
+      constructor() {
+        super();
+        const tablist = this.querySelector('[role="tablist"]');
+        if (!tablist) return;
+        
+        this.tabs = [...tablist.querySelectorAll('[role="tab"]')];
+        this.panels = [...this.querySelectorAll(':scope > [role="tabpanel"]')];
+        this.syncKey = this.dataset.syncKey;
+
+        // 同期キーが指定されている場合、同期タブのマップに追加
+        if (this.syncKey) {
+          const syncedTabs = DocsTabs.syncedTabs.get(this.syncKey) || [];
+          syncedTabs.push(this);
+          DocsTabs.syncedTabs.set(this.syncKey, syncedTabs);
+        }
+
+        // タブにイベントリスナーを追加
+        this.tabs.forEach((tab, i) => {
+          // クリックイベント
+          tab.addEventListener('click', (e) => {
+            e.preventDefault();
+            const currentTab = tablist.querySelector('[aria-selected="true"]');
+            if (e.currentTarget !== currentTab) {
+              this.switchTab(e.currentTarget, i);
+            }
+          });
+        });
+      }
+
+      switchTab(newTab, index, shouldSync = true) {
+        if (!newTab) return;
+
+        // すべてのタブを非アクティブにし、すべてのパネルを非表示にする
+        this.tabs.forEach((tab) => {
+          tab.setAttribute('aria-selected', 'false');
+          tab.setAttribute('tabindex', '-1');
+        });
+        this.panels.forEach((oldPanel) => {
+          oldPanel.hidden = true;
+        });
+
+        // 新しいタブとパネルをアクティブにする
+        const newPanel = this.panels[index];
+        if (newPanel) newPanel.hidden = false;
+        newTab.removeAttribute('tabindex');
+        newTab.setAttribute('aria-selected', 'true');
+        
+        if (shouldSync && this.syncKey) {
+          newTab.focus();
+          this.syncTabs(newTab);
+        }
+      }
+
+      // 同期キーを持つすべてのタブグループ間でタブを同期
+      syncTabs(newTab) {
+        if (!this.syncKey) return;
+        const label = newTab.textContent.trim();
+        const syncedTabs = DocsTabs.syncedTabs.get(this.syncKey);
+        if (!syncedTabs) return;
+
+        // 同じ同期キーを持つ他のタブグループも同期
+        for (const receiver of syncedTabs) {
+          if (receiver === this) continue;
+          const labelIndex = receiver.tabs.findIndex((tab) => tab.textContent.trim() === label);
+          if (labelIndex === -1) continue;
+          receiver.switchTab(receiver.tabs[labelIndex], labelIndex, false);
+        }
+
+        // 選択されたタブをローカルストレージに保存
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem('docs-synced-tabs__' + this.syncKey, label);
+        }
+      }
+    }
+
+    // カスタム要素として登録
+    customElements.define('docs-tabs', DocsTabs);
+    
+    // 既存のタブを初期化
+    document.querySelectorAll('docs-tabs').forEach(tabs => {
+      // すでに初期化されている場合は何もしない
+      if (tabs._initialized) return;
+      tabs._initialized = true;
+    });
+  });
+  `;
+}
+
+var __freeze = Object.freeze;
+var __defProp = Object.defineProperty;
+var __template = (cooked, raw) => __freeze(__defProp(cooked, "raw", { value: __freeze(cooked.slice()) }));
+var _a;
+const $$Astro$4 = createAstro("https://dolphilia.github.io");
+const $$Tabs = createComponent(async ($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro$4, $$props, $$slots);
   Astro2.self = $$Tabs;
-  const { class: className, ...attrs } = Astro2.props;
-  return renderTemplate`${maybeRenderHead()}<div${addAttribute(["tabs", className], "class:list")}${spreadAttributes(attrs)} data-astro-cid-fv5wxlmv> ${renderSlot($$result, $$slots["default"])} </div> ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Tabs/Tabs.astro?astro&type=script&index=0&lang.ts")} `;
+  const { class: className, syncKey, ...attrs } = Astro2.props;
+  const panelHtml = await Astro2.slots.render("default");
+  const { html, panels } = processPanels(panelHtml);
+  const didRenderTabsScriptSymbol = Symbol.for("docs:did-render-tabs-script");
+  const shouldRenderTabsScript = Astro2.locals[didRenderTabsScriptSymbol] !== true;
+  if (shouldRenderTabsScript) {
+    Astro2.locals[didRenderTabsScriptSymbol] = true;
+  }
+  return renderTemplate`${shouldRenderTabsScript && renderTemplate(_a || (_a = __template(["<script>", "<\/script>"])), unescapeHTML(getTabsScript()))}${renderComponent($$result, "docs-tabs", "docs-tabs", { "class:list": ["tabs", className], "data-sync-key": syncKey, ...attrs, "data-astro-cid-fv5wxlmv": true }, { "default": () => renderTemplate` ${panels && renderTemplate`${maybeRenderHead()}<div class="tablist-wrapper not-content" data-astro-cid-fv5wxlmv> <ul role="tablist" data-astro-cid-fv5wxlmv> ${panels.map(({ icon, label, panelId, tabId }, idx) => renderTemplate`<li role="presentation" class="tab" data-astro-cid-fv5wxlmv> <a role="tab"${addAttribute("#" + panelId, "href")}${addAttribute(tabId, "id")}${addAttribute(idx === 0 ? "true" : "false", "aria-selected")}${addAttribute(idx !== 0 ? -1 : 0, "tabindex")} data-astro-cid-fv5wxlmv> ${icon && renderTemplate`<span class="tab-icon" data-astro-cid-fv5wxlmv>${unescapeHTML(icon)}</span>`} ${label} </a> </li>`)} </ul> </div>`} ${renderComponent($$result, "Fragment", Fragment, {}, { "default": async ($$result2) => renderTemplate`${unescapeHTML(html)}` })} ` })} `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Tabs/Tabs.astro", void 0);
 
-const $$Astro$2 = createAstro("https://dolphilia.github.io");
+const $$Astro$3 = createAstro("https://dolphilia.github.io");
 const $$TabItem = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$2, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$3, $$props, $$slots);
   Astro2.self = $$TabItem;
   const {
     label,
-    value = label.toLowerCase().replace(/\s+/g, "-"),
     icon,
     class: className = "",
     ...attrs
   } = Astro2.props;
-  const tabId = `tab-${value}-${Math.random().toString(36).slice(2, 9)}`;
-  const panelId = `panel-${value}-${Math.random().toString(36).slice(2, 9)}`;
-  return renderTemplate`${maybeRenderHead()}<div${addAttribute(["tab-item", className], "class:list")}${spreadAttributes(attrs)} data-astro-cid-5i6kcy5t> <button${addAttribute(tabId, "id")} role="tab" aria-selected="false"${addAttribute(panelId, "aria-controls")} tabindex="-1" class="tab-button" data-astro-cid-5i6kcy5t> ${icon && renderTemplate`<span class="tab-icon" data-astro-cid-5i6kcy5t>${unescapeHTML(icon)}</span>`} <span class="tab-label" data-astro-cid-5i6kcy5t>${label}</span> </button> <div${addAttribute(panelId, "id")} role="tabpanel"${addAttribute(tabId, "aria-labelledby")} class="tab-panel" hidden data-astro-cid-5i6kcy5t> ${renderSlot($$result, $$slots["default"])} </div> </div> `;
+  return renderTemplate`${renderComponent($$result, "docs-tab-item", "docs-tab-item", { "data-label": label, "data-icon": icon, "class:list": ["tab-item", className], ...attrs, "data-astro-cid-5i6kcy5t": true }, { "default": () => renderTemplate` ${renderSlot($$result, $$slots["default"])} ` })} `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Tabs/TabItem.astro", void 0);
+
+const Icons = {
+  // 情報アイコン
+  "info": '<path d="M12 11a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0v-4a1 1 0 0 0-1-1Zm.38-3.92a1 1 0 0 0-.76 0 1 1 0 0 0-.33.21 1.15 1.15 0 0 0-.21.33 1 1 0 0 0 .21 1.09c.097.088.209.16.33.21A1 1 0 0 0 13 8a1.05 1.05 0 0 0-.29-.71 1 1 0 0 0-.33-.21ZM12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 18a8 8 0 1 1 0-16.001A8 8 0 0 1 12 20Z"/>',
+  // 設定アイコン
+  "setting": '<path d="m21.32 9.55-1.89-.63.89-1.78A1 1 0 0 0 20.13 6L18 3.87a1 1 0 0 0-1.15-.19l-1.78.89-.63-1.89A1 1 0 0 0 13.5 2h-3a1 1 0 0 0-.95.68l-.63 1.89-1.78-.89A1 1 0 0 0 6 3.87L3.87 6a1 1 0 0 0-.19 1.15l.89 1.78-1.89.63a1 1 0 0 0-.68.94v3a1 1 0 0 0 .68.95l1.89.63-.89 1.78A1 1 0 0 0 3.87 18L6 20.13a1 1 0 0 0 1.15.19l1.78-.89.63 1.89a1 1 0 0 0 .95.68h3a1 1 0 0 0 .95-.68l.63-1.89 1.78.89a1 1 0 0 0 1.13-.19L20.13 18a1 1 0 0 0 .19-1.15l-.89-1.78 1.89-.63a1 1 0 0 0 .68-.94v-3a1 1 0 0 0-.68-.95ZM20 12.78l-1.2.4A2 2 0 0 0 17.64 16l.57 1.14-1.1 1.1-1.11-.6a2 2 0 0 0-2.79 1.16l-.4 1.2h-1.59l-.4-1.2A2 2 0 0 0 8 17.64l-1.14.57-1.1-1.1.6-1.11a2 2 0 0 0-1.16-2.82l-1.2-.4v-1.56l1.2-.4A2 2 0 0 0 6.36 8l-.57-1.11 1.1-1.1L8 6.36a2 2 0 0 0 2.82-1.16l.4-1.2h1.56l.4 1.2A2 2 0 0 0 16 6.36l1.14-.57 1.1 1.1-.6 1.11a2 2 0 0 0 1.16 2.79l1.2.4v1.59ZM12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm0 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z"/>',
+  // 警告アイコン
+  "warning": '<path d="M12 16a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm10.67 1.47-8.05-14a3 3 0 0 0-5.24 0l-8 14A3 3 0 0 0 3.94 22h16.12a3 3 0 0 0 2.61-4.53Zm-1.73 2a1 1 0 0 1-.88.51H3.94a1 1 0 0 1-.88-.51 1 1 0 0 1 0-1l8-14a1 1 0 0 1 1.78 0l8.05 14a1 1 0 0 1 .05 1.02v-.02ZM12 8a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V9a1 1 0 0 0-1-1Z"/>',
+  // エラーアイコン
+  "error": '<path d="M12 7a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V8a1 1 0 0 0-1-1Zm0 8a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm9.71-7.44-5.27-5.27a1.05 1.05 0 0 0-.71-.29H8.27a1.05 1.05 0 0 0-.71.29L2.29 7.56a1.05 1.05 0 0 0-.29.71v7.46c.004.265.107.518.29.71l5.27 5.27c.192.183.445.286.71.29h7.46a1.05 1.05 0 0 0 .71-.29l5.27-5.27a1.05 1.05 0 0 0 .29-.71V8.27a1.05 1.05 0 0 0-.29-.71ZM20 15.31 15.31 20H8.69L4 15.31V8.69L8.69 4h6.62L20 8.69v6.62Z"/>',
+  // チェックアイコン
+  "check": '<path d="M18.71 7.21a1 1 0 0 0-1.42 0l-7.45 7.46-3.13-3.14A1.02 1.02 0 1 0 5.29 13l3.84 3.84a1.001 1.001 0 0 0 1.42 0l8.16-8.16a1 1 0 0 0 0-1.47Z"/>',
+  // コードアイコン
+  "code": '<path d="m8.64 5.23-5.99 6a.996.996 0 0 0 0 1.41l5.99 6a1.001 1.001 0 0 0 1.42-1.41L4.7 12l5.36-5.23a1.001 1.001 0 1 0-1.42-1.41l.01-.13Zm6.71-.01a1.001 1.001 0 0 0-1.42 1.41L19.3 12l-5.36 5.23a1.001 1.001 0 0 0 1.42 1.41l5.99-6a.996.996 0 0 0 0-1.41l-5.99-6Z"/>',
+  // ドキュメントアイコン
+  "document": '<path d="M9 10h1a1 1 0 1 0 0-2H9a1 1 0 0 0 0 2Zm0 2a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2H9Zm11-3.06a1.3 1.3 0 0 0-.06-.27v-.09c-.05-.1-.11-.2-.19-.28l-6-6a1.07 1.07 0 0 0-.28-.19h-.09a.88.88 0 0 0-.33-.11H7a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8.94Zm-6-3.53L16.59 8H15a1 1 0 0 1-1-1V5.41ZM18 19a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h5v3a3 3 0 0 0 3 3h3v9Zm-3-3H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2Z"/>',
+  // 検索アイコン
+  "search": '<path d="M21.71 20.29 18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/>',
+  // 閉じるアイコン
+  "close": '<path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z"/>',
+  // 右矢印アイコン
+  "right-arrow": '<path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/>',
+  // 左矢印アイコン
+  "left-arrow": '<path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/>',
+  // 下矢印アイコン
+  "down-arrow": '<path d="M17.71 11.29a1 1 0 0 0-1.42 0L13 14.59V7a1 1 0 0 0-2 0v7.59l-3.29-3.3a1 1 0 0 0-1.42 1.42l5 5a1 1 0 0 0 .33.21.94.94 0 0 0 .76 0 1 1 0 0 0 .33-.21l5-5a1 1 0 0 0 0-1.42Z"/>',
+  // 上矢印アイコン
+  "up-arrow": '<path d="m17.71 11.29-5-5a1 1 0 0 0-.33-.21 1 1 0 0 0-.76 0 1 1 0 0 0-.33.21l-5 5a1 1 0 0 0 1.42 1.42L11 9.41V17a1 1 0 0 0 2 0V9.41l3.29 3.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42Z"/>'
+};
+
+const $$Astro$2 = createAstro("https://dolphilia.github.io");
+const $$Icon = createComponent(($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro$2, $$props, $$slots);
+  Astro2.self = $$Icon;
+  const {
+    name,
+    size = 24,
+    color = "currentColor",
+    label,
+    class: className = ""
+  } = Astro2.props;
+  const iconPath = Icons[name];
+  return renderTemplate`${maybeRenderHead()}<svg xmlns="http://www.w3.org/2000/svg"${addAttribute(size, "width")}${addAttribute(size, "height")} viewBox="0 0 24 24" fill="none"${addAttribute(color, "stroke")} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"${addAttribute(!label, "aria-hidden")}${addAttribute(label, "aria-label")}${addAttribute(`icon ${className}`, "class")} data-astro-cid-7zy7jqun>${unescapeHTML(iconPath)}</svg> `;
+}, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/icons/Icon.astro", void 0);
 
 const common$1 = {"home":"Home","search":"Search","menu":"Menu","close":"Close","back":"Back","next":"Next","previous":"Previous","loading":"Loading...","error":"Error","success":"Success","warning":"Warning","info":"Information"};
 const navigation$1 = {"docs":"Documentation","api":"API","examples":"Examples","blog":"Blog","community":"Community","github":"GitHub"};
@@ -483,4 +694,4 @@ const versions = [
   }
 ];
 
-export { $$MainLayout as $, $$Card as a, $$Button as b, $$Sidebar as c, $$TableOfContents as d, $$Pagination as e, $$EditLink as f, t, versions as v };
+export { $$Icon as $, $$Tabs as a, $$TabItem as b, $$MainLayout as c, $$Card as d, $$Button as e, $$Sidebar as f, $$TableOfContents as g, $$Pagination as h, $$EditLink as i, t, versions as v };
