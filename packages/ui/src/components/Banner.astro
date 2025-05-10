@@ -1,0 +1,127 @@
+---
+interface Props {
+  type?: 'info' | 'warning' | 'success' | 'danger';
+  dismissible?: boolean;
+}
+
+const { type = 'info', dismissible = false } = Astro.props;
+
+// バナータイプに基づいてクラス名を設定
+const bannerClass = `sl-banner sl-banner-${type}`;
+---
+
+<div class={bannerClass} role="alert">
+  <div class="sl-banner-container">
+    <div class="sl-banner-content">
+      <slot />
+    </div>
+    {dismissible && (
+      <button class="sl-banner-close-button" aria-label="閉じる" data-dismiss-banner>
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z" fill="currentColor"/>
+        </svg>
+      </button>
+    )}
+  </div>
+</div>
+
+<style>
+  .sl-banner {
+    --__sl-banner-text: var(--sl-color-white);
+    padding: 0;
+    background-color: var(--banner-bg-color);
+    color: var(--banner-text-color);
+    box-shadow: var(--sl-shadow-sm);
+    width: 100%;
+  }
+
+  .sl-banner-container {
+    max-width: var(--sl-content-width, 1200px);
+    margin: 0 auto;
+    padding: var(--sl-nav-pad-y, 0.75rem) var(--sl-nav-pad-x, 1rem);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .sl-banner-content {
+    flex: 1;
+    text-align: center;
+    line-height: var(--sl-line-height-headings);
+    text-wrap: balance;
+  }
+
+  .sl-banner-content :global(a) {
+    color: var(--banner-text-color);
+    text-decoration: underline;
+  }
+
+  .sl-banner-close-button {
+    margin-left: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--banner-text-color);
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+  }
+
+  .sl-banner-close-button:hover {
+    opacity: 1;
+  }
+
+  .sl-banner-close-button:focus {
+    outline: 2px solid var(--banner-text-color);
+    outline-offset: var(--sl-outline-offset-inside);
+  }
+
+  /* タイプ別のスタイル */
+  .sl-banner-info {
+    --banner-bg-color: var(--sl-color-blue, hsl(234, 90%, 60%));
+    --banner-text-color: var(--__sl-banner-text);
+  }
+
+  .sl-banner-warning {
+    --banner-bg-color: var(--sl-color-orange, hsl(41, 90%, 60%));
+    --banner-text-color: var(--__sl-banner-text);
+  }
+
+  .sl-banner-success {
+    --banner-bg-color: var(--sl-color-green, hsl(101, 90%, 46%));
+    --banner-text-color: var(--__sl-banner-text);
+  }
+
+  .sl-banner-danger {
+    --banner-bg-color: var(--sl-color-red, hsl(339, 90%, 60%));
+    --banner-text-color: var(--__sl-banner-text);
+  }
+</style>
+
+<script>
+  // バナーを閉じる機能
+  document.addEventListener('DOMContentLoaded', () => {
+    const dismissButtons = document.querySelectorAll('[data-dismiss-banner]');
+    dismissButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const banner = button.closest('.sl-banner');
+        if (banner) {
+          banner.remove();
+          
+          // ローカルストレージに閉じた状態を保存（オプション）
+          try {
+            const bannerType = banner.classList[1]?.replace('sl-banner-', '') || '';
+            if (bannerType) {
+              localStorage.setItem(`banner-dismissed-${bannerType}`, 'true');
+            }
+          } catch (e) {
+            // ローカルストレージが利用できない場合は無視
+          }
+        }
+      });
+    });
+  });
+</script>

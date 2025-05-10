@@ -1,0 +1,120 @@
+---
+interface PageLink {
+  /**
+   * ページのタイトル
+   */
+  title: string;
+  
+  /**
+   * ページのURL
+   */
+  url: string;
+}
+
+interface Props {
+  /**
+   * 前のページへのリンク情報
+   */
+  prev?: PageLink;
+  
+  /**
+   * 次のページへのリンク情報
+   */
+  next?: PageLink;
+  
+  /**
+   * 文字の方向（RTLサポート用）
+   * @default 'ltr'
+   */
+  dir?: 'ltr' | 'rtl';
+}
+
+const { prev, next, dir = 'ltr' } = Astro.props;
+const isRtl = dir === 'rtl';
+
+// 翻訳テキスト（本来は翻訳システムから取得）
+const prevText = '前のページ';
+const nextText = '次のページ';
+---
+
+<div class="pagination-links" dir={dir}>
+  {
+    prev && (
+      <a href={prev.url} rel="prev">
+        <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+          <path fill="currentColor" d={isRtl ? "M13.3 17.3L9.7 13.7c-.4-.4-.4-1 0-1.4l3.6-3.6c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4L11.4 13l3.3 3.3c.4.4.4 1 0 1.4-.2.2-.4.3-.7.3-.3 0-.5-.1-.7-.3z" : "M10.7 17.3c-.4.4-1 .4-1.4 0-.4-.4-.4-1 0-1.4L12.6 13 9.3 9.7c-.4-.4-.4-1 0-1.4.4-.4 1-.4 1.4 0l3.6 3.6c.4.4.4 1 0 1.4l-3.6 3.6z"} />
+        </svg>
+        <span>
+          {prevText}
+          <br />
+          <span class="link-title">{prev.title}</span>
+        </span>
+      </a>
+    )
+  }
+  {
+    next && (
+      <a href={next.url} rel="next">
+        <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+          <path fill="currentColor" d={isRtl ? "M10.7 17.3c-.4.4-1 .4-1.4 0-.4-.4-.4-1 0-1.4L12.6 13 9.3 9.7c-.4-.4-.4-1 0-1.4.4-.4 1-.4 1.4 0l3.6 3.6c.4.4.4 1 0 1.4l-3.6 3.6z" : "M13.3 17.3L9.7 13.7c-.4-.4-.4-1 0-1.4l3.6-3.6c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4L11.4 13l3.3 3.3c.4.4.4 1 0 1.4-.2.2-.4.3-.7.3-.3 0-.5-.1-.7-.3z"} />
+        </svg>
+        <span>
+          {nextText}
+          <br />
+          <span class="link-title">{next.title}</span>
+        </span>
+      </a>
+    )
+  }
+</div>
+
+<style>
+  .pagination-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    width: 100%;
+    flex-basis: calc(50% - 0.5rem);
+    flex-grow: 1;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    text-decoration: none;
+    color: var(--sl-color-gray-2);
+    box-shadow: var(--sl-shadow-md);
+    overflow-wrap: anywhere;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  
+  a[rel='next'] {
+    justify-content: flex-end;
+    text-align: end;
+    flex-direction: row-reverse;
+  }
+  
+  a:hover {
+    border-color: var(--sl-color-gray-2);
+    color: var(--sl-color-white);
+  }
+
+  .link-title {
+    color: var(--sl-color-white);
+    font-size: var(--sl-text-2xl);
+    line-height: var(--sl-line-height-headings);
+  }
+
+  .arrow {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+</style>

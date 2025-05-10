@@ -3,6 +3,7 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import DocLayout from '../../../layouts/DocLayout.astro';
 import type { GetStaticPathsResult } from 'astro';
 import type { LocaleKey } from '@docs/i18n/locales';
+import { TableOfContents, Pagination, EditLink } from '@docs/ui/components';
 
 // 見出しの型定義
 interface Heading {
@@ -60,65 +61,32 @@ const tableOfContents: TOCItem[] = headings.filter((heading: Heading) => heading
         
         <Content />
         
-        {/* 前後のページナビゲーション */}
-        <div class="page-navigation">
-          {entry.data.prev && (
-            <a href={entry.data.prev.link} class="prev-link">
-              <span class="nav-arrow">←</span>
-              <span class="nav-content">
-                <span class="nav-label">前のページ</span>
-                <span class="nav-title">{entry.data.prev.text}</span>
-              </span>
-            </a>
-          )}
-          
-          {entry.data.next && (
-            <a href={entry.data.next.link} class="next-link">
-              <span class="nav-content">
-                <span class="nav-label">次のページ</span>
-                <span class="nav-title">{entry.data.next.text}</span>
-              </span>
-              <span class="nav-arrow">→</span>
-            </a>
-          )}
+        {/* ページナビゲーション */}
+        <div class="navigation-container">
+          <Pagination 
+            prev={entry.data.prev ? { title: entry.data.prev.text, url: entry.data.prev.link } : undefined}
+            next={entry.data.next ? { title: entry.data.next.text, url: entry.data.next.link } : undefined}
+          />
         </div>
         
         {/* 編集リンク */}
         <div class="edit-link-container">
-          <a 
-            href={`https://github.com/dolphilia/docs-astro/edit/main/apps/sample-docs/src/content/docs/${entry.slug}.mdx`} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            class="edit-link"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="edit-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-            </svg>
-            このページをGitHubで編集
-          </a>
+          <EditLink 
+            url={`https://github.com/dolphilia/docs-astro/edit/main/apps/sample-docs/src/content/docs/${entry.slug}.mdx`}
+            text="このページをGitHubで編集"
+          />
         </div>
       </article>
     </div>
     
-    {/* 目次サイドバー */}
-    <div class="toc-column">
-      <div class="toc-container">
-        <h3 class="toc-title">このページの目次</h3>
-        <ul class="toc-list">
-          {tableOfContents.map((heading: TOCItem) => (
-            <li class="toc-item">
-              <a 
-                href={`#${heading.slug}`} 
-                class="toc-link"
-                style={`margin-left: ${heading.indent}px;`}
-              >
-                {heading.text}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+    {/* 目次は DocLayout のスロットに渡す */}
+    <TableOfContents 
+      headings={headings.map(h => ({ depth: h.depth, text: h.text, slug: h.slug, children: [] }))}
+      minLevel={2}
+      maxLevel={3}
+      lang={lang}
+      slot="toc"
+    />
   </div>
 </DocLayout>
 
@@ -155,136 +123,24 @@ const tableOfContents: TOCItem[] = headings.filter((heading: Heading) => heading
     color: #9ca3af;
   }
 
-  .page-navigation {
+
+  .navigation-container {
     margin-top: 3rem;
     padding-top: 1.5rem;
-    border-top: 1px solid #e5e7eb;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  :global(.dark) .page-navigation {
-    border-top-color: #1f2937;
-  }
-
-  .prev-link,
-  .next-link {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-  }
-
-  .next-link {
-    margin-left: auto;
-  }
-
-  .nav-arrow {
-    margin: 0 0.5rem;
-  }
-
-  .nav-content {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .nav-label {
-    display: block;
-    font-size: 0.875rem;
-    color: #6b7280;
-  }
-
-  :global(.dark) .nav-label {
-    color: #9ca3af;
-  }
-
-  .nav-title {
-    display: block;
-    font-weight: 500;
-  }
-
-  .prev-link:hover .nav-title,
-  .next-link:hover .nav-title {
-    color: #3b82f6;
+    border-top: 1px solid var(--sl-color-gray-5);
   }
 
   .edit-link-container {
     margin-top: 2rem;
+    margin-bottom: 2rem;
     font-size: 0.875rem;
     color: #6b7280;
+    text-align: right;
   }
 
   :global(.dark) .edit-link-container {
     color: #9ca3af;
   }
 
-  .edit-link {
-    display: inline-flex;
-    align-items: center;
-    color: inherit;
-    text-decoration: none;
-  }
 
-  .edit-link:hover {
-    color: #3b82f6;
-  }
-
-  .edit-icon {
-    height: 1rem;
-    width: 1rem;
-    margin-right: 0.25rem;
-  }
-
-  .toc-column {
-    width: 100%;
-    margin-top: 2rem;
-  }
-
-  @media (min-width: 768px) {
-    .toc-column {
-      width: 25%;
-      margin-top: 0;
-    }
-  }
-
-  .toc-container {
-    position: sticky;
-    top: 1rem;
-  }
-
-  .toc-title {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #111827;
-    margin-bottom: 1rem;
-  }
-
-  :global(.dark) .toc-title {
-    color: #f9fafb;
-  }
-
-  .toc-list {
-    font-size: 0.875rem;
-  }
-
-  .toc-item {
-    margin-bottom: 0.5rem;
-  }
-
-  .toc-link {
-    color: #4b5563;
-    text-decoration: none;
-    display: block;
-  }
-
-  .toc-link:hover {
-    color: #3b82f6;
-  }
-
-  :global(.dark) .toc-link {
-    color: #9ca3af;
-  }
-
-  :global(.dark) .toc-link:hover {
-    color: #60a5fa;
-  }
 </style>

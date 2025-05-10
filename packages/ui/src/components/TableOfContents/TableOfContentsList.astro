@@ -1,0 +1,129 @@
+---
+import type { TocItem } from './TableOfContents.astro';
+
+interface Props {
+  /**
+   * 目次の項目
+   */
+  toc: TocItem[];
+  
+  /**
+   * 階層の深さ
+   * @default 0
+   */
+  depth?: number;
+  
+  /**
+   * モバイル表示かどうか
+   * @default false
+   */
+  isMobile?: boolean;
+}
+
+const { toc, depth = 0, isMobile = false } = Astro.props;
+---
+
+<ul class:list={["starlight-toc__list", { "starlight-toc__list--mobile": isMobile }]}>
+  {
+    toc.map((heading) => (
+      <li class="starlight-toc__item">
+        <a class="starlight-toc__link" href={'#' + heading.slug} data-depth={depth}>
+          <span>{heading.text}</span>
+        </a>
+        {heading.children.length > 0 && (
+          <Astro.self toc={heading.children} depth={depth + 1} isMobile={isMobile} />
+        )}
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .starlight-toc__list {
+    padding: 0;
+    list-style: none;
+    margin: 0;
+  }
+  
+  .starlight-toc__item {
+    margin: 0;
+  }
+  
+  .starlight-toc__link {
+    --pad-inline: 0.5rem;
+    --pad-block: 0.25rem;
+    display: block;
+    border-radius: 0.25rem;
+    padding-block: var(--pad-block);
+    padding-inline: calc(1rem * var(--depth, 0) + var(--pad-inline)) var(--pad-inline);
+    line-height: 1.25;
+    color: var(--sl-color-gray-2);
+    text-decoration: none;
+    font-size: var(--sl-text-sm);
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  
+  .starlight-toc__link:hover {
+    color: var(--sl-color-white);
+    background-color: var(--sl-color-gray-7, rgba(128, 128, 128, 0.1));
+  }
+  
+  .starlight-toc__link:focus-visible {
+    outline: 2px solid var(--sl-color-accent);
+    outline-offset: var(--sl-outline-offset-inside);
+  }
+  
+  .starlight-toc__link.active,
+  .starlight-toc__link[aria-current='true'] {
+    color: var(--sl-color-text-accent);
+    background-color: var(--sl-color-gray-6, rgba(128, 128, 128, 0.05));
+    font-weight: 500;
+  }
+  
+  /* モバイル表示用スタイル */
+  .starlight-toc__list--mobile {
+    width: 100%;
+  }
+  
+  .starlight-toc__list--mobile .starlight-toc__link {
+    --pad-inline: 1rem;
+    --pad-block: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    gap: var(--pad-inline);
+    border-top: 1px solid var(--sl-color-gray-6);
+    border-radius: 0;
+    color: var(--sl-color-text);
+    font-size: var(--sl-text-base);
+    text-decoration: none;
+    outline-offset: var(--sl-outline-offset-inside);
+  }
+  
+  .starlight-toc__list--mobile:first-child > .starlight-toc__item:first-child > .starlight-toc__link {
+    border-top: 0;
+  }
+  
+  .starlight-toc__list--mobile .starlight-toc__link.active,
+  .starlight-toc__list--mobile .starlight-toc__link[aria-current='true'],
+  .starlight-toc__list--mobile .starlight-toc__link[aria-current='true']:hover,
+  .starlight-toc__list--mobile .starlight-toc__link[aria-current='true']:focus {
+    color: var(--sl-color-white);
+    background-color: unset;
+  }
+  
+  .starlight-toc__list--mobile .starlight-toc__link.active::after,
+  .starlight-toc__list--mobile .starlight-toc__link[aria-current='true']::after {
+    content: '';
+    width: 1rem;
+    height: 1rem;
+    background-color: var(--sl-color-text-accent);
+    /* チェックマークSVGアイコン */
+    -webkit-mask-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxNCAxNCc+PHBhdGggZD0nTTEwLjkxNCA0LjIwNmEuNTgzLjU4MyAwIDAgMC0uODI4IDBMNS43NCA4LjU1NyAzLjkxNCA2LjcyNmEuNTk2LjU5NiAwIDAgMC0uODI4Ljg1N2wyLjI0IDIuMjRhLjU4My41ODMgMCAwIDAgLjgyOCAwbDQuNzYtNC43NmEuNTgzLjU4MyAwIDAgMCAwLS44NTdaJy8+PC9zdmc+Cg==');
+    mask-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxNCAxNCc+PHBhdGggZD0nTTEwLjkxNCA0LjIwNmEuNTgzLjU4MyAwIDAgMC0uODI4IDBMNS43NCA4LjU1NyAzLjkxNCA2LjcyNmEuNTk2LjU5NiAwIDAgMC0uODI4Ljg1N2wyLjI0IDIuMjRhLjU4My41ODMgMCAwIDAgLjgyOCAwbDQuNzYtNC43NmEuNTgzLjU4MyAwIDAgMCAwLS44NTdaJy8+PC9zdmc+Cg==');
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    flex-shrink: 0;
+  }
+</style>

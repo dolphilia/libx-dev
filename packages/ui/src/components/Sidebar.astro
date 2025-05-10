@@ -1,9 +1,10 @@
 ---
-// Sidebar.astro
+// Sidebar.astro - Starlightスタイルに基づいたサイドバーコンポーネント
 interface SidebarItem {
   title: string;
   href?: string;
   items?: SidebarItem[];
+  isCurrent?: boolean;
 }
 
 interface Props {
@@ -13,6 +14,17 @@ interface Props {
 }
 
 const { items, title, class: className = '' } = Astro.props;
+
+// 現在のページかどうかを判定するヘルパー関数
+function isCurrentPage(item: SidebarItem): boolean {
+  return item.isCurrent || false;
+}
+
+// サイドバー内のアイテムが開いているかどうかを判定するヘルパー関数
+function shouldBeOpen(section: SidebarItem): boolean {
+  if (!section.items) return false;
+  return section.items.some(item => isCurrentPage(item) || (item.items && shouldBeOpen(item)));
+}
 ---
 
 <aside 
@@ -27,31 +39,43 @@ const { items, title, class: className = '' } = Astro.props;
   )}
   
   <nav aria-labelledby="sidebar-title">
-    <ul class="sidebar-menu">
+    <ul class="top-level">
       {items.map((section, index) => (
-        <li class="sidebar-section">
-          {section.title && (
-            <h4 
-              class="section-title" 
-              id={`section-${index}-title`}
+        <li>
+          {section.href ? (
+            <a 
+              href={section.href}
+              aria-current={isCurrentPage(section) ? 'page' : undefined}
+              class="large"
             >
-              {section.title}
-            </h4>
-          )}
-          
-          {section.items && (
-            <ul aria-labelledby={`section-${index}-title`} class="section-items">
-              {section.items.map((item) => (
-                <li>
-                  <a 
-                    href={item.href}
-                    class="sidebar-link"
-                  >
-                    {item.title}
-                  </a>
-                </li>
-              ))}
-            </ul>
+              <span>{section.title}</span>
+            </a>
+          ) : (
+            <details open={shouldBeOpen(section)}>
+              <summary>
+                <div class="group-label">
+                  <span class="large">{section.title}</span>
+                </div>
+                <svg class="caret" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </summary>
+              
+              {section.items && (
+                <ul>
+                  {section.items.map((item) => (
+                    <li>
+                      <a 
+                        href={item.href}
+                        aria-current={isCurrentPage(item) ? 'page' : undefined}
+                      >
+                        <span>{item.title}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </details>
           )}
         </li>
       ))}
@@ -60,55 +84,106 @@ const { items, title, class: className = '' } = Astro.props;
 </aside>
 
 <style>
+  /* Starlightスタイルに基づくサイドバースタイル */
   .sidebar {
-    width: 16rem;
+    width: var(--sl-sidebar-width);
     flex-shrink: 0;
   }
 
   .sidebar-title {
     margin-bottom: 0.75rem;
     font-weight: 600;
-    font-size: 1.125rem;
+    font-size: var(--sl-text-lg);
+    color: var(--sl-color-white);
   }
 
-  .sidebar-menu {
-    background-color: #f9fafb;
-    border-radius: 0.5rem;
-    padding: 0.5rem;
-    width: 100%;
+  ul {
+    --sl-sidebar-item-padding-inline: 0.5rem;
+    list-style: none;
+    padding: 0;
   }
 
-  .sidebar-section {
-    margin-bottom: 0.5rem;
+  li {
+    overflow-wrap: anywhere;
   }
 
-  .section-title {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #6b7280;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 0.5rem 0.75rem;
+  ul ul li {
+    margin-inline-start: var(--sl-sidebar-item-padding-inline);
+    border-inline-start: 1px solid var(--sl-color-hairline-light);
+    padding-inline-start: var(--sl-sidebar-item-padding-inline);
   }
 
-  .section-items {
+  .large {
+    font-size: var(--sl-text-lg);
+    font-weight: 600;
+    color: var(--sl-color-white);
+  }
+
+  .top-level > li + li {
+    margin-top: 0.75rem;
+  }
+
+  summary {
     display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.2em var(--sl-sidebar-item-padding-inline);
+    line-height: 1.4;
+    cursor: pointer;
+    user-select: none;
+  }
+  summary::marker,
+  summary::-webkit-details-marker {
+    display: none;
   }
 
-  .sidebar-link {
+  .caret {
+    transition: transform 0.2s ease-in-out;
+    flex-shrink: 0;
+  }
+  [dir='rtl'] .caret {
+    transform: rotateZ(180deg);
+  }
+  [open] > summary .caret {
+    transform: rotateZ(90deg);
+  }
+
+  a {
     display: block;
-    padding: 0.5rem 0.75rem;
-    border-radius: 0.375rem;
-    font-size: 1rem;
-    font-weight: 500;
-    color: #374151;
-    transition: background-color 0.2s, color 0.2s;
+    border-radius: 0.25rem;
+    text-decoration: none;
+    color: var(--sl-color-gray-2);
+    padding: 0.3em var(--sl-sidebar-item-padding-inline);
+    line-height: 1.4;
   }
 
-  .sidebar-link:hover {
-    background-color: #e5e7eb;
-    color: #111827;
+  a:hover,
+  a:focus {
+    color: var(--sl-color-white);
+  }
+
+  [aria-current='page'],
+  [aria-current='page']:hover,
+  [aria-current='page']:focus {
+    font-weight: 600;
+    color: var(--sl-color-text-invert);
+    background-color: var(--sl-color-text-accent);
+  }
+
+  a > *:not(:last-child),
+  .group-label > *:not(:last-child) {
+    margin-inline-end: 0.25em;
+  }
+
+  @media (min-width: 50rem) {
+    .top-level > li + li {
+      margin-top: 0.5rem;
+    }
+    .large {
+      font-size: var(--sl-text-base);
+    }
+    a {
+      font-size: var(--sl-text-sm);
+    }
   }
 </style>

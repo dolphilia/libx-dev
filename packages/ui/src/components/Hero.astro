@@ -1,0 +1,198 @@
+---
+interface Props {
+  title: string;
+  tagline?: string;
+  image?: {
+    src: string;
+    alt: string;
+  };
+  actions?: {
+    text: string;
+    link: string;
+    variant?: 'primary' | 'secondary' | 'outline';
+    icon?: string;
+  }[];
+}
+
+const { title, tagline, image, actions = [] } = Astro.props;
+---
+
+<div class="hero">
+  {image && (
+    <div class="hero-image">
+      <img src={image.src} alt={image.alt} width="400" height="400" loading="eager" decoding="async" />
+    </div>
+  )}
+  <div class="hero-content">
+    <div class="hero-text">
+      <h1 id="page-title" set:html={title} />
+      {tagline && <div class="hero-tagline" set:html={tagline} />}
+    </div>
+    {actions.length > 0 && (
+      <div class="hero-actions">
+        {actions.map(({ text, link, variant = 'primary', icon }) => (
+          <a href={link} class={`hero-action hero-action-${variant}`}>
+            <span>{text}</span>
+            {icon && (
+              <span class="hero-action-icon" aria-hidden="true">
+                <span class="icon">{icon}</span>
+              </span>
+            )}
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</div>
+
+<style>
+  .hero {
+    display: grid;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .hero-image {
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero-image img {
+    object-fit: contain;
+    width: min(70%, 20rem);
+    height: auto;
+    margin-inline: auto;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+  }
+
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .hero-text > * {
+    max-width: 50ch;
+  }
+
+  h1 {
+    font-size: clamp(2rem, calc(0.25rem + 5vw), 3.5rem);
+    line-height: 1.2;
+    font-weight: 600;
+    color: var(--color-heading, #1e293b);
+  }
+
+  .hero-tagline {
+    font-size: clamp(1rem, calc(0.0625rem + 2vw), 1.25rem);
+    color: var(--color-text-light, #64748b);
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hero-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .hero-action-primary {
+    background-color: var(--color-primary, #3b82f6);
+    color: white;
+  }
+
+  .hero-action-primary:hover {
+    background-color: var(--color-primary-dark, #2563eb);
+  }
+
+  .hero-action-secondary {
+    background-color: var(--color-secondary, #64748b);
+    color: white;
+  }
+
+  .hero-action-secondary:hover {
+    background-color: var(--color-secondary-dark, #475569);
+  }
+
+  .hero-action-outline {
+    border: 1px solid var(--color-border, #e2e8f0);
+    color: var(--color-text, #1e293b);
+  }
+
+  .hero-action-outline:hover {
+    background-color: var(--color-bg-hover, rgba(0, 0, 0, 0.05));
+  }
+
+  .hero-action-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* デスクトップ表示 */
+  @media (min-width: 768px) {
+    .hero {
+      grid-template-columns: 7fr 4fr;
+      gap: 3%;
+      padding-block: clamp(2.5rem, calc(1rem + 10vmin), 6rem);
+    }
+
+    .hero-image {
+      order: 2;
+    }
+
+    .hero-image img {
+      width: min(100%, 25rem);
+    }
+
+    .hero-content {
+      text-align: start;
+    }
+
+    .hero-text {
+      align-items: flex-start;
+    }
+
+    .hero-actions {
+      justify-content: flex-start;
+    }
+  }
+
+  /* ダークモード対応 */
+  @media (prefers-color-scheme: dark) {
+    h1 {
+      color: var(--color-heading-dark, #f8fafc);
+    }
+
+    .hero-tagline {
+      color: var(--color-text-light-dark, #94a3b8);
+    }
+
+    .hero-action-outline {
+      border-color: var(--color-border-dark, #334155);
+      color: var(--color-text-dark, #e2e8f0);
+    }
+
+    .hero-action-outline:hover {
+      background-color: var(--color-bg-hover-dark, rgba(255, 255, 255, 0.1));
+    }
+  }
+</style>

@@ -1,0 +1,61 @@
+---
+interface Props {
+  leftWidth?: string;
+  gap?: string;
+}
+
+const { leftWidth = '50%', gap = '1rem' } = Astro.props;
+---
+
+<div class="two-column-content" style={`--left-width: ${leftWidth}; --column-gap: ${gap};`}>
+  <div class="left-column">
+    <slot name="left" />
+  </div>
+  <div class="right-column">
+    <slot name="right" />
+  </div>
+</div>
+
+<style>
+  .two-column-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--column-gap);
+    width: 100%;
+    margin: 1.5rem 0;
+  }
+
+  .left-column,
+  .right-column {
+    width: 100%;
+  }
+
+  /* デスクトップ表示 */
+  @media (min-width: 768px) {
+    .two-column-content {
+      flex-direction: row;
+      align-items: flex-start;
+    }
+
+    .left-column {
+      width: var(--left-width);
+    }
+
+    .right-column {
+      flex: 1;
+    }
+  }
+
+  /* 印刷時のスタイル */
+  @media print {
+    .two-column-content {
+      display: block;
+    }
+
+    .left-column,
+    .right-column {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+  }
+</style>

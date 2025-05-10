@@ -1,0 +1,63 @@
+---
+interface Props {
+  /**
+   * コンテンツの最大幅を設定します。
+   * @default 'var(--sl-content-width)'
+   */
+  maxWidth?: string;
+  
+  /**
+   * コンテンツの余白を設定します。
+   * @default '1.5rem var(--sl-content-pad-x)'
+   */
+  padding?: string;
+  
+  /**
+   * 上部にボーダーを表示するかどうか
+   * @default false
+   */
+  withBorder?: boolean;
+  
+  /**
+   * カスタムCSSクラス
+   */
+  class?: string;
+}
+
+const {
+  maxWidth = 'var(--sl-content-width)',
+  padding = '1.5rem var(--sl-content-pad-x)',
+  withBorder = false,
+  class: className = '',
+} = Astro.props;
+---
+
+<div class:list={['content-panel', className, { 'with-border': withBorder }]}>
+  <div class="sl-container">
+    <slot />
+  </div>
+</div>
+
+<style define:vars={{ maxWidth, padding }}>
+  .content-panel {
+    padding: var(--padding);
+  }
+  
+  .with-border {
+    border-top: 1px solid var(--sl-color-hairline);
+  }
+  
+  .sl-container {
+    max-width: var(--maxWidth);
+  }
+
+  .sl-container > :global(* + *) {
+    margin-top: 1.5rem;
+  }
+
+  @media (min-width: 72rem) {
+    .sl-container {
+      margin-inline: var(--sl-content-margin-inline, auto);
+    }
+  }
+</style>

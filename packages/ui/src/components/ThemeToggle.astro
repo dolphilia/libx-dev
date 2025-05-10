@@ -1,0 +1,152 @@
+---
+// テーマ切り替えボタンコンポーネント
+---
+
+<theme-toggle>
+  <button class="theme-toggle" type="button" aria-label="テーマを切り替える">
+    <span class="theme-toggle-icon">
+      <!-- 太陽アイコン（ライトモード用） -->
+      <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+      <!-- 月アイコン（ダークモード用） -->
+      <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+    </span>
+  </button>
+</theme-toggle>
+
+<style>
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    color: var(--color-text, #1e293b);
+    transition: color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .theme-toggle:hover {
+    background-color: var(--color-bg-hover, rgba(0, 0, 0, 0.05));
+  }
+
+  .theme-toggle:focus {
+    outline: 2px solid var(--color-primary, #3b82f6);
+    outline-offset: 2px;
+  }
+
+  .theme-toggle-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .sun-icon,
+  .moon-icon {
+    position: absolute;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+  }
+
+  /* ダークモード時のアイコン表示 */
+  :global(.dark) .sun-icon {
+    opacity: 0;
+    transform: rotate(90deg) scale(0);
+  }
+
+  :global(.dark) .moon-icon {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+
+  /* ライトモード時のアイコン表示 */
+  .sun-icon {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+
+  .moon-icon {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0);
+  }
+
+  /* ダークモード対応 */
+  @media (prefers-color-scheme: dark) {
+    .theme-toggle {
+      color: var(--color-text-dark, #e2e8f0);
+    }
+
+    .theme-toggle:hover {
+      background-color: var(--color-bg-hover-dark, rgba(255, 255, 255, 0.1));
+    }
+  }
+</style>
+
+<script>
+  // テーマ設定のためのローカルストレージキー
+  const STORAGE_KEY = 'theme-preference';
+
+  // テーマ設定を取得する関数
+  function getThemePreference(): 'dark' | 'light' {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem(STORAGE_KEY)) {
+      return localStorage.getItem(STORAGE_KEY) === 'dark' ? 'dark' : 'light';
+    }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  // テーマを設定する関数
+  function setTheme(theme: 'dark' | 'light'): void {
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    localStorage.setItem(STORAGE_KEY, theme);
+  }
+
+  // テーマを切り替える関数
+  function toggleTheme(): void {
+    const currentTheme = getThemePreference();
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+  }
+
+  // カスタム要素の定義
+  class ThemeToggle extends HTMLElement {
+    constructor() {
+      super();
+      
+      // 初期テーマの設定
+      setTheme(getThemePreference());
+      
+      // ボタンクリックイベントの設定
+      const button = this.querySelector('button');
+      if (button) {
+        button.addEventListener('click', () => {
+          toggleTheme();
+        });
+      }
+      
+      // システムのカラースキーム変更を監視
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', ({ matches }) => {
+        if (!localStorage.getItem(STORAGE_KEY)) {
+          setTheme(matches ? 'dark' : 'light');
+        }
+      });
+    }
+  }
+
+  // カスタム要素の登録
+  customElements.define('theme-toggle', ThemeToggle);
+</script>

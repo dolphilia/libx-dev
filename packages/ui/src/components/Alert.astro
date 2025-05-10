@@ -13,20 +13,56 @@ const {
   ...rest
 } = Astro.props;
 
-// アイコンマッピング
-const iconMap = {
-  info: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`,
-  success: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`,
-  warning: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>`,
-  error: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`,
+// バリアントに応じたアイコンとラベルのマッピング
+const variantConfig = {
+  info: {
+    icon: 'information',
+    label: '情報'
+  },
+  success: {
+    icon: 'approve-check-circle',
+    label: '成功'
+  },
+  warning: {
+    icon: 'warning',
+    label: '警告'
+  },
+  error: {
+    icon: 'error',
+    label: 'エラー'
+  }
 };
+
+const config = variantConfig[variant];
+const ariaLabel = title || config.label;
 ---
 
-<div class:list={['alert', `alert-${variant}`, className]} role="alert" {...rest}>
-  <div set:html={iconMap[variant]} />
-  <div class="content">
-    {title && <h3 class="title">{title}</h3>}
-    <div class="message">
+<div class:list={['alert', `alert-${variant}`, className]} role="alert" aria-label={ariaLabel} {...rest}>
+  <div class="alert-icon">
+    {variant === 'info' && (
+      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 11a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0v-4a1 1 0 0 0-1-1Zm.38-3.92a1 1 0 0 0-.76 0 1 1 0 0 0-.33.21 1.15 1.15 0 0 0-.21.33 1 1 0 0 0 .21 1.09c.097.088.209.16.33.21A1 1 0 0 0 13 8a1.05 1.05 0 0 0-.29-.71 1 1 0 0 0-.33-.21ZM12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 18a8 8 0 1 1 0-16.001A8 8 0 0 1 12 20Z" fill="currentColor"/>
+      </svg>
+    )}
+    {variant === 'success' && (
+      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m14.72 8.79-4.29 4.3-1.65-1.65a1 1 0 1 0-1.41 1.41l2.35 2.36a1 1 0 0 0 1.41 0l5-5a1.002 1.002 0 1 0-1.41-1.42ZM12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 18a8 8 0 1 1 0-16.001A8 8 0 0 1 12 20Z" fill="currentColor"/>
+      </svg>
+    )}
+    {variant === 'warning' && (
+      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 16a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm10.67 1.47-8.05-14a3 3 0 0 0-5.24 0l-8 14A3 3 0 0 0 3.94 22h16.12a3 3 0 0 0 2.61-4.53Zm-1.73 2a1 1 0 0 1-.88.51H3.94a1 1 0 0 1-.88-.51 1 1 0 0 1 0-1l8-14a1 1 0 0 1 1.78 0l8.05 14a1 1 0 0 1 .05 1.02v-.02ZM12 8a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V9a1 1 0 0 0-1-1Z" fill="currentColor"/>
+      </svg>
+    )}
+    {variant === 'error' && (
+      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 7a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V8a1 1 0 0 0-1-1Zm0 8a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm9.71-7.44-5.27-5.27a1.05 1.05 0 0 0-.71-.29H8.27a1.05 1.05 0 0 0-.71.29L2.29 7.56a1.05 1.05 0 0 0-.29.71v7.46c.004.265.107.518.29.71l5.27 5.27c.192.183.445.286.71.29h7.46a1.05 1.05 0 0 0 .71-.29l5.27-5.27a1.05 1.05 0 0 0 .29-.71V8.27a1.05 1.05 0 0 0-.29-.71ZM20 15.31 15.31 20H8.69L4 15.31V8.69L8.69 4h6.62L20 8.69v6.62Z" fill="currentColor"/>
+      </svg>
+    )}
+  </div>
+  <div class="alert-content">
+    {title && <p class="alert-title">{title}</p>}
+    <div class="alert-message">
       <slot />
     </div>
   </div>
@@ -37,68 +73,96 @@ const iconMap = {
     display: flex;
     align-items: flex-start;
     padding: 1rem;
-    margin-bottom: 1rem;
-    border-radius: 0.5rem;
-    border-width: 1px;
+    margin-bottom: 1.5rem;
+    border-inline-start: 0.25rem solid;
+    border-radius: 0.25rem;
+    line-height: var(--sl-line-height-headings, 1.2);
   }
 
-  .alert-info {
-    background-color: #eff6ff;
-    border-color: #bfdbfe;
-    color: #1e40af;
-  }
-
-  .alert-info .icon {
-    color: #3b82f6;
-  }
-
-  .alert-success {
-    background-color: #f0fdf4;
-    border-color: #bbf7d0;
-    color: #166534;
-  }
-
-  .alert-success .icon {
-    color: #22c55e;
-  }
-
-  .alert-warning {
-    background-color: #fffbeb;
-    border-color: #fde68a;
-    color: #92400e;
-  }
-
-  .alert-warning .icon {
-    color: #f59e0b;
-  }
-
-  .alert-error {
-    background-color: #fef2f2;
-    border-color: #fecaca;
-    color: #991b1b;
-  }
-
-  .alert-error .icon {
-    color: #ef4444;
-  }
-
-  .icon {
+  .alert-icon {
     flex-shrink: 0;
     width: 1.5rem;
     height: 1.5rem;
+    margin-right: 0.75rem;
+    color: var(--alert-icon-color);
   }
 
-  .content {
-    margin-left: 0.75rem;
+  .alert-content {
+    flex: 1;
+    min-width: 0;
   }
 
-  .title {
-    font-weight: bold;
-    font-size: 1rem;
+  .alert-title {
+    margin: 0 0 0.25rem 0;
+    font-weight: 600;
+    font-size: var(--sl-text-lg, 1.125rem);
+    color: var(--alert-title-color);
   }
 
-  .message {
-    font-size: 0.875rem;
-    margin-top: 0.25rem;
+  .alert-message {
+    margin: 0;
+    font-size: var(--sl-text-body-sm, 0.9375rem);
+    color: var(--alert-text-color);
+  }
+
+  .alert-message :global(p) {
+    margin: 0 0 0.5rem 0;
+  }
+
+  .alert-message :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  /* バリアント別のスタイル */
+  .alert-info {
+    --alert-bg-color: var(--sl-color-blue-low, hsl(234, 88%, 90%));
+    --alert-border-color: var(--sl-color-blue, hsl(234, 90%, 60%));
+    --alert-title-color: var(--sl-color-blue-high, hsl(234, 80%, 30%));
+    --alert-text-color: var(--sl-color-blue-high, hsl(234, 80%, 30%));
+    --alert-icon-color: var(--sl-color-blue, hsl(234, 90%, 60%));
+    background-color: var(--alert-bg-color);
+    border-color: var(--alert-border-color);
+  }
+
+  .alert-success {
+    --alert-bg-color: var(--sl-color-green-low, hsl(101, 85%, 90%));
+    --alert-border-color: var(--sl-color-green, hsl(101, 90%, 46%));
+    --alert-title-color: var(--sl-color-green-high, hsl(101, 80%, 22%));
+    --alert-text-color: var(--sl-color-green-high, hsl(101, 80%, 22%));
+    --alert-icon-color: var(--sl-color-green, hsl(101, 90%, 46%));
+    background-color: var(--alert-bg-color);
+    border-color: var(--alert-border-color);
+  }
+
+  .alert-warning {
+    --alert-bg-color: var(--sl-color-orange-low, hsl(41, 90%, 88%));
+    --alert-border-color: var(--sl-color-orange, hsl(41, 90%, 60%));
+    --alert-title-color: var(--sl-color-orange-high, hsl(41, 80%, 25%));
+    --alert-text-color: var(--sl-color-orange-high, hsl(41, 80%, 25%));
+    --alert-icon-color: var(--sl-color-orange, hsl(41, 90%, 60%));
+    background-color: var(--alert-bg-color);
+    border-color: var(--alert-border-color);
+  }
+
+  .alert-error {
+    --alert-bg-color: var(--sl-color-red-low, hsl(339, 80%, 90%));
+    --alert-border-color: var(--sl-color-red, hsl(339, 90%, 60%));
+    --alert-title-color: var(--sl-color-red-high, hsl(339, 80%, 30%));
+    --alert-text-color: var(--sl-color-red-high, hsl(339, 80%, 30%));
+    --alert-icon-color: var(--sl-color-red, hsl(339, 90%, 60%));
+    background-color: var(--alert-bg-color);
+    border-color: var(--alert-border-color);
+  }
+
+  /* ダークモード対応 */
+  :root[data-theme="dark"] .alert,
+  [data-theme="dark"] .alert {
+    color: var(--sl-color-white);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .alert {
+      color: var(--sl-color-white);
+    }
   }
 </style>

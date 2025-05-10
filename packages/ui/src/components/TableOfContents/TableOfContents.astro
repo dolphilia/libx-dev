@@ -1,0 +1,239 @@
+---
+import TableOfContentsList from './TableOfContentsList.astro';
+
+// 言語タイプの定義（@docs/i18n/localesから本来はインポートすべき）
+type LocaleKey = 'en' | 'ja';
+
+// 翻訳関数の簡易実装（@docs/i18n/utilsから本来はインポートすべき）
+function translate(key: string, locale: LocaleKey = 'en'): string {
+  const translations: Record<string, Record<string, string>> = {
+    'tableOfContents.onThisPage': {
+      en: 'On this page',
+      ja: 'このページの内容'
+    }
+  };
+  
+  return translations[key]?.[locale] || key;
+}
+
+export interface TocItem {
+  depth: number;
+  text: string;
+  slug: string;
+  children: TocItem[];
+}
+
+interface Props {
+  /**
+   * 目次の項目
+   */
+  headings: TocItem[];
+  
+  /**
+   * 表示する最小の見出しレベル
+   * @default 2
+   */
+  minLevel?: number;
+  
+  /**
+   * 表示する最大の見出しレベル
+   * @default 3
+   */
+  maxLevel?: number;
+  
+  /**
+   * 言語キー
+   */
+  lang?: LocaleKey;
+  
+  /**
+   * モバイル表示かどうか
+   * @default false
+   */
+  isMobile?: boolean;
+}
+
+const {
+  headings,
+  minLevel = 2,
+  maxLevel = 3,
+  lang = 'en' as LocaleKey,
+  isMobile = false
+} = Astro.props;
+
+// 指定されたレベル範囲内の見出しのみをフィルタリング
+const filteredHeadings = headings.filter(heading => 
+  heading.depth >= minLevel && heading.depth <= maxLevel
+);
+
+// 翻訳キー
+const TOC_TITLE = 'tableOfContents.onThisPage';
+---
+
+{filteredHeadings.length > 0 && (
+  <starlight-toc data-min-h={minLevel} data-max-h={maxLevel} class:list={{ "starlight-toc--mobile": isMobile }}>
+    <div class="starlight-toc-wrapper">
+      <nav aria-labelledby="starlight-toc-heading">
+        <h2 id="starlight-toc-heading" class="starlight-toc-heading">{translate(TOC_TITLE, lang)}</h2>
+        <div class="starlight-toc-list">
+          <TableOfContentsList toc={filteredHeadings} isMobile={isMobile} />
+        </div>
+      </nav>
+    </div>
+  </starlight-toc>
+)}
+
+<script>
+class StarlightTOC extends HTMLElement {
+  constructor() {
+    super();
+    
+    // 現在アクティブな見出しを追跡
+    let activeHeading: HTMLAnchorElement | null = null;
+    
+    // 見出し要素を取得
+    const minLevel = parseInt(this.dataset.minH || '2');
+    const maxLevel = parseInt(this.dataset.maxH || '3');
+    const headingSelectors = Array.from(
+      { length: maxLevel - minLevel + 1 },
+      (_, i) => `h${minLevel + i}`
+    ).join(',');
+    
+    const headings = Array.from(
+      document.querySelectorAll(headingSelectors)
+    ) as HTMLHeadingElement[];
+    
+    // 目次内のリンクを取得
+    const links = Array.from(
+      this.querySelectorAll('a')
+    ) as HTMLAnchorElement[];
+    
+    // スクロール時に現在の見出しを更新
+    const updateActiveHeading = () => {
+      // 現在のスクロール位置
+      const scrollY = window.scrollY;
+      
+      // ビューポートの高さ
+      const viewportHeight = window.innerHeight;
+      
+      // ヘッダーの高さを考慮したオフセット
+      const topOffset = 100;
+      
+      // 現在表示されている見出しを探す
+      let currentHeading: HTMLHeadingElement | undefined;
+      
+      // 画面内に表示されている見出しを探す
+      // 最後に画面上部を通過した見出しを選択
+      for (const heading of headings) {
+        const { top } = heading.getBoundingClientRect();
+        if (top < topOffset) {
+          currentHeading = heading;
+        } else {
+          break;
+        }
+      }
+      
+      // 対応するリンクを見つける
+      if (currentHeading) {
+        const id = currentHeading.id;
+        const newActiveHeading = links.find(link => link.getAttribute('href') === `#${id}`) || null;
+        
+        // アクティブな見出しが変わった場合のみ更新
+        if (newActiveHeading !== activeHeading) {
+          // 以前のアクティブな見出しからaria-currentを削除
+          if (activeHeading) {
+            activeHeading.removeAttribute('aria-current');
+            activeHeading.classList.remove('active');
+          }
+          
+          // 新しいアクティブな見出しにaria-currentを設定
+          if (newActiveHeading) {
+            newActiveHeading.setAttribute('aria-current', 'true');
+            newActiveHeading.classList.add('active');
+          }
+          
+          activeHeading = newActiveHeading;
+        }
+      }
+    };
+    
+    // スクロールイベントリスナーを登録
+    window.addEventListener('scroll', updateActiveHeading, { passive: true });
+    
+    // ウィンドウサイズ変更時にも更新
+    window.addEventListener('resize', updateActiveHeading, { passive: true });
+    
+    // ページ読み込み完了時に実行
+    window.addEventListener('load', updateActiveHeading);
+    
+    // 初期化時に一度実行
+    setTimeout(updateActiveHeading, 100);
+  }
+}
+
+// カスタム要素を登録
+customElements.define('starlight-toc', StarlightTOC);
+</script>
+
+<style>
+  starlight-toc {
+    display: block;
+  }
+  
+  .starlight-toc-wrapper {
+    width: 100%;
+    padding: 1rem 0;
+  }
+  
+  .starlight-toc-heading {
+    font-size: var(--sl-text-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--sl-color-gray-3);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
+  }
+  
+  .starlight-toc-list {
+    border-inline-start: 1px solid var(--sl-color-hairline);
+  }
+  
+  /* モバイル表示用スタイル */
+  .starlight-toc--mobile {
+    position: sticky;
+    top: var(--sl-nav-height);
+    z-index: var(--sl-z-index-toc);
+    max-height: calc(100vh - var(--sl-nav-height));
+    overflow-y: auto;
+    background-color: var(--sl-color-bg);
+    overscroll-behavior: contain;
+  }
+  
+  .starlight-toc--mobile .starlight-toc-wrapper {
+    padding: 1rem var(--sl-content-pad-x);
+  }
+  
+  .starlight-toc--mobile .starlight-toc-heading {
+    font-size: var(--sl-text-base);
+  }
+  
+  .starlight-toc--mobile .starlight-toc-list {
+    border-inline-start: none;
+  }
+  
+  @media (min-width: 72rem) {
+    starlight-toc {
+      display: block;
+      position: sticky;
+      top: var(--sl-nav-height);
+      max-height: calc(100vh - var(--sl-nav-height));
+      height: 100%;
+      overflow-y: auto;
+    }
+    
+    .starlight-toc-wrapper {
+      width: 100%;
+      padding: 1rem 0.5rem 1rem 0;
+    }
+  }
+</style>

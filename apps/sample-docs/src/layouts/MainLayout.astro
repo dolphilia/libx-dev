@@ -1,6 +1,7 @@
 ---
 /**
  * MainLayout - ドキュメントサイトの基本レイアウトコンポーネント
+ * Starlightスタイルに基づいたレイアウト
  */
 import { Navigation, Footer } from '@docs/ui/components';
 import LanguageSelector from '../components/LanguageSelector.astro';
@@ -17,10 +18,20 @@ interface Props {
   lang: string;
   /** ドキュメントバージョン */
   version?: string;
+  /** サイドバーを表示するか */
+  hasSidebar?: boolean;
+  /** 目次を表示するか */
+  hasToc?: boolean;
 }
 
 // プロパティの取得
-const { title, lang, version = 'v1' } = Astro.props;
+const { 
+  title, 
+  lang, 
+  version = 'v1', 
+  hasSidebar = false,
+  hasToc = false
+} = Astro.props;
 
 // ナビゲーション項目の定義
 interface NavItem {
@@ -64,10 +75,15 @@ const linkGroups: LinkGroup[] = [
 
 // 現在の年を取得
 const currentYear = new Date().getFullYear();
+
+// HTML属性の設定
+const htmlDataAttributes: Record<string, string> = { 'data-theme': 'dark' };
+if (hasToc) htmlDataAttributes['data-has-toc'] = '';
+if (hasSidebar) htmlDataAttributes['data-has-sidebar'] = '';
 ---
 
 <!DOCTYPE html>
-<html lang={lang}>
+<html lang={lang} {...htmlDataAttributes}>
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href={`${BASE_URL}/favicon.svg`} />
@@ -75,83 +91,131 @@ const currentYear = new Date().getFullYear();
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content="Documentation site built with Astro" />
     <title>{title} | Docs</title>
-    
-
+    <style>
+      html:not([data-has-toc]) {
+        --sl-mobile-toc-height: 0rem;
+      }
+      html:not([data-has-sidebar]) {
+        --sl-content-width: 67.5rem;
+      }
+      html {
+        scroll-padding-top: calc(1.5rem + var(--sl-nav-height) + var(--sl-mobile-toc-height));
+      }
+      @media (min-width: 50em) {
+        [data-has-sidebar] {
+          --sl-content-inline-start: var(--sl-sidebar-width);
+        }
+      }
+      @media (min-width: 72em) {
+        html {
+          scroll-padding-top: calc(1.5rem + var(--sl-nav-height));
+        }
+      }
+    </style>
   </head>
   <body>
-    <header>
-      <div class="header-container">
-        <div class="header-content">
-          <nav aria-label="メインナビゲーション">
-            <Navigation items={navItems} />
-          </nav>
-          <div aria-label="言語選択">
-            <LanguageSelector currentLang={lang} />
+    <div class="page sl-flex">
+      <header class="header">
+        <div class="header-container">
+          <div class="header-content">
+            <div class="title-wrapper sl-flex">
+              <a href={`${BASE_URL}/${lang}`} class="site-title">Docs Astro</a>
+            </div>
+            <div class="sl-flex print:hidden">
+              <!-- 検索コンポーネントがここに入る予定 -->
+            </div>
+            <div class="sl-hidden md:sl-flex print:hidden right-group">
+              <div aria-label="言語選択">
+                <LanguageSelector currentLang={lang} />
+              </div>
+              <nav aria-label="メインナビゲーション">
+                <Navigation items={navItems} />
+              </nav>
+            </div>
           </div>
         </div>
+      </header>
+      
+      <div class="main-frame">
+        <main id="main-content">
+          <slot />
+        </main>
       </div>
-    </header>
-    
-    <main id="main-content">
-      <slot />
-    </main>
-    
-    <Footer 
-      linkGroups={linkGroups}
-      copyright={`© ${currentYear} Docs Astro. All rights reserved.`}
-    />
+      
+      <Footer 
+        linkGroups={linkGroups}
+        copyright={`© ${currentYear} Docs Astro. All rights reserved.`}
+      />
+    </div>
   </body>
 </html>
 
 <style>
-  /* フォールバックスタイル定義 */
-  :global(body) {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    margin: 0;
-    padding: 0;
-    line-height: 1.5;
-    color: #333;
-  }
-  
-  @media (prefers-color-scheme: dark) {
-    :global(body) {
-      color: #f0f0f0;
-      background-color: #121212;
-    }
-  }
-
-  body {
-    min-height: 100vh;
-    display: flex;
+  /* Starlightスタイルに基づくレイアウト */
+  .page {
     flex-direction: column;
+    min-height: 100vh;
   }
 
-  header {
-    background-color: white;
-    border-bottom: 1px solid #e5e7eb;
-  }
-
-  :global(.dark) header {
-    background-color: #1f2937;
-    border-bottom-color: #374151;
+  .header {
+    z-index: var(--sl-z-index-navbar);
+    position: fixed;
+    inset-inline-start: 0;
+    inset-block-start: 0;
+    width: 100%;
+    height: var(--sl-nav-height);
+    border-bottom: 1px solid var(--sl-color-hairline-shade);
+    padding: var(--sl-nav-pad-y) var(--sl-nav-pad-x);
+    background-color: var(--sl-color-bg-nav);
   }
 
   .header-container {
-    max-width: 1280px;
+    max-width: var(--sl-content-width);
     margin: 0 auto;
-    padding: 1rem;
   }
 
   .header-content {
     display: flex;
+    gap: var(--sl-nav-gap);
     justify-content: space-between;
     align-items: center;
+    height: 100%;
+  }
+
+  .title-wrapper {
+    overflow: clip;
+    padding: 0.25rem;
+    margin: -0.25rem;
+    min-width: 0;
+  }
+
+  .site-title {
+    font-size: var(--sl-text-lg);
+    font-weight: 600;
+    color: var(--sl-color-white);
+    text-decoration: none;
+  }
+
+  .right-group {
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .main-frame {
+    padding-top: calc(var(--sl-nav-height) + var(--sl-mobile-toc-height));
+    padding-inline-start: var(--sl-content-inline-start, 0);
   }
 
   main {
     flex-grow: 1;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
+    padding: 1.5rem var(--sl-content-pad-x);
+  }
+
+  @media (min-width: 50em) {
+    .header-content {
+      display: grid;
+      grid-template-columns: minmax(auto, auto) 1fr auto;
+      align-content: center;
+    }
   }
 </style>
