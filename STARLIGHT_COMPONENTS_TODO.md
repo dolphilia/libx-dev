@@ -5,6 +5,7 @@
 ## 目次
 
 - [凡例](#凡例)
+- [実装状況サマリー](#実装状況サマリー)
 - [コンポーネント別TODO](#コンポーネント別todo)
   - [Alert](#alert)
   - [Button](#button)
@@ -26,12 +27,39 @@
   - [TwoColumnContent](#twocolumncontent)
   - [ThemeToggle](#themetoggle)
   - [Tabs](#tabs)
+  - [Icon](#icon)
 
 ## 凡例
 
 - [ ] 未着手
 - [x] 完了
 - [&#x7e;] 進行中
+
+## 実装状況サマリー
+
+### 完了したコンポーネント
+- ContentPanel: 基本構造の実装、レスポンシブデザイン対応
+- Banner: 基本構造の実装、複数のバナータイプのスタイル設定、閉じるボタン機能
+- TableOfContents: 基本構造の実装、アクティブな見出しのハイライト機能、モバイル対応
+- EditLink: 基本構造の実装、編集URLの生成ロジック、アイコンとスタイル設定
+- Pagination: 基本構造の実装、前後ページデータの取得ロジック、レスポンシブデザイン
+- ContentNotice: 基本構造の実装、複数の通知タイプのスタイル設定、アイコンの追加
+- TwoColumnContent: 基本構造の実装、レスポンシブデザイン、カラム幅の設定オプション
+- ThemeToggle: 基本構造の実装、ローカルストレージ連携、アニメーション実装
+- Tabs: 基本構造の実装、タブ切り替え機能、キーボードナビゲーション、ローカルストレージによる状態保存
+- AnchorHeading: 基本構造の実装、アンカーリンクのインタラクション、URLコピー機能
+- Hero: 基本構造の実装、背景画像/グラデーションオプション、レスポンシブデザイン
+- LinkCard: リンクカードの実装、ホバーエフェクト
+- CardGrid: カードグリッドレイアウトの実装
+- Icon: アイコンコンポーネントの実装、SVGパスデータの定義、サイズ・色のカスタマイズ対応
+
+### 改善が必要なコンポーネント
+- Footer: レスポンシブデザイン、コピーライト情報、ソーシャルアイコンなど
+- Navigation: スティッキーヘッダー、モバイルメニュー、アクティブ状態の視覚的強調など
+- Sidebar: 折りたたみ/展開機能、現在のページのハイライト、スクロール位置の保存など
+- SearchBar & SearchResults: キーボードショートカット、検索結果のカテゴリ分け、ハイライト表示など
+- VersionSelector & VersionDiff: バージョン間の視覚的な差分表示、最新バージョンの強調表示など
+- LanguageSelector: 言語名のネイティブ表示、言語アイコン/フラグの追加など
 
 ## コンポーネント別TODO
 
@@ -194,12 +222,15 @@
 
 ### ContentPanel
 
-**パス**: `packages/ui/src/components/ContentPanel.astro` (想定)
+**パス**: `packages/ui/src/components/ContentPanel.astro`
+
+**現状**: Starlightスタイルに合わせて実装済み
 
 **タスク**:
 - [x] 基本構造の実装
-- [ ] レスポンシブデザインの調整
-- [ ] コンテンツ幅の設定オプション追加
+- [x] レスポンシブデザインの調整
+- [x] コンテンツ幅の設定オプション追加
+- [x] ボーダーオプションの追加
 
 ### Banner
 
@@ -246,6 +277,8 @@
 
 **パス**: `packages/ui/src/components/EditLink.astro`
 
+**現状**: Starlightスタイルに合わせて実装済み
+
 **タスク**:
 - [x] 基本構造の実装
 - [x] 編集URLの生成ロジック実装
@@ -259,6 +292,8 @@
 ### Pagination
 
 **パス**: `packages/ui/src/components/Pagination.astro`
+
+**現状**: Starlightスタイルに合わせて実装済み
 
 **タスク**:
 - [x] 基本構造の実装
@@ -274,6 +309,8 @@
 
 **パス**: `packages/ui/src/components/Hero.astro`
 
+**現状**: Starlightスタイルに合わせて実装済み
+
 **タスク**:
 - [x] 基本構造の実装
 - [x] 背景画像/グラデーションオプション
@@ -286,6 +323,8 @@
 ### AnchorHeading
 
 **パス**: `packages/ui/src/components/AnchorHeading.astro`
+
+**現状**: Starlightスタイルに合わせて実装済み
 
 **タスク**:
 - [x] 基本構造の実装
@@ -318,6 +357,8 @@
 
 **パス**: `packages/ui/src/components/TwoColumnContent.astro`
 
+**現状**: Starlightスタイルに合わせて実装済み
+
 **タスク**:
 - [x] 基本構造の実装
 - [x] レスポンシブデザインの調整
@@ -330,6 +371,8 @@
 ### ThemeToggle
 
 **パス**: `packages/ui/src/components/ThemeToggle.astro`
+
+**現状**: Starlightスタイルに合わせて実装済み
 
 **タスク**:
 - [x] 基本構造の実装
@@ -361,3 +404,23 @@
   - キーボードでのタブ操作をサポート（矢印キー、Home、Endキー）
   - ローカルストレージによるタブ状態の保存
   - レスポンシブデザイン対応
+
+### Icon
+
+**パス**: `packages/ui/src/components/icons/Icon.astro`
+
+**現状**: Starlightスタイルに合わせて新規実装
+
+**タスク**:
+- [x] 基本構造の実装
+- [x] SVGパスデータの定義
+- [x] サイズのカスタマイズオプション
+- [x] 色のカスタマイズオプション
+- [x] アクセシビリティの向上
+- [x] Starlightのデザインに合わせたスタイル調整
+**詳細**:
+  - 様々なアイコンを表示するためのコンポーネント
+  - 情報、警告、エラー、チェック、コード、ドキュメント、検索など多数のアイコンをサポート
+  - サイズと色をカスタマイズ可能
+  - アクセシビリティ対応（aria-label、aria-hidden）
+  - インラインテキスト内での使用に最適化

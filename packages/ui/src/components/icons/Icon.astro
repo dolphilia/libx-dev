@@ -1,0 +1,69 @@
+---
+/**
+ * アイコンコンポーネント
+ * 指定されたアイコン名に対応するSVGを表示します
+ */
+import { Icons, type IconName } from './Icons';
+
+interface Props {
+  /**
+   * アイコン名
+   */
+  name: IconName;
+  
+  /**
+   * アイコンのサイズ（ピクセル単位）
+   * @default 24
+   */
+  size?: number;
+  
+  /**
+   * アイコンの色
+   * @default "currentColor"
+   */
+  color?: string;
+  
+  /**
+   * アイコンのラベル（アクセシビリティ用）
+   */
+  label?: string;
+  
+  /**
+   * 追加のCSSクラス
+   */
+  class?: string;
+}
+
+const { 
+  name, 
+  size = 24, 
+  color = 'currentColor',
+  label,
+  class: className = '',
+} = Astro.props;
+
+const iconPath = Icons[name];
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke={color}
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden={!label}
+  aria-label={label}
+  class={`icon ${className}`}
+  set:html={iconPath}
+/>
+
+<style>
+  .icon {
+    vertical-align: middle;
+    overflow: visible;
+  }
+</style>

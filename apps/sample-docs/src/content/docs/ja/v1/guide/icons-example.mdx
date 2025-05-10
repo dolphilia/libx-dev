@@ -1,0 +1,115 @@
+---
+title: アイコンの例
+description: アイコンコンポーネントの使用例
+---
+
+import { Icon } from '@docs/ui';
+
+# アイコンコンポーネントの例
+
+アイコンコンポーネントを使用すると、ドキュメント内にさまざまなアイコンを表示できます。
+
+## 基本的な使い方
+
+アイコンコンポーネントの基本的な使用例：
+
+<Icon name="info" />
+
+## アイコンのサイズ
+
+アイコンにはさまざまなサイズを指定できます：
+
+<div style="display: flex; align-items: center; gap: 1rem;">
+  <Icon name="info" size={16} />
+  <Icon name="info" size={24} />
+  <Icon name="info" size={32} />
+  <Icon name="info" size={48} />
+</div>
+
+## アイコンの色
+
+アイコンの色をカスタマイズできます：
+
+<div style="display: flex; align-items: center; gap: 1rem;">
+  <Icon name="info" color="#007bff" />
+  <Icon name="warning" color="#ffc107" />
+  <Icon name="error" color="#dc3545" />
+  <Icon name="check" color="#28a745" />
+</div>
+
+## 利用可能なアイコン
+
+利用可能なすべてのアイコン：
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="info" />
+    <span>info</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="setting" />
+    <span>setting</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="warning" />
+    <span>warning</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="error" />
+    <span>error</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="check" />
+    <span>check</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="code" />
+    <span>code</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="document" />
+    <span>document</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="search" />
+    <span>search</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="close" />
+    <span>close</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="right-arrow" />
+    <span>right-arrow</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="left-arrow" />
+    <span>left-arrow</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="down-arrow" />
+    <span>down-arrow</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="up-arrow" />
+    <span>up-arrow</span>
+  </div>
+</div>
+
+## テキスト内でのアイコンの使用
+
+アイコンはテキスト内でインラインで使用できます：
+
+これは情報 <Icon name="info" /> メッセージです。
+
+これは警告 <Icon name="warning" color="#ffc107" /> メッセージです。
+
+これはエラー <Icon name="error" color="#dc3545" /> メッセージです。
+
+これは成功 <Icon name="check" color="#28a745" /> メッセージです。
+
+## アクセシビリティ
+
+アクセシビリティのために、アイコンにラベルを提供できます：
+
+<Icon name="info" label="情報" />

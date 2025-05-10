@@ -1,0 +1,115 @@
+---
+title: Icons Example
+description: Examples of using the Icon component
+---
+
+import { Icon } from '@docs/ui';
+
+# Icon Component Examples
+
+The Icon component allows you to display various icons in your documentation.
+
+## Basic Usage
+
+Here's a basic example of using the Icon component:
+
+<Icon name="info" />
+
+## Icon Sizes
+
+You can specify different sizes for icons:
+
+<div style="display: flex; align-items: center; gap: 1rem;">
+  <Icon name="info" size={16} />
+  <Icon name="info" size={24} />
+  <Icon name="info" size={32} />
+  <Icon name="info" size={48} />
+</div>
+
+## Icon Colors
+
+You can customize the color of icons:
+
+<div style="display: flex; align-items: center; gap: 1rem;">
+  <Icon name="info" color="#007bff" />
+  <Icon name="warning" color="#ffc107" />
+  <Icon name="error" color="#dc3545" />
+  <Icon name="check" color="#28a745" />
+</div>
+
+## Available Icons
+
+Here are all the available icons:
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="info" />
+    <span>info</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="setting" />
+    <span>setting</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="warning" />
+    <span>warning</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="error" />
+    <span>error</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="check" />
+    <span>check</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="code" />
+    <span>code</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="document" />
+    <span>document</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="search" />
+    <span>search</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="close" />
+    <span>close</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="right-arrow" />
+    <span>right-arrow</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="left-arrow" />
+    <span>left-arrow</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="down-arrow" />
+    <span>down-arrow</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="up-arrow" />
+    <span>up-arrow</span>
+  </div>
+</div>
+
+## Using Icons in Text
+
+Icons can be used inline with text:
+
+This is an information <Icon name="info" /> message.
+
+This is a warning <Icon name="warning" color="#ffc107" /> message.
+
+This is an error <Icon name="error" color="#dc3545" /> message.
+
+This is a success <Icon name="check" color="#28a745" /> message.
+
+## Accessibility
+
+For accessibility purposes, you can provide a label for the icon:
+
+<Icon name="info" label="Information" />
