@@ -1,5 +1,5 @@
 async function getMod() {
-						return import('./sidebar-auto-generation.BNV1rwLd.js');
+						return import('./getting-started.ClG4Vqp0.js');
 					}
 					const collectedLinks = [];
 					const collectedStyles = [];

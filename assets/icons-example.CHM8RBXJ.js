@@ -1,5 +1,5 @@
 async function getMod() {
-						return import('./icons-example.BYkEri5J.js');
+						return import('./icons-example.CuY3ovyk.js');
 					}
 					const collectedLinks = [];
 					const collectedStyles = [];

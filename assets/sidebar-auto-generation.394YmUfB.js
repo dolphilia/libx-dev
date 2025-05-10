@@ -1,5 +1,5 @@
 async function getMod() {
-						return import('./icons-example.Cmg5691i.js');
+						return import('./sidebar-auto-generation.B4Gg_z4T.js');
 					}
 					const collectedLinks = [];
 					const collectedStyles = [];

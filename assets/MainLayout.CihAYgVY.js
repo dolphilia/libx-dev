@@ -1,4 +1,4 @@
-import { a as createAstro, b as createComponent, m as maybeRenderHead, f as addAttribute, s as spreadAttributes, j as renderSlot, u as unescapeHTML, d as renderTemplate, r as renderComponent, q as defineStyleVars, F as Fragment, e as renderScript, t as defineScriptVars, v as renderHead } from './astro/server.DgO4_T66.js';
+import { a as createAstro, b as createComponent, m as maybeRenderHead, f as addAttribute, D as spreadAttributes, j as renderSlot, u as unescapeHTML, d as renderTemplate, r as renderComponent, J as defineStyleVars, F as Fragment, e as renderScript, K as defineScriptVars, O as renderHead } from './astro/server.CcJSDeTb.js';
 /* empty css                                                             */
 /* empty css                                                           */
 /* empty css                                                           */
@@ -25,9 +25,9 @@ import './CardGrid_astro_astro_type_style_index_0_lang.c4bdb400.l0sNRNKZ.js';
 /* empty css                                                                 */
 /* empty css                         */
 
-const $$Astro$p = createAstro("https://dolphilia.github.io");
+const $$Astro$t = createAstro("https://dolphilia.github.io");
 const $$Button = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$p, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$t, $$props, $$slots);
   Astro2.self = $$Button;
   const {
     variant = "primary",
@@ -48,9 +48,9 @@ const $$Button = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${href ? renderTemplate`${maybeRenderHead()}<a${addAttribute(classes, "class:list")}${addAttribute(href, "href")}${spreadAttributes(rest)} data-astro-cid-vdt45vlw>${icon && iconPlacement === "start" && renderTemplate`<span class="icon icon-start" aria-hidden="true" data-astro-cid-vdt45vlw>${unescapeHTML(icon)}</span>`}${renderSlot($$result, $$slots["default"])}${icon && iconPlacement === "end" && renderTemplate`<span class="icon icon-end" aria-hidden="true" data-astro-cid-vdt45vlw>${unescapeHTML(icon)}</span>`}</a>` : renderTemplate`<button${addAttribute(classes, "class:list")}${spreadAttributes(rest)} data-astro-cid-vdt45vlw>${icon && iconPlacement === "start" && renderTemplate`<span class="icon icon-start" aria-hidden="true" data-astro-cid-vdt45vlw>${unescapeHTML(icon)}</span>`}${renderSlot($$result, $$slots["default"])}${icon && iconPlacement === "end" && renderTemplate`<span class="icon icon-end" aria-hidden="true" data-astro-cid-vdt45vlw>${unescapeHTML(icon)}</span>`}</button>`}`;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Button.astro", void 0);
 
-const $$Astro$o = createAstro("https://dolphilia.github.io");
+const $$Astro$s = createAstro("https://dolphilia.github.io");
 const $$Card = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$o, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$s, $$props, $$slots);
   Astro2.self = $$Card;
   const {
     title,
@@ -124,9 +124,9 @@ const Icons = {
   "dark": '<path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/>'
 };
 
-const $$Astro$n = createAstro("https://dolphilia.github.io");
+const $$Astro$r = createAstro("https://dolphilia.github.io");
 const $$Icon = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$n, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$r, $$props, $$slots);
   Astro2.self = $$Icon;
   const {
     name,
@@ -140,9 +140,9 @@ const $$Icon = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${renderComponent($$result, "Fragment", Fragment, { "data-astro-cid-7zy7jqun": true, "style": $$definedVars }, { "default": ($$result2) => renderTemplate`${maybeRenderHead()}<svg${spreadAttributes(a11yAttrs)}${addAttribute(`icon ${className}`, "class")} width="16" height="16" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-7zy7jqun${addAttribute($$definedVars, "style")}>${unescapeHTML(Icons[name])}</svg>` })}`;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/icons/Icon.astro", void 0);
 
-const $$Astro$m = createAstro("https://dolphilia.github.io");
+const $$Astro$q = createAstro("https://dolphilia.github.io");
 const $$Navigation = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$m, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$q, $$props, $$slots);
   Astro2.self = $$Navigation;
   const {
     items,
@@ -166,9 +166,9 @@ var __freeze$2 = Object.freeze;
 var __defProp$2 = Object.defineProperty;
 var __template$2 = (cooked, raw) => __freeze$2(__defProp$2(cooked, "raw", { value: __freeze$2(cooked.slice()) }));
 var _a$2;
-const $$Astro$l = createAstro("https://dolphilia.github.io");
+const $$Astro$p = createAstro("https://dolphilia.github.io");
 const $$SidebarPersister = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$l, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$p, $$props, $$slots);
   Astro2.self = $$SidebarPersister;
   const { hash = "sidebar-hash" } = Astro2.props;
   return renderTemplate`${renderComponent($$result, "sl-sidebar-state-persist", "sl-sidebar-state-persist", { "data-hash": hash, "data-astro-cid-6ye3nkeq": true }, { "default": () => renderTemplate(_a$2 || (_a$2 = __template$2([` <script aria-hidden="true">
@@ -204,9 +204,9 @@ const $$SidebarPersister = createComponent(($$result, $$props, $$slots) => {
   <\/script> `])), renderSlot($$result, $$slots["default"])) })} ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/SidebarPersister.astro?astro&type=script&index=0&lang.ts")} `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/SidebarPersister.astro", void 0);
 
-const $$Astro$k = createAstro("https://dolphilia.github.io");
+const $$Astro$o = createAstro("https://dolphilia.github.io");
 const $$SidebarRestorePoint = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$k, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$o, $$props, $$slots);
   Astro2.self = $$SidebarRestorePoint;
   const currentGroupIndexSymbol = Symbol.for("sidebar-group-index");
   const locals = Astro2.locals;
@@ -224,9 +224,9 @@ var __freeze$1 = Object.freeze;
 var __defProp$1 = Object.defineProperty;
 var __template$1 = (cooked, raw) => __freeze$1(__defProp$1(cooked, "raw", { value: __freeze$1(raw || cooked.slice()) }));
 var _a$1;
-const $$Astro$j = createAstro("https://dolphilia.github.io");
+const $$Astro$n = createAstro("https://dolphilia.github.io");
 const $$SidebarResizer = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$j, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$n, $$props, $$slots);
   Astro2.self = $$SidebarResizer;
   const {
     minWidth = 200,
@@ -239,9 +239,9 @@ const $$SidebarResizer = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate(_a$1 || (_a$1 = __template$1(["", '<div class="sidebar-resizer" aria-hidden="true" data-astro-cid-osrdoibr', '> <div class="resizer-handle" title="\u30B5\u30A4\u30C9\u30D0\u30FC\u306E\u5E45\u3092\u8ABF\u6574" data-astro-cid-osrdoibr', '> <div class="handle-line" data-astro-cid-osrdoibr', '></div> </div> <button class="collapse-button" title="\u30B5\u30A4\u30C9\u30D0\u30FC\u3092\u6298\u308A\u305F\u305F\u3080/\u5C55\u958B\u3059\u308B" data-astro-cid-osrdoibr', '> <span class="collapse-icon" data-astro-cid-osrdoibr', "></span> </button> </div>  <script>(function(){", "\ndocument.addEventListener('DOMContentLoaded', () => {\n  const sidebar = document.getElementById('sidebar');\n  const resizer = document.querySelector('.sidebar-resizer');\n  const collapseButton = document.querySelector('.collapse-button');\n  \n  if (!sidebar || !resizer || !collapseButton) return;\n  \n  // \u30ED\u30FC\u30AB\u30EB\u30B9\u30C8\u30EC\u30FC\u30B8\u304B\u3089\u5E45\u3068\u6298\u308A\u305F\u305F\u307F\u72B6\u614B\u3092\u53D6\u5F97\n  const savedWidth = localStorage.getItem(storageKey);\n  const savedCollapsed = localStorage.getItem(`${storageKey}-collapsed`) === 'true';\n  \n  // \u521D\u671F\u5E45\u3092\u8A2D\u5B9A\n  let sidebarWidth = savedWidth ? parseInt(savedWidth) : initialWidth;\n  \n  // \u521D\u671F\u72B6\u614B\u3092\u8A2D\u5B9A\n  if (savedCollapsed) {\n    sidebar.classList.add('sidebar-collapsed');\n    sidebarWidth = collapsedWidth;\n  }\n  \n  // \u30B5\u30A4\u30C9\u30D0\u30FC\u306E\u5E45\u3092\u8A2D\u5B9A\n  sidebar.style.width = `${sidebarWidth}px`;\n  \n  // \u30EA\u30B5\u30A4\u30BA\u51E6\u7406\n  let isResizing = false;\n  let startX = 0;\n  let startWidth = 0;\n  \n  // \u30EA\u30B5\u30A4\u30BA\u958B\u59CB\n  const startResize = (e) => {\n    isResizing = true;\n    startX = e.clientX || e.touches[0].clientX;\n    startWidth = parseInt(sidebar.offsetWidth);\n    resizer.classList.add('resizing');\n    document.body.style.cursor = 'col-resize';\n    document.body.style.userSelect = 'none';\n    \n    // \u30A4\u30D9\u30F3\u30C8\u30EA\u30B9\u30CA\u30FC\u3092\u8FFD\u52A0\n    document.addEventListener('mousemove', resize);\n    document.addEventListener('touchmove', resize, { passive: false });\n    document.addEventListener('mouseup', stopResize);\n    document.addEventListener('touchend', stopResize);\n  };\n  \n  // \u30EA\u30B5\u30A4\u30BA\u4E2D\n  const resize = (e) => {\n    if (!isResizing) return;\n    \n    e.preventDefault();\n    \n    const clientX = e.clientX || e.touches[0].clientX;\n    let newWidth = startWidth + (clientX - startX);\n    \n    // \u6700\u5C0F\u5E45\u3068\u6700\u5927\u5E45\u306E\u5236\u9650\n    newWidth = Math.max(minWidth, Math.min(maxWidth, newWidth));\n    \n    // \u30B5\u30A4\u30C9\u30D0\u30FC\u306E\u5E45\u3092\u66F4\u65B0\n    sidebar.style.width = `${newWidth}px`;\n    \n    // \u6298\u308A\u305F\u305F\u307F\u72B6\u614B\u3092\u89E3\u9664\n    if (sidebar.classList.contains('sidebar-collapsed') && newWidth > collapsedWidth) {\n      sidebar.classList.remove('sidebar-collapsed');\n      localStorage.setItem(`${storageKey}-collapsed`, 'false');\n    }\n  };\n  \n  // \u30EA\u30B5\u30A4\u30BA\u7D42\u4E86\n  const stopResize = () => {\n    if (!isResizing) return;\n    \n    isResizing = false;\n    resizer.classList.remove('resizing');\n    document.body.style.cursor = '';\n    document.body.style.userSelect = '';\n    \n    // \u73FE\u5728\u306E\u5E45\u3092\u30ED\u30FC\u30AB\u30EB\u30B9\u30C8\u30EC\u30FC\u30B8\u306B\u4FDD\u5B58\n    if (!sidebar.classList.contains('sidebar-collapsed')) {\n      localStorage.setItem(storageKey, sidebar.offsetWidth);\n    }\n    \n    // \u30A4\u30D9\u30F3\u30C8\u30EA\u30B9\u30CA\u30FC\u3092\u524A\u9664\n    document.removeEventListener('mousemove', resize);\n    document.removeEventListener('touchmove', resize);\n    document.removeEventListener('mouseup', stopResize);\n    document.removeEventListener('touchend', stopResize);\n  };\n  \n  // \u6298\u308A\u305F\u305F\u307F/\u5C55\u958B\u30DC\u30BF\u30F3\u306E\u30AF\u30EA\u30C3\u30AF\u30A4\u30D9\u30F3\u30C8\n  const toggleCollapse = () => {\n    const isCollapsed = sidebar.classList.toggle('sidebar-collapsed');\n    \n    if (isCollapsed) {\n      // \u73FE\u5728\u306E\u5E45\u3092\u4E00\u6642\u4FDD\u5B58\n      if (!localStorage.getItem(`${storageKey}-width-before-collapse`)) {\n        localStorage.setItem(`${storageKey}-width-before-collapse`, sidebar.offsetWidth);\n      }\n      \n      // \u6298\u308A\u305F\u305F\u307F\u5E45\u306B\u8A2D\u5B9A\n      sidebar.style.width = `${collapsedWidth}px`;\n    } else {\n      // \u4EE5\u524D\u306E\u5E45\u306B\u623B\u3059\n      const widthBeforeCollapse = localStorage.getItem(`${storageKey}-width-before-collapse`) || initialWidth;\n      sidebar.style.width = `${widthBeforeCollapse}px`;\n      localStorage.removeItem(`${storageKey}-width-before-collapse`);\n    }\n    \n    // \u6298\u308A\u305F\u305F\u307F\u72B6\u614B\u3092\u30ED\u30FC\u30AB\u30EB\u30B9\u30C8\u30EC\u30FC\u30B8\u306B\u4FDD\u5B58\n    localStorage.setItem(`${storageKey}-collapsed`, isCollapsed);\n  };\n  \n  // \u30A4\u30D9\u30F3\u30C8\u30EA\u30B9\u30CA\u30FC\u3092\u8A2D\u5B9A\n  resizer.addEventListener('mousedown', startResize);\n  resizer.addEventListener('touchstart', startResize, { passive: false });\n  collapseButton.addEventListener('click', toggleCollapse);\n});\n})();<\/script>"], ["", '<div class="sidebar-resizer" aria-hidden="true" data-astro-cid-osrdoibr', '> <div class="resizer-handle" title="\u30B5\u30A4\u30C9\u30D0\u30FC\u306E\u5E45\u3092\u8ABF\u6574" data-astro-cid-osrdoibr', '> <div class="handle-line" data-astro-cid-osrdoibr', '></div> </div> <button class="collapse-button" title="\u30B5\u30A4\u30C9\u30D0\u30FC\u3092\u6298\u308A\u305F\u305F\u3080/\u5C55\u958B\u3059\u308B" data-astro-cid-osrdoibr', '> <span class="collapse-icon" data-astro-cid-osrdoibr', "></span> </button> </div>  <script>(function(){", "\ndocument.addEventListener('DOMContentLoaded', () => {\n  const sidebar = document.getElementById('sidebar');\n  const resizer = document.querySelector('.sidebar-resizer');\n  const collapseButton = document.querySelector('.collapse-button');\n  \n  if (!sidebar || !resizer || !collapseButton) return;\n  \n  // \u30ED\u30FC\u30AB\u30EB\u30B9\u30C8\u30EC\u30FC\u30B8\u304B\u3089\u5E45\u3068\u6298\u308A\u305F\u305F\u307F\u72B6\u614B\u3092\u53D6\u5F97\n  const savedWidth = localStorage.getItem(storageKey);\n  const savedCollapsed = localStorage.getItem(\\`\\${storageKey}-collapsed\\`) === 'true';\n  \n  // \u521D\u671F\u5E45\u3092\u8A2D\u5B9A\n  let sidebarWidth = savedWidth ? parseInt(savedWidth) : initialWidth;\n  \n  // \u521D\u671F\u72B6\u614B\u3092\u8A2D\u5B9A\n  if (savedCollapsed) {\n    sidebar.classList.add('sidebar-collapsed');\n    sidebarWidth = collapsedWidth;\n  }\n  \n  // \u30B5\u30A4\u30C9\u30D0\u30FC\u306E\u5E45\u3092\u8A2D\u5B9A\n  sidebar.style.width = \\`\\${sidebarWidth}px\\`;\n  \n  // \u30EA\u30B5\u30A4\u30BA\u51E6\u7406\n  let isResizing = false;\n  let startX = 0;\n  let startWidth = 0;\n  \n  // \u30EA\u30B5\u30A4\u30BA\u958B\u59CB\n  const startResize = (e) => {\n    isResizing = true;\n    startX = e.clientX || e.touches[0].clientX;\n    startWidth = parseInt(sidebar.offsetWidth);\n    resizer.classList.add('resizing');\n    document.body.style.cursor = 'col-resize';\n    document.body.style.userSelect = 'none';\n    \n    // \u30A4\u30D9\u30F3\u30C8\u30EA\u30B9\u30CA\u30FC\u3092\u8FFD\u52A0\n    document.addEventListener('mousemove', resize);\n    document.addEventListener('touchmove', resize, { passive: false });\n    document.addEventListener('mouseup', stopResize);\n    document.addEventListener('touchend', stopResize);\n  };\n  \n  // \u30EA\u30B5\u30A4\u30BA\u4E2D\n  const resize = (e) => {\n    if (!isResizing) return;\n    \n    e.preventDefault();\n    \n    const clientX = e.clientX || e.touches[0].clientX;\n    let newWidth = startWidth + (clientX - startX);\n    \n    // \u6700\u5C0F\u5E45\u3068\u6700\u5927\u5E45\u306E\u5236\u9650\n    newWidth = Math.max(minWidth, Math.min(maxWidth, newWidth));\n    \n    // \u30B5\u30A4\u30C9\u30D0\u30FC\u306E\u5E45\u3092\u66F4\u65B0\n    sidebar.style.width = \\`\\${newWidth}px\\`;\n    \n    // \u6298\u308A\u305F\u305F\u307F\u72B6\u614B\u3092\u89E3\u9664\n    if (sidebar.classList.contains('sidebar-collapsed') && newWidth > collapsedWidth) {\n      sidebar.classList.remove('sidebar-collapsed');\n      localStorage.setItem(\\`\\${storageKey}-collapsed\\`, 'false');\n    }\n  };\n  \n  // \u30EA\u30B5\u30A4\u30BA\u7D42\u4E86\n  const stopResize = () => {\n    if (!isResizing) return;\n    \n    isResizing = false;\n    resizer.classList.remove('resizing');\n    document.body.style.cursor = '';\n    document.body.style.userSelect = '';\n    \n    // \u73FE\u5728\u306E\u5E45\u3092\u30ED\u30FC\u30AB\u30EB\u30B9\u30C8\u30EC\u30FC\u30B8\u306B\u4FDD\u5B58\n    if (!sidebar.classList.contains('sidebar-collapsed')) {\n      localStorage.setItem(storageKey, sidebar.offsetWidth);\n    }\n    \n    // \u30A4\u30D9\u30F3\u30C8\u30EA\u30B9\u30CA\u30FC\u3092\u524A\u9664\n    document.removeEventListener('mousemove', resize);\n    document.removeEventListener('touchmove', resize);\n    document.removeEventListener('mouseup', stopResize);\n    document.removeEventListener('touchend', stopResize);\n  };\n  \n  // \u6298\u308A\u305F\u305F\u307F/\u5C55\u958B\u30DC\u30BF\u30F3\u306E\u30AF\u30EA\u30C3\u30AF\u30A4\u30D9\u30F3\u30C8\n  const toggleCollapse = () => {\n    const isCollapsed = sidebar.classList.toggle('sidebar-collapsed');\n    \n    if (isCollapsed) {\n      // \u73FE\u5728\u306E\u5E45\u3092\u4E00\u6642\u4FDD\u5B58\n      if (!localStorage.getItem(\\`\\${storageKey}-width-before-collapse\\`)) {\n        localStorage.setItem(\\`\\${storageKey}-width-before-collapse\\`, sidebar.offsetWidth);\n      }\n      \n      // \u6298\u308A\u305F\u305F\u307F\u5E45\u306B\u8A2D\u5B9A\n      sidebar.style.width = \\`\\${collapsedWidth}px\\`;\n    } else {\n      // \u4EE5\u524D\u306E\u5E45\u306B\u623B\u3059\n      const widthBeforeCollapse = localStorage.getItem(\\`\\${storageKey}-width-before-collapse\\`) || initialWidth;\n      sidebar.style.width = \\`\\${widthBeforeCollapse}px\\`;\n      localStorage.removeItem(\\`\\${storageKey}-width-before-collapse\\`);\n    }\n    \n    // \u6298\u308A\u305F\u305F\u307F\u72B6\u614B\u3092\u30ED\u30FC\u30AB\u30EB\u30B9\u30C8\u30EC\u30FC\u30B8\u306B\u4FDD\u5B58\n    localStorage.setItem(\\`\\${storageKey}-collapsed\\`, isCollapsed);\n  };\n  \n  // \u30A4\u30D9\u30F3\u30C8\u30EA\u30B9\u30CA\u30FC\u3092\u8A2D\u5B9A\n  resizer.addEventListener('mousedown', startResize);\n  resizer.addEventListener('touchstart', startResize, { passive: false });\n  collapseButton.addEventListener('click', toggleCollapse);\n});\n})();<\/script>"])), maybeRenderHead(), addAttribute($$definedVars, "style"), addAttribute($$definedVars, "style"), addAttribute($$definedVars, "style"), addAttribute($$definedVars, "style"), addAttribute($$definedVars, "style"), defineScriptVars({ minWidth, maxWidth, initialWidth, collapsedWidth, storageKey }));
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/SidebarResizer.astro", void 0);
 
-const $$Astro$i = createAstro("https://dolphilia.github.io");
+const $$Astro$m = createAstro("https://dolphilia.github.io");
 const $$Sidebar = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$i, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$m, $$props, $$slots);
   Astro2.self = $$Sidebar;
   const { items, title, class: className = "", hash = "sidebar-hash" } = Astro2.props;
   function isCurrentPage(item) {
@@ -258,9 +258,9 @@ const $$Sidebar = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${maybeRenderHead()}<aside${addAttribute(["sidebar", className], "class:list")} role="complementary"${addAttribute(title || "\u30B5\u30A4\u30C9\u30CA\u30D3\u30B2\u30FC\u30B7\u30E7\u30F3", "aria-label")} id="sidebar" style="position: relative;" data-astro-cid-7hrmydxt> ${renderComponent($$result, "SidebarResizer", $$SidebarResizer, { "data-astro-cid-7hrmydxt": true })} ${title && renderTemplate`<h3 class="sidebar-title" id="sidebar-title" data-astro-cid-7hrmydxt> ${title} </h3>`} <nav aria-labelledby="sidebar-title" data-astro-cid-7hrmydxt> ${renderComponent($$result, "SidebarPersister", $$SidebarPersister, { "hash": sidebarHash, "data-astro-cid-7hrmydxt": true }, { "default": ($$result2) => renderTemplate` <ul class="top-level" data-astro-cid-7hrmydxt> ${items.map((section) => renderTemplate`<li data-astro-cid-7hrmydxt> ${section.href ? renderTemplate`<a${addAttribute(section.href, "href")}${addAttribute(isCurrentPage(section) ? "page" : void 0, "aria-current")}${addAttribute(["large", { active: isCurrentPage(section) }], "class:list")} data-astro-cid-7hrmydxt> <span data-astro-cid-7hrmydxt>${section.title}</span> ${section.badge && renderTemplate`<span${addAttribute(["badge", section.badge.variant || "default", section.badge.class], "class:list")} data-astro-cid-7hrmydxt> ${section.badge.text} </span>`} </a>` : renderTemplate`<details${addAttribute(shouldBeOpen(section), "open")} data-astro-cid-7hrmydxt> ${renderComponent($$result2, "SidebarRestorePoint", $$SidebarRestorePoint, { "data-astro-cid-7hrmydxt": true })} <summary data-astro-cid-7hrmydxt> <div class="group-label" data-astro-cid-7hrmydxt> <span class="large" data-astro-cid-7hrmydxt>${section.title}</span> ${section.badge && renderTemplate`<span${addAttribute(["badge", section.badge.variant || "default", section.badge.class], "class:list")} data-astro-cid-7hrmydxt> ${section.badge.text} </span>`} </div> ${renderComponent($$result2, "Icon", $$Icon, { "name": "right-arrow", "class": "caret", "size": "1.25rem", "data-astro-cid-7hrmydxt": true })} </summary> ${section.items && renderTemplate`<ul data-astro-cid-7hrmydxt> ${section.items.map((item) => renderTemplate`<li data-astro-cid-7hrmydxt> ${item.href ? renderTemplate`<a${addAttribute(item.href, "href")}${addAttribute(isCurrentPage(item) ? "page" : void 0, "aria-current")}${addAttribute([{ active: isCurrentPage(item) }], "class:list")} data-astro-cid-7hrmydxt> <span data-astro-cid-7hrmydxt>${item.title}</span> ${item.badge && renderTemplate`<span${addAttribute(["badge", item.badge.variant || "default", item.badge.class], "class:list")} data-astro-cid-7hrmydxt> ${item.badge.text} </span>`} </a>` : renderTemplate`<details${addAttribute(shouldBeOpen(item), "open")} data-astro-cid-7hrmydxt> ${renderComponent($$result2, "SidebarRestorePoint", $$SidebarRestorePoint, { "data-astro-cid-7hrmydxt": true })} <summary data-astro-cid-7hrmydxt> <div class="group-label" data-astro-cid-7hrmydxt> <span data-astro-cid-7hrmydxt>${item.title}</span> ${item.badge && renderTemplate`<span${addAttribute(["badge", item.badge.variant || "default", item.badge.class], "class:list")} data-astro-cid-7hrmydxt> ${item.badge.text} </span>`} </div> ${renderComponent($$result2, "Icon", $$Icon, { "name": "right-arrow", "class": "caret", "size": "1rem", "data-astro-cid-7hrmydxt": true })} </summary> ${item.items && renderTemplate`<ul data-astro-cid-7hrmydxt> ${item.items.map((subItem) => renderTemplate`<li data-astro-cid-7hrmydxt> <a${addAttribute(subItem.href, "href")}${addAttribute(isCurrentPage(subItem) ? "page" : void 0, "aria-current")}${addAttribute([{ active: isCurrentPage(subItem) }], "class:list")} data-astro-cid-7hrmydxt> <span data-astro-cid-7hrmydxt>${subItem.title}</span> ${subItem.badge && renderTemplate`<span${addAttribute(["badge", subItem.badge.variant || "default", subItem.badge.class], "class:list")} data-astro-cid-7hrmydxt> ${subItem.badge.text} </span>`} </a> </li>`)} </ul>`} </details>`} </li>`)} </ul>`} </details>`} </li>`)} </ul> ` })} </nav> </aside>  ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Sidebar.astro?astro&type=script&index=0&lang.ts")}`;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Sidebar.astro", void 0);
 
-const $$Astro$h = createAstro("https://dolphilia.github.io");
+const $$Astro$l = createAstro("https://dolphilia.github.io");
 const $$Footer = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$h, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$l, $$props, $$slots);
   Astro2.self = $$Footer;
   const {
     linkGroups = [],
@@ -277,9 +277,9 @@ const $$Footer = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${maybeRenderHead()}<footer${addAttribute(["footer", className, { "footer-sticky": sticky }], "class:list")} data-astro-cid-v2payc3g> <div class="footer-container" data-astro-cid-v2payc3g> <div class="footer-content" data-astro-cid-v2payc3g> ${showPagination && renderTemplate`${renderComponent($$result, "Pagination", $$Pagination, { "prev": prevPage, "next": nextPage, "data-astro-cid-v2payc3g": true })}`} ${linkGroups.length > 0 && renderTemplate`<div class="footer-links" data-astro-cid-v2payc3g> ${linkGroups.map((group) => renderTemplate`<div class="footer-group" data-astro-cid-v2payc3g> <h3 class="group-title" data-astro-cid-v2payc3g>${group.title}</h3> <ul class="group-links" data-astro-cid-v2payc3g> ${group.links.map((link) => renderTemplate`<li data-astro-cid-v2payc3g> <a${addAttribute(link.href, "href")}${addAttribute(link.target, "target")}${addAttribute(link.rel, "rel")} class="footer-link" data-astro-cid-v2payc3g> ${link.title} </a> </li>`)} </ul> </div>`)} </div>`} <div class="footer-bottom" data-astro-cid-v2payc3g> <div class="footer-meta" data-astro-cid-v2payc3g> ${showEditLink && renderTemplate`${renderComponent($$result, "EditLink", $$EditLink, { "url": editUrl, "data-astro-cid-v2payc3g": true })}`} ${copyright && renderTemplate`<p class="copyright" data-astro-cid-v2payc3g>${copyright}</p>`} </div> ${socialLinks.length > 0 && renderTemplate`<div class="social-links" data-astro-cid-v2payc3g> ${socialLinks.map(({ label, href, icon }) => renderTemplate`<a${addAttribute(href, "href")} rel="me" class="social-link"${addAttribute(label, "aria-label")}${addAttribute(label, "title")} data-astro-cid-v2payc3g> ${renderComponent($$result, "Icon", $$Icon, { "name": icon, "data-astro-cid-v2payc3g": true })} </a>`)} </div>`} </div> </div> </div> </footer> `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Footer.astro", void 0);
 
-const $$Astro$g = createAstro("https://dolphilia.github.io");
+const $$Astro$k = createAstro("https://dolphilia.github.io");
 const $$Alert = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$g, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$k, $$props, $$slots);
   Astro2.self = $$Alert;
   const {
     title,
@@ -310,9 +310,9 @@ const $$Alert = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${maybeRenderHead()}<div${addAttribute(["alert", `alert-${variant}`, className], "class:list")} role="alert"${addAttribute(ariaLabel, "aria-label")}${spreadAttributes(rest)} data-astro-cid-ndlnvn3i> <div class="alert-icon" data-astro-cid-ndlnvn3i> ${variant === "info" && renderTemplate`<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-ndlnvn3i> <path d="M12 11a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0v-4a1 1 0 0 0-1-1Zm.38-3.92a1 1 0 0 0-.76 0 1 1 0 0 0-.33.21 1.15 1.15 0 0 0-.21.33 1 1 0 0 0 .21 1.09c.097.088.209.16.33.21A1 1 0 0 0 13 8a1.05 1.05 0 0 0-.29-.71 1 1 0 0 0-.33-.21ZM12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 18a8 8 0 1 1 0-16.001A8 8 0 0 1 12 20Z" fill="currentColor" data-astro-cid-ndlnvn3i></path> </svg>`} ${variant === "success" && renderTemplate`<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-ndlnvn3i> <path d="m14.72 8.79-4.29 4.3-1.65-1.65a1 1 0 1 0-1.41 1.41l2.35 2.36a1 1 0 0 0 1.41 0l5-5a1.002 1.002 0 1 0-1.41-1.42ZM12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 18a8 8 0 1 1 0-16.001A8 8 0 0 1 12 20Z" fill="currentColor" data-astro-cid-ndlnvn3i></path> </svg>`} ${variant === "warning" && renderTemplate`<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-ndlnvn3i> <path d="M12 16a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm10.67 1.47-8.05-14a3 3 0 0 0-5.24 0l-8 14A3 3 0 0 0 3.94 22h16.12a3 3 0 0 0 2.61-4.53Zm-1.73 2a1 1 0 0 1-.88.51H3.94a1 1 0 0 1-.88-.51 1 1 0 0 1 0-1l8-14a1 1 0 0 1 1.78 0l8.05 14a1 1 0 0 1 .05 1.02v-.02ZM12 8a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V9a1 1 0 0 0-1-1Z" fill="currentColor" data-astro-cid-ndlnvn3i></path> </svg>`} ${variant === "error" && renderTemplate`<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-ndlnvn3i> <path d="M12 7a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V8a1 1 0 0 0-1-1Zm0 8a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm9.71-7.44-5.27-5.27a1.05 1.05 0 0 0-.71-.29H8.27a1.05 1.05 0 0 0-.71.29L2.29 7.56a1.05 1.05 0 0 0-.29.71v7.46c.004.265.107.518.29.71l5.27 5.27c.192.183.445.286.71.29h7.46a1.05 1.05 0 0 0 .71-.29l5.27-5.27a1.05 1.05 0 0 0 .29-.71V8.27a1.05 1.05 0 0 0-.29-.71ZM20 15.31 15.31 20H8.69L4 15.31V8.69L8.69 4h6.62L20 8.69v6.62Z" fill="currentColor" data-astro-cid-ndlnvn3i></path> </svg>`} </div> <div class="alert-content" data-astro-cid-ndlnvn3i> ${title && renderTemplate`<p class="alert-title" data-astro-cid-ndlnvn3i>${title}</p>`} <div class="alert-message" data-astro-cid-ndlnvn3i> ${renderSlot($$result, $$slots["default"])} </div> </div> </div> `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Alert.astro", void 0);
 
-const $$Astro$f = createAstro("https://dolphilia.github.io");
+const $$Astro$j = createAstro("https://dolphilia.github.io");
 const $$ContentPanel = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$f, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$j, $$props, $$slots);
   Astro2.self = $$ContentPanel;
   const {
     maxWidth = "var(--sl-content-width)",
@@ -324,17 +324,17 @@ const $$ContentPanel = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${maybeRenderHead()}<div${addAttribute(["content-panel", className, { "with-border": withBorder }], "class:list")} data-astro-cid-uk277ml2${addAttribute($$definedVars, "style")}> <div class="sl-container" data-astro-cid-uk277ml2${addAttribute($$definedVars, "style")}> ${renderSlot($$result, $$slots["default"])} </div> </div> `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/ContentPanel.astro", void 0);
 
-const $$Astro$e = createAstro("https://dolphilia.github.io");
+const $$Astro$i = createAstro("https://dolphilia.github.io");
 const $$TableOfContentsList = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$e, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$i, $$props, $$slots);
   Astro2.self = $$TableOfContentsList;
   const { toc, depth = 0, isMobile = false } = Astro2.props;
   return renderTemplate`${maybeRenderHead()}<ul${addAttribute(["starlight-toc__list", { "starlight-toc__list--mobile": isMobile }], "class:list")} data-astro-cid-athkbvwp> ${toc.map((heading) => renderTemplate`<li class="starlight-toc__item" data-astro-cid-athkbvwp> <a class="starlight-toc__link"${addAttribute("#" + heading.slug, "href")}${addAttribute(depth, "data-depth")} data-astro-cid-athkbvwp> <span data-astro-cid-athkbvwp>${heading.text}</span> </a> ${heading.children.length > 0 && renderTemplate`${renderComponent($$result, "Astro.self", Astro2.self, { "toc": heading.children, "depth": depth + 1, "isMobile": isMobile, "data-astro-cid-athkbvwp": true })}`} </li>`)} </ul> `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/TableOfContents/TableOfContentsList.astro", void 0);
 
-const $$Astro$d = createAstro("https://dolphilia.github.io");
+const $$Astro$h = createAstro("https://dolphilia.github.io");
 const $$TableOfContents = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$d, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$h, $$props, $$slots);
   Astro2.self = $$TableOfContents;
   function translate(key, locale = "en") {
     const translations = {
@@ -359,9 +359,9 @@ const $$TableOfContents = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${filteredHeadings.length > 0 && renderTemplate`${renderComponent($$result, "starlight-toc", "starlight-toc", { "data-min-h": minLevel, "data-max-h": maxLevel, "class:list": { "starlight-toc--mobile": isMobile }, "data-astro-cid-hjm4xq65": true }, { "default": () => renderTemplate`${maybeRenderHead()}<div class="starlight-toc-wrapper" data-astro-cid-hjm4xq65><nav aria-labelledby="starlight-toc-heading" data-astro-cid-hjm4xq65><h2 id="starlight-toc-heading" class="starlight-toc-heading" data-astro-cid-hjm4xq65>${translate(TOC_TITLE, lang)}</h2><div class="starlight-toc-list" data-astro-cid-hjm4xq65>${renderComponent($$result, "TableOfContentsList", $$TableOfContentsList, { "toc": filteredHeadings, "isMobile": isMobile, "data-astro-cid-hjm4xq65": true })}</div></nav></div>` })}`}${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/TableOfContents/TableOfContents.astro?astro&type=script&index=0&lang.ts")}`;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/TableOfContents/TableOfContents.astro", void 0);
 
-const $$Astro$c = createAstro("https://dolphilia.github.io");
+const $$Astro$g = createAstro("https://dolphilia.github.io");
 const $$Pagination = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$c, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$g, $$props, $$slots);
   Astro2.self = $$Pagination;
   const { prev, next, dir = "ltr" } = Astro2.props;
   const isRtl = dir === "rtl";
@@ -370,9 +370,9 @@ const $$Pagination = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${maybeRenderHead()}<div class="pagination-links"${addAttribute(dir, "dir")} data-astro-cid-2vx2ddwg> ${prev && renderTemplate`<a${addAttribute(prev.url, "href")} rel="prev" data-astro-cid-2vx2ddwg> <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" data-astro-cid-2vx2ddwg> <path fill="currentColor"${addAttribute(isRtl ? "M13.3 17.3L9.7 13.7c-.4-.4-.4-1 0-1.4l3.6-3.6c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4L11.4 13l3.3 3.3c.4.4.4 1 0 1.4-.2.2-.4.3-.7.3-.3 0-.5-.1-.7-.3z" : "M10.7 17.3c-.4.4-1 .4-1.4 0-.4-.4-.4-1 0-1.4L12.6 13 9.3 9.7c-.4-.4-.4-1 0-1.4.4-.4 1-.4 1.4 0l3.6 3.6c.4.4.4 1 0 1.4l-3.6 3.6z", "d")} data-astro-cid-2vx2ddwg></path> </svg> <span data-astro-cid-2vx2ddwg> ${prevText} <br data-astro-cid-2vx2ddwg> <span class="link-title" data-astro-cid-2vx2ddwg>${prev.title}</span> </span> </a>`} ${next && renderTemplate`<a${addAttribute(next.url, "href")} rel="next" data-astro-cid-2vx2ddwg> <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" data-astro-cid-2vx2ddwg> <path fill="currentColor"${addAttribute(isRtl ? "M10.7 17.3c-.4.4-1 .4-1.4 0-.4-.4-.4-1 0-1.4L12.6 13 9.3 9.7c-.4-.4-.4-1 0-1.4.4-.4 1-.4 1.4 0l3.6 3.6c.4.4.4 1 0 1.4l-3.6 3.6z" : "M13.3 17.3L9.7 13.7c-.4-.4-.4-1 0-1.4l3.6-3.6c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4L11.4 13l3.3 3.3c.4.4.4 1 0 1.4-.2.2-.4.3-.7.3-.3 0-.5-.1-.7-.3z", "d")} data-astro-cid-2vx2ddwg></path> </svg> <span data-astro-cid-2vx2ddwg> ${nextText} <br data-astro-cid-2vx2ddwg> <span class="link-title" data-astro-cid-2vx2ddwg>${next.title}</span> </span> </a>`} </div> `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Pagination.astro", void 0);
 
-const $$Astro$b = createAstro("https://dolphilia.github.io");
+const $$Astro$f = createAstro("https://dolphilia.github.io");
 const $$EditLink = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$b, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$f, $$props, $$slots);
   Astro2.self = $$EditLink;
   const {
     url,
@@ -382,9 +382,9 @@ const $$EditLink = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${url && renderTemplate`${maybeRenderHead()}<a${addAttribute(url, "href")} class="edit-link" data-astro-cid-or7fkga6>${showIcon && renderTemplate`<svg class="edit-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" data-astro-cid-or7fkga6><path fill="currentColor" d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83l3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z" data-astro-cid-or7fkga6></path></svg>`}${text}</a>`}`;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/EditLink.astro", void 0);
 
-const $$Astro$a = createAstro("https://dolphilia.github.io");
+const $$Astro$e = createAstro("https://dolphilia.github.io");
 const $$AnchorHeading = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$a, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$e, $$props, $$slots);
   Astro2.self = $$AnchorHeading;
   const { level, id, class: className } = Astro2.props;
   if (!id) {
@@ -393,18 +393,18 @@ const $$AnchorHeading = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${maybeRenderHead()}<div${addAttribute(`heading-wrapper level-h${level}`, "class")} data-astro-cid-avvu5fbz> ${level === 1 && renderTemplate`<h1${addAttribute(id, "id")}${addAttribute(className, "class")} data-astro-cid-avvu5fbz>${renderSlot($$result, $$slots["default"])}</h1>`} ${level === 2 && renderTemplate`<h2${addAttribute(id, "id")}${addAttribute(className, "class")} data-astro-cid-avvu5fbz>${renderSlot($$result, $$slots["default"])}</h2>`} ${level === 3 && renderTemplate`<h3${addAttribute(id, "id")}${addAttribute(className, "class")} data-astro-cid-avvu5fbz>${renderSlot($$result, $$slots["default"])}</h3>`} ${level === 4 && renderTemplate`<h4${addAttribute(id, "id")}${addAttribute(className, "class")} data-astro-cid-avvu5fbz>${renderSlot($$result, $$slots["default"])}</h4>`} ${level === 5 && renderTemplate`<h5${addAttribute(id, "id")}${addAttribute(className, "class")} data-astro-cid-avvu5fbz>${renderSlot($$result, $$slots["default"])}</h5>`} ${level === 6 && renderTemplate`<h6${addAttribute(id, "id")}${addAttribute(className, "class")} data-astro-cid-avvu5fbz>${renderSlot($$result, $$slots["default"])}</h6>`} <a class="anchor-link"${addAttribute(`#${id}`, "href")} data-astro-cid-avvu5fbz> <span aria-hidden="true" class="anchor-icon" data-astro-cid-avvu5fbz> <svg width="16" height="16" viewBox="0 0 24 24" data-astro-cid-avvu5fbz> <path fill="currentcolor" d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 0 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 1 0-1.42-1.42Zm8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 0 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 1 0 1.42 1.42l3.88-3.89a4.49 4.49 0 0 0 0-6.33ZM8.83 15.17a1 1 0 0 0 1.1.22 1 1 0 0 0 .32-.22l4.92-4.92a1 1 0 0 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42Z" data-astro-cid-avvu5fbz></path> </svg> </span> <span class="sr-only" data-astro-cid-avvu5fbz>このセクションへのリンク</span> </a> </div> `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/AnchorHeading.astro", void 0);
 
-const $$Astro$9 = createAstro("https://dolphilia.github.io");
+const $$Astro$d = createAstro("https://dolphilia.github.io");
 const $$Banner = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$9, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$d, $$props, $$slots);
   Astro2.self = $$Banner;
   const { type = "info", dismissible = false } = Astro2.props;
   const bannerClass = `sl-banner sl-banner-${type}`;
   return renderTemplate`${maybeRenderHead()}<div${addAttribute(bannerClass, "class")} role="alert" data-astro-cid-woj6bprr> <div class="sl-banner-container" data-astro-cid-woj6bprr> <div class="sl-banner-content" data-astro-cid-woj6bprr> ${renderSlot($$result, $$slots["default"])} </div> ${dismissible && renderTemplate`<button class="sl-banner-close-button" aria-label="閉じる" data-dismiss-banner data-astro-cid-woj6bprr> <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-woj6bprr> <path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z" fill="currentColor" data-astro-cid-woj6bprr></path> </svg> </button>`} </div> </div>  ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Banner.astro?astro&type=script&index=0&lang.ts")}`;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Banner.astro", void 0);
 
-const $$Astro$8 = createAstro("https://dolphilia.github.io");
+const $$Astro$c = createAstro("https://dolphilia.github.io");
 const $$ContentNotice = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$8, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$c, $$props, $$slots);
   Astro2.self = $$ContentNotice;
   const { type = "draft" } = Astro2.props;
   const typeConfig = {
@@ -429,9 +429,9 @@ const $$ContentNotice = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${maybeRenderHead()}<div class="starlight-aside starlight-aside--notice"${addAttribute(type, "data-type")} data-astro-cid-vwh4f2k5> <div class="starlight-aside__title" data-astro-cid-vwh4f2k5> <span class="starlight-aside__icon" data-astro-cid-vwh4f2k5> ${type === "draft" && renderTemplate`<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-vwh4f2k5> <path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z" fill="currentColor" data-astro-cid-vwh4f2k5></path> </svg>`} ${type === "deprecated" && renderTemplate`<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-vwh4f2k5> <path d="M12 7a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V8a1 1 0 0 0-1-1Zm0 8a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm9.71-7.44-5.27-5.27a1.05 1.05 0 0 0-.71-.29H8.27a1.05 1.05 0 0 0-.71.29L2.29 7.56a1.05 1.05 0 0 0-.29.71v7.46c.004.265.107.518.29.71l5.27 5.27c.192.183.445.286.71.29h7.46a1.05 1.05 0 0 0 .71-.29l5.27-5.27a1.05 1.05 0 0 0 .29-.71V8.27a1.05 1.05 0 0 0-.29-.71ZM20 15.31 15.31 20H8.69L4 15.31V8.69L8.69 4h6.62L20 8.69v6.62Z" fill="currentColor" data-astro-cid-vwh4f2k5></path> </svg>`} ${type === "wip" && renderTemplate`<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-vwh4f2k5> <path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z" fill="currentColor" data-astro-cid-vwh4f2k5></path> </svg>`} ${type === "translation" && renderTemplate`<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" data-astro-cid-vwh4f2k5> <path fill-rule="evenodd" d="M8.516 3a.94.94 0 0 0-.941.94v1.15H2.94a.94.94 0 1 0 0 1.882h7.362a7.422 7.422 0 0 1-1.787 3.958 7.42 7.42 0 0 1-1.422-2.425.94.94 0 1 0-1.774.627 9.303 9.303 0 0 0 1.785 3.043 7.422 7.422 0 0 1-4.164 1.278.94.94 0 1 0 0 1.881 9.303 9.303 0 0 0 5.575-1.855 9.303 9.303 0 0 0 4.11 1.74l-.763 1.525a.968.968 0 0 0-.016.034l-1.385 2.77a.94.94 0 1 0 1.683.841l1.133-2.267h5.806l1.134 2.267a.94.94 0 0 0 1.683-.841l-1.385-2.769a.95.95 0 0 0-.018-.036l-3.476-6.951a.94.94 0 0 0-1.682 0l-1.82 3.639a7.423 7.423 0 0 1-3.593-1.256 9.303 9.303 0 0 0 2.27-5.203h1.894a.94.94 0 0 0 0-1.881H9.456V3.94A.94.94 0 0 0 8.516 3Zm6.426 11.794a1.068 1.068 0 0 1-.02.039l-.703 1.407h3.924l-1.962-3.924-1.24 2.478Z" clip-rule="evenodd" fill="currentColor" data-astro-cid-vwh4f2k5></path> </svg>`} </span> <span data-astro-cid-vwh4f2k5>${config.label}</span> </div> <div class="starlight-aside__content" data-astro-cid-vwh4f2k5> ${renderSlot($$result, $$slots["default"])} </div> </div> `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/ContentNotice.astro", void 0);
 
-const $$Astro$7 = createAstro("https://dolphilia.github.io");
+const $$Astro$b = createAstro("https://dolphilia.github.io");
 const $$Hero = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$7, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$b, $$props, $$slots);
   Astro2.self = $$Hero;
   const { title, tagline, image, actions = [] } = Astro2.props;
   return renderTemplate`${maybeRenderHead()}<div class="hero" data-astro-cid-3piqs2o6> ${image && renderTemplate`<div class="hero-image" data-astro-cid-3piqs2o6> <img${addAttribute(image.src, "src")}${addAttribute(image.alt, "alt")} width="400" height="400" loading="eager" decoding="async" data-astro-cid-3piqs2o6> </div>`} <div class="hero-content" data-astro-cid-3piqs2o6> <div class="hero-text" data-astro-cid-3piqs2o6> <h1 id="page-title" data-astro-cid-3piqs2o6>${unescapeHTML(title)}</h1> ${tagline && renderTemplate`<div class="hero-tagline" data-astro-cid-3piqs2o6>${unescapeHTML(tagline)}</div>`} </div> ${actions.length > 0 && renderTemplate`<div class="hero-actions" data-astro-cid-3piqs2o6> ${actions.map(({ text, link, variant = "primary", icon }) => renderTemplate`<a${addAttribute(link, "href")}${addAttribute(`hero-action hero-action-${variant}`, "class")} data-astro-cid-3piqs2o6> <span data-astro-cid-3piqs2o6>${text}</span> ${icon && renderTemplate`<span class="hero-action-icon" aria-hidden="true" data-astro-cid-3piqs2o6> <span class="icon" data-astro-cid-3piqs2o6>${icon}</span> </span>`} </a>`)} </div>`} </div> </div> `;
@@ -441,25 +441,25 @@ const $$ThemeToggle = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${renderComponent($$result, "theme-toggle", "theme-toggle", { "data-astro-cid-34jcewsu": true }, { "default": () => renderTemplate` ${maybeRenderHead()}<button class="theme-toggle" type="button" aria-label="テーマを切り替える" data-astro-cid-34jcewsu> <span class="theme-toggle-icon" data-astro-cid-34jcewsu> <!-- 太陽アイコン（ライトモード用） --> <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-34jcewsu> <circle cx="12" cy="12" r="5" data-astro-cid-34jcewsu></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-34jcewsu></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-34jcewsu></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-34jcewsu></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-34jcewsu></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-34jcewsu></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-34jcewsu></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-34jcewsu></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-34jcewsu></line> </svg> <!-- 月アイコン（ダークモード用） --> <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-34jcewsu> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-34jcewsu></path> </svg> </span> </button> ` })}  ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/ThemeToggle.astro?astro&type=script&index=0&lang.ts")}`;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/ThemeToggle.astro", void 0);
 
-const $$Astro$6 = createAstro("https://dolphilia.github.io");
+const $$Astro$a = createAstro("https://dolphilia.github.io");
 const $$TwoColumnContent = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$6, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$a, $$props, $$slots);
   Astro2.self = $$TwoColumnContent;
   const { leftWidth = "50%", gap = "1rem" } = Astro2.props;
   return renderTemplate`${maybeRenderHead()}<div class="two-column-content"${addAttribute(`--left-width: ${leftWidth}; --column-gap: ${gap};`, "style")} data-astro-cid-ava4ouzk> <div class="left-column" data-astro-cid-ava4ouzk> ${renderSlot($$result, $$slots["left"])} </div> <div class="right-column" data-astro-cid-ava4ouzk> ${renderSlot($$result, $$slots["right"])} </div> </div> `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/TwoColumnContent.astro", void 0);
 
-const $$Astro$5 = createAstro("https://dolphilia.github.io");
+const $$Astro$9 = createAstro("https://dolphilia.github.io");
 const $$LinkCard = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$5, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$9, $$props, $$slots);
   Astro2.self = $$LinkCard;
   const { title, description, href, icon, class: className, ...rest } = Astro2.props;
   return renderTemplate`${renderComponent($$result, "Card", $$Card, { "variant": "link", "href": href, "title": title, "icon": icon, "class:list": ["link-card", className], ...rest, "data-astro-cid-f2kkmdj7": true }, { "default": ($$result2) => renderTemplate`${description && renderTemplate`${maybeRenderHead()}<p class="link-card-description" data-astro-cid-f2kkmdj7>${description}</p>`}` })} `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/LinkCard.astro", void 0);
 
-const $$Astro$4 = createAstro("https://dolphilia.github.io");
+const $$Astro$8 = createAstro("https://dolphilia.github.io");
 const $$CardGrid = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$4, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$8, $$props, $$slots);
   Astro2.self = $$CardGrid;
   const { class: className, stagger = false, ...attrs } = Astro2.props;
   return renderTemplate`${maybeRenderHead()}<div${addAttribute(["card-grid", stagger && "stagger", className], "class:list")}${spreadAttributes(attrs)} data-astro-cid-h53xvnyp> ${renderSlot($$result, $$slots["default"])} </div> `;
@@ -647,9 +647,9 @@ var __freeze = Object.freeze;
 var __defProp = Object.defineProperty;
 var __template = (cooked, raw) => __freeze(__defProp(cooked, "raw", { value: __freeze(cooked.slice()) }));
 var _a;
-const $$Astro$3 = createAstro("https://dolphilia.github.io");
+const $$Astro$7 = createAstro("https://dolphilia.github.io");
 const $$Tabs = createComponent(async ($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$3, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$7, $$props, $$slots);
   Astro2.self = $$Tabs;
   const { class: className, syncKey, ...attrs } = Astro2.props;
   const panelHtml = await Astro2.slots.render("default");
@@ -662,9 +662,9 @@ const $$Tabs = createComponent(async ($$result, $$props, $$slots) => {
   return renderTemplate`${shouldRenderTabsScript && renderTemplate(_a || (_a = __template(["<script>", "<\/script>"])), unescapeHTML(getTabsScript()))}${renderComponent($$result, "docs-tabs", "docs-tabs", { "class:list": ["tabs", className], "data-sync-key": syncKey, ...attrs, "data-astro-cid-fv5wxlmv": true }, { "default": () => renderTemplate` ${panels && renderTemplate`${maybeRenderHead()}<div class="tablist-wrapper not-content" data-astro-cid-fv5wxlmv> <ul role="tablist" data-astro-cid-fv5wxlmv> ${panels.map(({ icon, label, panelId, tabId }, idx) => renderTemplate`<li role="presentation" class="tab" data-astro-cid-fv5wxlmv> <a role="tab"${addAttribute("#" + panelId, "href")}${addAttribute(tabId, "id")}${addAttribute(idx === 0 ? "true" : "false", "aria-selected")}${addAttribute(idx !== 0 ? -1 : 0, "tabindex")} data-astro-cid-fv5wxlmv> ${icon && renderTemplate`<span class="tab-icon" data-astro-cid-fv5wxlmv>${unescapeHTML(icon)}</span>`} ${label} </a> </li>`)} </ul> </div>`} ${renderComponent($$result, "Fragment", Fragment, {}, { "default": async ($$result2) => renderTemplate`${unescapeHTML(html)}` })} ` })} `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Tabs/Tabs.astro", void 0);
 
-const $$Astro$2 = createAstro("https://dolphilia.github.io");
+const $$Astro$6 = createAstro("https://dolphilia.github.io");
 const $$TabItem = createComponent(($$result, $$props, $$slots) => {
-  const Astro2 = $$result.createAstro($$Astro$2, $$props, $$slots);
+  const Astro2 = $$result.createAstro($$Astro$6, $$props, $$slots);
   Astro2.self = $$TabItem;
   const {
     label,
@@ -674,6 +674,675 @@ const $$TabItem = createComponent(($$result, $$props, $$slots) => {
   } = Astro2.props;
   return renderTemplate`${renderComponent($$result, "docs-tab-item", "docs-tab-item", { "data-label": label, "data-icon": icon, "class:list": ["tab-item", className], ...attrs, "data-astro-cid-5i6kcy5t": true }, { "default": () => renderTemplate` ${renderSlot($$result, $$slots["default"])} ` })} `;
 }, "/home/runner/work/docs-astro/docs-astro/packages/ui/src/components/Tabs/TabItem.astro", void 0);
+
+const $$Astro$5 = createAstro("https://dolphilia.github.io");
+const $$VersionSelector = createComponent(($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro$5, $$props, $$slots);
+  Astro2.self = $$VersionSelector;
+  const { versions, currentVersion, basePath, className = "" } = Astro2.props;
+  const currentVersionObj = versions.find((v) => v.id === currentVersion) || versions[0];
+  const sortedVersions = [...versions].sort((a, b) => {
+    if (a.isLatest === true && b.isLatest !== true) return -1;
+    if (b.isLatest === true && a.isLatest !== true) return 1;
+    const dateA = a.date ? a.date.getTime() : 0;
+    const dateB = b.date ? b.date.getTime() : 0;
+    return dateB - dateA;
+  });
+  return renderTemplate`${maybeRenderHead()}<div${addAttribute(["version-selector", className], "class:list")} data-astro-cid-kqgt6mya> <div data-astro-cid-kqgt6mya> <button type="button" class="selector-button" id="version-menu-button" aria-expanded="false" aria-haspopup="true" data-astro-cid-kqgt6mya> <span class="version-label" data-astro-cid-kqgt6mya> ${currentVersionObj.name} ${currentVersionObj.isLatest && renderTemplate`<span class="latest-badge" data-astro-cid-kqgt6mya>
+最新
+</span>`} </span> <svg class="dropdown-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" data-astro-cid-kqgt6mya> <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" data-astro-cid-kqgt6mya></path> </svg> </button> </div> <div class="dropdown-menu hidden" role="menu" aria-orientation="vertical" aria-labelledby="version-menu-button" tabindex="-1" id="version-menu" data-astro-cid-kqgt6mya> <div class="menu-content" role="none" data-astro-cid-kqgt6mya> ${sortedVersions.map((version) => renderTemplate`<a${addAttribute(`${basePath.replace(`/${currentVersion}/`, `/${version.id}/`)}`, "href")}${addAttribute([
+    "menu-item",
+    version.id === currentVersion && "menu-item-active"
+  ], "class:list")} role="menuitem" tabindex="-1"${addAttribute(version.id === currentVersion ? "page" : void 0, "aria-current")} data-astro-cid-kqgt6mya> <div class="version-info" data-astro-cid-kqgt6mya> <div class="version-header" data-astro-cid-kqgt6mya> <span data-astro-cid-kqgt6mya>${version.name}</span> ${version.isLatest && renderTemplate`<span class="latest-badge" data-astro-cid-kqgt6mya>
+最新
+</span>`} </div> <div class="version-date" data-astro-cid-kqgt6mya> ${version.date && typeof version.date.toLocaleDateString === "function" ? version.date.toLocaleDateString() : "N/A"} </div> </div> </a>`)} </div> </div> <div class="version-links" data-astro-cid-kqgt6mya> ${currentVersion !== "latest" && renderTemplate`<a${addAttribute(`${basePath.replace(`/${currentVersion}/`, "/latest/")}`, "href")} class="latest-link" data-astro-cid-kqgt6mya>
+最新バージョンを表示
+</a>`} <a${addAttribute(`${basePath.split("/").slice(0, 2).join("/")}/version-diff${basePath.split("/").slice(2).join("/")}`, "href")} class="diff-link" data-astro-cid-kqgt6mya>
+バージョン間の差分を表示
+</a> </div> </div>  ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/versioning/src/components/VersionSelector.astro?astro&type=script&index=0&lang.ts")}`;
+}, "/home/runner/work/docs-astro/docs-astro/packages/versioning/src/components/VersionSelector.astro", void 0);
+
+function Diff() {}
+Diff.prototype = {
+  diff: function diff(oldString, newString) {
+    var _options$timeout;
+
+    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    var callback = options.callback;
+
+    if (typeof options === 'function') {
+      callback = options;
+      options = {};
+    }
+
+    this.options = options;
+    var self = this;
+
+    function done(value) {
+      if (callback) {
+        setTimeout(function () {
+          callback(undefined, value);
+        }, 0);
+        return true;
+      } else {
+        return value;
+      }
+    } // Allow subclasses to massage the input prior to running
+
+
+    oldString = this.castInput(oldString);
+    newString = this.castInput(newString);
+    oldString = this.removeEmpty(this.tokenize(oldString));
+    newString = this.removeEmpty(this.tokenize(newString));
+    var newLen = newString.length,
+        oldLen = oldString.length;
+    var editLength = 1;
+    var maxEditLength = newLen + oldLen;
+
+    if (options.maxEditLength) {
+      maxEditLength = Math.min(maxEditLength, options.maxEditLength);
+    }
+
+    var maxExecutionTime = (_options$timeout = options.timeout) !== null && _options$timeout !== void 0 ? _options$timeout : Infinity;
+    var abortAfterTimestamp = Date.now() + maxExecutionTime;
+    var bestPath = [{
+      oldPos: -1,
+      lastComponent: undefined
+    }]; // Seed editLength = 0, i.e. the content starts with the same values
+
+    var newPos = this.extractCommon(bestPath[0], newString, oldString, 0);
+
+    if (bestPath[0].oldPos + 1 >= oldLen && newPos + 1 >= newLen) {
+      // Identity per the equality and tokenizer
+      return done([{
+        value: this.join(newString),
+        count: newString.length
+      }]);
+    } // Once we hit the right edge of the edit graph on some diagonal k, we can
+    // definitely reach the end of the edit graph in no more than k edits, so
+    // there's no point in considering any moves to diagonal k+1 any more (from
+    // which we're guaranteed to need at least k+1 more edits).
+    // Similarly, once we've reached the bottom of the edit graph, there's no
+    // point considering moves to lower diagonals.
+    // We record this fact by setting minDiagonalToConsider and
+    // maxDiagonalToConsider to some finite value once we've hit the edge of
+    // the edit graph.
+    // This optimization is not faithful to the original algorithm presented in
+    // Myers's paper, which instead pointlessly extends D-paths off the end of
+    // the edit graph - see page 7 of Myers's paper which notes this point
+    // explicitly and illustrates it with a diagram. This has major performance
+    // implications for some common scenarios. For instance, to compute a diff
+    // where the new text simply appends d characters on the end of the
+    // original text of length n, the true Myers algorithm will take O(n+d^2)
+    // time while this optimization needs only O(n+d) time.
+
+
+    var minDiagonalToConsider = -Infinity,
+        maxDiagonalToConsider = Infinity; // Main worker method. checks all permutations of a given edit length for acceptance.
+
+    function execEditLength() {
+      for (var diagonalPath = Math.max(minDiagonalToConsider, -editLength); diagonalPath <= Math.min(maxDiagonalToConsider, editLength); diagonalPath += 2) {
+        var basePath = void 0;
+        var removePath = bestPath[diagonalPath - 1],
+            addPath = bestPath[diagonalPath + 1];
+
+        if (removePath) {
+          // No one else is going to attempt to use this value, clear it
+          bestPath[diagonalPath - 1] = undefined;
+        }
+
+        var canAdd = false;
+
+        if (addPath) {
+          // what newPos will be after we do an insertion:
+          var addPathNewPos = addPath.oldPos - diagonalPath;
+          canAdd = addPath && 0 <= addPathNewPos && addPathNewPos < newLen;
+        }
+
+        var canRemove = removePath && removePath.oldPos + 1 < oldLen;
+
+        if (!canAdd && !canRemove) {
+          // If this path is a terminal then prune
+          bestPath[diagonalPath] = undefined;
+          continue;
+        } // Select the diagonal that we want to branch from. We select the prior
+        // path whose position in the old string is the farthest from the origin
+        // and does not pass the bounds of the diff graph
+        // TODO: Remove the `+ 1` here to make behavior match Myers algorithm
+        //       and prefer to order removals before insertions.
+
+
+        if (!canRemove || canAdd && removePath.oldPos + 1 < addPath.oldPos) {
+          basePath = self.addToPath(addPath, true, undefined, 0);
+        } else {
+          basePath = self.addToPath(removePath, undefined, true, 1);
+        }
+
+        newPos = self.extractCommon(basePath, newString, oldString, diagonalPath);
+
+        if (basePath.oldPos + 1 >= oldLen && newPos + 1 >= newLen) {
+          // If we have hit the end of both strings, then we are done
+          return done(buildValues(self, basePath.lastComponent, newString, oldString, self.useLongestToken));
+        } else {
+          bestPath[diagonalPath] = basePath;
+
+          if (basePath.oldPos + 1 >= oldLen) {
+            maxDiagonalToConsider = Math.min(maxDiagonalToConsider, diagonalPath - 1);
+          }
+
+          if (newPos + 1 >= newLen) {
+            minDiagonalToConsider = Math.max(minDiagonalToConsider, diagonalPath + 1);
+          }
+        }
+      }
+
+      editLength++;
+    } // Performs the length of edit iteration. Is a bit fugly as this has to support the
+    // sync and async mode which is never fun. Loops over execEditLength until a value
+    // is produced, or until the edit length exceeds options.maxEditLength (if given),
+    // in which case it will return undefined.
+
+
+    if (callback) {
+      (function exec() {
+        setTimeout(function () {
+          if (editLength > maxEditLength || Date.now() > abortAfterTimestamp) {
+            return callback();
+          }
+
+          if (!execEditLength()) {
+            exec();
+          }
+        }, 0);
+      })();
+    } else {
+      while (editLength <= maxEditLength && Date.now() <= abortAfterTimestamp) {
+        var ret = execEditLength();
+
+        if (ret) {
+          return ret;
+        }
+      }
+    }
+  },
+  addToPath: function addToPath(path, added, removed, oldPosInc) {
+    var last = path.lastComponent;
+
+    if (last && last.added === added && last.removed === removed) {
+      return {
+        oldPos: path.oldPos + oldPosInc,
+        lastComponent: {
+          count: last.count + 1,
+          added: added,
+          removed: removed,
+          previousComponent: last.previousComponent
+        }
+      };
+    } else {
+      return {
+        oldPos: path.oldPos + oldPosInc,
+        lastComponent: {
+          count: 1,
+          added: added,
+          removed: removed,
+          previousComponent: last
+        }
+      };
+    }
+  },
+  extractCommon: function extractCommon(basePath, newString, oldString, diagonalPath) {
+    var newLen = newString.length,
+        oldLen = oldString.length,
+        oldPos = basePath.oldPos,
+        newPos = oldPos - diagonalPath,
+        commonCount = 0;
+
+    while (newPos + 1 < newLen && oldPos + 1 < oldLen && this.equals(newString[newPos + 1], oldString[oldPos + 1])) {
+      newPos++;
+      oldPos++;
+      commonCount++;
+    }
+
+    if (commonCount) {
+      basePath.lastComponent = {
+        count: commonCount,
+        previousComponent: basePath.lastComponent
+      };
+    }
+
+    basePath.oldPos = oldPos;
+    return newPos;
+  },
+  equals: function equals(left, right) {
+    if (this.options.comparator) {
+      return this.options.comparator(left, right);
+    } else {
+      return left === right || this.options.ignoreCase && left.toLowerCase() === right.toLowerCase();
+    }
+  },
+  removeEmpty: function removeEmpty(array) {
+    var ret = [];
+
+    for (var i = 0; i < array.length; i++) {
+      if (array[i]) {
+        ret.push(array[i]);
+      }
+    }
+
+    return ret;
+  },
+  castInput: function castInput(value) {
+    return value;
+  },
+  tokenize: function tokenize(value) {
+    return value.split('');
+  },
+  join: function join(chars) {
+    return chars.join('');
+  }
+};
+
+function buildValues(diff, lastComponent, newString, oldString, useLongestToken) {
+  // First we convert our linked list of components in reverse order to an
+  // array in the right order:
+  var components = [];
+  var nextComponent;
+
+  while (lastComponent) {
+    components.push(lastComponent);
+    nextComponent = lastComponent.previousComponent;
+    delete lastComponent.previousComponent;
+    lastComponent = nextComponent;
+  }
+
+  components.reverse();
+  var componentPos = 0,
+      componentLen = components.length,
+      newPos = 0,
+      oldPos = 0;
+
+  for (; componentPos < componentLen; componentPos++) {
+    var component = components[componentPos];
+
+    if (!component.removed) {
+      if (!component.added && useLongestToken) {
+        var value = newString.slice(newPos, newPos + component.count);
+        value = value.map(function (value, i) {
+          var oldValue = oldString[oldPos + i];
+          return oldValue.length > value.length ? oldValue : value;
+        });
+        component.value = diff.join(value);
+      } else {
+        component.value = diff.join(newString.slice(newPos, newPos + component.count));
+      }
+
+      newPos += component.count; // Common case
+
+      if (!component.added) {
+        oldPos += component.count;
+      }
+    } else {
+      component.value = diff.join(oldString.slice(oldPos, oldPos + component.count));
+      oldPos += component.count; // Reverse add and remove so removes are output first to match common convention
+      // The diffing algorithm is tied to add then remove output and this is the simplest
+      // route to get the desired output with minimal overhead.
+
+      if (componentPos && components[componentPos - 1].added) {
+        var tmp = components[componentPos - 1];
+        components[componentPos - 1] = components[componentPos];
+        components[componentPos] = tmp;
+      }
+    }
+  } // Special case handle for when one terminal is ignored (i.e. whitespace).
+  // For this case we merge the terminal into the prior string and drop the change.
+  // This is only available for string mode.
+
+
+  var finalComponent = components[componentLen - 1];
+
+  if (componentLen > 1 && typeof finalComponent.value === 'string' && (finalComponent.added || finalComponent.removed) && diff.equals('', finalComponent.value)) {
+    components[componentLen - 2].value += finalComponent.value;
+    components.pop();
+  }
+
+  return components;
+}
+
+//
+// Ranges and exceptions:
+// Latin-1 Supplement, 0080–00FF
+//  - U+00D7  × Multiplication sign
+//  - U+00F7  ÷ Division sign
+// Latin Extended-A, 0100–017F
+// Latin Extended-B, 0180–024F
+// IPA Extensions, 0250–02AF
+// Spacing Modifier Letters, 02B0–02FF
+//  - U+02C7  ˇ &#711;  Caron
+//  - U+02D8  ˘ &#728;  Breve
+//  - U+02D9  ˙ &#729;  Dot Above
+//  - U+02DA  ˚ &#730;  Ring Above
+//  - U+02DB  ˛ &#731;  Ogonek
+//  - U+02DC  ˜ &#732;  Small Tilde
+//  - U+02DD  ˝ &#733;  Double Acute Accent
+// Latin Extended Additional, 1E00–1EFF
+
+var extendedWordChars = /^[A-Za-z\xC0-\u02C6\u02C8-\u02D7\u02DE-\u02FF\u1E00-\u1EFF]+$/;
+var reWhitespace = /\S/;
+var wordDiff = new Diff();
+
+wordDiff.equals = function (left, right) {
+  if (this.options.ignoreCase) {
+    left = left.toLowerCase();
+    right = right.toLowerCase();
+  }
+
+  return left === right || this.options.ignoreWhitespace && !reWhitespace.test(left) && !reWhitespace.test(right);
+};
+
+wordDiff.tokenize = function (value) {
+  // All whitespace symbols except newline group into one token, each newline - in separate token
+  var tokens = value.split(/([^\S\r\n]+|[()[\]{}'"\r\n]|\b)/); // Join the boundary splits that we do not consider to be boundaries. This is primarily the extended Latin character set.
+
+  for (var i = 0; i < tokens.length - 1; i++) {
+    // If we have an empty string in the next field and we have only word chars before and after, merge
+    if (!tokens[i + 1] && tokens[i + 2] && extendedWordChars.test(tokens[i]) && extendedWordChars.test(tokens[i + 2])) {
+      tokens[i] += tokens[i + 2];
+      tokens.splice(i + 1, 2);
+      i--;
+    }
+  }
+
+  return tokens;
+};
+
+var lineDiff = new Diff();
+
+lineDiff.tokenize = function (value) {
+  if (this.options.stripTrailingCr) {
+    // remove one \r before \n to match GNU diff's --strip-trailing-cr behavior
+    value = value.replace(/\r\n/g, '\n');
+  }
+
+  var retLines = [],
+      linesAndNewlines = value.split(/(\n|\r\n)/); // Ignore the final empty token that occurs if the string ends with a new line
+
+  if (!linesAndNewlines[linesAndNewlines.length - 1]) {
+    linesAndNewlines.pop();
+  } // Merge the content and line separators into single tokens
+
+
+  for (var i = 0; i < linesAndNewlines.length; i++) {
+    var line = linesAndNewlines[i];
+
+    if (i % 2 && !this.options.newlineIsToken) {
+      retLines[retLines.length - 1] += line;
+    } else {
+      if (this.options.ignoreWhitespace) {
+        line = line.trim();
+      }
+
+      retLines.push(line);
+    }
+  }
+
+  return retLines;
+};
+
+function diffLines$1(oldStr, newStr, callback) {
+  return lineDiff.diff(oldStr, newStr, callback);
+}
+
+var sentenceDiff = new Diff();
+
+sentenceDiff.tokenize = function (value) {
+  return value.split(/(\S.+?[.!?])(?=\s+|$)/);
+};
+
+var cssDiff = new Diff();
+
+cssDiff.tokenize = function (value) {
+  return value.split(/([{}:;,]|\s+)/);
+};
+
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function (obj) {
+      return typeof obj;
+    };
+  } else {
+    _typeof = function (obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+  }
+
+  return _typeof(obj);
+}
+
+var objectPrototypeToString = Object.prototype.toString;
+var jsonDiff = new Diff(); // Discriminate between two lines of pretty-printed, serialized JSON where one of them has a
+// dangling comma and the other doesn't. Turns out including the dangling comma yields the nicest output:
+
+jsonDiff.useLongestToken = true;
+jsonDiff.tokenize = lineDiff.tokenize;
+
+jsonDiff.castInput = function (value) {
+  var _this$options = this.options,
+      undefinedReplacement = _this$options.undefinedReplacement,
+      _this$options$stringi = _this$options.stringifyReplacer,
+      stringifyReplacer = _this$options$stringi === void 0 ? function (k, v) {
+    return typeof v === 'undefined' ? undefinedReplacement : v;
+  } : _this$options$stringi;
+  return typeof value === 'string' ? value : JSON.stringify(canonicalize(value, null, null, stringifyReplacer), stringifyReplacer, '  ');
+};
+
+jsonDiff.equals = function (left, right) {
+  return Diff.prototype.equals.call(jsonDiff, left.replace(/,([\r\n])/g, '$1'), right.replace(/,([\r\n])/g, '$1'));
+};
+// object that is already on the "stack" of items being processed. Accepts an optional replacer
+
+function canonicalize(obj, stack, replacementStack, replacer, key) {
+  stack = stack || [];
+  replacementStack = replacementStack || [];
+
+  if (replacer) {
+    obj = replacer(key, obj);
+  }
+
+  var i;
+
+  for (i = 0; i < stack.length; i += 1) {
+    if (stack[i] === obj) {
+      return replacementStack[i];
+    }
+  }
+
+  var canonicalizedObj;
+
+  if ('[object Array]' === objectPrototypeToString.call(obj)) {
+    stack.push(obj);
+    canonicalizedObj = new Array(obj.length);
+    replacementStack.push(canonicalizedObj);
+
+    for (i = 0; i < obj.length; i += 1) {
+      canonicalizedObj[i] = canonicalize(obj[i], stack, replacementStack, replacer, key);
+    }
+
+    stack.pop();
+    replacementStack.pop();
+    return canonicalizedObj;
+  }
+
+  if (obj && obj.toJSON) {
+    obj = obj.toJSON();
+  }
+
+  if (_typeof(obj) === 'object' && obj !== null) {
+    stack.push(obj);
+    canonicalizedObj = {};
+    replacementStack.push(canonicalizedObj);
+
+    var sortedKeys = [],
+        _key;
+
+    for (_key in obj) {
+      /* istanbul ignore else */
+      if (obj.hasOwnProperty(_key)) {
+        sortedKeys.push(_key);
+      }
+    }
+
+    sortedKeys.sort();
+
+    for (i = 0; i < sortedKeys.length; i += 1) {
+      _key = sortedKeys[i];
+      canonicalizedObj[_key] = canonicalize(obj[_key], stack, replacementStack, replacer, _key);
+    }
+
+    stack.pop();
+    replacementStack.pop();
+  } else {
+    canonicalizedObj = obj;
+  }
+
+  return canonicalizedObj;
+}
+
+var arrayDiff = new Diff();
+
+arrayDiff.tokenize = function (value) {
+  return value.slice();
+};
+
+arrayDiff.join = arrayDiff.removeEmpty = function (value) {
+  return value;
+};
+
+function diffLines(oldText, newText, options = {}) {
+  const { ignoreWhitespace = false, context = 3 } = options;
+  const changes = diffLines$1(oldText, newText, {
+    ignoreWhitespace
+  });
+  let oldLineNumber = 1;
+  let newLineNumber = 1;
+  const results = [];
+  changes.forEach((change) => {
+    const lines = change.value.split("\n");
+    if (lines[lines.length - 1] === "") {
+      lines.pop();
+    }
+    lines.forEach((line) => {
+      const result = {
+        value: line,
+        lineNumber: {}
+      };
+      if (change.added) {
+        result.type = "added";
+        result.lineNumber.new = newLineNumber++;
+      } else if (change.removed) {
+        result.type = "removed";
+        result.lineNumber.old = oldLineNumber++;
+      } else {
+        result.type = "unchanged";
+        result.lineNumber.old = oldLineNumber++;
+        result.lineNumber.new = newLineNumber++;
+      }
+      results.push(result);
+    });
+  });
+  if (context !== void 0 && context >= 0) {
+    return limitDiffContext(results, context);
+  }
+  return results;
+}
+function limitDiffContext(results, context) {
+  if (context === Infinity) {
+    return results;
+  }
+  const limitedResults = [];
+  let inChangePart = false;
+  let unchangedCount = 0;
+  for (let i = 0; i < results.length; i++) {
+    const result = results[i];
+    if (result.type !== "unchanged") {
+      if (!inChangePart && i > 0) {
+        const startIdx = Math.max(0, i - context);
+        for (let j = startIdx; j < i; j++) {
+          limitedResults.push(results[j]);
+        }
+      }
+      limitedResults.push(result);
+      inChangePart = true;
+      unchangedCount = 0;
+    } else {
+      if (inChangePart) {
+        unchangedCount++;
+        if (unchangedCount <= context) {
+          limitedResults.push(result);
+        } else {
+          inChangePart = false;
+        }
+      }
+    }
+  }
+  return limitedResults;
+}
+function createHtmlDiff(diffResults) {
+  let html = "";
+  diffResults.forEach((result) => {
+    let className = "";
+    let linePrefix = "";
+    switch (result.type) {
+      case "added":
+        className = "diff-added";
+        linePrefix = "+";
+        break;
+      case "removed":
+        className = "diff-removed";
+        linePrefix = "-";
+        break;
+      case "unchanged":
+        className = "diff-unchanged";
+        linePrefix = " ";
+        break;
+    }
+    let lineNumberHtml = "";
+    if (result.lineNumber) {
+      const oldLineNum = result.lineNumber.old || "";
+      const newLineNum = result.lineNumber.new || "";
+      lineNumberHtml = `<span class="diff-line-number">${oldLineNum}</span><span class="diff-line-number">${newLineNum}</span>`;
+    }
+    html += `<div class="diff-line ${className}">${lineNumberHtml}<span class="diff-prefix">${linePrefix}</span><span class="diff-content">${escapeHtml(result.value)}</span></div>`;
+  });
+  return html;
+}
+function escapeHtml(text) {
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
+const $$Astro$4 = createAstro("https://dolphilia.github.io");
+const $$VersionDiff = createComponent(($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro$4, $$props, $$slots);
+  Astro2.self = $$VersionDiff;
+  const {
+    versions,
+    oldVersionId,
+    newVersionId,
+    oldContent,
+    newContent,
+    title = "\u30D0\u30FC\u30B8\u30E7\u30F3\u9593\u306E\u5DEE\u5206",
+    className = ""
+  } = Astro2.props;
+  const oldVersion = versions.find((v) => v.id === oldVersionId);
+  const newVersion = versions.find((v) => v.id === newVersionId);
+  const diffResults = diffLines(oldContent, newContent, { context: 3 });
+  const diffHtml = createHtmlDiff(diffResults);
+  const addedLines = diffResults.filter((r) => r.type === "added").length;
+  const removedLines = diffResults.filter((r) => r.type === "removed").length;
+  const unchangedLines = diffResults.filter((r) => r.type === "unchanged").length;
+  return renderTemplate`${maybeRenderHead()}<div${addAttribute(`version-diff ${className}`, "class")} data-astro-cid-c4vhpv52> ${renderComponent($$result, "Card", $$Card, { "data-astro-cid-c4vhpv52": true }, { "content": ($$result2) => renderTemplate`<div data-astro-cid-c4vhpv52> <div class="diff-stats" data-astro-cid-c4vhpv52> <div class="diff-stat-item" data-astro-cid-c4vhpv52> <span class="diff-stat-indicator diff-stat-removed" data-astro-cid-c4vhpv52></span> <span data-astro-cid-c4vhpv52>削除: ${removedLines}行</span> </div> <div class="diff-stat-item" data-astro-cid-c4vhpv52> <span class="diff-stat-indicator diff-stat-added" data-astro-cid-c4vhpv52></span> <span data-astro-cid-c4vhpv52>追加: ${addedLines}行</span> </div> <div class="diff-stat-item" data-astro-cid-c4vhpv52> <span class="diff-stat-indicator diff-stat-unchanged" data-astro-cid-c4vhpv52></span> <span data-astro-cid-c4vhpv52>変更なし: ${unchangedLines}行</span> </div> </div> <div class="version-diff-controls" data-astro-cid-c4vhpv52> <label class="diff-control-label" data-astro-cid-c4vhpv52> <input type="checkbox" id="toggle-context" class="diff-control-checkbox" checked data-astro-cid-c4vhpv52> <span class="diff-control-text" data-astro-cid-c4vhpv52>コンテキストを表示</span> </label> <label class="diff-control-label" data-astro-cid-c4vhpv52> <input type="checkbox" id="toggle-whitespace" class="diff-control-checkbox" data-astro-cid-c4vhpv52> <span class="diff-control-text" data-astro-cid-c4vhpv52>空白の変更を無視</span> </label> </div> <div class="diff-scroll-container" data-astro-cid-c4vhpv52> <div class="diff-container" data-astro-cid-c4vhpv52> <div class="diff-header" data-astro-cid-c4vhpv52> <div class="diff-header-old" data-astro-cid-c4vhpv52>旧</div> <div class="diff-header-new" data-astro-cid-c4vhpv52>新</div> <div class="diff-header-code" data-astro-cid-c4vhpv52>コード</div> </div> <div id="diff-content" class="diff-content" data-astro-cid-c4vhpv52> ${renderComponent($$result2, "Fragment", Fragment, {}, { "default": ($$result3) => renderTemplate`${unescapeHTML(diffHtml)}` })} </div> </div> </div> </div>`, "title": ($$result2) => renderTemplate`<div class="diff-title-container" data-astro-cid-c4vhpv52> <h2 class="diff-title" data-astro-cid-c4vhpv52>${title}</h2> <div class="diff-version-info" data-astro-cid-c4vhpv52> ${oldVersion?.name || oldVersionId} → ${newVersion?.name || newVersionId} </div> </div>` })} </div>   ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/versioning/src/components/VersionDiff.astro?astro&type=script&index=0&lang.ts")}`;
+}, "/home/runner/work/docs-astro/docs-astro/packages/versioning/src/components/VersionDiff.astro", void 0);
 
 const common$1 = {"home":"Home","search":"Search","menu":"Menu","close":"Close","back":"Back","next":"Next","previous":"Previous","loading":"Loading...","error":"Error","success":"Success","warning":"Warning","info":"Information"};
 const navigation$1 = {"docs":"Documentation","api":"API","examples":"Examples","blog":"Blog","community":"Community","github":"GitHub"};
@@ -775,6 +1444,38 @@ function replaceParams(text, params) {
   }, text);
 }
 
+const $$Astro$3 = createAstro("https://dolphilia.github.io");
+const $$SearchBar = createComponent(async ($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro$3, $$props, $$slots);
+  Astro2.self = $$SearchBar;
+  const {
+    lang,
+    placeholder = t("search.placeholder", lang),
+    className = ""
+  } = Astro2.props;
+  const translations = {
+    placeholder,
+    searchResults: t("search.searchResults", lang),
+    noResults: t("search.noResults", lang),
+    oneResult: t("search.oneResult", lang),
+    manyResults: t("search.manyResults", lang),
+    searching: t("search.searching", lang),
+    closeSearch: t("search.closeSearch", lang),
+    searchError: t("search.error", lang),
+    ctrlKey: "Ctrl",
+    slashKey: "/"
+  };
+  return renderTemplate`${renderComponent($$result, "site-search", "site-search", { "class": className, "data-translations": JSON.stringify(translations), "data-astro-cid-perfc75k": true }, { "default": () => renderTemplate` ${maybeRenderHead()}<button data-open-modal disabled${addAttribute(t("search.label", lang), "aria-label")} aria-keyshortcuts="Control+K /" data-astro-cid-perfc75k> ${renderComponent($$result, "Icon", $$Icon, { "name": "search", "data-astro-cid-perfc75k": true })} <span class="search-text" data-astro-cid-perfc75k>${t("search.label", lang)}</span> <kbd class="shortcut-hint" data-astro-cid-perfc75k> <kbd class="platform-key" data-astro-cid-perfc75k>${translations.ctrlKey}</kbd><kbd data-astro-cid-perfc75k>K</kbd> </kbd> </button> <dialog style="padding:0"${addAttribute(t("search.label", lang), "aria-label")} data-astro-cid-perfc75k> <div class="dialog-frame" data-astro-cid-perfc75k> <div class="dialog-header" data-astro-cid-perfc75k> <div class="search-input-container" data-astro-cid-perfc75k> ${renderComponent($$result, "Icon", $$Icon, { "name": "search", "class": "search-icon", "data-astro-cid-perfc75k": true })} <input type="search" id="search-input"${addAttribute(placeholder, "placeholder")} autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-astro-cid-perfc75k> </div> <button data-close-modal class="close-button" data-astro-cid-perfc75k> ${renderComponent($$result, "Icon", $$Icon, { "name": "close", "data-astro-cid-perfc75k": true })} <span class="sr-only" data-astro-cid-perfc75k>${translations.closeSearch}</span> </button> </div> <div class="search-results" data-astro-cid-perfc75k> <div id="search-results-container" class="results-container" data-astro-cid-perfc75k> <div class="loading-indicator" data-astro-cid-perfc75k> <div class="loading-spinner" data-astro-cid-perfc75k></div> <p data-astro-cid-perfc75k>${t("search.searching", lang)}</p> </div> </div> </div> </div> </dialog> ` })}  ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/search/src/components/SearchBar.astro?astro&type=script&index=0&lang.ts")} `;
+}, "/home/runner/work/docs-astro/docs-astro/packages/search/src/components/SearchBar.astro", void 0);
+
+const $$Astro$2 = createAstro("https://dolphilia.github.io");
+const $$SearchResults = createComponent(async ($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro$2, $$props, $$slots);
+  Astro2.self = $$SearchResults;
+  const { lang, className = "" } = Astro2.props;
+  return renderTemplate`${maybeRenderHead()}<div id="search-results-container"${addAttribute(["search-results-container hidden", className], "class:list")} data-astro-cid-c7xfp4xw> <div class="modal-overlay" data-astro-cid-c7xfp4xw> <div class="modal-container" data-astro-cid-c7xfp4xw> <div class="modal-header" data-astro-cid-c7xfp4xw> <h2 class="modal-title" data-astro-cid-c7xfp4xw>${t("search.searchResults", lang)}</h2> <button id="close-search-results" class="close-button" aria-label="閉じる" data-astro-cid-c7xfp4xw> <svg xmlns="http://www.w3.org/2000/svg" class="close-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" data-astro-cid-c7xfp4xw> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" data-astro-cid-c7xfp4xw></path> </svg> </button> </div> <div id="search-results" class="search-results-content" data-astro-cid-c7xfp4xw> <div class="loading-container" data-astro-cid-c7xfp4xw> <div class="loading-animation" data-astro-cid-c7xfp4xw> <div class="loading-content" data-astro-cid-c7xfp4xw> <div class="loading-bar loading-bar-large" data-astro-cid-c7xfp4xw></div> <div class="loading-bar-group" data-astro-cid-c7xfp4xw> <div class="loading-bar loading-bar-full" data-astro-cid-c7xfp4xw></div> <div class="loading-bar loading-bar-medium" data-astro-cid-c7xfp4xw></div> </div> </div> </div> </div> </div> </div> </div> </div>  ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/packages/search/src/components/SearchResults.astro?astro&type=script&index=0&lang.ts")}`;
+}, "/home/runner/work/docs-astro/docs-astro/packages/search/src/components/SearchResults.astro", void 0);
+
 const $$Astro$1 = createAstro("https://dolphilia.github.io");
 const $$LanguageSelector = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$1, $$props, $$slots);
@@ -806,6 +1507,21 @@ const $$LanguageSelector = createComponent(($$result, $$props, $$slots) => {
   ], "class:list")} role="menuitem" tabindex="-1"${addAttribute(pathInfo.isCurrent ? "page" : void 0, "aria-current")} data-astro-cid-ltpqzwiw> ${pathInfo.name} </a>`)} </div> </div> </div>  ${renderScript($$result, "/home/runner/work/docs-astro/docs-astro/apps/sample-docs/src/components/LanguageSelector.astro?astro&type=script&index=0&lang.ts")}`;
 }, "/home/runner/work/docs-astro/docs-astro/apps/sample-docs/src/components/LanguageSelector.astro", void 0);
 
+const versions = [
+  {
+    id: "v1",
+    name: "Version 1.0",
+    date: /* @__PURE__ */ new Date("2024-01-01"),
+    isLatest: false
+  },
+  {
+    id: "v2",
+    name: "Version 2.0",
+    date: /* @__PURE__ */ new Date("2025-01-01"),
+    isLatest: true
+  }
+];
+
 const $$Astro = createAstro("https://dolphilia.github.io");
 const $$MainLayout = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
@@ -816,8 +1532,11 @@ const $$MainLayout = createComponent(($$result, $$props, $$slots) => {
     lang,
     version = "v1",
     hasSidebar = false,
-    hasToc = false
+    hasToc = false,
+    showSearch = true,
+    showVersionSelector = true
   } = Astro2.props;
+  versions.find((v) => v.isLatest)?.id || version;
   const navItems = [
     { title: "Home", href: `${BASE_URL}/${lang}` },
     { title: "Docs", href: `${BASE_URL}/${lang}/${version}/guide/getting-started` },
@@ -843,22 +1562,7 @@ const $$MainLayout = createComponent(($$result, $$props, $$slots) => {
   const htmlDataAttributes = { "data-theme": "dark" };
   if (hasToc) htmlDataAttributes["data-has-toc"] = "";
   if (hasSidebar) htmlDataAttributes["data-has-sidebar"] = "";
-  return renderTemplate`<html${addAttribute(lang, "lang")}${spreadAttributes(htmlDataAttributes, void 0, { "class": "astro-ouamjn2i" })} data-astro-cid-ouamjn2i> <head><meta charset="utf-8"><link rel="icon" type="image/svg+xml"${addAttribute(`${BASE_URL}/favicon.svg`, "href")}><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator"${addAttribute(Astro2.generator, "content")}><meta name="description" content="Documentation site built with Astro"><title>${title} | Docs</title>${renderHead()}</head> <body data-astro-cid-ouamjn2i> <div class="page sl-flex" data-astro-cid-ouamjn2i> <header class="header" data-astro-cid-ouamjn2i> <div class="header-container" data-astro-cid-ouamjn2i> <div class="header-content" data-astro-cid-ouamjn2i> <div class="title-wrapper sl-flex" data-astro-cid-ouamjn2i> <a${addAttribute(`${BASE_URL}/${lang}`, "href")} class="site-title" data-astro-cid-ouamjn2i>Docs Astro</a> </div> <div class="sl-flex print:hidden" data-astro-cid-ouamjn2i> <!-- 検索コンポーネントがここに入る予定 --> </div> <div class="sl-hidden md:sl-flex print:hidden right-group" data-astro-cid-ouamjn2i> <div aria-label="言語選択" data-astro-cid-ouamjn2i> ${renderComponent($$result, "LanguageSelector", $$LanguageSelector, { "currentLang": lang, "data-astro-cid-ouamjn2i": true })} </div> <nav aria-label="メインナビゲーション" data-astro-cid-ouamjn2i> ${renderComponent($$result, "Navigation", $$Navigation, { "items": navItems, "data-astro-cid-ouamjn2i": true })} </nav> </div> </div> </div> </header> <div class="main-frame" data-astro-cid-ouamjn2i> <main id="main-content" data-astro-cid-ouamjn2i> ${renderSlot($$result, $$slots["default"])} </main> </div> ${renderComponent($$result, "Footer", $$Footer, { "linkGroups": linkGroups, "copyright": `\xA9 ${currentYear} Docs Astro. All rights reserved.`, "data-astro-cid-ouamjn2i": true })} </div> </body></html>`;
+  return renderTemplate`<html${addAttribute(lang, "lang")}${spreadAttributes(htmlDataAttributes, void 0, { "class": "astro-ouamjn2i" })} data-astro-cid-ouamjn2i> <head><meta charset="utf-8"><link rel="icon" type="image/svg+xml"${addAttribute(`${BASE_URL}/favicon.svg`, "href")}><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator"${addAttribute(Astro2.generator, "content")}><meta name="description" content="Documentation site built with Astro"><title>${title} | Docs</title>${renderHead()}</head> <body data-astro-cid-ouamjn2i> <div class="page sl-flex" data-astro-cid-ouamjn2i> <header class="header" data-astro-cid-ouamjn2i> <div class="header-container" data-astro-cid-ouamjn2i> <div class="header-content" data-astro-cid-ouamjn2i> <div class="title-wrapper sl-flex" data-astro-cid-ouamjn2i> <a${addAttribute(`${BASE_URL}/${lang}`, "href")} class="site-title" data-astro-cid-ouamjn2i>Docs Astro</a> </div> <div class="sl-flex print:hidden" data-astro-cid-ouamjn2i> ${showSearch && renderTemplate`<div class="search-container" data-astro-cid-ouamjn2i> ${renderComponent($$result, "SearchBar", $$SearchBar, { "lang": lang, "placeholder": `\u30C9\u30AD\u30E5\u30E1\u30F3\u30C8\u3092\u691C\u7D22...`, "data-astro-cid-ouamjn2i": true })} </div>`} </div> <div class="sl-hidden md:sl-flex print:hidden right-group" data-astro-cid-ouamjn2i> ${showVersionSelector && version && renderTemplate`<div class="version-selector-container" data-astro-cid-ouamjn2i> ${renderComponent($$result, "VersionSelector", $$VersionSelector, { "currentVersion": version, "versions": versions, "basePath": `${BASE_URL}/${lang}`, "data-astro-cid-ouamjn2i": true })} </div>`} <div aria-label="言語選択" data-astro-cid-ouamjn2i> ${renderComponent($$result, "LanguageSelector", $$LanguageSelector, { "currentLang": lang, "data-astro-cid-ouamjn2i": true })} </div> <nav aria-label="メインナビゲーション" data-astro-cid-ouamjn2i> ${renderComponent($$result, "Navigation", $$Navigation, { "items": navItems, "data-astro-cid-ouamjn2i": true })} </nav> </div> </div> </div> </header> <div class="main-frame" data-astro-cid-ouamjn2i> <main id="main-content" data-astro-cid-ouamjn2i> ${renderSlot($$result, $$slots["default"])} </main> </div> ${renderComponent($$result, "Footer", $$Footer, { "linkGroups": linkGroups, "copyright": `\xA9 ${currentYear} Docs Astro. All rights reserved.`, "data-astro-cid-ouamjn2i": true })} </div> </body></html>`;
 }, "/home/runner/work/docs-astro/docs-astro/apps/sample-docs/src/layouts/MainLayout.astro", void 0);
-
-const versions = [
-  {
-    id: "v1",
-    name: "Version 1.0",
-    date: /* @__PURE__ */ new Date("2024-01-01"),
-    isLatest: false
-  },
-  {
-    id: "v2",
-    name: "Version 2.0",
-    date: /* @__PURE__ */ new Date("2025-01-01"),
-    isLatest: true
-  }
-];
 
 export { $$Icon as $, $$Tabs as a, $$TabItem as b, $$MainLayout as c, $$Card as d, $$Button as e, $$Sidebar as f, $$TableOfContents as g, $$Pagination as h, $$EditLink as i, t, versions as v };
