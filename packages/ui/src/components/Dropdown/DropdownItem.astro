@@ -1,0 +1,122 @@
+---
+interface Props {
+  /**
+   * 項目のラベル
+   */
+  label: string;
+  
+  /**
+   * 項目のリンク先URL（省略可能）
+   */
+  href?: string;
+  
+  /**
+   * 現在選択されている項目かどうか
+   */
+  isActive?: boolean;
+  
+  /**
+   * 追加のCSSクラス
+   */
+  class?: string;
+  
+  /**
+   * その他の属性
+   */
+  [key: string]: any;
+}
+
+const {
+  label,
+  href,
+  isActive = false,
+  class: className = '',
+  ...attrs
+} = Astro.props;
+---
+
+{href ? (
+  <a 
+    href={href} 
+    class:list={[
+      'dropdown-item',
+      isActive && 'dropdown-item-active',
+      className
+    ]}
+    role="menuitem"
+    tabindex="-1"
+    aria-current={isActive ? 'page' : undefined}
+    {...attrs}
+  >
+    <slot name="before-label" />
+    <span class="dropdown-item-label">{label}</span>
+    <slot name="after-label" />
+    <slot />
+  </a>
+) : (
+  <button 
+    type="button"
+    class:list={[
+      'dropdown-item',
+      isActive && 'dropdown-item-active',
+      className
+    ]}
+    role="menuitem"
+    tabindex="-1"
+    aria-current={isActive ? 'true' : undefined}
+    {...attrs}
+  >
+    <slot name="before-label" />
+    <span class="dropdown-item-label">{label}</span>
+    <slot name="after-label" />
+    <slot />
+  </button>
+)}
+
+<style>
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    color: var(--dropdown-item-text-color, #4b5563);
+    text-align: left;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  .dropdown-item:hover {
+    background-color: var(--dropdown-item-hover-bg, #f3f4f6);
+    color: var(--dropdown-item-hover-text-color, #111827);
+  }
+
+  .dropdown-item-active {
+    background-color: var(--dropdown-item-active-bg, #f3f4f6);
+    color: var(--dropdown-item-active-text-color, #111827);
+    font-weight: 500;
+  }
+
+  .dropdown-item-label {
+    flex: 1;
+  }
+
+  /* ダークモード対応 */
+  @media (prefers-color-scheme: dark) {
+    .dropdown-item {
+      color: var(--dark-dropdown-item-text-color, #9ca3af);
+    }
+
+    .dropdown-item:hover {
+      background-color: var(--dark-dropdown-item-hover-bg, #374151);
+      color: var(--dark-dropdown-item-hover-text-color, #f9fafb);
+    }
+
+    .dropdown-item-active {
+      background-color: var(--dark-dropdown-item-active-bg, #374151);
+      color: var(--dark-dropdown-item-active-text-color, #f9fafb);
+    }
+  }
+</style>
