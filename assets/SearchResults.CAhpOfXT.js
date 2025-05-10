@@ -1,6 +1,6 @@
 import { a as createAstro, b as createComponent, m as maybeRenderHead, f as addAttribute, e as renderScript, d as renderTemplate, r as renderComponent, F as Fragment, u as unescapeHTML } from './astro/server.DZ9z6Le0.js';
 /* empty css                         */
-import { a as $$Card, t } from './versions.config.DKnZX5wQ.js';
+import { a as $$Card, t } from './versions.config.BTR0nRRP.js';
 
 const $$Astro$3 = createAstro("https://dolphilia.github.io");
 const $$VersionSelector = createComponent(($$result, $$props, $$slots) => {
