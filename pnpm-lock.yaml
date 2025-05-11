@@ -51,6 +51,24 @@ importers:
         specifier: ^3.4.0
         version: 3.4.0
 
+  apps/top-page:
+    dependencies:
+      '@docs/i18n':
+        specifier: workspace:*
+        version: link:../../packages/i18n
+      '@docs/search':
+        specifier: workspace:*
+        version: link:../../packages/search
+      '@docs/theme':
+        specifier: workspace:*
+        version: link:../../packages/theme
+      '@docs/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      astro:
+        specifier: ^5.7.12
+        version: 5.7.12(@types/node@18.19.100)(jiti@1.21.7)(rollup@4.40.2)(typescript@5.8.3)(yaml@2.7.1)
+
   packages/i18n:
     dependencies:
       astro:

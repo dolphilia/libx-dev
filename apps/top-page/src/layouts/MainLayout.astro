@@ -1,0 +1,203 @@
+---
+/**
+ * MainLayout - トップページの基本レイアウトコンポーネント
+ */
+import { Navigation, Footer, ThemeToggle } from '@docs/ui/components';
+import { SearchBar } from '@docs/search/components';
+import LanguageSelector from '../components/LanguageSelector.astro';
+import type { LocaleKey } from '@docs/i18n/locales';
+import '../styles/global.css';
+
+// 定数定義
+const BASE_URL = '/docs-astro';
+
+// インターフェース定義
+interface Props {
+  /** ページタイトル */
+  title: string;
+  /** 言語コード */
+  lang: LocaleKey;
+  /** 検索バーを表示するか */
+  showSearch?: boolean;
+}
+
+// プロパティの取得
+const { 
+  title, 
+  lang, 
+  showSearch = true
+} = Astro.props;
+
+// ナビゲーション項目の定義
+interface NavItem {
+  title: string;
+  href: string;
+}
+
+const navItems: NavItem[] = [
+  { title: 'Home', href: `${BASE_URL}/${lang}` },
+  { title: 'GitHub', href: 'https://github.com/dolphilia/docs-astro' },
+];
+
+// フッターリンクグループの定義
+interface LinkGroup {
+  title: string;
+  links: {
+    title: string;
+    href: string;
+    target?: string;
+    rel?: string;
+  }[];
+}
+
+const linkGroups: LinkGroup[] = [
+  {
+    title: 'Docs',
+    links: [
+      { title: 'Sample Docs', href: `${BASE_URL}/docs/sample-docs/${lang}` }
+    ]
+  },
+  {
+    title: 'Community',
+    links: [
+      { title: 'GitHub', href: 'https://github.com/dolphilia/docs-astro', target: '_blank', rel: 'noopener' }
+    ]
+  }
+];
+
+// 現在の年を取得
+const currentYear = new Date().getFullYear();
+---
+
+<!DOCTYPE html>
+<html lang={lang} data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href={`${BASE_URL}/favicon.svg`} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content="Documentation site built with Astro" />
+    <title>{title} | Docs Astro</title>
+  </head>
+  <body>
+    <div class="page sl-flex">
+      <header class="header">
+        <div class="header-container">
+          <div class="header-content">
+            <div class="title-wrapper sl-flex">
+              <a href={`${BASE_URL}/${lang}`} class="site-title">Docs Astro</a>
+            </div>
+            <div class="sl-flex print:hidden">
+              {showSearch && (
+                <div class="search-container">
+                  <SearchBar lang={lang} placeholder={`ドキュメントを検索...`} />
+                </div>
+              )}
+            </div>
+            <div class="sl-hidden md:sl-flex print:hidden right-group">
+              <div aria-label="言語選択">
+                <LanguageSelector currentLang={lang} />
+              </div>
+              <div class="theme-toggle-container">
+                <ThemeToggle />
+              </div>
+              <nav aria-label="メインナビゲーション">
+                <Navigation items={navItems} />
+              </nav>
+            </div>
+          </div>
+        </div>
+      </header>
+      
+      <div class="main-frame">
+        <main id="main-content">
+          <slot />
+        </main>
+      </div>
+      
+      <Footer 
+        linkGroups={linkGroups}
+        copyright={`© ${currentYear} Docs Astro. All rights reserved.`}
+      />
+    </div>
+  </body>
+</html>
+
+<style>
+  /* Starlightスタイルに基づくレイアウト */
+  .page {
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .header {
+    z-index: var(--sl-z-index-navbar);
+    position: inherit;
+    inset-inline-start: 0;
+    inset-block-start: 0;
+    width: 100%;
+    height: var(--sl-nav-height);
+    border-bottom: 1px solid var(--sl-color-hairline-shade);
+    padding: var(--sl-nav-pad-y) var(--sl-nav-pad-x);
+    background-color: var(--sl-color-bg-nav);
+  }
+
+  .header-container {
+    max-width: 87.5rem; /* 1400px */
+    margin: 0 auto;
+  }
+
+  .header-content {
+    display: flex;
+    gap: var(--sl-nav-gap);
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+  }
+
+  .title-wrapper {
+    overflow: clip;
+    padding: 0.25rem;
+    margin: -0.25rem;
+    min-width: 0;
+  }
+
+  .site-title {
+    font-size: var(--sl-text-lg);
+    font-weight: 600;
+    color: var(--sl-color-white);
+    text-decoration: none;
+  }
+
+  .right-group {
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .search-container {
+    width: 100%;
+    max-width: 20rem;
+    margin-right: 1rem;
+  }
+
+  .theme-toggle-container {
+    margin-right: 0.5rem;
+  }
+
+  .main-frame {
+    padding-top: var(--sl-nav-height);
+  }
+
+  main {
+    flex-grow: 1;
+    padding: 1.5rem var(--sl-content-pad-x);
+  }
+
+  @media (min-width: 50em) {
+    .header-content {
+      display: grid;
+      grid-template-columns: minmax(auto, auto) 1fr auto;
+      align-content: center;
+    }
+  }
+</style>

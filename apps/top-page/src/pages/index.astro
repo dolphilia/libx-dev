@@ -1,0 +1,14 @@
+---
+import { topPageConfig } from '../config/projects.config';
+
+// デフォルト言語を取得
+const defaultLang = topPageConfig.defaultLang;
+// ベースURLを取得
+const baseUrl = topPageConfig.baseUrl;
+
+// リダイレクト先のURLを構築
+const redirectUrl = `${baseUrl}/${defaultLang}/`;
+
+// リダイレクト
+return Astro.redirect(redirectUrl);
+---

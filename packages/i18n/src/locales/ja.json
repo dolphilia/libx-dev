@@ -11,7 +11,9 @@
     "error": "エラー",
     "success": "成功",
     "warning": "警告",
-    "info": "情報"
+    "info": "情報",
+    "new": "新着",
+    "updated": "更新済"
   },
   "navigation": {
     "docs": "ドキュメント",
@@ -64,5 +66,14 @@
     "notFound": "ページが見つかりません",
     "notFoundDescription": "お探しのページは存在しないか、移動された可能性があります。",
     "goHome": "ホームに戻る"
+  },
+  "projects": {
+    "title": "プロジェクト一覧",
+    "description": "利用可能なすべてのドキュメントプロジェクトを閲覧する"
+  },
+  "contribute": {
+    "title": "貢献する",
+    "description": "プロジェクトに貢献して、ドキュメントの改善にご協力ください",
+    "button": "GitHubで貢献する"
   }
 }

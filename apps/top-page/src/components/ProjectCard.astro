@@ -1,0 +1,167 @@
+---
+import { Icon } from '@docs/ui/components';
+import type { Project } from '../config/projects.config';
+import { translate } from '@docs/i18n/utils';
+import type { LocaleKey } from '@docs/i18n/locales';
+
+interface Props {
+  project: Project;
+  lang: LocaleKey;
+  baseUrl: string;
+}
+
+const { project, lang, baseUrl } = Astro.props;
+const { id, name, description, path, icon, tags, isNew, isUpdated } = project;
+
+// プロジェクトへのパスを構築
+const projectPath = `${baseUrl}${path}/${lang}`;
+---
+
+<a href={projectPath} class="project-card">
+  <div class="project-card-content">
+    <div class="project-card-header">
+      {icon && <Icon name={icon} class="project-card-icon" />}
+      <h3 class="project-card-title">{name}</h3>
+      {isNew && <span class="project-card-badge project-card-badge-new">{translate('common.new', lang)}</span>}
+      {isUpdated && <span class="project-card-badge project-card-badge-updated">{translate('common.updated', lang)}</span>}
+    </div>
+    
+    <p class="project-card-description">{description[lang]}</p>
+    
+    {tags && tags.length > 0 && (
+      <div class="project-card-tags">
+        {tags.map(tag => (
+          <span class="project-card-tag">{tag}</span>
+        ))}
+      </div>
+    )}
+  </div>
+</a>
+
+<style>
+  .project-card {
+    display: block;
+    border: 1px solid var(--sl-color-gray-2, #e5e7eb);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    background-color: var(--sl-color-white);
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    height: 100%;
+  }
+
+  .project-card:hover {
+    border-color: var(--sl-color-primary, #2563eb);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+  }
+
+  .project-card-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .project-card-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .project-card-icon {
+    font-size: 1.25rem;
+    color: var(--sl-color-primary, #2563eb);
+    margin-right: 0.5rem;
+  }
+
+  .project-card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--sl-color-gray-9, #111827);
+  }
+
+  .project-card-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .project-card-badge-new {
+    background-color: var(--sl-color-green-2, #dcfce7);
+    color: var(--sl-color-green-9, #166534);
+  }
+
+  .project-card-badge-updated {
+    background-color: var(--sl-color-blue-2, #dbeafe);
+    color: var(--sl-color-blue-9, #1e40af);
+  }
+
+  .project-card-description {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--sl-color-gray-7, #374151);
+    margin: 0 0 1rem 0;
+    flex-grow: 1;
+  }
+
+  .project-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: auto;
+  }
+
+  .project-card-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background-color: var(--sl-color-gray-1, #f9fafb);
+    color: var(--sl-color-gray-6, #4b5563);
+    line-height: 1;
+  }
+
+  /* ダークモード対応 */
+  :global(.dark) .project-card {
+    background-color: var(--sl-color-gray-8, #1f2937);
+    border-color: var(--sl-color-gray-7, #374151);
+  }
+
+  :global(.dark) .project-card:hover {
+    border-color: var(--sl-color-primary, #3b82f6);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  :global(.dark) .project-card-title {
+    color: var(--sl-color-gray-1, #f9fafb);
+  }
+
+  :global(.dark) .project-card-description {
+    color: var(--sl-color-gray-3, #d1d5db);
+  }
+
+  :global(.dark) .project-card-badge-new {
+    background-color: rgba(22, 101, 52, 0.2);
+    color: var(--sl-color-green-3, #86efac);
+  }
+
+  :global(.dark) .project-card-badge-updated {
+    background-color: rgba(30, 64, 175, 0.2);
+    color: var(--sl-color-blue-3, #93c5fd);
+  }
+
+  :global(.dark) .project-card-tag {
+    background-color: var(--sl-color-gray-7, #374151);
+    color: var(--sl-color-gray-3, #d1d5db);
+  }
+</style>

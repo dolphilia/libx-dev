@@ -1,0 +1,204 @@
+---
+import { translatePath } from '@docs/i18n/utils';
+import type { LocaleKey } from '@docs/i18n/locales';
+import { Dropdown, DropdownItem, Icon } from '@docs/ui/components';
+import { topPageConfig } from '../config/projects.config';
+
+// 定数定義
+const BASE_URL = topPageConfig.baseUrl;
+const LANG_NAMES: Record<string, string> = {
+  en: 'English',
+  ja: '日本語'
+};
+
+// 言語フラグアイコン（ISO 639-1コードをキーとして使用）
+const LANG_FLAGS: Record<string, string> = {
+  en: '🇺🇸',
+  ja: '🇯🇵'
+};
+
+// コンポーネントのプロパティ型定義
+interface Props {
+  currentLang: string;
+  supportedLangs?: string[];
+  className?: string;
+}
+
+// プロパティの取得と初期値設定
+const { 
+  currentLang, 
+  supportedLangs = topPageConfig.supportedLangs, 
+  className = ''
+} = Astro.props;
+
+// 現在のパス情報を取得
+const currentPathname = Astro.url.pathname;
+
+// パスを正規化（末尾にスラッシュを付ける）
+const normalizedPathname = currentPathname.endsWith('/') ? currentPathname : `${currentPathname}/`;
+
+// ベースURLを除いたパス部分を取得
+const pathWithoutBase = normalizedPathname.startsWith(BASE_URL)
+  ? normalizedPathname.substring(BASE_URL.length)
+  : normalizedPathname;
+
+// 言語コードを抽出
+const pathSegments = pathWithoutBase.split('/').filter(segment => segment !== '');
+let langFromPath: string | undefined = undefined;
+
+if (pathSegments.length > 0 && supportedLangs.includes(pathSegments[0])) {
+  langFromPath = pathSegments.shift();
+}
+
+// 各言語のパス情報を生成
+interface LangPathInfo {
+  lang: string;
+  name: string;
+  flag: string;
+  path: string;
+  isCurrent: boolean;
+}
+
+const langPaths: LangPathInfo[] = supportedLangs.map(langCode => {
+  const targetLang = langCode as LocaleKey;
+  let newPath = `${BASE_URL}/${targetLang}`;
+
+  // Ensure trailing slash for directory-like URLs
+  if (!newPath.endsWith('/')) {
+    newPath += '/';
+  }
+
+  return {
+    lang: langCode,
+    name: LANG_NAMES[langCode] || langCode,
+    flag: LANG_FLAGS[langCode] || '🌐',
+    path: newPath,
+    isCurrent: langCode === currentLang
+  };
+});
+---
+
+<div class="language-selector-container">
+  <Dropdown 
+    label={LANG_NAMES[currentLang] || currentLang}
+    align="right"
+    width="14rem"
+    class={`language-dropdown ${className}`}
+  >
+    <div class="language-dropdown-header" slot="before-items">
+      <Icon name="document" class="language-icon" />
+      <span>言語を選択</span>
+    </div>
+    
+    {langPaths.map((pathInfo) => (
+      <DropdownItem 
+        label={pathInfo.name}
+        href={pathInfo.path}
+        isActive={pathInfo.isCurrent}
+      >
+        <span slot="before-label" class="language-flag">{pathInfo.flag}</span>
+        {pathInfo.isCurrent && (
+          <span slot="after-label" class="language-current-badge">現在</span>
+        )}
+      </DropdownItem>
+    ))}
+    
+    <div class="language-dropdown-footer" slot="after-items">
+      <a href="https://github.com/dolphilia/docs-astro/tree/main/packages/i18n" class="language-footer-link" target="_blank" rel="noopener">
+        <Icon name="external-link" class="language-footer-icon" />
+        翻訳に貢献する
+      </a>
+    </div>
+  </Dropdown>
+</div>
+
+<style>
+  .language-selector-container {
+    display: inline-block;
+  }
+
+  .language-dropdown {
+    position: relative;
+  }
+
+  .language-dropdown-header {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--sl-color-gray-5, #6b7280);
+    border-bottom: 1px solid var(--sl-color-gray-2, #e5e7eb);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .language-dropdown-footer {
+    padding: 0.5rem 1rem;
+    border-top: 1px solid var(--sl-color-gray-2, #e5e7eb);
+  }
+
+  .language-footer-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--sl-color-primary, #2563eb);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .language-footer-link:hover {
+    color: var(--sl-color-primary-dark, #1d4ed8);
+    text-decoration: underline;
+  }
+
+  .language-footer-icon {
+    font-size: 1rem;
+    color: currentColor;
+  }
+
+  .language-icon {
+    font-size: 1rem;
+    color: var(--sl-color-gray-4, #9ca3af);
+  }
+
+  .language-flag {
+    display: inline-block;
+    margin-right: 0.5rem;
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  .language-current-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1;
+    background-color: var(--sl-color-blue-2, #dbeafe);
+    color: var(--sl-color-blue-9, #1e40af);
+  }
+
+  /* ダークモード対応 */
+  :global(.dark) .language-dropdown-header,
+  :global(.dark) .language-dropdown-footer {
+    border-color: var(--sl-color-gray-7, #374151);
+  }
+
+  :global(.dark) .language-current-badge {
+    background-color: rgba(30, 64, 175, 0.2);
+    color: var(--sl-color-blue-3, #93c5fd);
+  }
+
+  /* アニメーション */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-0.25rem); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .language-dropdown :global(.dropdown-content) {
+    animation: fadeIn 0.2s ease-out;
+  }
+</style>

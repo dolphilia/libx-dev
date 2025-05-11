@@ -11,7 +11,9 @@
     "error": "Error",
     "success": "Success",
     "warning": "Warning",
-    "info": "Information"
+    "info": "Information",
+    "new": "New",
+    "updated": "Updated"
   },
   "navigation": {
     "docs": "Documentation",
@@ -64,5 +66,14 @@
     "notFound": "Page not found",
     "notFoundDescription": "The page you are looking for does not exist or has been moved.",
     "goHome": "Go to Home"
+  },
+  "projects": {
+    "title": "Projects",
+    "description": "Browse all available documentation projects"
+  },
+  "contribute": {
+    "title": "Contribute",
+    "description": "Help us improve the documentation by contributing to the project",
+    "button": "Contribute on GitHub"
   }
 }

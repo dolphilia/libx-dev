@@ -1,0 +1,132 @@
+/* 
+ * グローバルスタイル
+ * @docs/themeパッケージのスタイルをインポート
+ */
+@import '@docs/theme/css/base.css';
+@import '@docs/theme/css/variables.css';
+
+/* 追加のグローバルスタイル */
+:root {
+  --sl-content-width: 80rem;
+  --sl-content-pad-x: 1.5rem;
+  --sl-nav-height: 4rem;
+  --sl-nav-pad-x: 1rem;
+  --sl-nav-pad-y: 0.75rem;
+  --sl-nav-gap: 1rem;
+  --sl-z-index-navbar: 10;
+}
+
+/* ユーティリティクラス */
+.sl-flex {
+  display: flex;
+}
+
+.sl-hidden {
+  display: none;
+}
+
+@media (min-width: 50em) {
+  .md\:sl-flex {
+    display: flex;
+  }
+}
+
+@media print {
+  .print\:hidden {
+    display: none;
+  }
+}
+
+/* プロジェクトグリッド */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+/* ヒーローセクション */
+.hero-section {
+  padding: 4rem 0;
+  text-align: center;
+  max-width: 60rem;
+  margin: 0 auto;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  color: var(--sl-color-white);
+}
+
+.hero-description {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  color: var(--sl-color-gray-3);
+}
+
+/* コンテナ */
+.container {
+  max-width: var(--sl-content-width);
+  margin: 0 auto;
+  padding: 0 var(--sl-content-pad-x);
+}
+
+/* セクション */
+.section {
+  padding: 3rem 0;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--sl-color-white);
+}
+
+.section-description {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  color: var(--sl-color-gray-3);
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.25rem;
+  }
+  
+  .hero-description {
+    font-size: 1.125rem;
+  }
+  
+  .section-title {
+    font-size: 1.75rem;
+  }
+  
+  .project-grid {
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 1.875rem;
+  }
+  
+  .hero-description {
+    font-size: 1rem;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+  }
+  
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+}
