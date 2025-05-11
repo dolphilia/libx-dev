@@ -385,9 +385,9 @@ export async function getSidebarAsync(lang: LocaleKey, version: string, baseUrl:
     
     if (isBrowser) {
       // ブラウザ環境ではfetchを使用
-      const response = await fetch(sidebarPath);
+      const response = await fetch(sidebarPath, { cache: 'no-store' });
       if (!response.ok) {
-        throw new Error(`サイドバーJSONの読み込みに失敗しました: ${response.status}`);
+        throw new Error(`サイドバーJSONの読み込みに失敗しました: ${response.status} ${response.statusText} for ${sidebarPath}`);
       }
       data = await response.json();
     } else {
