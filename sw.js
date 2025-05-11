@@ -40,26 +40,37 @@ self.addEventListener('fetch', (event) => {
 
   if (isSidebarRequest) {
     event.respondWith(
-      caches.match(event.request).then((response) => {
-        // キャッシュに存在する場合はキャッシュから返す
-        if (response) {
-          console.log('Service Worker: キャッシュからサイドバーを返却:', event.request.url);
-          return response;
-        }
-
-        // キャッシュに存在しない場合はネットワークから取得してキャッシュに保存
-        return fetch(event.request).then((networkResponse) => {
-          if (!networkResponse || networkResponse.status !== 200) {
-            return networkResponse;
-          }
-
+      // 1. まずネットワークから取得を試みる
+      fetch(event.request).then((networkResponse) => {
+        // ネットワークから正常に取得できた場合
+        if (networkResponse && networkResponse.status === 200) {
+          console.log('Service Worker: ネットワークからサイドバーを取得・キャッシュ:', event.request.url);
           const responseToCache = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
             cache.put(event.request, responseToCache);
-            console.log('Service Worker: サイドバーをキャッシュに保存:', event.request.url);
           });
-
           return networkResponse;
+        }
+        // ネットワークエラー、または正常でないレスポンスの場合はキャッシュフォールバックを試みる
+        console.log('Service Worker: ネットワーク取得失敗、キャッシュを確認:', event.request.url, networkResponse ? networkResponse.status : 'No response');
+        return caches.match(event.request).then((cachedResponse) => {
+          if (cachedResponse) {
+            console.log('Service Worker: キャッシュからサイドバーを返却 (フォールバック):', event.request.url);
+            return cachedResponse;
+          }
+          // キャッシュにもない場合は、ネットワークのレスポンス (エラーレスポンスなど) をそのまま返す
+          return networkResponse;
+        });
+      }).catch((error) => {
+        // fetchが完全に失敗した場合 (オフラインなど)
+        console.log('Service Worker: ネットワーク接続エラー、キャッシュを確認:', event.request.url, error);
+        return caches.match(event.request).then((cachedResponse) => {
+          if (cachedResponse) {
+            console.log('Service Worker: キャッシュからサイドバーを返却 (オフラインフォールバック):', event.request.url);
+            return cachedResponse;
+          }
+          // 本当に何も返せない場合 (必要に応じてオフラインページなどを返す)
+          // return new Response("オフラインのためコンテンツを取得できませんでした。", { status: 503, statusText: "Service Unavailable" });
         });
       })
     );
