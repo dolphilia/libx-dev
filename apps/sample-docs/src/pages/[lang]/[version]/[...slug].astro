@@ -4,7 +4,6 @@ import DocLayout from '../../../layouts/DocLayout.astro';
 import type { GetStaticPathsResult } from 'astro';
 import type { LocaleKey } from '@docs/i18n/locales';
 import { TableOfContents, Pagination, EditLink } from '@docs/ui/components';
-import { Skull } from '@lucide/astro';
 
 // 見出しの型定義
 interface Heading {
@@ -67,7 +66,6 @@ const tableOfContents: TOCItem[] = headings.filter((heading: Heading) => heading
 
 <DocLayout title={entry.data.title} lang={lang} version={version}>
   <h1>{entry.data.title}</h1>
-  <Skull />
   {entry.data.description && <p class="article-description">{entry.data.description}</p>}
   
   <Content />
