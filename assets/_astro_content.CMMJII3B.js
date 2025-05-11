@@ -518,7 +518,7 @@ class ImmutableDataStore {
    */
   static async fromModule() {
     try {
-      const data = await import('./_astro_data-layer-content.DCN1TrjY.js');
+      const data = await import('./_astro_data-layer-content.D_ODbyyA.js');
       if (data.default instanceof Map) {
         return ImmutableDataStore.fromMap(data.default);
       }
@@ -665,7 +665,7 @@ const CONTENT_LAYER_IMAGE_REGEX = /__ASTRO_IMAGE_="([^"]+)"/g;
 async function updateImageReferencesInBody(html, fileName) {
   const { default: imageAssetMap } = await import('./content-assets.DleWbedO.js');
   const imageObjects = /* @__PURE__ */ new Map();
-  const { getImage } = await import('./_astro_assets.D8DWyqoM.js').then(n => n._);
+  const { getImage } = await import('./_astro_assets.BpMJwri_.js').then(n => n._);
   for (const [_full, imagePath] of html.matchAll(CONTENT_LAYER_IMAGE_REGEX)) {
     try {
       const decodedImagePath = JSON.parse(imagePath.replaceAll("&#x22;", '"'));
@@ -725,7 +725,7 @@ async function renderEntry(entry) {
   }
   if (entry.deferredRender) {
     try {
-      const { default: contentModules } = await import('./content-modules.B95byZzI.js');
+      const { default: contentModules } = await import('./content-modules.B28GAUoQ.js');
       const renderEntryImport = contentModules.get(entry.filePath);
       return render({
         collection: "",
