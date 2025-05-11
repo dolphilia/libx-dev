@@ -357,74 +357,109 @@ export function getSidebar(lang: LocaleKey, version: string, baseUrl: string): S
  * DocLayout.astroで使用する場合は、このメソッドを使用してください
  */
 export async function getSidebarAsync(lang: LocaleKey, version: string, baseUrl: string): Promise<SidebarItem[]> {
+  console.log(`[getSidebarAsync] Called with: lang=${lang}, version=${version}, baseUrl=${baseUrl}`);
   const cacheKey = generateCacheKey(lang, version);
-  
+  console.log(`[getSidebarAsync] Generated cacheKey: ${cacheKey}`);
+
   // キャッシュをチェック
   const cachedData = sidebarCache.get(cacheKey);
   if (cachedData && isCacheValid(cachedData.timestamp)) {
-    console.log(`キャッシュからサイドバーを読み込みました: ${lang}/${version}`);
+    console.log(`[getSidebarAsync] Cache hit for ${cacheKey}. Timestamp: ${cachedData.timestamp}. Returning cached data.`);
+    // Log a small part of the cached data to verify its content
+    console.log('[getSidebarAsync] Cached data (first item title):', cachedData.data[0]?.title);
     return cachedData.data;
   }
-  
+  console.log(`[getSidebarAsync] Cache miss or expired for ${cacheKey}.`);
+
   try {
     // 事前生成したJSONファイルを読み込む
     const isDevMode = import.meta.env.DEV;
     let sidebarPath;
-    
+
     const isBrowser = typeof window !== 'undefined';
-    
+    console.log(`[getSidebarAsync] Environment: isBrowser=${isBrowser}, isDevMode=${isDevMode}`);
+
     if (isBrowser && isDevMode) {
       sidebarPath = new URL(`/docs-astro/sidebar/sidebar-${lang}-${version}.json`, window.location.origin).href;
     } else {
-      sidebarPath = `${baseUrl}/sidebar/sidebar-${lang}-${version}.json`;
+      // For production (browser) or server-side (non-browser), construct path relative to baseUrl
+      // Ensure baseUrl doesn't have a trailing slash before appending, and sidebarPath starts with one.
+      const normalizedBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+      sidebarPath = `${normalizedBaseUrl}/sidebar/sidebar-${lang}-${version}.json`;
     }
-    
-    console.log(`サイドバーを読み込み中: ${sidebarPath}`);
-    
+
+    console.log(`[getSidebarAsync] Attempting to fetch sidebar from: ${sidebarPath}`);
+
     let data: SidebarItem[];
-    
+
     if (isBrowser) {
       // ブラウザ環境ではfetchを使用
+      console.log(`[getSidebarAsync] Fetching in browser for ${sidebarPath}`);
       const response = await fetch(sidebarPath, { cache: 'no-store' });
+      console.log(`[getSidebarAsync] Fetch response status for ${sidebarPath}: ${response.status}, ok: ${response.ok}`);
       if (!response.ok) {
-        throw new Error(`サイドバーJSONの読み込みに失敗しました: ${response.status} ${response.statusText} for ${sidebarPath}`);
+        const responseText = await response.text();
+        console.error(`[getSidebarAsync] Fetch failed for ${sidebarPath}. Status: ${response.status} ${response.statusText}. Response text: ${responseText}`);
+        throw new Error(`サイドバーJSONの読み込みに失敗しました: ${response.status} ${response.statusText} for ${sidebarPath}. Response: ${responseText}`);
       }
-      data = await response.json();
+      const rawJson = await response.text();
+      console.log(`[getSidebarAsync] Raw JSON response for ${sidebarPath} (first 100 chars):`, rawJson.substring(0,100));
+      try {
+        data = JSON.parse(rawJson);
+      } catch (parseError) {
+        console.error(`[getSidebarAsync] JSON parsing failed for ${sidebarPath}:`, parseError, 'Raw JSON:', rawJson);
+        throw parseError;
+      }
+      console.log('[getSidebarAsync] Parsed data from network (first item title):', data[0]?.title);
     } else {
       // サーバーサイドではファイルシステムから読み込み
+      console.log(`[getSidebarAsync] Reading from filesystem (server-side) for ${lang}-${version}.json`);
       const fs = await import('fs/promises');
       const path = await import('path');
       const { fileURLToPath } = await import('url');
-      
+
       const __filename = fileURLToPath(import.meta.url);
       const __dirname = path.dirname(__filename);
-      const projectRoot = path.resolve(__dirname, '../..');
+      // Assuming the structure is apps/sample-docs/src/config -> apps/sample-docs/public/sidebar
+      const projectRoot = path.resolve(__dirname, '..', '..'); // Adjust if structure is different
       const jsonPath = path.join(projectRoot, 'public', 'sidebar', `sidebar-${lang}-${version}.json`);
-      
+      console.log(`[getSidebarAsync] Filesystem path: ${jsonPath}`);
+
       const fileContent = await fs.readFile(jsonPath, 'utf-8');
-      data = JSON.parse(fileContent);
+      console.log(`[getSidebarAsync] Raw JSON from filesystem for ${jsonPath} (first 100 chars):`, fileContent.substring(0,100));
+      try {
+        data = JSON.parse(fileContent);
+      } catch (parseError) {
+         console.error(`[getSidebarAsync] JSON parsing failed for ${jsonPath} (filesystem):`, parseError, 'Raw JSON:', fileContent);
+        throw parseError;
+      }
+      console.log('[getSidebarAsync] Parsed data from filesystem (first item title):', data[0]?.title);
     }
-    
+
     // キャッシュに保存
     sidebarCache.set(cacheKey, {
       data,
       timestamp: Date.now()
     });
-    
-    console.log(`サイドバーの読み込みに成功しました: ${lang}/${version}`);
+
+    console.log(`[getSidebarAsync] Successfully fetched and cached sidebar for ${cacheKey}. Returning network/filesystem data.`);
+    console.log('[getSidebarAsync] Returning data (first item title):', data[0]?.title);
     return data;
-    
+
   } catch (error) {
-    console.error('サイドバーの読み込みに失敗しました:', error);
+    console.error(`[getSidebarAsync] Error during sidebar loading for ${cacheKey}:`, error);
     // フォールバック: 手動定義のサイドバーを返す
     const manualSidebar = getManualSidebar(lang, version, baseUrl);
-    
-    // 手動定義のサイドバーもキャッシュに保存
+    console.log(`[getSidebarAsync] Fallback to manual sidebar for ${cacheKey}.`);
+    console.log('[getSidebarAsync] Manual data (first item title):', manualSidebar[0]?.title);
+
+    // 手動定義のサイドバーもキャッシュに保存 (フォールバックの結果をキャッシュする)
     sidebarCache.set(cacheKey, {
       data: manualSidebar,
-      timestamp: Date.now()
+      timestamp: Date.now() // Potentially cache the fallback for a shorter duration or not at all
     });
-    
+    console.log(`[getSidebarAsync] Cached manual/fallback sidebar for ${cacheKey}.`);
+
     return manualSidebar;
   }
 }
