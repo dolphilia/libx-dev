@@ -1,0 +1,102 @@
+---
+/**
+ * FontAwesomeアイコンコンポーネント
+ * FontAwesomeアイコンライブラリを使用してアイコンを表示します
+ */
+import { 
+  findIconDefinition, 
+  icon as createIcon,
+  IconName,
+  IconPrefix,
+  IconLookup
+} from '@fortawesome/fontawesome-svg-core';
+
+interface Props {
+  /**
+   * アイコン名
+   * @see https://fontawesome.com/icons
+   */
+  name: IconName;
+  
+  /**
+   * アイコンのプレフィックス
+   * - fas: Solid
+   * - far: Regular
+   * - fab: Brands
+   * @default "fas"
+   */
+  prefix?: IconPrefix;
+  
+  /**
+   * アイコンのサイズ（em、rem、pxなどの単位で指定可能）
+   * @default "1em"
+   */
+  size?: string;
+  
+  /**
+   * アイコンの色
+   * @default "currentColor"
+   */
+  color?: string;
+  
+  /**
+   * アイコンのラベル（アクセシビリティ用）
+   * 指定すると、スクリーンリーダーでラベルが読み上げられます
+   * 指定しない場合、アイコンは装飾的なものとして扱われます
+   */
+  label?: string;
+  
+  /**
+   * 追加のCSSクラス
+   */
+  class?: string;
+}
+
+const { 
+  name, 
+  prefix = 'fas',
+  size = '1em', 
+  color = 'currentColor',
+  label,
+  class: className = '',
+} = Astro.props;
+
+// アイコン定義を検索
+const iconLookup: IconLookup = { prefix, iconName: name };
+const iconDefinition = findIconDefinition(iconLookup);
+
+// アイコンを作成
+const { html, width, height } = iconDefinition 
+  ? createIcon(iconDefinition, { classes: ['fa-icon'] })
+  : { html: [], width: 0, height: 0 };
+
+// SVG文字列を作成
+const svgContent = html.join('');
+
+// ラベルが指定されている場合はaria-labelを設定、そうでない場合はaria-hiddenを設定
+const a11yAttrs = label ? ({ 'aria-label': label } as const) : ({ 'aria-hidden': 'true' } as const);
+---
+
+<span 
+  class={`fa-icon-wrapper ${className}`} 
+  {...a11yAttrs}
+  set:html={svgContent}
+></span>
+
+<style define:vars={{ 'icon-color': color, 'icon-size': size }}>
+  .fa-icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--icon-color, currentColor);
+    font-size: var(--icon-size, 1em);
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+  }
+  
+  .fa-icon-wrapper svg {
+    width: 100%;
+    height: 100%;
+  }
+</style>

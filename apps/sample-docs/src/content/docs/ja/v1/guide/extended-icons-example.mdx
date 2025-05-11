@@ -1,0 +1,269 @@
+---
+title: 拡張アイコン例
+description: LucideとFontAwesomeアイコンの使用例
+---
+
+import { Icon, LucideIcon, FontAwesomeIcon } from '@docs/ui';
+
+# 拡張アイコンコンポーネント
+
+このガイドでは、ドキュメント内で拡張アイコンコンポーネントを使用する方法を説明します。
+
+## 組み込みアイコン
+
+基本的な`Icon`コンポーネントは、組み込みのアイコンセットを提供します：
+
+<div style="display: flex; align-items: center; gap: 1rem;">
+  <Icon name="info" />
+  <Icon name="warning" />
+  <Icon name="error" />
+  <Icon name="success" />
+</div>
+
+組み込みアイコンの詳細については、[アイコン例](/ja/v1/guide/icons-example)ページをご覧ください。
+
+## Lucideアイコン
+
+`LucideIcon`コンポーネントを使用すると、[Lucideアイコンライブラリ](https://lucide.dev/icons/)のあらゆるアイコンを使用できます。
+
+### 基本的な使い方
+
+<LucideIcon name="activity" />
+
+### アイコンサイズ
+
+アイコンのサイズを指定できます：
+
+<div style="display: flex; align-items: center; gap: 1rem;">
+  <LucideIcon name="activity" size="1em" />
+  <LucideIcon name="activity" size="1.5em" />
+  <LucideIcon name="activity" size="2em" />
+  <LucideIcon name="activity" size="3em" />
+</div>
+
+### アイコンの色
+
+アイコンの色をカスタマイズできます：
+
+<div style="display: flex; align-items: center; gap: 1rem;">
+  <LucideIcon name="heart" color="#ff0000" />
+  <LucideIcon name="star" color="#ffd700" />
+  <LucideIcon name="thumbs-up" color="#008000" />
+  <LucideIcon name="bell" color="#0000ff" />
+</div>
+
+### ストロークの太さ
+
+Lucideアイコンのストロークの太さを調整できます：
+
+<div style="display: flex; align-items: center; gap: 1rem;">
+  <LucideIcon name="activity" strokeWidth={1} />
+  <LucideIcon name="activity" strokeWidth={2} />
+  <LucideIcon name="activity" strokeWidth={3} />
+</div>
+
+### 人気のLucideアイコン
+
+以下は人気のLucideアイコンです：
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <LucideIcon name="activity" />
+    <span>activity</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <LucideIcon name="alert-circle" />
+    <span>alert-circle</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <LucideIcon name="alert-triangle" />
+    <span>alert-triangle</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <LucideIcon name="bookmark" />
+    <span>bookmark</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <LucideIcon name="check" />
+    <span>check</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <LucideIcon name="check-circle" />
+    <span>check-circle</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <LucideIcon name="chevron-down" />
+    <span>chevron-down</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <LucideIcon name="chevron-up" />
+    <span>chevron-up</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <LucideIcon name="clipboard" />
+    <span>clipboard</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <LucideIcon name="code" />
+    <span>code</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <LucideIcon name="download" />
+    <span>download</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <LucideIcon name="external-link" />
+    <span>external-link</span>
+  </div>
+</div>
+
+## FontAwesomeアイコン
+
+`FontAwesomeIcon`コンポーネントを使用すると、[FontAwesomeアイコンライブラリ](https://fontawesome.com/icons)のあらゆるアイコンを使用できます。
+
+### 基本的な使い方
+
+<FontAwesomeIcon name="coffee" />
+
+### アイコンスタイル
+
+FontAwesomeは、プレフィックスを通じて異なるアイコンスタイルを提供します：
+
+<div style="display: flex; align-items: center; gap: 1rem;">
+  <FontAwesomeIcon name="star" prefix="fas" /> {/* Solid */}
+  <FontAwesomeIcon name="star" prefix="far" /> {/* Regular */}
+  <FontAwesomeIcon name="github" prefix="fab" /> {/* Brands */}
+</div>
+
+### アイコンサイズ
+
+アイコンのサイズを指定できます：
+
+<div style="display: flex; align-items: center; gap: 1rem;">
+  <FontAwesomeIcon name="coffee" size="1em" />
+  <FontAwesomeIcon name="coffee" size="1.5em" />
+  <FontAwesomeIcon name="coffee" size="2em" />
+  <FontAwesomeIcon name="coffee" size="3em" />
+</div>
+
+### アイコンの色
+
+アイコンの色をカスタマイズできます：
+
+<div style="display: flex; align-items: center; gap: 1rem;">
+  <FontAwesomeIcon name="heart" color="#ff0000" />
+  <FontAwesomeIcon name="star" color="#ffd700" />
+  <FontAwesomeIcon name="thumbs-up" color="#008000" />
+  <FontAwesomeIcon name="bell" color="#0000ff" />
+</div>
+
+### 人気のFontAwesomeアイコン
+
+以下は人気のFontAwesomeアイコンです：
+
+#### Solidアイコン (fas)
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <FontAwesomeIcon name="home" prefix="fas" />
+    <span>home</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <FontAwesomeIcon name="user" prefix="fas" />
+    <span>user</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <FontAwesomeIcon name="cog" prefix="fas" />
+    <span>cog</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <FontAwesomeIcon name="search" prefix="fas" />
+    <span>search</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <FontAwesomeIcon name="check" prefix="fas" />
+    <span>check</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <FontAwesomeIcon name="times" prefix="fas" />
+    <span>times</span>
+  </div>
+</div>
+
+#### Regularアイコン (far)
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <FontAwesomeIcon name="bookmark" prefix="far" />
+    <span>bookmark</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <FontAwesomeIcon name="calendar" prefix="far" />
+    <span>calendar</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <FontAwesomeIcon name="comment" prefix="far" />
+    <span>comment</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <FontAwesomeIcon name="file" prefix="far" />
+    <span>file</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <FontAwesomeIcon name="heart" prefix="far" />
+    <span>heart</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <FontAwesomeIcon name="star" prefix="far" />
+    <span>star</span>
+  </div>
+</div>
+
+#### ブランドアイコン (fab)
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <FontAwesomeIcon name="github" prefix="fab" />
+    <span>github</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <FontAwesomeIcon name="twitter" prefix="fab" />
+    <span>twitter</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <FontAwesomeIcon name="facebook" prefix="fab" />
+    <span>facebook</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <FontAwesomeIcon name="linkedin" prefix="fab" />
+    <span>linkedin</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <FontAwesomeIcon name="youtube" prefix="fab" />
+    <span>youtube</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <FontAwesomeIcon name="npm" prefix="fab" />
+    <span>npm</span>
+  </div>
+</div>
+
+## テキスト内でのアイコンの使用
+
+アイコンはテキスト内でインラインで使用できます：
+
+これは情報 <Icon name="info" /> メッセージです。
+
+これは警告 <LucideIcon name="alert-triangle" color="#ffc107" /> メッセージです。
+
+これはエラー <FontAwesomeIcon name="exclamation-circle" color="#dc3545" /> メッセージです。
+
+## アクセシビリティ
+
+アクセシビリティのために、アイコンにラベルを提供できます：
+
+<LucideIcon name="info" label="情報" />
+
+<FontAwesomeIcon name="info-circle" label="情報" />
+
+ラベルが提供されると、アイコンはスクリーンリーダーによって読み上げられます。ラベルがない場合、アイコンは装飾的なものとして扱われ、スクリーンリーダーによって無視されます。
