@@ -1,5 +1,5 @@
 // キャッシュ名とバージョン
-const CACHE_NAME = 'sidebar-cache-v1';
+const CACHE_NAME = 'sidebar-cache-v2';
 
 // キャッシュするファイルのパターン
 const CACHE_PATTERNS = [
@@ -20,8 +20,8 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            console.log('Service Worker: 古いキャッシュを削除:', cacheName);
+          if (cacheName.startsWith('sidebar-cache-') && cacheName !== CACHE_NAME) {
+            console.log('Service Worker: 古いバージョンのサイドバーキャッシュを削除:', cacheName);
             return caches.delete(cacheName);
           }
         })
