@@ -364,14 +364,34 @@ export async function getSidebarAsync(lang: LocaleKey, version: string, baseUrl:
     } else {
       // サーバーサイドでは、ファイルシステムから直接読み込む
       try {
-        // 注: 実際の実装ではファイルシステムからの読み込みが必要かもしれませんが、
-        // ここではフォールバックとして手動定義のサイドバーを使用します
-        throw new Error('サーバーサイドでのJSONファイル読み込みはスキップします');
+        const fs = await import('fs/promises');
+        const path = await import('path');
+        const { fileURLToPath } = await import('url');
+        
+        // 現在のファイルのディレクトリパスを取得
+        const __filename = fileURLToPath(import.meta.url);
+        const __dirname = path.dirname(__filename);
+        
+        // プロジェクトのルートディレクトリを取得（sample-docsディレクトリまで）
+        const projectRoot = path.resolve(__dirname, '../..');
+        
+        // サイドバーJSONファイルのパスを構築
+        const jsonPath = path.join(projectRoot, 'public', 'sidebar', `sidebar-${lang}-${version}.json`);
+        
+        console.log(`JSONファイルのパス: ${jsonPath}`);
+        
+        // ファイルを読み込む
+        const fileContent = await fs.readFile(jsonPath, 'utf-8');
+        const data = JSON.parse(fileContent);
+        
+        console.log(`サイドバーの読み込みに成功しました: ${lang}/${version}`);
+        return data;
       } catch (e) {
         console.warn('サーバーサイドでのJSONファイル読み込みに失敗しました:', e);
         return getManualSidebar(lang, version, baseUrl);
       }
     }
+    
     if (response.ok) {
       const data = await response.json();
       console.log(`サイドバーの読み込みに成功しました: ${lang}/${version}`);
