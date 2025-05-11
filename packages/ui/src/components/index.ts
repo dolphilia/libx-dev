@@ -28,5 +28,5 @@ export { default as TwoColumnContent } from './TwoColumnContent.astro';
 export { default as LinkCard } from './LinkCard.astro';
 export { default as CardGrid } from './CardGrid.astro';
 export { Tabs, TabItem } from './Tabs';
-export { Icon, Icons, type IconName, LucideIcon, FontAwesomeIcon } from './icons';
+export { Icon, Icons, type IconName } from './icons';
 export { Dropdown, DropdownItem } from './Dropdown';

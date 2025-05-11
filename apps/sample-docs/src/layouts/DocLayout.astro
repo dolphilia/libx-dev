@@ -37,8 +37,12 @@ const baseUrl = docsConfig.baseUrl;
 // 現在のパスを取得
 const currentPath = Astro.url.pathname;
 
-// サイドバー項目の取得（非同期）
+
+// サイドバー項目の取得（非同期）- パフォーマンス計測
+console.time('getSidebarAsync execution time');
 const sidebarItems = await getSidebarAsync(lang, version, baseUrl);
+console.timeEnd('getSidebarAsync execution time');
+console.log(`Generated sidebar for ${lang}/${version}`);
 
 // 現在のページに対応するサイドバー項目にisCurrent=trueを設定
 function markCurrentPage(items: SidebarItem[]): SidebarItem[] {

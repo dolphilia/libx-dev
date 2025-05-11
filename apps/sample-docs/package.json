@@ -16,7 +16,6 @@
     "@docs/theme": "workspace:*",
     "@docs/ui": "workspace:*",
     "@docs/versioning": "workspace:*",
-    "@lucide/astro": "^0.509.0",
     "astro": "^5.7.12",
     "shiki": "^3.4.0"
   }

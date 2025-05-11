@@ -19,9 +19,14 @@ interface TOCItem extends Heading {
 }
 
 export async function getStaticPaths(): Promise<GetStaticPathsResult> {
+  // パフォーマンス計測開始
+  console.time('getStaticPaths execution time');
+  
+  // ドキュメントコレクションを取得
   const docs = await getCollection('docs');
   
-  return docs.map((entry: CollectionEntry<'docs'>) => {
+  // 結果を生成
+  const result = docs.map((entry: CollectionEntry<'docs'>) => {
     // スラグからパスパラメータを抽出
     // 例: "en/v1/guide/getting-started" → { lang: "en", version: "v1", slug: "guide/getting-started" }
     const [lang, version, ...slugParts] = entry.slug.split('/');
@@ -32,6 +37,13 @@ export async function getStaticPaths(): Promise<GetStaticPathsResult> {
       props: { entry }
     };
   });
+  
+  // パフォーマンス計測終了
+  console.timeEnd('getStaticPaths execution time');
+  // ドキュメント数をログ出力
+  console.log(`Generated ${result.length} static paths`);
+  
+  return result;
 }
 
 const { entry } = Astro.props as { entry: CollectionEntry<'docs'> };

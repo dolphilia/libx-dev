@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "build:search-index": "node scripts/build-search-index.js",
+    "build:sidebar": "node scripts/build-sidebar.js",
     "create:version": "node scripts/create-version.js",
     "create:doc": "node scripts/create-document.js"
   },

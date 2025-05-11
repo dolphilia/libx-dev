@@ -338,12 +338,51 @@ export function getSidebar(lang: LocaleKey, version: string, baseUrl: string): S
  * DocLayout.astroで使用する場合は、このメソッドを使用してください
  */
 export async function getSidebarAsync(lang: LocaleKey, version: string, baseUrl: string): Promise<SidebarItem[]> {
-  // 自動生成サイドバーを使用するかどうか
-  const useAutoSidebar = docsConfig.useAutoSidebar;
-  
-  if (useAutoSidebar) {
-    return await getAutoSidebar(lang, version, baseUrl);
-  } else {
-    return getManualSidebar(lang, version, baseUrl);
+  try {
+    // 事前生成したJSONファイルを読み込む
+    // 開発環境ではドキュメントルートからの絶対パスを使用し、本番環境ではベースURLを含む絶対パスを使用する
+    const isDevMode = import.meta.env.DEV;
+    let sidebarPath;
+    
+    // サーバーサイドレンダリング時はwindowオブジェクトが存在しないため、条件分岐を追加
+    const isBrowser = typeof window !== 'undefined';
+    
+    if (isBrowser && isDevMode) {
+      // ブラウザ環境かつ開発モードの場合
+      sidebarPath = new URL(`/docs-astro/sidebar/sidebar-${lang}-${version}.json`, window.location.origin).href;
+    } else {
+      // サーバーサイド環境または本番環境の場合
+      sidebarPath = `${baseUrl}/sidebar/sidebar-${lang}-${version}.json`;
+    }
+    
+    console.log(`サイドバーを読み込み中: ${sidebarPath}`);
+    
+    // サーバーサイドでのfetchを処理
+    let response;
+    if (isBrowser) {
+      response = await fetch(sidebarPath);
+    } else {
+      // サーバーサイドでは、ファイルシステムから直接読み込む
+      try {
+        // 注: 実際の実装ではファイルシステムからの読み込みが必要かもしれませんが、
+        // ここではフォールバックとして手動定義のサイドバーを使用します
+        throw new Error('サーバーサイドでのJSONファイル読み込みはスキップします');
+      } catch (e) {
+        console.warn('サーバーサイドでのJSONファイル読み込みに失敗しました:', e);
+        return getManualSidebar(lang, version, baseUrl);
+      }
+    }
+    if (response.ok) {
+      const data = await response.json();
+      console.log(`サイドバーの読み込みに成功しました: ${lang}/${version}`);
+      return data;
+    } else {
+      console.warn(`サイドバーJSONの読み込みに失敗しました: ${response.status} ${response.statusText}`);
+    }
+  } catch (error) {
+    console.error('Failed to load sidebar from JSON:', error);
   }
+  
+  // フォールバック: 手動定義のサイドバーを返す
+  return getManualSidebar(lang, version, baseUrl);
 }

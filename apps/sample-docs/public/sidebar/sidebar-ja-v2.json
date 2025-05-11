@@ -1,0 +1,11 @@
+[
+  {
+    "title": "Guide",
+    "items": [
+      {
+        "title": "入門",
+        "href": "/docs-astro/ja/v2/guide/getting-started"
+      }
+    ]
+  }
+]

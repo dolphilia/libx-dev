@@ -1,0 +1,31 @@
+[
+  {
+    "title": "Guide",
+    "items": [
+      {
+        "title": "Installation",
+        "href": "/docs-astro/en/v1/guide/installation"
+      },
+      {
+        "title": "Getting Started",
+        "href": "/docs-astro/en/v1/guide/getting-started"
+      },
+      {
+        "title": "Sidebar Auto-Generation",
+        "href": "/docs-astro/en/v1/guide/sidebar-auto-generation"
+      },
+      {
+        "title": "Tabs Component Example",
+        "href": "/docs-astro/en/v1/guide/tabs-example"
+      },
+      {
+        "title": "Icons Example",
+        "href": "/docs-astro/en/v1/guide/icons-example"
+      },
+      {
+        "title": "Built-in Icons Example",
+        "href": "/docs-astro/en/v1/guide/extended-icons-example"
+      }
+    ]
+  }
+]

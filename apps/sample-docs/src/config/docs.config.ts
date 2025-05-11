@@ -28,7 +28,7 @@ const docsConfig = {
   docsPath: '/docs',
   
   // 自動サイドバー生成を使用するかどうか
-  useAutoSidebar: true,
+  useAutoSidebar: false,
   
   // 編集リンクを表示するかどうか
   showEditLink: true,

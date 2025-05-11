@@ -30,6 +30,9 @@ jobs:
 
       - name: Build search index
         run: pnpm build:search-index
+        
+      - name: Build sidebar
+        run: pnpm build:sidebar
 
       - name: Build all projects
         run: pnpm build
