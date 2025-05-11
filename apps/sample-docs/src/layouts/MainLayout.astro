@@ -125,6 +125,20 @@ if (hasSidebar) htmlDataAttributes['data-has-sidebar'] = '';
         }
       }
     </style>
+    <script>
+      // Service Workerの登録
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register(`${import.meta.env.BASE_URL}/sw.js`)
+            .then(registration => {
+              console.log('Service Worker登録成功:', registration.scope);
+            })
+            .catch(error => {
+              console.error('Service Worker登録失敗:', error);
+            });
+        });
+      }
+    </script>
   </head>
   <body>
     <div class="page sl-flex">

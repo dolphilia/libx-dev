@@ -178,6 +178,25 @@ const sidebarConfigs: SidebarConfig = {
   }
 };
 
+// サイドバーキャッシュ
+const sidebarCache = new Map<string, {
+  data: SidebarItem[],
+  timestamp: number
+}>();
+
+// キャッシュの有効期限（5分）
+const CACHE_TTL = 5 * 60 * 1000;
+
+// キャッシュキーの生成
+function generateCacheKey(lang: LocaleKey, version: string): string {
+  return `${lang}-${version}`;
+}
+
+// キャッシュの有効性チェック
+function isCacheValid(timestamp: number): boolean {
+  return Date.now() - timestamp < CACHE_TTL;
+}
+
 /**
  * 手動で定義されたサイドバー項目を取得します
  */
@@ -338,71 +357,74 @@ export function getSidebar(lang: LocaleKey, version: string, baseUrl: string): S
  * DocLayout.astroで使用する場合は、このメソッドを使用してください
  */
 export async function getSidebarAsync(lang: LocaleKey, version: string, baseUrl: string): Promise<SidebarItem[]> {
+  const cacheKey = generateCacheKey(lang, version);
+  
+  // キャッシュをチェック
+  const cachedData = sidebarCache.get(cacheKey);
+  if (cachedData && isCacheValid(cachedData.timestamp)) {
+    console.log(`キャッシュからサイドバーを読み込みました: ${lang}/${version}`);
+    return cachedData.data;
+  }
+  
   try {
     // 事前生成したJSONファイルを読み込む
-    // 開発環境ではドキュメントルートからの絶対パスを使用し、本番環境ではベースURLを含む絶対パスを使用する
     const isDevMode = import.meta.env.DEV;
     let sidebarPath;
     
-    // サーバーサイドレンダリング時はwindowオブジェクトが存在しないため、条件分岐を追加
     const isBrowser = typeof window !== 'undefined';
     
     if (isBrowser && isDevMode) {
-      // ブラウザ環境かつ開発モードの場合
       sidebarPath = new URL(`/docs-astro/sidebar/sidebar-${lang}-${version}.json`, window.location.origin).href;
     } else {
-      // サーバーサイド環境または本番環境の場合
       sidebarPath = `${baseUrl}/sidebar/sidebar-${lang}-${version}.json`;
     }
     
     console.log(`サイドバーを読み込み中: ${sidebarPath}`);
     
-    // サーバーサイドでのfetchを処理
-    let response;
+    let data: SidebarItem[];
+    
     if (isBrowser) {
-      response = await fetch(sidebarPath);
-    } else {
-      // サーバーサイドでは、ファイルシステムから直接読み込む
-      try {
-        const fs = await import('fs/promises');
-        const path = await import('path');
-        const { fileURLToPath } = await import('url');
-        
-        // 現在のファイルのディレクトリパスを取得
-        const __filename = fileURLToPath(import.meta.url);
-        const __dirname = path.dirname(__filename);
-        
-        // プロジェクトのルートディレクトリを取得（sample-docsディレクトリまで）
-        const projectRoot = path.resolve(__dirname, '../..');
-        
-        // サイドバーJSONファイルのパスを構築
-        const jsonPath = path.join(projectRoot, 'public', 'sidebar', `sidebar-${lang}-${version}.json`);
-        
-        console.log(`JSONファイルのパス: ${jsonPath}`);
-        
-        // ファイルを読み込む
-        const fileContent = await fs.readFile(jsonPath, 'utf-8');
-        const data = JSON.parse(fileContent);
-        
-        console.log(`サイドバーの読み込みに成功しました: ${lang}/${version}`);
-        return data;
-      } catch (e) {
-        console.warn('サーバーサイドでのJSONファイル読み込みに失敗しました:', e);
-        return getManualSidebar(lang, version, baseUrl);
+      // ブラウザ環境ではfetchを使用
+      const response = await fetch(sidebarPath);
+      if (!response.ok) {
+        throw new Error(`サイドバーJSONの読み込みに失敗しました: ${response.status}`);
       }
+      data = await response.json();
+    } else {
+      // サーバーサイドではファイルシステムから読み込み
+      const fs = await import('fs/promises');
+      const path = await import('path');
+      const { fileURLToPath } = await import('url');
+      
+      const __filename = fileURLToPath(import.meta.url);
+      const __dirname = path.dirname(__filename);
+      const projectRoot = path.resolve(__dirname, '../..');
+      const jsonPath = path.join(projectRoot, 'public', 'sidebar', `sidebar-${lang}-${version}.json`);
+      
+      const fileContent = await fs.readFile(jsonPath, 'utf-8');
+      data = JSON.parse(fileContent);
     }
     
-    if (response.ok) {
-      const data = await response.json();
-      console.log(`サイドバーの読み込みに成功しました: ${lang}/${version}`);
-      return data;
-    } else {
-      console.warn(`サイドバーJSONの読み込みに失敗しました: ${response.status} ${response.statusText}`);
-    }
+    // キャッシュに保存
+    sidebarCache.set(cacheKey, {
+      data,
+      timestamp: Date.now()
+    });
+    
+    console.log(`サイドバーの読み込みに成功しました: ${lang}/${version}`);
+    return data;
+    
   } catch (error) {
-    console.error('Failed to load sidebar from JSON:', error);
+    console.error('サイドバーの読み込みに失敗しました:', error);
+    // フォールバック: 手動定義のサイドバーを返す
+    const manualSidebar = getManualSidebar(lang, version, baseUrl);
+    
+    // 手動定義のサイドバーもキャッシュに保存
+    sidebarCache.set(cacheKey, {
+      data: manualSidebar,
+      timestamp: Date.now()
+    });
+    
+    return manualSidebar;
   }
-  
-  // フォールバック: 手動定義のサイドバーを返す
-  return getManualSidebar(lang, version, baseUrl);
 }

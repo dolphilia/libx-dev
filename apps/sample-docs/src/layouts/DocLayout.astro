@@ -114,6 +114,36 @@ const hasToc = true;
   </div>
 </MainLayout>
 
+<script define:vars={{ lang, version }}>
+  // サイドバーのプリフェッチ
+  function prefetchSidebar(lang, version) {
+    const sidebarPath = `/docs-astro/sidebar/sidebar-${lang}-${version}.json`;
+    
+    // プリフェッチ用のlink要素を作成
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.href = sidebarPath;
+    document.head.appendChild(link);
+    
+    console.log(`サイドバーをプリフェッチ: ${sidebarPath}`);
+  }
+  
+  // 現在のページの言語とバージョンを取得
+  const currentLang = document.documentElement.lang;
+  const currentVersion = window.location.pathname.split('/')[3]; // /docs-astro/{lang}/{version}/...
+  
+  // 現在のサイドバーをプリフェッチ
+  prefetchSidebar(currentLang, currentVersion);
+  
+  // 関連するバージョンのサイドバーもプリフェッチ
+  const versions = ['v1', 'v2'];
+  versions.forEach(version => {
+    if (version !== currentVersion) {
+      prefetchSidebar(currentLang, version);
+    }
+  });
+</script>
+
 <style>
   /* 3カラムレイアウトのコンテナ */
   .doc-layout-container {

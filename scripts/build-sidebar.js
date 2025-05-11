@@ -9,6 +9,7 @@
  * 拡張機能:
  * - 複数のプロジェクトに対応（apps/ディレクトリ内の全プロジェクト）
  * - 言語とバージョンを動的に検出
+ * - JSONファイルの圧縮
  */
 
 import fs from 'fs/promises';
@@ -16,6 +17,10 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { glob } from 'glob';
 import matter from 'gray-matter';
+import zlib from 'zlib';
+import { promisify } from 'util';
+
+const gzip = promisify(zlib.gzip);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,6 +31,31 @@ const config = {
   appsDir: path.join(rootDir, 'apps'),
   baseUrl: '/docs-astro',
 };
+
+/**
+ * JSONファイルを圧縮して保存
+ */
+async function saveCompressedJson(filePath, data) {
+  try {
+    // 通常のJSONファイルを保存
+    await fs.writeFile(filePath, JSON.stringify(data, null, 2));
+    console.log(`  通常のJSONファイルを保存しました: ${filePath}`);
+    
+    // 圧縮版のJSONファイルを保存
+    const compressedData = await gzip(JSON.stringify(data));
+    const compressedPath = `${filePath}.gz`;
+    await fs.writeFile(compressedPath, compressedData);
+    console.log(`  圧縮版のJSONファイルを保存しました: ${compressedPath}`);
+    
+    // 圧縮率を計算
+    const originalSize = JSON.stringify(data).length;
+    const compressedSize = compressedData.length;
+    const compressionRatio = ((originalSize - compressedSize) / originalSize * 100).toFixed(2);
+    console.log(`  圧縮率: ${compressionRatio}% (${originalSize} → ${compressedSize} bytes)`);
+  } catch (error) {
+    console.error(`  JSONファイルの保存中にエラーが発生しました:`, error);
+  }
+}
 
 /**
  * メイン処理
@@ -58,10 +88,9 @@ async function main() {
             // サイドバーを生成
             const sidebar = await generateSidebarForVersion(project, lang, version);
             
-            // サイドバーをJSONとして保存
+            // サイドバーをJSONとして保存（圧縮版も含む）
             const outputPath = path.join(project.outputDir, `sidebar-${lang}-${version}.json`);
-            await fs.writeFile(outputPath, JSON.stringify(sidebar, null, 2));
-            console.log(`  サイドバーを保存しました: ${outputPath}`);
+            await saveCompressedJson(outputPath, sidebar);
           } catch (error) {
             console.error(`  ${lang}/${version} のサイドバー生成中にエラーが発生しました:`, error);
           }
