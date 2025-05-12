@@ -3,6 +3,9 @@ import { Icon } from '@docs/ui/components';
 import { translate } from '@docs/i18n/utils';
 import type { LocaleKey } from '@docs/i18n/locales';
 
+// 検索関連のユーティリティをインポート
+// リファクタリングで分割したコンポーネントとユーティリティを使用
+
 interface Props {
   lang: LocaleKey;
   placeholder?: string;
@@ -29,10 +32,14 @@ const translations = {
 };
 ---
 
-<site-search class={className} data-translations={JSON.stringify(translations)}>
+<site-search
+  class={className}
+  data-translations={JSON.stringify(translations)}
+  data-lang={lang}
+  data-base-url={import.meta.env.BASE_URL}
+>
   <button
     data-open-modal
-    disabled
     aria-label={translate('search.label', lang)}
     aria-keyshortcuts="Control+K /"
   >
@@ -145,7 +152,7 @@ const translations = {
   }
 
   dialog::backdrop {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.65);
     backdrop-filter: blur(0.25rem);
   }
 
@@ -154,6 +161,7 @@ const translations = {
     flex-direction: column;
     width: 100%;
     height: 100%;
+    background-color: white;
   }
 
   .dialog-header {
@@ -283,14 +291,31 @@ const translations = {
 </style>
 
 <script>
+  // 分割したユーティリティをインポート
+  import { loadSearchManifest, getSearchIndexPath, performSearch, groupResultsByCategory } from '../utils/searchClient';
+  import { displayResults, displayError, clearResults } from '../components/SearchDisplay';
+  
   class SiteSearch extends HTMLElement {
+    pageLang: string = 'en';
+    baseUrl: string = '';
+    currentProjectName: string = 'top-page';
+    searchManifest: any | null = null;
+    isManifestLoading: boolean = false;
+
     constructor() {
       super();
+      // 要素の取得
       const openBtn = this.querySelector<HTMLButtonElement>('button[data-open-modal]')!;
       const closeBtn = this.querySelector<HTMLButtonElement>('button[data-close-modal]')!;
       const dialog = this.querySelector('dialog')!;
       const dialogFrame = this.querySelector('.dialog-frame')!;
       const searchInput = this.querySelector<HTMLInputElement>('#search-input')!;
+      
+      // ダイアログが初期化されていることを確認
+      if (!dialog) {
+        console.error('Search dialog element not found');
+        return;
+      }
       const resultsContainer = this.querySelector<HTMLDivElement>('#search-results-container')!;
 
       let translations = {};
@@ -300,7 +325,13 @@ const translations = {
         console.error('Failed to parse search translations:', e);
       }
 
-      /** Close the modal if a user clicks on a link or outside of the modal. */
+      this.pageLang = this.dataset.lang || 'en';
+      this.baseUrl = this.dataset.baseUrl || '';
+      if (this.baseUrl === '/') this.baseUrl = '';
+      this.currentProjectName = this.dataset.currentProjectName || 'top-page';
+
+      this.loadSearchManifest();
+
       const onClick = (event: MouseEvent) => {
         const isLink = 'href' in (event.target || {});
         if (
@@ -312,12 +343,37 @@ const translations = {
         }
       };
 
-      const openModal = (event?: MouseEvent) => {
-        dialog.showModal();
-        document.body.classList.add('search-modal-open');
-        searchInput.focus();
-        event?.stopPropagation();
-        window.addEventListener('click', onClick);
+      const openModal = async (event?: MouseEvent, translations?: any) => {
+        try {
+          // ダイアログを確実に表示する
+          dialog.showModal();
+          // bodyにクラスを追加
+          document.body.classList.add('search-modal-open');
+          // 入力フィールドにフォーカス
+          searchInput.focus();
+          // イベント伝播を停止
+          event?.stopPropagation();
+          // クリックイベントリスナーを追加
+          window.addEventListener('click', onClick);
+          
+          console.log('Search dialog opened successfully');
+        } catch (error) {
+          console.error('Failed to open search dialog:', error);
+        }
+
+        if (!this.searchManifest && !this.isManifestLoading) {
+            await this.loadSearchManifest();
+        }
+        if (!this.searchManifest && translations) {
+            displayError(
+                translations.searchError ? translations.searchError + ': Manifest load failed' : 'Search manifest could not be loaded.',
+                resultsContainer, 
+                translations
+            );
+            searchInput.disabled = true;
+        } else {
+            searchInput.disabled = false;
+        }
       };
 
       const closeModal = () => {
@@ -326,61 +382,106 @@ const translations = {
         window.removeEventListener('click', onClick);
       };
 
-      openBtn.addEventListener('click', openModal);
-      openBtn.disabled = false;
-      closeBtn.addEventListener('click', closeModal);
+      // 検索ボタンのクリックイベントを強化
+      openBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        console.log('Search button clicked');
+        openModal(event, translations);
+      });
+      
+      // 閉じるボタンのクリックイベント
+      closeBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        closeModal();
+      });
 
       dialog.addEventListener('close', () => {
         document.body.classList.remove('search-modal-open');
         window.removeEventListener('click', onClick);
       });
 
-      // Listen for keyboard shortcuts
       window.addEventListener('keydown', (e) => {
-        // Ctrl+K or Cmd+K
         if ((e.ctrlKey === true || e.metaKey === true) && e.key === 'k') {
-          dialog.open ? closeModal() : openModal();
+          dialog.open ? closeModal() : openModal(undefined, translations);
           e.preventDefault();
         }
         
-        // / key (when not in an input field)
         if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName || '')) {
           if (!dialog.open) {
-            openModal();
+            openModal(undefined, translations);
             e.preventDefault();
           }
         }
         
-        // Escape key
         if (e.key === 'Escape' && dialog.open) {
           closeModal();
         }
       });
 
-      // Handle search input
       searchInput.addEventListener('input', () => {
         const query = searchInput.value.trim();
         if (query.length >= 2) {
           this.performSearch(query, resultsContainer, translations);
         } else if (query.length === 0) {
-          this.clearResults(resultsContainer);
+          clearResults(resultsContainer);
         }
       });
 
-      // Update keyboard shortcut display based on platform
       const platformKey = this.querySelector('.platform-key');
       if (platformKey && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
         platformKey.textContent = '⌘';
       }
     }
 
-    clearResults(container: HTMLElement) {
-      container.innerHTML = '';
+    async loadSearchManifest() {
+      if (this.searchManifest || this.isManifestLoading) return;
+      this.isManifestLoading = true;
+      
+      try {
+        // 分割したユーティリティを使用してマニフェストを読み込む
+        const { searchManifest, projectName } = await loadSearchManifest(this.baseUrl, window.location.pathname);
+        this.searchManifest = searchManifest;
+        this.currentProjectName = projectName;
+      } catch (error) {
+        console.error('マニフェストの読み込み中にエラーが発生しました:', error);
+      } finally {
+        this.isManifestLoading = false;
+      }
     }
 
+    // clearResultsメソッドは削除し、インポートした関数を使用
+
     async performSearch(query: string, container: HTMLElement, translations: any) {
+      // トップページの場合は検索を行わない
+      if (this.currentProjectName === 'top-page') {
+        console.log('トップページでは検索をサポートしていません');
+        displayError(
+          translations.searchError ? translations.searchError + ': トップページでは検索をサポートしていません' : 'トップページでは検索をサポートしていません。ドキュメントページに移動して検索してください。',
+          container,
+          translations
+        );
+        return;
+      }
+      
+      // マニフェストが読み込まれているか確認
+      if (!this.searchManifest) {
+        if (this.isManifestLoading) {
+          container.innerHTML = `<div class="loading-indicator"><p>Loading search data...</p></div>`;
+          return;
+        }
+        console.error('Search manifest is not loaded. Cannot perform search.');
+        displayError(
+          translations.searchError ? translations.searchError + ': Manifest not loaded' : 'Search data not available.',
+          container,
+          translations
+        );
+        return;
+      }
+
       try {
-        // Show loading indicator
+        // 検索中の表示
         container.innerHTML = `
           <div class="loading-indicator">
             <div class="loading-spinner"></div>
@@ -388,36 +489,48 @@ const translations = {
           </div>
         `;
 
-        // Get current language and version from URL
-        const pathParts = window.location.pathname.split('/');
-        const lang = pathParts[1] || 'en';
-        const version = pathParts[2] || 'v1';
+        // 現在のパスから言語とバージョンを取得
+        const currentPathname = window.location.pathname;
+        const relativeSegments = currentPathname.split('/').filter(s => s.length > 0);
         
-        // Fetch search index
-        const response = await fetch(`/search/index-${lang}-${version}.json`);
-        
-        if (!response.ok) {
-          throw new Error(`Failed to fetch search index: ${response.status}`);
+        // プロジェクト、言語、バージョンの情報を取得
+        const projectKey = this.currentProjectName;
+        let langKey = this.pageLang;
+        let versionKey = 'v1';
+
+        // パスから言語とバージョンを特定
+        let langSegmentIndex = 0;
+        if (relativeSegments.length > 0 && relativeSegments[0].toLowerCase() === projectKey.toLowerCase()) {
+          langSegmentIndex = 1;
+        }
+
+        if (relativeSegments.length > langSegmentIndex) {
+          if (relativeSegments[langSegmentIndex].length === 2 || relativeSegments[langSegmentIndex].length === 5) {
+            langKey = relativeSegments[langSegmentIndex];
+          }
         }
         
-        const searchIndex = await response.json();
+        if (relativeSegments.length > langSegmentIndex + 1) {
+          if (relativeSegments[langSegmentIndex + 1].startsWith('v')) {
+            versionKey = relativeSegments[langSegmentIndex + 1];
+          }
+        }
         
-        // Perform search
-        const results = searchIndex.filter((item: any) => {
-          const titleMatch = item.title.toLowerCase().includes(query.toLowerCase());
-          const contentMatch = item.content.toLowerCase().includes(query.toLowerCase());
-          return titleMatch || contentMatch;
-        });
-
-        // Group results by category
-        const groupedResults = this.groupResultsByCategory(results);
+        // 検索インデックスファイルのパスを取得
+        const searchIndexPath = getSearchIndexPath(this.searchManifest, projectKey, langKey, versionKey);
         
-        // Display results
-        this.displayResults(groupedResults, query, container, translations);
+        // 検索を実行
+        const results = await performSearch(searchIndexPath, query);
+        
+        // 結果をカテゴリでグループ化
+        const groupedResults = groupResultsByCategory(results);
+        
+        // 結果を表示
+        displayResults(groupedResults, query, container, translations);
         
       } catch (error) {
         console.error('Search error:', error);
-        this.displayError(
+        displayError(
           error instanceof Error ? error.message : 'An error occurred during search',
           container,
           translations
@@ -425,111 +538,7 @@ const translations = {
       }
     }
 
-    groupResultsByCategory(results: any[]) {
-      const grouped: Record<string, any[]> = {};
-      
-      results.forEach(result => {
-        const category = result.category || 'Other';
-        if (!grouped[category]) {
-          grouped[category] = [];
-        }
-        grouped[category].push(result);
-      });
-      
-      return grouped;
-    }
-
-    displayResults(groupedResults: Record<string, any[]>, query: string, container: HTMLElement, translations: any) {
-      container.innerHTML = '';
-      
-      const totalResults = Object.values(groupedResults).flat().length;
-      
-      if (totalResults === 0) {
-        container.innerHTML = `
-          <div class="no-results">
-            <p>${translations.noResults?.replace('{query}', query) || `No results found for "${query}"`}</p>
-          </div>
-        `;
-        return;
-      }
-      
-      // Create results count header
-      const resultsHeader = document.createElement('div');
-      resultsHeader.className = 'results-header';
-      resultsHeader.innerHTML = `
-        <h2 class="results-title">
-          ${totalResults === 1 
-            ? (translations.oneResult?.replace('{query}', query) || `1 result for "${query}"`) 
-            : (translations.manyResults?.replace('{query}', query).replace('{count}', totalResults) || `${totalResults} results for "${query}"`)}
-        </h2>
-      `;
-      container.appendChild(resultsHeader);
-      
-      // Create results by category
-      Object.entries(groupedResults).forEach(([category, results]) => {
-        const categoryElement = document.createElement('div');
-        categoryElement.className = 'results-category';
-        
-        categoryElement.innerHTML = `
-          <h3 class="category-title">${category}</h3>
-          <div class="category-results"></div>
-        `;
-        
-        const categoryResults = categoryElement.querySelector('.category-results')!;
-        
-        results.forEach(result => {
-          const resultElement = document.createElement('div');
-          resultElement.className = 'result-item';
-          
-          // Extract excerpt containing the query
-          const excerpt = this.extractRelevantExcerpt(result.content, query);
-          
-          resultElement.innerHTML = `
-            <a href="${result.url}" class="result-link">
-              <h4 class="result-title">${this.highlightMatches(result.title, query)}</h4>
-              <div class="result-breadcrumb">${result.breadcrumb || `${result.project} / ${result.version}`}</div>
-              <p class="result-excerpt">${this.highlightMatches(excerpt, query)}</p>
-            </a>
-          `;
-          
-          categoryResults.appendChild(resultElement);
-        });
-        
-        container.appendChild(categoryElement);
-      });
-    }
-
-    extractRelevantExcerpt(content: string, query: string): string {
-      const lowerContent = content.toLowerCase();
-      const lowerQuery = query.toLowerCase();
-      const index = lowerContent.indexOf(lowerQuery);
-      
-      if (index === -1) return content.substring(0, 150) + '...';
-      
-      const start = Math.max(0, index - 75);
-      const end = Math.min(content.length, index + query.length + 75);
-      let excerpt = content.substring(start, end);
-      
-      if (start > 0) excerpt = '...' + excerpt;
-      if (end < content.length) excerpt = excerpt + '...';
-      
-      return excerpt;
-    }
-
-    highlightMatches(text: string, query: string): string {
-      if (!query) return text;
-      
-      const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-      return text.replace(regex, '<mark class="search-highlight">$1</mark>');
-    }
-
-    displayError(message: string, container: HTMLElement, translations: any) {
-      container.innerHTML = `
-        <div class="search-error">
-          <p>${translations.searchError || 'Search error'}: ${message}</p>
-        </div>
-      `;
-    }
+    // 不要なメソッドは分割したユーティリティに移動したため削除
   }
 
   customElements.define('site-search', SiteSearch);
@@ -628,3 +637,8 @@ const translations = {
     margin-top: 1rem;
   }
 </style>
+
+
+
+
+

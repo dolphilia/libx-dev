@@ -9,6 +9,7 @@
  * 3. 各アプリケーションのビルド出力をルートの`dist`フォルダにコピー
  * 4. サイドバーJSONファイルを正しい場所にコピー
  * 5. ローカル開発環境用のビルドでは、GitHub Pagesのベースパスを削除
+ * 6. 全ての検索インデックス情報を集約した `manifest.json` を生成
  * 
  * オプション:
  * --local: ローカル開発環境用のビルドを行います。GitHub Pagesのベースパスを削除します。
@@ -29,6 +30,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
 const distDir = path.join(rootDir, 'dist');
+const searchIndicesCollectDir = path.join(distDir, 'search-indices'); // manifest.jsonもここに配置
 
 // アプリケーションのリスト
 const apps = [
@@ -155,6 +157,11 @@ async function main() {
     console.log('ローカル開発環境用のビルドを行います...');
   }
 
+  // 検索インデックスのマニフェストオブジェクト初期化
+  const searchIndexManifest = {
+    projects: {}
+  };
+
   // 既存のdistディレクトリを削除
   if (fs.existsSync(distDir)) {
     console.log('既存のdistディレクトリを削除します...');
@@ -163,6 +170,12 @@ async function main() {
 
   // distディレクトリを作成
   fs.mkdirSync(distDir, { recursive: true });
+  
+  // search-indices ディレクトリも先に作成 (manifest.json のため)
+  if (!fs.existsSync(searchIndicesCollectDir)) {
+    fs.mkdirSync(searchIndicesCollectDir, { recursive: true });
+  }
+
 
   // 各アプリケーションをビルド
   for (const app of apps) {
@@ -194,36 +207,82 @@ async function main() {
       
       if (fs.existsSync(sidebarSrcDir)) {
         console.log(`サイドバーJSONファイルをコピーしています...`);
-        // サイドバーディレクトリが存在しない場合は作成
         if (!fs.existsSync(sidebarDestDir)) {
           fs.mkdirSync(sidebarDestDir, { recursive: true });
         }
-        
-        // サイドバーJSONファイルをコピー
         copyDirRecursive(sidebarSrcDir, sidebarDestDir);
         
-        // ビルド後の環境でも正しく読み込めるように、追加の場所にもコピー
         const additionalDestDir = path.join(app.destDir, 'pages', 'public', 'sidebar');
         if (!fs.existsSync(additionalDestDir)) {
           fs.mkdirSync(additionalDestDir, { recursive: true });
           console.log(`追加のサイドバーディレクトリを作成しました: ${additionalDestDir}`);
         }
-        
-        // 追加の場所にもサイドバーJSONファイルをコピー
         copyDirRecursive(sidebarSrcDir, additionalDestDir);
         console.log(`追加の場所にもサイドバーJSONファイルをコピーしました: ${additionalDestDir}`);
       } else {
         console.warn(`サイドバーディレクトリが見つかりません: ${sidebarSrcDir}`);
       }
     }
+    
+    // --- 検索インデックス集約処理 ---
+    console.log(`[${app.name}] 検索インデックスの集約処理を開始します...`);
+    const originalSearchDirInAppDist = path.join(app.srcDir, 'search'); 
+    if (fs.existsSync(originalSearchDirInAppDist)) {
+      console.log(`[${app.name}] 元の検索インデックスディレクトリを検出: ${originalSearchDirInAppDist}`);
+      const indexFiles = fs.readdirSync(originalSearchDirInAppDist).filter(
+        file => file.startsWith('index-') && file.endsWith('.json')
+      );
+
+      if (indexFiles.length > 0) {
+        console.log(`[${app.name}] 収集対象のインデックスファイル: ${indexFiles.join(', ')}`);
+        if (!searchIndexManifest.projects[app.name]) {
+          searchIndexManifest.projects[app.name] = {};
+        }
+      } else {
+        console.log(`[${app.name}] 収集対象のインデックスファイルは見つかりませんでした。`);
+      }
+
+      for (const indexFile of indexFiles) {
+        const nameParts = indexFile.replace('index-', '').replace('.json', '').split('-');
+        if (nameParts.length >= 2) { 
+          const lang = nameParts[0];
+          const version = nameParts.slice(1).join('-');
+          
+          const newFileName = `${app.name}-${lang}-${version}.json`;
+          const srcFilePath = path.join(originalSearchDirInAppDist, indexFile);
+          const destFilePath = path.join(searchIndicesCollectDir, newFileName);
+          
+          fs.copyFileSync(srcFilePath, destFilePath);
+          console.log(`  インデックスをコピー: ${srcFilePath} -> ${destFilePath}`);
+
+          // マニフェストに記録
+          if (!searchIndexManifest.projects[app.name][lang]) {
+            searchIndexManifest.projects[app.name][lang] = {};
+          }
+          searchIndexManifest.projects[app.name][lang][version] = newFileName;
+
+        } else {
+          console.warn(`  ファイル名形式が不正なためスキップ: ${indexFile}`);
+        }
+      }
+
+      const searchDirInFinalAppDest = path.join(app.destDir, 'search');
+      if (fs.existsSync(searchDirInFinalAppDest)) {
+        console.log(`[${app.name}] 最終出力先から元の検索ディレクトリを削除: ${searchDirInFinalAppDest}`);
+        fs.rmSync(searchDirInFinalAppDest, { recursive: true, force: true });
+      }
+    } else {
+      console.log(`[${app.name}] 元の検索インデックスディレクトリが見つかりません: ${originalSearchDirInAppDist}`);
+    }
+    console.log(`[${app.name}] 検索インデックスの集約処理を完了しました。`);
+    // --- ここまで検索インデックス集約処理 ---
 
     // ベースパスの修正が必要な場合
     if (app.pathPrefix) {
       console.log(`${app.name}のベースパスを修正しています...`);
-      let oldBasePath = '/docs-astro'; // GitHub Pagesのベースパス
-      let newBasePath = '/docs-astro' + app.pathPrefix; // 新しいパス
+      let oldBasePath = '/docs-astro'; 
+      let newBasePath = '/docs-astro' + app.pathPrefix; 
       
-      // ローカルビルドの場合はベースパスを削除
       if (isLocalBuild) {
         console.log(`ローカル開発環境用にベースパスを削除します...`);
         oldBasePath = '/docs-astro';
@@ -234,20 +293,15 @@ async function main() {
     }
   }
 
-  // ルートのindex.htmlを直接修正（ローカルビルドの場合）
-  // if (isLocalBuild) {
-  //   console.log('ルートのindex.htmlを直接修正しています...');
-  //   const indexPath = path.join(distDir, 'index.html');
-  //   if (fs.existsSync(indexPath)) {
-  //     // ローカル開発環境用のポート番号（デフォルト: 8080）
-  //     const localPort = process.env.PORT || 8080;
-  //     const content = `<!doctype html><title>Redirecting to: /en/</title><meta http-equiv="refresh" content="2;url=/en/"><meta name="robots" content="noindex"><link rel="canonical" href="http://localhost:${localPort}/en/"><body><a href="/en/">Redirecting from <code>/</code> to <code>/en/</code></a></body>`;
-  //     fs.writeFileSync(indexPath, content, 'utf8');
-  //     console.log('ルートのindex.htmlを修正しました。');
-  //   } else {
-  //     console.warn('ルートのindex.htmlが見つかりません。');
-  //   }
-  // }
+  // --- manifest.json の書き出し ---
+  const manifestFilePath = path.join(searchIndicesCollectDir, 'manifest.json');
+  try {
+    fs.writeFileSync(manifestFilePath, JSON.stringify(searchIndexManifest, null, 2));
+    console.log(`検索インデックスのマニフェストを保存しました: ${manifestFilePath}`);
+  } catch (error) {
+    console.error(`マニフェストファイルの書き出しに失敗しました: ${manifestFilePath}`, error);
+  }
+  // --- ここまで manifest.json の書き出し ---
 
   console.log('統合ビルドが完了しました。');
 }
