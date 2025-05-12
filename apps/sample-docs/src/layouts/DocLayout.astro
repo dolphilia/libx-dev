@@ -117,7 +117,7 @@ const hasToc = true;
 <script define:vars={{ lang, version }}>
   // サイドバーのプリフェッチ
   function prefetchSidebar(lang, version) {
-    const sidebarPath = `/docs-astro/sidebar/sidebar-${lang}-${version}.json`;
+    const sidebarPath = `/sidebar/sidebar-${lang}-${version}.json`;
     
     // プリフェッチ用のlink要素を作成
     const link = document.createElement('link');
@@ -130,7 +130,7 @@ const hasToc = true;
   
   // 現在のページの言語とバージョンを取得
   const currentLang = document.documentElement.lang;
-  const currentVersion = window.location.pathname.split('/')[3]; // /docs-astro/{lang}/{version}/...
+  const currentVersion = window.location.pathname.split('/')[3]; // /{lang}/{version}/...
   
   // 現在のサイドバーをプリフェッチ
   prefetchSidebar(currentLang, currentVersion);

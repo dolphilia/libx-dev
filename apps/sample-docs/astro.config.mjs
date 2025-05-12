@@ -13,7 +13,7 @@ export default defineConfig({
   // デプロイ先のサイトURL
   site: 'https://dolphilia.github.io',
   // GitHub Pagesのサブディレクトリにデプロイするためのベースパス
-  base: '/docs-astro',
+  base: '/docs/sample-docs',
   integrations: [
     mdx({
       // シンタックスハイライトの設定

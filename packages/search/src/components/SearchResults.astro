@@ -336,7 +336,7 @@ const { lang, className = '' } = Astro.props;
       const version = pathParts[2] || 'v1';
       
       // 検索インデックスを取得
-      const response = await fetch(`/docs-astro/search/index-${lang}-${version}.json`);
+      const response = await fetch(`/search/index-${lang}-${version}.json`);
       
       if (!response.ok) {
         throw new Error(`検索インデックスの取得に失敗しました: ${response.status}`);

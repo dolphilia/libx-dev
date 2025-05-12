@@ -66,7 +66,7 @@ if (fs.existsSync(categoryDir)) {
       const prevSlug = files[index - 1];
       prevLink = {
         text: prevSlug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
-        link: `/docs-astro/${lang}/${version}/${category}/${prevSlug}`
+        link: `/${lang}/${version}/${category}/${prevSlug}`
       };
     }
     
@@ -75,7 +75,7 @@ if (fs.existsSync(categoryDir)) {
       const nextSlug = files[index + 1];
       nextLink = {
         text: nextSlug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
-        link: `/docs-astro/${lang}/${version}/${category}/${nextSlug}`
+        link: `/${lang}/${version}/${category}/${nextSlug}`
       };
     }
   } catch (error) {

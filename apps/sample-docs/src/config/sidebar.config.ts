@@ -31,15 +31,15 @@ const sidebarConfigs: SidebarConfig = {
         items: [
           { 
             title: 'Getting Started', 
-            href: `/docs-astro/en/v1/guide/getting-started` 
+            href: `/en/v1/guide/getting-started` 
           },
           { 
             title: 'Installation', 
-            href: `/docs-astro/en/v1/guide/installation` 
+            href: `/en/v1/guide/installation` 
           },
           { 
             title: 'Configuration', 
-            href: `/docs-astro/en/v1/guide/configuration` 
+            href: `/en/v1/guide/configuration` 
           },
         ]
       },
@@ -48,11 +48,11 @@ const sidebarConfigs: SidebarConfig = {
         items: [
           { 
             title: 'Overview', 
-            href: `/docs-astro/en/v1/api` 
+            href: `/en/v1/api` 
           },
           { 
             title: 'Reference', 
-            href: `/docs-astro/en/v1/api/reference` 
+            href: `/en/v1/api/reference` 
           },
         ]
       }
@@ -64,15 +64,15 @@ const sidebarConfigs: SidebarConfig = {
         items: [
           { 
             title: '入門', 
-            href: `/docs-astro/ja/v1/guide/getting-started` 
+            href: `/ja/v1/guide/getting-started` 
           },
           { 
             title: 'インストール', 
-            href: `/docs-astro/ja/v1/guide/installation` 
+            href: `/ja/v1/guide/installation` 
           },
           { 
             title: '設定', 
-            href: `/docs-astro/ja/v1/guide/configuration` 
+            href: `/ja/v1/guide/configuration` 
           },
         ]
       },
@@ -81,11 +81,11 @@ const sidebarConfigs: SidebarConfig = {
         items: [
           { 
             title: '概要', 
-            href: `/docs-astro/ja/v1/api` 
+            href: `/ja/v1/api` 
           },
           { 
             title: 'リファレンス', 
-            href: `/docs-astro/ja/v1/api/reference` 
+            href: `/ja/v1/api/reference` 
           },
         ]
       }
@@ -100,19 +100,19 @@ const sidebarConfigs: SidebarConfig = {
         items: [
           { 
             title: 'Getting Started', 
-            href: `/docs-astro/en/v2/guide/getting-started` 
+            href: `/en/v2/guide/getting-started` 
           },
           { 
             title: 'Installation', 
-            href: `/docs-astro/en/v2/guide/installation` 
+            href: `/en/v2/guide/installation` 
           },
           { 
             title: 'Configuration', 
-            href: `/docs-astro/en/v2/guide/configuration` 
+            href: `/en/v2/guide/configuration` 
           },
           { 
             title: 'Advanced Usage', 
-            href: `/docs-astro/en/v2/guide/advanced-usage` 
+            href: `/en/v2/guide/advanced-usage` 
           },
         ]
       },
@@ -121,15 +121,15 @@ const sidebarConfigs: SidebarConfig = {
         items: [
           { 
             title: 'Overview', 
-            href: `/docs-astro/en/v2/api` 
+            href: `/en/v2/api` 
           },
           { 
             title: 'Reference', 
-            href: `/docs-astro/en/v2/api/reference` 
+            href: `/en/v2/api/reference` 
           },
           { 
             title: 'Hooks', 
-            href: `/docs-astro/en/v2/api/hooks` 
+            href: `/en/v2/api/hooks` 
           },
         ]
       }
@@ -141,19 +141,19 @@ const sidebarConfigs: SidebarConfig = {
         items: [
           { 
             title: '入門', 
-            href: `/docs-astro/ja/v2/guide/getting-started` 
+            href: `/ja/v2/guide/getting-started` 
           },
           { 
             title: 'インストール', 
-            href: `/docs-astro/ja/v2/guide/installation` 
+            href: `/ja/v2/guide/installation` 
           },
           { 
             title: '設定', 
-            href: `/docs-astro/ja/v2/guide/configuration` 
+            href: `/ja/v2/guide/configuration` 
           },
           { 
             title: '高度な使い方', 
-            href: `/docs-astro/ja/v2/guide/advanced-usage` 
+            href: `/ja/v2/guide/advanced-usage` 
           },
         ]
       },
@@ -162,15 +162,15 @@ const sidebarConfigs: SidebarConfig = {
         items: [
           { 
             title: '概要', 
-            href: `/docs-astro/ja/v2/api` 
+            href: `/ja/v2/api` 
           },
           { 
             title: 'リファレンス', 
-            href: `/docs-astro/ja/v2/api/reference` 
+            href: `/ja/v2/api/reference` 
           },
           { 
             title: 'フック', 
-            href: `/docs-astro/ja/v2/api/hooks` 
+            href: `/ja/v2/api/hooks` 
           },
         ]
       }
@@ -201,9 +201,18 @@ function isCacheValid(timestamp: number): boolean {
  * 手動で定義されたサイドバー項目を取得します
  */
 export function getManualSidebar(lang: LocaleKey, version: string, baseUrl: string): SidebarItem[] {
-  // バージョンと言語に対応するサイドバー設定があれば、それを返す
-  if (sidebarConfigs[version]?.[lang]) {
-    return sidebarConfigs[version][lang] as SidebarItem[];
+  const configuredSidebar = sidebarConfigs[version]?.[lang];
+  
+  if (configuredSidebar) {
+    // configuredSidebar の各アイテムの href に baseUrl を付加する
+    return configuredSidebar.map(section => ({
+      ...section,
+      items: section.items.map(item => ({
+        ...item,
+        // item.href は "/lang/version/slug" 形式と想定されるため、baseUrlを先頭に追加
+        href: `${baseUrl}${item.href}` 
+      }))
+    }));
   }
   
   // 対応する設定がない場合は、デフォルトのサイドバー項目を返す
@@ -375,54 +384,29 @@ export async function getSidebarAsync(lang: LocaleKey, version: string, baseUrl:
     // 事前生成したJSONファイルを読み込む
     const isDevMode = import.meta.env.DEV;
     let sidebarPath;
+    let data: SidebarItem[] = []; // data変数をここで宣言し、空配列で初期化
 
     const isBrowser = typeof window !== 'undefined';
     console.log(`[getSidebarAsync] Environment: isBrowser=${isBrowser}, isDevMode=${isDevMode}`);
 
     if (isBrowser && isDevMode) {
-      sidebarPath = new URL(`/docs-astro/sidebar/sidebar-${lang}-${version}.json`, window.location.origin).href;
-    } else {
-      // For production (browser) or server-side (non-browser), construct path relative to baseUrl
-      // Ensure baseUrl doesn't have a trailing slash before appending, and sidebarPath starts with one.
-      const normalizedBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
-      sidebarPath = `${normalizedBaseUrl}/sidebar/sidebar-${lang}-${version}.json`;
-    }
-
-    console.log(`[getSidebarAsync] Attempting to fetch sidebar from: ${sidebarPath}`);
-
-    let data: SidebarItem[];
-
-    if (isBrowser) {
-      // ブラウザ環境ではfetchを使用
-      console.log(`[getSidebarAsync] Fetching in browser for ${sidebarPath}`);
-      const response = await fetch(sidebarPath, { cache: 'no-store' });
-      console.log(`[getSidebarAsync] Fetch response status for ${sidebarPath}: ${response.status}, ok: ${response.ok}`);
-      if (!response.ok) {
-        const responseText = await response.text();
-        console.error(`[getSidebarAsync] Fetch failed for ${sidebarPath}. Status: ${response.status} ${response.statusText}. Response text: ${responseText}`);
-        throw new Error(`サイドバーJSONの読み込みに失敗しました: ${response.status} ${response.statusText} for ${sidebarPath}. Response: ${responseText}`);
-      }
-      const rawJson = await response.text();
-      console.log(`[getSidebarAsync] Raw JSON response for ${sidebarPath} (first 100 chars):`, rawJson.substring(0,100));
-      try {
-        data = JSON.parse(rawJson);
-      } catch (parseError) {
-        console.error(`[getSidebarAsync] JSON parsing failed for ${sidebarPath}:`, parseError, 'Raw JSON:', rawJson);
-        throw parseError;
-      }
-      console.log('[getSidebarAsync] Parsed data from network (first item title):', data[0]?.title);
+      sidebarPath = new URL(`/sidebar/sidebar-${lang}-${version}.json`, window.location.origin).href;
     } else {
       // サーバーサイドではファイルシステムから読み込み
       console.log(`[getSidebarAsync] Reading from filesystem (server-side) for ${lang}-${version}.json`);
       const fs = await import('fs/promises');
       const path = await import('path');
-      const { fileURLToPath } = await import('url');
+      // const { fileURLToPath } = await import('url'); // Remove or comment out if not used elsewhere
 
-      const __filename = fileURLToPath(import.meta.url);
-      const __dirname = path.dirname(__filename);
-      // Assuming the structure is apps/sample-docs/src/config -> apps/sample-docs/public/sidebar
-      const projectRoot = path.resolve(__dirname, '..', '..'); // Adjust if structure is different
-      const jsonPath = path.join(projectRoot, 'public', 'sidebar', `sidebar-${lang}-${version}.json`);
+      // process.cwd() はプロジェクトのルートディレクトリを指す想定
+      const baseDir = process.cwd(); // この時点で .../apps/sample-docs を指していると仮定
+      // この設定ファイルは 'sample-docs' プロジェクトに固有であるため、プロジェクト名を直接指定します。
+      // 他のプロジェクトでこのロジックを再利用する場合は、プロジェクト名を動的に決定する仕組みが必要です。
+      // const projectName = 'sample-docs'; // baseDir が既に .../apps/sample-docs なら不要のためコメントアウト
+      // const jsonPath = path.join(baseDir, 'apps', projectName, 'public', 'sidebar', `sidebar-${lang}-${version}.json`); // 旧ロジックのためコメントアウト
+      
+      // baseDir が .../apps/sample-docs を指していると仮定し、そこからの相対パスを指定
+      const jsonPath = path.join(baseDir, 'public', 'sidebar', `sidebar-${lang}-${version}.json`);
       console.log(`[getSidebarAsync] Filesystem path: ${jsonPath}`);
 
       const fileContent = await fs.readFile(jsonPath, 'utf-8');
@@ -434,6 +418,24 @@ export async function getSidebarAsync(lang: LocaleKey, version: string, baseUrl:
         throw parseError;
       }
       console.log('[getSidebarAsync] Parsed data from filesystem (first item title):', data[0]?.title);
+    }
+
+    // baseUrlを適用する処理を追加
+    if (data && data.length > 0 && baseUrl) {
+      console.log(`[getSidebarAsync] Applying baseUrl ("${baseUrl}") to sidebar data for ${cacheKey}. Original first href: ${data[0]?.items[0]?.href}`);
+      data = data.map(section => ({
+        ...section,
+        items: section.items.map(item => {
+          // hrefが既にbaseUrlで始まっていないことを確認してから結合する
+          // hrefが '/' で始まる絶対パスであることを想定
+          const newHref = item.href.startsWith(baseUrl) ? item.href : `${baseUrl}${item.href}`;
+          return {
+            ...item,
+            href: newHref
+          };
+        })
+      }));
+      console.log('[getSidebarAsync] Sidebar data after applying baseUrl (first item href):', data[0]?.items[0]?.href);
     }
 
     // キャッシュに保存

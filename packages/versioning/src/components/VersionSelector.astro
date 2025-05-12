@@ -76,13 +76,7 @@ function getVersionPath(versionId: string): string {
 
 // 差分表示用のパス生成
 function getDiffPath(): string {
-  // TODO: 差分表示パスの生成ロジックを要確認
-  // 現在の実装では、言語直下に version-diff が来てしまう
-  // 例: /docs-astro/en/version-diff/v1/guide/getting-started
-  // 本来は /docs-astro/en/v1/version-diff/guide/getting-started のようになるべきか？
-  // もしくは、専用の差分表示ページ /docs-astro/version-diff?from=v1&to=v2&page=guide/getting-started
   let diffBasePath = basePath;
-  // basePath からバージョン情報を除去する試み（より堅牢な方法が必要）
   if (currentVersion && diffBasePath.includes(`/${currentVersion}`)) {
     diffBasePath = diffBasePath.replace(`/${currentVersion}`, '');
   } else {

@@ -394,7 +394,7 @@ const translations = {
         const version = pathParts[2] || 'v1';
         
         // Fetch search index
-        const response = await fetch(`/docs-astro/search/index-${lang}-${version}.json`);
+        const response = await fetch(`/search/index-${lang}-${version}.json`);
         
         if (!response.ok) {
           throw new Error(`Failed to fetch search index: ${response.status}`);

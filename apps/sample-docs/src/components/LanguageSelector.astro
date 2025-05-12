@@ -2,9 +2,10 @@
 import { translatePath } from '@docs/i18n/utils';
 import type { LocaleKey } from '@docs/i18n/locales';
 import { Dropdown, DropdownItem, Icon } from '@docs/ui/components';
+import docsConfig from '../config/docs.config'; // docsConfigをインポート
 
 // 定数定義
-const BASE_URL = '/docs-astro';
+// BASE_URL 定義は削除し、docsConfig.baseUrl を使用する
 const LANG_NAMES: Record<string, string> = {
   en: 'English',
   ja: '日本語'
@@ -26,10 +27,13 @@ interface Props {
 }
 
 // プロパティの取得と初期値設定
+const ACTUAL_BASE_URL = docsConfig.baseUrl; // docsConfigからbaseUrlを取得
+const configuredSupportedLangs = docsConfig.supportedLangs; // docsConfigからsupportedLangsを取得
+
 const { 
   currentLang, 
-  currentVersion,
-  supportedLangs = ['en', 'ja'], 
+  currentVersion, // このプロパティはパス生成ロジックでは直接使用されません
+  supportedLangs = configuredSupportedLangs, // propsのデフォルト値をconfigから取得
   className = '',
   showLanguageInfo = false
 } = Astro.props;
@@ -41,29 +45,46 @@ const currentPathname = Astro.url.pathname;
 const normalizedPathname = currentPathname.endsWith('/') ? currentPathname : `${currentPathname}/`;
 
 // ベースURLを除いたパス部分を取得
-const pathWithoutBase = normalizedPathname.startsWith(BASE_URL)
-  ? normalizedPathname.substring(BASE_URL.length)
-  : normalizedPathname;
+// 例: /docs/sample-docs/en/v1/foo/  -> /en/v1/foo/
+let pathWithoutActualBase = normalizedPathname;
+if (normalizedPathname.startsWith(ACTUAL_BASE_URL + '/')) {
+  pathWithoutActualBase = normalizedPathname.substring(ACTUAL_BASE_URL.length);
+} else if (normalizedPathname === ACTUAL_BASE_URL + '/') { // ベースURLそのものの場合
+  pathWithoutActualBase = '/';
+}
+// pathWithoutActualBase は /en/v1/slug/ や /en/ のようになることを期待
 
 // 言語コード、バージョン、スラッグを抽出
-const pathSegments = pathWithoutBase.split('/').filter(segment => segment !== '');
+// pathWithoutActualBase は `/` で始まるので、最初の要素は空文字列になる場合がある
+const pathSegments = pathWithoutActualBase.split('/').filter(segment => segment !== '');
+// 例: /en/v1/guide/getting-started/ -> ['en', 'v1', 'guide', 'getting-started']
+// 例: /en/ -> ['en']
+
 let langFromPath: string | undefined = undefined;
 let versionFromPath: string | undefined = undefined;
-let slugFromPath = '';
+let slugParts: string[] = [];
 
-if (pathSegments.length > 0 && supportedLangs.includes(pathSegments[0])) {
+const langsForRegex = configuredSupportedLangs.join('|');
+const langRegex = new RegExp(`^(${langsForRegex})$`);
+
+if (pathSegments.length > 0 && pathSegments[0].match(langRegex)) {
   langFromPath = pathSegments.shift();
 }
 
-if (pathSegments.length > 0 && pathSegments[0].match(/^v\d+$/)) {
+// バージョン番号の正規表現を少し改善 (例: v1, v1.0, v1.0.1)
+if (pathSegments.length > 0 && pathSegments[0].match(/^v\\d+([\\.-]\\d+)*$/)) {
   versionFromPath = pathSegments.shift();
 }
-slugFromPath = pathSegments.join('/');
+slugParts = pathSegments; // 残りがスラッグ部分
+
+// slugFromPath は末尾スラッシュあり、または空文字列
+let slugFromPath = slugParts.join('/');
 if (slugFromPath && !slugFromPath.endsWith('/')) {
   slugFromPath += '/';
-}
-if (!slugFromPath && (langFromPath || versionFromPath)) {
-    slugFromPath = ''; // Ensure slug is empty if only lang/version exists, but ensure trailing slash for consistency
+} else if (!slugFromPath && slugParts.length === 0 && (langFromPath || versionFromPath)) {
+  // 言語またはバージョンが存在するが、それ以降のスラッグ部分がない場合
+  // (例: /base/lang/ や /base/lang/version/) slugFromPath は "" となる
+  slugFromPath = "";
 }
 
 
@@ -78,48 +99,40 @@ interface LangPathInfo {
 
 const langPaths: LangPathInfo[] = supportedLangs.map(langCode => {
   const targetLang = langCode as LocaleKey;
-  let newPath = BASE_URL;
-
-  if (targetLang !== 'en' || (targetLang === 'en' && (versionFromPath || slugFromPath))) {
-    newPath += `/${targetLang}`;
-  } else if (targetLang === 'en' && !versionFromPath && !slugFromPath) {
-    // Special case for root English path: /docs-astro/ or /docs-astro/en/ should go to /docs-astro/en/
-    // However, if current page is /docs-astro/ (meaning lang is implicitly en and no version/slug)
-    // then link to en should be /docs-astro/en/
-    // This logic aims to ensure /en/ is present for clarity unless it's truly the bare root.
-    // The problem description implies /docs-astro/en/ is preferred over /docs-astro/ for English root.
-    // Let's ensure 'en' is always present in the path if it's the target language,
-    // unless it's the absolute root and no other segments exist.
-    // The examples show that even for /en/, the link to en should be /en/
-    newPath += `/${targetLang}`;
-  }
-
+  
+  const newPathParts = [ACTUAL_BASE_URL];
+  newPathParts.push(targetLang);
 
   if (versionFromPath) {
-    newPath += `/${versionFromPath}`;
+    newPathParts.push(versionFromPath);
   }
-  if (slugFromPath) {
-    newPath += `/${slugFromPath}`;
+  
+  // slugFromPath は 'guide/getting-started/' または ''
+  // '' の場合は結合時に無視されるようにする
+  if (slugFromPath && slugFromPath !== '/') {
+    // 末尾の / を除いて追加し、最後に全体で / を付ける戦略
+    const cleanSlug = slugFromPath.endsWith('/') ? slugFromPath.slice(0, -1) : slugFromPath;
+    if (cleanSlug) { // 空文字列でなければ追加
+        newPathParts.push(cleanSlug);
+    }
   }
 
-  // Ensure trailing slash for directory-like URLs, but not for the bare base URL
-  if (!newPath.endsWith('/') && newPath !== BASE_URL) {
+  let newPath = newPathParts
+    .filter(part => typeof part === 'string' && part !== '') // null, undefined, 空文字を除去
+    .join('/');
+
+  // ベースURLが空で、パスが "/" から始まっていない場合、先頭に "/" を追加
+  if (ACTUAL_BASE_URL === '' && !newPath.startsWith('/') && newPath !== '') {
+    newPath = '/' + newPath;
+  }
+  
+  // 連続するスラッシュを1つに置換 (例: "///" -> "/")
+  newPath = newPath.replace(/\/\/+/g, '/');
+  
+  // ルートパス "/" を除き、全てのパスの末尾にスラッシュを保証
+  if (newPath !== '/' && !newPath.endsWith('/')) {
     newPath += '/';
   }
-  // Handle the case where the path is just the base URL (e.g. /docs-astro)
-  // and we are linking to English, it should be /docs-astro/en/
-  if (newPath === BASE_URL && targetLang === 'en') {
-      newPath = `${BASE_URL}/en/`;
-  }
-  // If the original path was just /docs-astro/en and linking to ja, it should be /docs-astro/ja/
-  // If the original path was just /docs-astro/ja and linking to en, it should be /docs-astro/en/
-
-  // Final check for consistency: if the path is just BASE_URL/lang, ensure trailing slash
-  const baseLangPattern = new RegExp(`^${BASE_URL}/(${supportedLangs.join('|')})$`);
-  if (baseLangPattern.test(newPath)) {
-      newPath += '/';
-  }
-
 
   return {
     lang: langCode,
@@ -190,12 +203,12 @@ const languageInfo: Record<string, LanguageInfo> = {
       </DropdownItem>
     ))}
     
-    <div class="language-dropdown-footer" slot="after-items">
-      <a href="https://github.com/dolphilia/docs-astro/tree/main/packages/i18n" class="language-footer-link" target="_blank" rel="noopener">
+    <!-- <div class="language-dropdown-footer" slot="after-items">
+      <a href="https://github.com/dolphilia/tree/main/packages/i18n" class="language-footer-link" target="_blank" rel="noopener">
         <Icon name="external-link" class="language-footer-icon" />
         翻訳に貢献する
       </a>
-    </div>
+    </div> -->
   </Dropdown>
   
   {showLanguageInfo && (

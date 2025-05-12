@@ -10,7 +10,7 @@ const docsConfig = {
   description: 'Sample documentation for the docs-astro project',
   
   // GitHub Pagesのベースパス
-  baseUrl: '/docs-astro',
+  baseUrl: '/docs/sample-docs',
   
   // サポートされている言語
   supportedLangs: ['en', 'ja'],
@@ -19,7 +19,7 @@ const docsConfig = {
   defaultLang: 'en',
   
   // リポジトリURL
-  repository: 'https://github.com/yourusername/docs-astro',
+  repository: 'https://github.com/dolphilia/docs-astro-dev',
   
   // 検索インデックスのパス
   searchIndexPath: '/search',
@@ -34,7 +34,7 @@ const docsConfig = {
   showEditLink: true,
   
   // 編集リンクのベースURL
-  editLinkBase: 'https://github.com/yourusername/docs-astro/edit/main/apps/sample-docs/src/content/docs'
+  editLinkBase: 'https://github.com/dolphilia/docs-astro-dev/edit/main/apps/sample-docs/src/content/docs'
 };
 
 export default docsConfig;

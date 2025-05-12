@@ -11,7 +11,7 @@ export default defineConfig({
   // デプロイ先のサイトURL
   site: 'https://dolphilia.github.io',
   // GitHub Pagesのサブディレクトリにデプロイするためのベースパス
-  base: '/docs-astro',
+  base: '',
   vite: {
     resolve: {
       alias: {

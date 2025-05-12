@@ -3,7 +3,7 @@ const CACHE_NAME = 'sidebar-cache-v2';
 
 // キャッシュするファイルのパターン
 const CACHE_PATTERNS = [
-  /\/docs-astro\/sidebar\/sidebar-.*\.json$/,
+  /\/sidebar\/sidebar-.*\.json$/,
 ];
 
 // インストール時の処理

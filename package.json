@@ -4,7 +4,9 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm --filter=./apps/* dev",
-    "build": "pnpm --filter=./apps/* build",
+    "build": "node scripts/build-integrated.js",
+    "build:local": "node scripts/build-integrated.js --local",
+    "build:separate": "pnpm --filter=./apps/* build",
     "preview": "pnpm --filter=./apps/* preview",
     "lint": "eslint .",
     "format": "prettier --write .",

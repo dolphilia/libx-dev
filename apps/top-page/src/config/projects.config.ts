@@ -39,7 +39,7 @@ export const topPageConfig = {
   projects,
   
   // GitHub Pagesのベースパス
-  baseUrl: '/docs-astro',
+  baseUrl: '',
   
   // サポートされている言語
   supportedLangs: ['en', 'ja'],
@@ -48,7 +48,7 @@ export const topPageConfig = {
   defaultLang: 'en',
   
   // リポジトリURL
-  repository: 'https://github.com/dolphilia/docs-astro',
+  repository: 'https://github.com/dolphilia',
   
   // サイト名
   siteName: 'Docs Astro',

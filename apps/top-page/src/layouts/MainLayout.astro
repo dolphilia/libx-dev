@@ -9,7 +9,7 @@ import type { LocaleKey } from '@docs/i18n/locales';
 import '../styles/global.css';
 
 // 定数定義
-const BASE_URL = '/docs-astro';
+const BASE_URL = '';
 
 // インターフェース定義
 interface Props {
@@ -36,7 +36,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { title: 'Home', href: `${BASE_URL}/${lang}` },
-  { title: 'GitHub', href: 'https://github.com/dolphilia/docs-astro' },
+  { title: 'GitHub', href: 'https://github.com/dolphilia' },
 ];
 
 // フッターリンクグループの定義
@@ -60,7 +60,7 @@ const linkGroups: LinkGroup[] = [
   {
     title: 'Community',
     links: [
-      { title: 'GitHub', href: 'https://github.com/dolphilia/docs-astro', target: '_blank', rel: 'noopener' }
+      { title: 'GitHub', href: 'https://github.com/dolphilia', target: '_blank', rel: 'noopener' }
     ]
   }
 ];

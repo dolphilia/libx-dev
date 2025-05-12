@@ -54,7 +54,7 @@ const lang = (langParam || 'en') as LocaleKey;
 const version = String(versionParam || 'v1');
 
 // GitHub Pagesのベースパス
-const baseUrl = '/docs-astro';
+const baseUrl = '';
 
 // 目次の生成
 const tableOfContents: TOCItem[] = headings.filter((heading: Heading) => heading.depth <= 3).map((heading: Heading) => ({
@@ -81,7 +81,7 @@ const tableOfContents: TOCItem[] = headings.filter((heading: Heading) => heading
   {/* 編集リンク */}
   <div class="edit-link-container">
     <EditLink 
-      url={`https://github.com/dolphilia/docs-astro/edit/main/apps/sample-docs/src/content/docs/${entry.slug}.mdx`}
+      url={`https://github.com/dolphilia/edit/main/apps/sample-docs/src/content/docs/${entry.slug}.mdx`}
       text="このページをGitHubで編集"
     />
   </div>
