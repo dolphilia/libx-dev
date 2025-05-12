@@ -1712,7 +1712,6 @@ const $$Astro = createAstro("https://dolphilia.github.io");
 const $$MainLayout = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$MainLayout;
-  const BASE_URL = "";
   const {
     title,
     lang,
@@ -1724,16 +1723,16 @@ const $$MainLayout = createComponent(($$result, $$props, $$slots) => {
   } = Astro2.props;
   versions.find((v) => v.isLatest)?.id || version;
   const navItems = [
-    { title: "Home", href: `${BASE_URL}/${lang}` },
-    { title: "Docs", href: `${BASE_URL}/${lang}/${version}/guide/getting-started` },
-    { title: "API", href: `${BASE_URL}/${lang}/${version}/api` }
+    { title: "Home", href: `${docsConfig.baseUrl}/${lang}` },
+    { title: "Docs", href: `${docsConfig.baseUrl}/${lang}/${version}/guide/getting-started` },
+    { title: "API", href: `${docsConfig.baseUrl}/${lang}/${version}/api` }
   ];
   const linkGroups = [
     {
       title: "Docs",
       links: [
-        { title: "Getting Started", href: `${BASE_URL}/${lang}/${version}/guide/getting-started` },
-        { title: "API Reference", href: `${BASE_URL}/${lang}/${version}/api` }
+        { title: "Getting Started", href: `${docsConfig.baseUrl}/${lang}/${version}/guide/getting-started` },
+        { title: "API Reference", href: `${docsConfig.baseUrl}/${lang}/${version}/api` }
       ]
     },
     {
@@ -1748,7 +1747,10 @@ const $$MainLayout = createComponent(($$result, $$props, $$slots) => {
   const htmlDataAttributes = { "data-theme": "dark" };
   if (hasToc) htmlDataAttributes["data-has-toc"] = "";
   if (hasSidebar) htmlDataAttributes["data-has-sidebar"] = "";
-  return renderTemplate`<html${addAttribute(lang, "lang")}${spreadAttributes(htmlDataAttributes, void 0, { "class": "astro-ouamjn2i" })} data-astro-cid-ouamjn2i> <head><meta charset="utf-8"><link rel="icon" type="image/svg+xml"${addAttribute(`${BASE_URL}/favicon.svg`, "href")}><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator"${addAttribute(Astro2.generator, "content")}><meta name="description" content="Documentation site built with Astro"><title>${title} | Docs</title>${renderScript($$result, "/home/runner/work/docs-astro-dev/docs-astro-dev/apps/sample-docs/src/layouts/MainLayout.astro?astro&type=script&index=0&lang.ts")}${renderHead()}</head> <body data-astro-cid-ouamjn2i> <div class="page sl-flex" data-astro-cid-ouamjn2i> <header class="header" data-astro-cid-ouamjn2i> <div class="header-container" data-astro-cid-ouamjn2i> <div class="header-content" data-astro-cid-ouamjn2i> <div class="title-wrapper sl-flex" data-astro-cid-ouamjn2i> <a${addAttribute(`${BASE_URL}/${lang}`, "href")} class="site-title" data-astro-cid-ouamjn2i>Docs Astro</a> </div> <div class="sl-flex print:hidden" data-astro-cid-ouamjn2i> ${showSearch && renderTemplate`<div class="search-container" data-astro-cid-ouamjn2i> ${renderComponent($$result, "SearchBar", $$SearchBar, { "lang": lang, "placeholder": `\u30C9\u30AD\u30E5\u30E1\u30F3\u30C8\u3092\u691C\u7D22...`, "data-astro-cid-ouamjn2i": true })} </div>`} </div> <div class="sl-hidden md:sl-flex print:hidden right-group" data-astro-cid-ouamjn2i> ${showVersionSelector && version && renderTemplate`<div class="version-selector-container" data-astro-cid-ouamjn2i> ${renderComponent($$result, "VersionSelector", $$VersionSelector, { "currentVersion": version, "versions": versions, "basePath": `${BASE_URL}/${lang}`, "currentSlug": Astro2.url.pathname.split("/").slice(4).join("/"), "data-astro-cid-ouamjn2i": true })} </div>`} <div aria-label="言語選択" data-astro-cid-ouamjn2i> ${renderComponent($$result, "LanguageSelector", $$LanguageSelector, { "currentLang": lang, "data-astro-cid-ouamjn2i": true })} </div> <nav aria-label="メインナビゲーション" data-astro-cid-ouamjn2i> ${renderComponent($$result, "Navigation", $$Navigation, { "items": navItems, "data-astro-cid-ouamjn2i": true })} </nav> </div> </div> </div> </header> <div class="main-frame" data-astro-cid-ouamjn2i> <main id="main-content" data-astro-cid-ouamjn2i> ${renderSlot($$result, $$slots["default"])} </main> </div> ${renderComponent($$result, "Footer", $$Footer, { "linkGroups": linkGroups, "copyright": `\xA9 ${currentYear} Docs Astro. All rights reserved.`, "data-astro-cid-ouamjn2i": true })} </div> </body></html>`;
+  const numBaseSegments = docsConfig.baseUrl.split("/").filter((p) => p.length > 0).length;
+  const slugSliceIndex = 1 + numBaseSegments + 1 + 1;
+  const currentSlugForSelector = Astro2.url.pathname.split("/").slice(slugSliceIndex).join("/");
+  return renderTemplate`<html${addAttribute(lang, "lang")}${spreadAttributes(htmlDataAttributes, void 0, { "class": "astro-ouamjn2i" })} data-astro-cid-ouamjn2i> <head><meta charset="utf-8"><link rel="icon" type="image/svg+xml"${addAttribute(`${docsConfig.baseUrl}/favicon.svg`, "href")}><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator"${addAttribute(Astro2.generator, "content")}><meta name="description" content="Documentation site built with Astro"><title>${title} | Docs</title>${renderScript($$result, "/home/runner/work/docs-astro-dev/docs-astro-dev/apps/sample-docs/src/layouts/MainLayout.astro?astro&type=script&index=0&lang.ts")}${renderHead()}</head> <body data-astro-cid-ouamjn2i> <div class="page sl-flex" data-astro-cid-ouamjn2i> <header class="header" data-astro-cid-ouamjn2i> <div class="header-container" data-astro-cid-ouamjn2i> <div class="header-content" data-astro-cid-ouamjn2i> <div class="title-wrapper sl-flex" data-astro-cid-ouamjn2i> <a${addAttribute(`${docsConfig.baseUrl}/${lang}`, "href")} class="site-title" data-astro-cid-ouamjn2i>Docs Astro</a> </div> <div class="sl-flex print:hidden" data-astro-cid-ouamjn2i> ${showSearch && renderTemplate`<div class="search-container" data-astro-cid-ouamjn2i> ${renderComponent($$result, "SearchBar", $$SearchBar, { "lang": lang, "placeholder": `\u30C9\u30AD\u30E5\u30E1\u30F3\u30C8\u3092\u691C\u7D22...`, "data-astro-cid-ouamjn2i": true })} </div>`} </div> <div class="sl-hidden md:sl-flex print:hidden right-group" data-astro-cid-ouamjn2i> ${showVersionSelector && version && renderTemplate`<div class="version-selector-container" data-astro-cid-ouamjn2i> ${renderComponent($$result, "VersionSelector", $$VersionSelector, { "currentVersion": version, "versions": versions, "basePath": `${docsConfig.baseUrl}/${lang}`, "currentSlug": currentSlugForSelector, "data-astro-cid-ouamjn2i": true })} </div>`} <div aria-label="言語選択" data-astro-cid-ouamjn2i> ${renderComponent($$result, "LanguageSelector", $$LanguageSelector, { "currentLang": lang, "data-astro-cid-ouamjn2i": true })} </div> <nav aria-label="メインナビゲーション" data-astro-cid-ouamjn2i> ${renderComponent($$result, "Navigation", $$Navigation, { "items": navItems, "data-astro-cid-ouamjn2i": true })} </nav> </div> </div> </div> </header> <div class="main-frame" data-astro-cid-ouamjn2i> <main id="main-content" data-astro-cid-ouamjn2i> ${renderSlot($$result, $$slots["default"])} </main> </div> ${renderComponent($$result, "Footer", $$Footer, { "linkGroups": linkGroups, "copyright": `\xA9 ${currentYear} Docs Astro. All rights reserved.`, "data-astro-cid-ouamjn2i": true })} </div> </body></html>`;
 }, "/home/runner/work/docs-astro-dev/docs-astro-dev/apps/sample-docs/src/layouts/MainLayout.astro", void 0);
 
 export { $$Icon as $, $$Tabs as a, $$TabItem as b, $$MainLayout as c, $$Card as d, $$Button as e, $$Sidebar as f, $$TableOfContents as g, $$Pagination as h, $$EditLink as i, t, versions as v };

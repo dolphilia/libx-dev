@@ -1,5 +1,5 @@
 async function getMod() {
-						return import('./tabs-example.BfQr4fSU.js');
+						return import('./tabs-example.CQXgsQO2.js');
 					}
 					const collectedLinks = [];
 					const collectedStyles = [];
