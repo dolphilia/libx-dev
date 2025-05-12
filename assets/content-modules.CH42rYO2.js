@@ -1,6 +1,6 @@
 const contentModules = new Map([
-["src/content/docs/en/v1/guide/getting-started.mdx", () => import('./getting-started.sIRqop1e.js')],
 ["src/content/docs/en/v1/guide/extended-icons-example.mdx", () => import('./extended-icons-example.D1wlYKsQ.js')],
+["src/content/docs/en/v1/guide/getting-started.mdx", () => import('./getting-started.sIRqop1e.js')],
 ["src/content/docs/en/v1/guide/icons-example.mdx", () => import('./icons-example.DCfIyFZF.js')],
 ["src/content/docs/en/v1/guide/installation.mdx", () => import('./installation.DlxYgmRz.js')],
 ["src/content/docs/en/v1/guide/sidebar-auto-generation.mdx", () => import('./sidebar-auto-generation.BNTkzrt1.js')],
