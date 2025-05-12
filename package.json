@@ -13,7 +13,8 @@
     "build:search-index": "node scripts/build-search-index.js",
     "build:sidebar": "node scripts/build-sidebar.js",
     "create:version": "node scripts/create-version.js",
-    "create:doc": "node scripts/create-document.js"
+    "create:doc": "node scripts/create-document.js",
+    "copy:docs": "node scripts/copy-to-docs.js"
   },
   "devDependencies": {
     "eslint": "^8.0.0",
