@@ -1,5 +1,5 @@
 import { c as createVNode, F as Fragment, _ as __astro_tag_component__ } from './astro/server.5q-sLdO5.js';
-import { $ as $$Icon } from './MainLayout.C9o2takC.js';
+import { $ as $$Icon } from './MainLayout.CXKHhRWp.js';
 
 const frontmatter = {
   "title": "組み込みアイコン例",
