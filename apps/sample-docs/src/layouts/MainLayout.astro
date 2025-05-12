@@ -10,9 +10,10 @@ import LanguageSelector from '../components/LanguageSelector.astro';
 import versions from '../config/versions.config';
 import type { LocaleKey } from '@docs/i18n/locales';
 import '../styles/global.css';
+import docsConfig from '../config/docs.config';
 
 // 定数定義
-const BASE_URL = '';
+// const BASE_URL = '';
 
 // インターフェース定義
 interface Props {
@@ -53,9 +54,9 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { title: 'Home', href: `${BASE_URL}/${lang}` },
-  { title: 'Docs', href: `${BASE_URL}/${lang}/${version}/guide/getting-started` },
-  { title: 'API', href: `${BASE_URL}/${lang}/${version}/api` },
+  { title: 'Home', href: `${docsConfig.baseUrl}/${lang}` },
+  { title: 'Docs', href: `${docsConfig.baseUrl}/${lang}/${version}/guide/getting-started` },
+  { title: 'API', href: `${docsConfig.baseUrl}/${lang}/${version}/api` },
 ];
 
 // フッターリンクグループの定義
@@ -73,8 +74,8 @@ const linkGroups: LinkGroup[] = [
   {
     title: 'Docs',
     links: [
-      { title: 'Getting Started', href: `${BASE_URL}/${lang}/${version}/guide/getting-started` },
-      { title: 'API Reference', href: `${BASE_URL}/${lang}/${version}/api` }
+      { title: 'Getting Started', href: `${docsConfig.baseUrl}/${lang}/${version}/guide/getting-started` },
+      { title: 'API Reference', href: `${docsConfig.baseUrl}/${lang}/${version}/api` }
     ]
   },
   {
@@ -93,13 +94,17 @@ const currentYear = new Date().getFullYear();
 const htmlDataAttributes: Record<string, string> = { 'data-theme': 'dark' };
 if (hasToc) htmlDataAttributes['data-has-toc'] = '';
 if (hasSidebar) htmlDataAttributes['data-has-sidebar'] = '';
+
+const numBaseSegments = docsConfig.baseUrl.split('/').filter(p => p.length > 0).length;
+const slugSliceIndex = 1 + numBaseSegments + 1 + 1; // 1 (leading empty) + base segments + lang segment + version segment
+const currentSlugForSelector = Astro.url.pathname.split('/').slice(slugSliceIndex).join('/');
 ---
 
 <!DOCTYPE html>
 <html lang={lang} {...htmlDataAttributes}>
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href={`${BASE_URL}/favicon.svg`} />
+    <link rel="icon" type="image/svg+xml" href={`${docsConfig.baseUrl}/favicon.svg`} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content="Documentation site built with Astro" />
@@ -129,7 +134,9 @@ if (hasSidebar) htmlDataAttributes['data-has-sidebar'] = '';
       // Service Workerの登録
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register(`${import.meta.env.BASE_URL}/sw.js`)
+          // サイトのベースURLに応じてsw.jsのパスを解決
+          const swPath = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/sw.js`;
+          navigator.serviceWorker.register(swPath)
             .then(registration => {
               console.log('Service Worker登録成功:', registration.scope);
             })
@@ -146,7 +153,7 @@ if (hasSidebar) htmlDataAttributes['data-has-sidebar'] = '';
         <div class="header-container">
           <div class="header-content">
             <div class="title-wrapper sl-flex">
-              <a href={`${BASE_URL}/${lang}`} class="site-title">Docs Astro</a>
+              <a href={`${docsConfig.baseUrl}/${lang}`} class="site-title">Docs Astro</a>
             </div>
             <div class="sl-flex print:hidden">
               {showSearch && (
@@ -161,8 +168,8 @@ if (hasSidebar) htmlDataAttributes['data-has-sidebar'] = '';
                   <VersionSelector
                     currentVersion={version}
                     versions={versions}
-                    basePath={`${BASE_URL}/${lang}`}
-                    currentSlug={Astro.url.pathname.split('/').slice(4).join('/')}
+                    basePath={`${docsConfig.baseUrl}/${lang}`}
+                    currentSlug={currentSlugForSelector}
                   />
                 </div>
               )}

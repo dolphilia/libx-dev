@@ -18,9 +18,9 @@ const latestVersion = versions.find(v => v.isLatest)?.id || 'v2';
 // GitHub Pagesのベースパス
 const baseUrl = docsConfig.baseUrl;
 // 新しいパス構造
-const docsPath = '/docs/sample-docs';
+// const docsPath = '/docs/sample-docs';
 // 完全なベースパス
-const fullBasePath = `${baseUrl}${docsPath}`;
+// const fullBasePath = `${baseUrl}${docsPath}`;
 ---
 
 <MainLayout title={translate('docs.documentation', lang)} lang={lang} showSearch={true} showVersionSelector={false}>
@@ -31,7 +31,7 @@ const fullBasePath = `${baseUrl}${docsPath}`;
     </p>
     
     <div class="hero-buttons">
-      <Button href={`${fullBasePath}/${lang}/${latestVersion}/guide/getting-started`} variant="primary" size="lg">
+      <Button href={`${baseUrl}/${lang}/${latestVersion}/guide/getting-started`} variant="primary" size="lg">
         {translate('docs.get_started', lang)}
       </Button>
       <Button href="https://github.com" variant="outline" size="lg">
@@ -44,42 +44,42 @@ const fullBasePath = `${baseUrl}${docsPath}`;
   <div class="card-grid">
     <Card
       title={translate('docs.getting_started', lang)}
-      href={`${fullBasePath}/${lang}/${latestVersion}/guide/getting-started`}
+      href={`${baseUrl}/${lang}/${latestVersion}/guide/getting-started`}
     >
       {translate('docs.getting_started_description', lang)}
     </Card>
     
     <Card
       title={translate('docs.installation', lang)}
-      href={`${fullBasePath}/${lang}/${latestVersion}/guide/installation`}
+      href={`${baseUrl}/${lang}/${latestVersion}/guide/installation`}
     >
       {translate('docs.installation_description', lang)}
     </Card>
     
     <Card
       title={translate('docs.configuration', lang)}
-      href={`${fullBasePath}/${lang}/${latestVersion}/guide/configuration`}
+      href={`${baseUrl}/${lang}/${latestVersion}/guide/configuration`}
     >
       {translate('docs.configuration_description', lang)}
     </Card>
     
     <Card
       title={translate('docs.api_reference', lang)}
-      href={`${fullBasePath}/${lang}/${latestVersion}/api/reference`}
+      href={`${baseUrl}/${lang}/${latestVersion}/api/reference`}
     >
       {translate('docs.api_reference_description', lang)}
     </Card>
     
     <Card
       title={translate('docs.examples', lang)}
-      href={`${fullBasePath}/${lang}/${latestVersion}/examples`}
+      href={`${baseUrl}/${lang}/${latestVersion}/examples`}
     >
       {translate('docs.examples_description', lang)}
     </Card>
     
     <Card
       title={translate('docs.faq', lang)}
-      href={`${fullBasePath}/${lang}/${latestVersion}/faq`}
+      href={`${baseUrl}/${lang}/${latestVersion}/faq`}
     >
       {translate('docs.faq_description', lang)}
     </Card>

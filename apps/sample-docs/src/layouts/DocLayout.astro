@@ -114,10 +114,16 @@ const hasToc = true;
   </div>
 </MainLayout>
 
-<script define:vars={{ lang, version }}>
+<script define:vars={{ lang, version, baseUrl }}>
   // サイドバーのプリフェッチ
   function prefetchSidebar(lang, version) {
-    const sidebarPath = `/sidebar/sidebar-${lang}-${version}.json`;
+    // バージョンが有効な形式（v1, v2など）かチェック
+    if (!version || !version.match(/^v\d+$/)) {
+      console.warn(`無効なバージョン形式: ${version}、デフォルトのv1を使用します`);
+      version = 'v1'; // デフォルトバージョンを設定
+    }
+    
+    const sidebarPath = `${baseUrl}/sidebar/sidebar-${lang}-${version}.json`;
     
     // プリフェッチ用のlink要素を作成
     const link = document.createElement('link');
@@ -130,7 +136,32 @@ const hasToc = true;
   
   // 現在のページの言語とバージョンを取得
   const currentLang = document.documentElement.lang;
-  const currentVersion = window.location.pathname.split('/')[3]; // /{lang}/{version}/...
+  
+  // URLパスからバージョン情報を正確に抽出
+  function extractVersionFromPath() {
+    const path = window.location.pathname;
+    
+    // ベースパスを除去
+    const baseUrlPath = baseUrl.replace(/^\/|\/$/g, ''); // 先頭と末尾のスラッシュを削除
+    const pathWithoutBase = path.replace(new RegExp(`^/?${baseUrlPath}/?`), '');
+    
+    // パスを分割
+    const segments = pathWithoutBase.split('/').filter(segment => segment);
+    
+    // 言語の次のセグメントがバージョン
+    if (segments.length >= 2) {
+      const potentialVersion = segments[1];
+      // バージョン形式をチェック (v1, v2, etc.)
+      if (potentialVersion.match(/^v\d+$/)) {
+        return potentialVersion;
+      }
+    }
+    
+    // バージョンが見つからない場合はデフォルトを返す
+    return 'v1';
+  }
+  
+  const currentVersion = extractVersionFromPath();
   
   // 現在のサイドバーをプリフェッチ
   prefetchSidebar(currentLang, currentVersion);
