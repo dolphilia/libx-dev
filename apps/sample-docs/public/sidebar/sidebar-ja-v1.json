@@ -4,23 +4,23 @@
     "items": [
       {
         "title": "入門",
-        "href": "/ja/v1/guide/getting-started"
+        "href": "/docs/sample-docs/ja/v1/guide/getting-started"
       },
       {
         "title": "サイドバーの自動生成",
-        "href": "/ja/v1/guide/sidebar-auto-generation"
+        "href": "/docs/sample-docs/ja/v1/guide/sidebar-auto-generation"
       },
       {
         "title": "タブコンポーネントの例",
-        "href": "/ja/v1/guide/tabs-example"
+        "href": "/docs/sample-docs/ja/v1/guide/tabs-example"
       },
       {
         "title": "アイコンの例",
-        "href": "/ja/v1/guide/icons-example"
+        "href": "/docs/sample-docs/ja/v1/guide/icons-example"
       },
       {
         "title": "組み込みアイコン例",
-        "href": "/ja/v1/guide/extended-icons-example"
+        "href": "/docs/sample-docs/ja/v1/guide/extended-icons-example"
       }
     ]
   }

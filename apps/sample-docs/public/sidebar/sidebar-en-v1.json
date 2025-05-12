@@ -4,27 +4,27 @@
     "items": [
       {
         "title": "Installation",
-        "href": "/en/v1/guide/installation"
+        "href": "/docs/sample-docs/en/v1/guide/installation"
       },
       {
         "title": "Getting Started",
-        "href": "/en/v1/guide/getting-started"
+        "href": "/docs/sample-docs/en/v1/guide/getting-started"
       },
       {
         "title": "Sidebar Auto-Generation",
-        "href": "/en/v1/guide/sidebar-auto-generation"
+        "href": "/docs/sample-docs/en/v1/guide/sidebar-auto-generation"
       },
       {
         "title": "Tabs Component Example",
-        "href": "/en/v1/guide/tabs-example"
+        "href": "/docs/sample-docs/en/v1/guide/tabs-example"
       },
       {
         "title": "Icons Example",
-        "href": "/en/v1/guide/icons-example"
+        "href": "/docs/sample-docs/en/v1/guide/icons-example"
       },
       {
         "title": "Built-in Icons Example",
-        "href": "/en/v1/guide/extended-icons-example"
+        "href": "/docs/sample-docs/en/v1/guide/extended-icons-example"
       }
     ]
   }

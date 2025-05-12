@@ -4,8 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && pnpm build:search-index",
-    "build:search-index": "node ../../scripts/build-search-index.js",
+    "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
