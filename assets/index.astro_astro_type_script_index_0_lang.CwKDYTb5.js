@@ -1,1 +1,0 @@
-const t="en",o=["en","ja"];function s(){if(typeof navigator>"u")return t;const n=navigator.language.split("-")[0];return o.includes(n)?n:t}function c(n){return s()}const e={baseUrl:"/docs-astro",supportedLangs:["en","ja"],defaultLang:"en"},a=c(),r=e.supportedLangs,d=e.defaultLang,u=e.baseUrl,g="/docs/sample-docs",l=r.includes(a)?a:d;window.location.href=`${u}${g}/${l}/`;
