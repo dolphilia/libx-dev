@@ -3,7 +3,7 @@
 ## 1. プロジェクト構造
 
 ```
-docs-astro/
+docs-astro-dev/
 ├── .github/                    # GitHub関連設定
 │   └── workflows/              # GitHub Actions設定
 ├── packages/                   # 共有パッケージ

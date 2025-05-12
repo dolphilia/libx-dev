@@ -14,7 +14,7 @@
 ## プロジェクト構造
 
 ```
-docs-astro/
+docs-astro-dev/
 ├── packages/         # 共有パッケージ
 │   ├── ui/           # 共通UIコンポーネント
 │   ├── theme/        # 共通テーマ
