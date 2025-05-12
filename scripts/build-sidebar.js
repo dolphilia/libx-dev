@@ -16,11 +16,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { glob } from 'glob';
-import matter from 'gray-matter';
-import zlib from 'zlib';
-import { promisify } from 'util';
-
-const gzip = promisify(zlib.gzip);
+import { saveCompressedJson, parseMarkdownFile } from './utils.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -31,31 +27,6 @@ const config = {
   appsDir: path.join(rootDir, 'apps'),
   baseUrl: '/docs/sample-docs',
 };
-
-/**
- * JSONファイルを圧縮して保存
- */
-async function saveCompressedJson(filePath, data) {
-  try {
-    // 通常のJSONファイルを保存
-    await fs.writeFile(filePath, JSON.stringify(data, null, 2));
-    console.log(`  通常のJSONファイルを保存しました: ${filePath}`);
-    
-    // 圧縮版のJSONファイルを保存
-    const compressedData = await gzip(JSON.stringify(data));
-    const compressedPath = `${filePath}.gz`;
-    await fs.writeFile(compressedPath, compressedData);
-    console.log(`  圧縮版のJSONファイルを保存しました: ${compressedPath}`);
-    
-    // 圧縮率を計算
-    const originalSize = JSON.stringify(data).length;
-    const compressedSize = compressedData.length;
-    const compressionRatio = ((originalSize - compressedSize) / originalSize * 100).toFixed(2);
-    console.log(`  圧縮率: ${compressionRatio}% (${originalSize} → ${compressedSize} bytes)`);
-  } catch (error) {
-    console.error(`  JSONファイルの保存中にエラーが発生しました:`, error);
-  }
-}
 
 /**
  * メイン処理
@@ -216,8 +187,7 @@ async function generateSidebarForVersion(project, lang, version) {
   for (const file of files) {
     try {
       const filePath = path.join(project.contentPath, file);
-      const content = await fs.readFile(filePath, 'utf-8');
-      const { data } = matter(content);
+      const { frontmatter: data } = await parseMarkdownFile(filePath);
       
       // スラグを生成（ファイルパスから拡張子を除去）
       const slug = file.replace(/\.[^.]+$/, '');
@@ -288,7 +258,7 @@ async function generateSidebarForVersion(project, lang, version) {
   });
   
   // プロジェクト固有のベースURLを取得
-  const baseUrl = getProjectBaseUrl(project);
+  const baseUrl = await getProjectBaseUrl(project);
   
   // サイドバー項目の生成
   return sortedCategories.map(([category, { docs }]) => {
@@ -300,9 +270,15 @@ async function generateSidebarForVersion(project, lang, version) {
       title,
       items: docs.map(doc => {
         const slugParts = doc.slug.split('/').slice(2);
+        let fullPath;
+        if (baseUrl === '/') {
+          fullPath = `/${lang}/${version}/${slugParts.join('/')}`;
+        } else {
+          fullPath = `${baseUrl}/${lang}/${version}/${slugParts.join('/')}`;
+        }
         return {
           title: doc.data.title,
-          href: `${baseUrl}/${lang}/${version}/${slugParts.join('/')}`
+          href: fullPath
         };
       })
     };
@@ -312,25 +288,67 @@ async function generateSidebarForVersion(project, lang, version) {
 /**
  * プロジェクト固有のベースURLを取得する
  */
-function getProjectBaseUrl(project) {
-  // デフォルトのベースURL
-  let baseUrl = config.baseUrl;
+async function getProjectBaseUrl(project) {
+  let projectSpecificBase = config.baseUrl;
   
-  // astro.config.mjs からベースURLを取得する試み
-  try {
-    const configPath = path.join(project.path, 'astro.config.mjs');
-    // 注: 実際にはファイルを解析してbaseとsiteを取得する必要があるが、
-    // ここでは簡略化のためデフォルト値を使用
-  } catch (error) {
-    console.warn(`astro.config.mjs からベースURLを取得できませんでした: ${error.message}`);
-  }
-  
-  // プロジェクト名がsample-docsでない場合、URLにプロジェクト名を追加
+  // プロジェクト名が 'sample-docs' でない場合、ベースURLにプロジェクト名を追加
+  // config.baseUrl が /docs/sample-docs で、project.name が my-project の場合、
+  // projectSpecificBase は /docs/sample-docs/my-project となる。
   if (project.name !== 'sample-docs') {
-    baseUrl = `${baseUrl}/${project.name}`;
+    // path.join はURL結合に向かないため、手動で結合
+    const base = config.baseUrl.endsWith('/') ? config.baseUrl.slice(0, -1) : config.baseUrl;
+    projectSpecificBase = `${base}/${project.name}`;
   }
   
-  return baseUrl;
+  const configPath = path.join(project.path, 'astro.config.mjs');
+  let astroBase = '';
+
+  try {
+    const configFileContent = await fs.readFile(configPath, 'utf-8');
+    // export default defineConfig({ base: '/foo' }) や export default { base: "/bar" } や base: '.' に対応
+    const baseMatch = configFileContent.match(/base\s*:\s*['"]((?:\/[^\\s'"]*|\.)*)['"]/);
+    if (baseMatch && baseMatch[1]) {
+      astroBase = baseMatch[1];
+      if (astroBase === '.') { // '.' はルートを示すので空文字列に
+        astroBase = '';
+      }
+      // astroBase が空でなく、かつ '/' で始まらない場合は '/' を追加
+      if (astroBase && !astroBase.startsWith('/')) {
+        astroBase = '/' + astroBase;
+      }
+      // astroBase が '/' より長く、かつ末尾が '/' の場合は削除 (例: /foo/ -> /foo)
+      if (astroBase.length > 1 && astroBase.endsWith('/')) {
+        astroBase = astroBase.slice(0, -1);
+      }
+      if (astroBase) {
+        console.log(`  プロジェクト ${project.name} の astro.config.mjs から base='${astroBase}' を読み込みました。`);
+      }
+    }
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      // astro.config.mjs が存在しないのは通常ケースなので、警告ログは出さない
+      // console.log(`  astro.config.mjs が見つかりませんでした: ${project.name} (${configPath})`);
+    } else {
+      console.warn(`  プロジェクト ${project.name} の astro.config.mjs の読み込み/解析中にエラー: ${error.message}`);
+    }
+  }
+
+  let finalBaseUrl = projectSpecificBase;
+  if (astroBase && astroBase !== '/') { // astroBase が有効で、かつ単なる '/' でない場合
+    // projectSpecificBase の末尾スラッシュを削除
+    if (finalBaseUrl.endsWith('/')) {
+      finalBaseUrl = finalBaseUrl.slice(0, -1);
+    }
+    // astroBase は先頭スラッシュが保証されているか、空文字列
+    finalBaseUrl = finalBaseUrl + astroBase;
+  }
+  
+  // 最終的なURLの末尾スラッシュを削除（ただしルート '/' の場合はそのまま）
+  if (finalBaseUrl.endsWith('/') && finalBaseUrl !== '/') {
+     finalBaseUrl = finalBaseUrl.slice(0, -1);
+  }
+
+  return finalBaseUrl;
 }
 
 // スクリプトの実行

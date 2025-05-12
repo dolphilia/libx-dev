@@ -11,8 +11,8 @@ import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { glob } from 'glob';
-import matter from 'gray-matter';
 import { createSearchIndex, exportSearchIndex } from '../packages/search/src/utils/indexer.js';
+import { parseMarkdownFile } from './utils.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -80,7 +80,6 @@ async function collectDocuments(lang, version) {
   for (const file of files) {
     try {
       const relativePath = path.relative(contentPath, file);
-      const content = await fs.readFile(file, 'utf-8');
       
       // ファイル拡張子に基づいて処理
       const ext = path.extname(file);
@@ -102,7 +101,7 @@ async function collectDocuments(lang, version) {
           .trim();
       } else if (ext === '.md' || ext === '.mdx') {
         // Markdown/MDXファイルからコンテンツを抽出
-        const { data, content: mdContent } = matter(content);
+        const { frontmatter: data, content: mdContent } = await parseMarkdownFile(file);
         title = data.title || path.basename(file, ext);
         extractedContent = mdContent;
       }

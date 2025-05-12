@@ -18,6 +18,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';
+import { copyDirRecursive } from './utils.js';
 
 // コマンドライン引数を解析
 const args = process.argv.slice(2);
@@ -47,32 +48,6 @@ const apps = [
   }
   // 他のアプリケーションがある場合はここに追加
 ];
-
-/**
- * ディレクトリを再帰的にコピーする関数
- */
-function copyDirRecursive(src, dest) {
-  // ディレクトリが存在しない場合は作成
-  if (!fs.existsSync(dest)) {
-    fs.mkdirSync(dest, { recursive: true });
-  }
-
-  // ディレクトリ内のファイルとサブディレクトリを取得
-  const entries = fs.readdirSync(src, { withFileTypes: true });
-
-  for (const entry of entries) {
-    const srcPath = path.join(src, entry.name);
-    const destPath = path.join(dest, entry.name);
-
-    if (entry.isDirectory()) {
-      // サブディレクトリの場合は再帰的にコピー
-      copyDirRecursive(srcPath, destPath);
-    } else {
-      // ファイルの場合はコピー
-      fs.copyFileSync(srcPath, destPath);
-    }
-  }
-}
 
 /**
  * HTMLファイル内のベースパスを修正する関数
