@@ -1,5 +1,5 @@
 import { c as createVNode, F as Fragment, _ as __astro_tag_component__ } from './astro/server.5q-sLdO5.js';
-import { a as $$Tabs, b as $$TabItem } from './MainLayout.CXKHhRWp.js';
+import { a as $$Tabs, b as $$TabItem } from './MainLayout.DI9cCnuK.js';
 
 const frontmatter = {
   "title": "タブコンポーネントの例",
