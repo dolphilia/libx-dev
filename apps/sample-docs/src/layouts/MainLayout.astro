@@ -11,6 +11,7 @@ import versions from '../config/versions.config';
 import type { LocaleKey } from '@docs/i18n/locales';
 import '../styles/global.css';
 import docsConfig from '../config/docs.config';
+import { ThemeToggle } from '@docs/ui/components';
 
 // 定数定義
 // const BASE_URL = '';
@@ -152,17 +153,15 @@ const currentSlugForSelector = Astro.url.pathname.split('/').slice(slugSliceInde
       <header class="header">
         <div class="header-container">
           <div class="header-content">
-            <div class="title-wrapper sl-flex">
-              <a href={`${docsConfig.baseUrl}/${lang}`} class="site-title">Docs Astro</a>
+            <div class="title-wrapper">
+              <a href={`${docsConfig.baseUrl}/${lang}`} class="site-title">Libx</a>
             </div>
-            <div class="sl-flex print:hidden">
+            <div class="print:hidden right-group">
               {showSearch && (
                 <div class="search-container">
                   <SearchBar lang={lang} placeholder={`ドキュメントを検索...`} />
                 </div>
               )}
-            </div>
-            <div class="sl-hidden md:sl-flex print:hidden right-group">
               {showVersionSelector && version && (
                 <div class="version-selector-container">
                   <VersionSelector
@@ -173,12 +172,10 @@ const currentSlugForSelector = Astro.url.pathname.split('/').slice(slugSliceInde
                   />
                 </div>
               )}
-              <div aria-label="言語選択">
+              <div class="language-selector-container" aria-label="言語選択">
                 <LanguageSelector currentLang={lang} />
               </div>
-              <nav aria-label="メインナビゲーション">
-                <Navigation items={navItems} />
-              </nav>
+              <ThemeToggle />
             </div>
           </div>
         </div>
@@ -201,7 +198,7 @@ const currentSlugForSelector = Astro.url.pathname.split('/').slice(slugSliceInde
 <style>
   /* Starlightスタイルに基づくレイアウト */
   .page {
-    flex-direction: column;
+    /* flex-direction: column; */
     min-height: 100vh;
   }
 
@@ -245,8 +242,10 @@ const currentSlugForSelector = Astro.url.pathname.split('/').slice(slugSliceInde
   }
 
   .right-group {
-    gap: 1rem;
+    display: flex;
+    /* gap: 1rem; */
     align-items: center;
+    justify-content: right;
   }
 
   .search-container {
@@ -257,6 +256,12 @@ const currentSlugForSelector = Astro.url.pathname.split('/').slice(slugSliceInde
 
   .version-selector-container {
     margin-right: 0.5rem;
+    height: 2.5rem;
+  }
+
+  .language-selector-container {
+    margin-right: 0.5rem;
+    height: 2.5rem;
   }
 
   .main-frame {
@@ -272,8 +277,20 @@ const currentSlugForSelector = Astro.url.pathname.split('/').slice(slugSliceInde
   @media (min-width: 50em) {
     .header-content {
       display: grid;
-      grid-template-columns: minmax(auto, auto) 1fr auto;
-      align-content: center;
+      grid-template-columns: auto 1fr auto; /* サイトタイトル | 検索エリア用スペース | 右側グループ */
+      align-items: center; /* 垂直方向の中央揃え */
+      gap: var(--sl-nav-gap);
+      height: 100%;
     }
+
+    /* 検索バーのラッパー (2番目の直接の子要素であるDIV) を中央の列スペース内で中央に配置 */
+    /* .header-content > div:nth-child(2) {
+      justify-self: center;
+    } */
+
+    /* .search-container の右マージンをデスクトップではリセット */
+    /* .header-content > div:nth-child(2) .search-container {
+      margin-right: 0;
+    } */
   }
 </style>

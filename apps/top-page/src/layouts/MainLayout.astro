@@ -84,16 +84,11 @@ const currentYear = new Date().getFullYear();
       <header class="header">
         <div class="header-container">
           <div class="header-content">
+
             <div class="title-wrapper sl-flex">
-              <a href={`${BASE_URL}/${lang}`} class="site-title">Docs Astro</a>
+              <a href={`${BASE_URL}/${lang}`} class="site-title">Libx</a>
             </div>
-            <div class="sl-flex print:hidden">
-              {showSearch && (
-                <div class="search-container">
-                  <SearchBar lang={lang} placeholder={`ドキュメントを検索...`} />
-                </div>
-              )}
-            </div>
+
             <div class="sl-hidden md:sl-flex print:hidden right-group">
               <div aria-label="言語選択">
                 <LanguageSelector currentLang={lang} />
@@ -101,10 +96,8 @@ const currentYear = new Date().getFullYear();
               <div class="theme-toggle-container">
                 <ThemeToggle />
               </div>
-              <nav aria-label="メインナビゲーション">
-                <Navigation items={navItems} />
-              </nav>
             </div>
+            
           </div>
         </div>
       </header>
@@ -163,7 +156,7 @@ const currentYear = new Date().getFullYear();
   }
 
   .site-title {
-    font-size: var(--sl-text-lg);
+    font-size: 1.5rem;
     font-weight: 600;
     color: var(--sl-color-white);
     text-decoration: none;
@@ -195,7 +188,7 @@ const currentYear = new Date().getFullYear();
 
   @media (min-width: 50em) {
     .header-content {
-      display: grid;
+      /* display: grid; */
       grid-template-columns: minmax(auto, auto) 1fr auto;
       align-content: center;
     }

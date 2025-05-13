@@ -30,13 +30,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: none;
+    /* border: none; */
     background: none;
     cursor: pointer;
-    padding: 0.5rem;
+    /* padding: 0.5rem; */
     border-radius: 0.25rem;
     color: var(--color-text, #1e293b);
     transition: color 0.2s ease, background-color 0.2s ease;
+    padding: 0.5rem 1rem; /* Dropdown.astro の .dropdown-button に合わせる */
+    border: 1px solid var(--color-border-default); /* Dropdown.astro の .dropdown-button に合わせる */
+    background-color: var(--color-bg-secondary);
+    height: 2.5rem;
   }
 
   .theme-toggle:hover {
