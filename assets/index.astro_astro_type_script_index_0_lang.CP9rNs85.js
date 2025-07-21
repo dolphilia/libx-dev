@@ -1,0 +1,1 @@
+const a=["en","ja"];function o(){if(typeof navigator>"u")return"en";const e=navigator.language.split("-")[0];return a.includes(e)?e:"en"}function s(e){return o()}const n={baseUrl:"/docs/sample-docs",supportedLangs:["en","ja"],defaultLang:"en"},t=s(),c=n.supportedLangs,d=n.defaultLang,r=n.baseUrl,u="/docs/sample-docs",g=c.includes(t)?t:d;window.location.href=`${r}${u}/${g}/`;
