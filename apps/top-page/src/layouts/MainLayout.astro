@@ -80,16 +80,16 @@ const currentYear = new Date().getFullYear();
     <title>{title} | Docs Astro</title>
   </head>
   <body>
-    <div class="page sl-flex">
+    <div class="page">
       <header class="header">
         <div class="header-container">
           <div class="header-content">
 
-            <div class="title-wrapper sl-flex">
+            <div class="title-wrapper">
               <a href={`${BASE_URL}/${lang}`} class="site-title">Libx</a>
             </div>
 
-            <div class="sl-hidden md:sl-flex print:hidden right-group">
+            <div class="sl-hidden print:hidden right-group">
               <div aria-label="言語選択">
                 <LanguageSelector currentLang={lang} />
               </div>

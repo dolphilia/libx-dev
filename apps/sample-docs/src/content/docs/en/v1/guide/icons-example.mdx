@@ -41,9 +41,9 @@ You can customize the color of icons:
 
 <div style="display: flex; align-items: center; gap: 1rem;">
   <Icon name="info" color="#007bff" />
-  <Icon name="warning" color="#ffc107" />
-  <Icon name="error" color="#dc3545" />
-  <Icon name="success" color="#28a745" />
+  <Icon name="triangle-alert" color="#ffc107" />
+  <Icon name="circle-alert" color="#dc3545" />
+  <Icon name="circle-check" color="#28a745" />
 </div>
 
 ## Available Icons
@@ -58,36 +58,36 @@ Here are all the available icons:
     <span>info</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
-    <Icon name="setting" />
-    <span>setting</span>
+    <Icon name="settings" />
+    <span>settings</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
-    <Icon name="warning" />
-    <span>warning</span>
+    <Icon name="triangle-alert" />
+    <span>triangle-alert</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
-    <Icon name="error" />
-    <span>error</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <Icon name="check" />
-    <span>check</span>
+    <Icon name="circle-alert" />
+    <span>circle-alert</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
     <Icon name="code" />
     <span>code</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
-    <Icon name="document" />
-    <span>document</span>
+    <Icon name="file-text" />
+    <span>file-text</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
     <Icon name="search" />
     <span>search</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
-    <Icon name="close" />
-    <span>close</span>
+    <Icon name="x" />
+    <span>x</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="languages" />
+    <span>languages</span>
   </div>
 </div>
 
@@ -95,20 +95,20 @@ Here are all the available icons:
 
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
   <div style="display: flex; flex-direction: column; align-items: center;">
-    <Icon name="right-arrow" />
-    <span>right-arrow</span>
+    <Icon name="arrow-right" />
+    <span>arrow-right</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
-    <Icon name="left-arrow" />
-    <span>left-arrow</span>
+    <Icon name="arrow-left" />
+    <span>arrow-left</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
-    <Icon name="down-arrow" />
-    <span>down-arrow</span>
+    <Icon name="arrow-down" />
+    <span>arrow-down</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
-    <Icon name="up-arrow" />
-    <span>up-arrow</span>
+    <Icon name="arrow-up" />
+    <span>arrow-up</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
     <Icon name="external-link" />
@@ -120,8 +120,8 @@ Here are all the available icons:
 
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
   <div style="display: flex; flex-direction: column; align-items: center;">
-    <Icon name="edit" />
-    <span>edit</span>
+    <Icon name="pencil" />
+    <span>pencil</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
     <Icon name="copy" />
@@ -132,8 +132,8 @@ Here are all the available icons:
     <span>download</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
-    <Icon name="success" />
-    <span>success</span>
+    <Icon name="circle-check" />
+    <span>circle-check</span>
   </div>
 </div>
 
@@ -141,20 +141,20 @@ Here are all the available icons:
 
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
   <div style="display: flex; flex-direction: column; align-items: center;">
-    <Icon name="note" />
-    <span>note</span>
+    <Icon name="sticky-note" />
+    <span>sticky-note</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
-    <Icon name="tip" />
-    <span>tip</span>
+    <Icon name="lightbulb" />
+    <span>lightbulb</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
-    <Icon name="important" />
-    <span>important</span>
+    <Icon name="circle-alert" />
+    <span>circle-alert (important)</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
-    <Icon name="caution" />
-    <span>caution</span>
+    <Icon name="triangle-alert" />
+    <span>triangle-alert (caution)</span>
   </div>
 </div>
 
@@ -162,12 +162,12 @@ Here are all the available icons:
 
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
   <div style="display: flex; flex-direction: column; align-items: center;">
-    <Icon name="light" />
-    <span>light</span>
+    <Icon name="sun" />
+    <span>sun</span>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
-    <Icon name="dark" />
-    <span>dark</span>
+    <Icon name="moon" />
+    <span>moon</span>
   </div>
 </div>
 
@@ -177,11 +177,11 @@ Icons can be used inline with text:
 
 This is an information <Icon name="info" /> message.
 
-This is a warning <Icon name="warning" color="#ffc107" /> message.
+This is a warning <Icon name="triangle-alert" color="#ffc107" /> message.
 
-This is an error <Icon name="error" color="#dc3545" /> message.
+This is an error <Icon name="circle-alert" color="#dc3545" /> message.
 
-This is a success <Icon name="success" color="#28a745" /> message.
+This is a success <Icon name="circle-check" color="#28a745" /> message.
 
 ## Accessibility
 

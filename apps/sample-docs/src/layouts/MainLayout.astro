@@ -149,12 +149,12 @@ const currentSlugForSelector = Astro.url.pathname.split('/').slice(slugSliceInde
     </script>
   </head>
   <body>
-    <div class="page sl-flex">
+    <div class="page">
       <header class="header">
         <div class="header-container">
           <div class="header-content">
             <div class="title-wrapper">
-              <a href={`${docsConfig.baseUrl}/${lang}`} class="site-title">Libx</a>
+              <a href={`/${lang}`} class="site-title">Libx</a>
             </div>
             <div class="print:hidden right-group">
               {showSearch && (
