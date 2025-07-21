@@ -5,8 +5,8 @@ import type { GetStaticPathsResult } from 'astro';
 import type { LocaleKey } from '@docs/i18n/locales';
 import { TableOfContents, Pagination, EditLink } from '@docs/ui/components';
 import docsConfig from '../../../config/docs.config';
-import { generatePagination, mergePagination, type PageLink } from '@docs/versioning/utils';
-import { getSidebarAsync } from '../../../config/sidebar.config';
+import { mergePagination, type PageLink } from '@docs/versioning/utils';
+import { generateFileBasedPagination, checkFileExists } from '../../../utils/content-utils';
 
 // 見出しの型定義
 interface Heading {
@@ -66,33 +66,56 @@ const tableOfContents: TOCItem[] = headings.filter((heading: Heading) => heading
   indent: (heading.depth - 1) * 16 // インデントのサイズを計算
 }));
 
-// 自動ページネーション生成
+// ファイルベースのページネーション生成
 let autoPagination = {};
 try {
-  // サイドバーデータを取得
-  const sidebarItems = await getSidebarAsync(lang, version, docsConfig.baseUrl);
+  // entry.slug から情報を抽出 (例: "en/v1/guide/01-getting-started")
+  const slugParts = entry.slug.split('/');
+  const currentSection = slugParts[2]; // "guide"
+  const currentFile = slugParts[3]; // "01-getting-started"
+  const currentSlug = currentFile.replace(/^\d+-/, ''); // "getting-started"
   
-  // 現在のページのスラッグを構築（言語とバージョンを含む）
-  const currentSlug = `/${lang}/${version}/${entry.slug.split('/').slice(2).join('/')}`;
+  // ファイル構造ベースのページネーションを生成
+  autoPagination = await generateFileBasedPagination(
+    lang,
+    version,
+    currentSection,
+    currentSlug,
+    docsConfig.baseUrl
+  );
   
-  // 自動ページネーションを生成
-  autoPagination = generatePagination(currentSlug, sidebarItems, docsConfig.baseUrl);
-  
-  console.log(`[Auto Pagination] Generated for ${currentSlug}:`, autoPagination);
+  console.log(`[File-Based Pagination] Generated for ${lang}/${version}/${currentSection}/${currentSlug}:`, autoPagination);
 } catch (error) {
-  console.error('[Auto Pagination] Error generating pagination:', error);
+  console.error('[File-Based Pagination] Error generating pagination:', error);
 }
 
-// 手動設定のページネーション情報を取得
-const manualPrev: PageLink | undefined = entry.data.prev ? {
-  title: entry.data.prev.text,
-  url: docsConfig.baseUrl + entry.data.prev.link
-} : undefined;
+// 手動設定のページネーション情報を取得（存在するファイルのみ）
+let manualPrev: PageLink | undefined = undefined;
+let manualNext: PageLink | undefined = undefined;
 
-const manualNext: PageLink | undefined = entry.data.next ? {
-  title: entry.data.next.text,
-  url: docsConfig.baseUrl + entry.data.next.link
-} : undefined;
+if (entry.data.prev) {
+  const prevExists = await checkFileExists(entry.data.prev.link);
+  if (prevExists) {
+    manualPrev = {
+      title: entry.data.prev.text,
+      url: docsConfig.baseUrl + entry.data.prev.link
+    };
+  } else {
+    console.warn(`[Manual Pagination] Previous page file does not exist: ${entry.data.prev.link}`);
+  }
+}
+
+if (entry.data.next) {
+  const nextExists = await checkFileExists(entry.data.next.link);
+  if (nextExists) {
+    manualNext = {
+      title: entry.data.next.text,
+      url: docsConfig.baseUrl + entry.data.next.link
+    };
+  } else {
+    console.warn(`[Manual Pagination] Next page file does not exist: ${entry.data.next.link}`);
+  }
+}
 
 // 手動設定と自動生成を統合（手動設定を優先）
 const finalPagination = mergePagination(manualPrev, manualNext, autoPagination);

@@ -12,6 +12,7 @@ import type { LocaleKey } from '@docs/i18n/locales';
 import '../styles/global.css';
 import docsConfig from '../config/docs.config';
 import { ThemeToggle } from '@docs/ui/components';
+import { findCorrespondingFile } from '../utils/content-utils';
 
 // 定数定義
 // const BASE_URL = '';
@@ -98,7 +99,7 @@ if (hasSidebar) htmlDataAttributes['data-has-sidebar'] = '';
 
 const numBaseSegments = docsConfig.baseUrl.split('/').filter(p => p.length > 0).length;
 const slugSliceIndex = 1 + numBaseSegments + 1 + 1; // 1 (leading empty) + base segments + lang segment + version segment
-const currentSlugForSelector = Astro.url.pathname.split('/').slice(slugSliceIndex).join('/');
+const currentSlugForSelector = Astro.url.pathname.split('/').slice(slugSliceIndex).join('/').replace(/\/$/, ''); // 末尾のスラッシュを削除
 ---
 
 <!DOCTYPE html>

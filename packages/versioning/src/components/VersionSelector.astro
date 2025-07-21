@@ -1,7 +1,6 @@
 ---
 import { Dropdown, DropdownItem, Icon } from '@docs/ui/components';
 import type { Version } from '../utils/version';
-import { calculateSafeVersionedUrl } from '../utils/version';
 
 interface Props {
   versions: Version[];
@@ -64,11 +63,15 @@ function getVersionTag(version: Version): { text: string; type: 'latest' | 'stab
   return null;
 }
 
-// バージョン間のパス生成（安全版を使用）
+// 動的フォールバック戦略（ハードコーディングなし）
 function getVersionPath(versionId: string): string {
   if (currentSlug) {
-    // 安全なバージョンURL計算を使用
-    return calculateSafeVersionedUrl(currentSlug, versionId, basePath, versions);
+    // 基本的なターゲットパス
+    const targetPath = `${basePath}/${versionId}/${currentSlug}`;
+    
+    // クライアントサイドでファイル存在確認を行うために、
+    // データ属性を使用して情報を渡す
+    return targetPath;
   }
   
   // currentSlugがない場合は、バージョンのルートページへ
@@ -108,7 +111,7 @@ function getDiffPath(): string {
     class="version-dropdown"
   >
     <div class="version-dropdown-header" slot="before-items">
-      <Icon name="document" class="version-icon" />
+      <Icon name="file-text" class="version-icon" />
       <span>バージョンを選択</span>
     </div>
     
@@ -119,6 +122,7 @@ function getDiffPath(): string {
           label={version.name}
           href={getVersionPath(version.id)}
           isActive={version.id === currentVersion}
+          data-version-link="true"
         >
           {tag && (
             <span slot="after-label" class={`version-badge version-badge-${tag.type}`}>
@@ -150,7 +154,7 @@ function getDiffPath(): string {
   <div class="version-info">
     {showVersionAlert && currentVersion !== latestVersion.id && (
       <div class="version-alert">
-        <Icon name="warning" class="version-alert-icon" />
+        <Icon name="triangle-alert" class="version-alert-icon" />
         <span>
           これは最新バージョンではありません。
           <a href={getVersionPath(latestVersion.id)} class="version-alert-link">
@@ -539,5 +543,82 @@ function getDiffPath(): string {
         }
       });
     });
+    
+    // バージョンセレクターリンクの動的フォールバック処理
+    setupVersionSelectorFallback();
   });
+  
+  // バージョンセレクターリンクの動的フォールバック処理
+  function setupVersionSelectorFallback() {
+    const versionLinks = document.querySelectorAll('.version-dropdown [data-version-link]');
+    
+    versionLinks.forEach((link) => {
+      const originalHref = link.getAttribute('href');
+      if (!originalHref) return;
+      
+      link.addEventListener('click', async (e) => {
+        e.preventDefault();
+        
+        // リンク先が存在するかチェック
+        const isValid = await checkLinkValidity(originalHref);
+        
+        if (isValid) {
+          // 有効なリンクならそのまま遷移
+          window.location.href = originalHref;
+        } else {
+          // 無効なリンクならフォールバック先を計算
+          const fallbackUrl = await calculateFallbackUrl(originalHref);
+          window.location.href = fallbackUrl;
+        }
+      });
+    });
+  }
+  
+  // リンク先の有効性をチェック
+  async function checkLinkValidity(url) {
+    try {
+      const response = await fetch(url, { method: 'HEAD' });
+      return response.ok;
+    } catch (error) {
+      return false;
+    }
+  }
+  
+  // フォールバック先URLを計算
+  async function calculateFallbackUrl(originalUrl) {
+    // URLを解析
+    const urlParts = originalUrl.split('/');
+    const baseIndex = urlParts.findIndex(part => part === 'docs');
+    
+    if (baseIndex === -1) return originalUrl;
+    
+    // パス構造: /docs/sample-docs/lang/version/section/file
+    const basePath = urlParts.slice(0, baseIndex + 3).join('/'); // /docs/sample-docs/lang
+    const version = urlParts[baseIndex + 3]; // version
+    const section = urlParts[baseIndex + 4]; // section (guide など)
+    
+    // フォールバック戦略
+    const fallbackCandidates = [
+      // 1. 同じセクションの最初のファイル（getting-started系）
+      basePath + '/' + version + '/' + section + '/01-getting-started',
+      basePath + '/' + version + '/' + section + '/getting-started',
+      // 2. デフォルトセクション（guide）の最初のファイル  
+      basePath + '/' + version + '/guide/01-getting-started',
+      basePath + '/' + version + '/guide/getting-started',
+      // 3. バージョンのルートページ
+      basePath + '/' + version + '/',
+      basePath + '/' + version
+    ];
+    
+    // 各候補を順次チェック
+    for (const candidate of fallbackCandidates) {
+      const isValid = await checkLinkValidity(candidate);
+      if (isValid) {
+        return candidate;
+      }
+    }
+    
+    // すべて失敗した場合は元のURLを返す
+    return originalUrl;
+  }
 </script>

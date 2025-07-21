@@ -94,6 +94,9 @@ export async function getAutoSidebar(lang: LocaleKey, version: string, baseUrl: 
   };
   
   docs.forEach(doc => {
+    // デバッグ用ログ
+    console.log(`[getAutoSidebar] Processing doc: ${doc.slug}, id: ${doc.id}`);
+    
     // パスからカテゴリを取得
     const parts = doc.slug.split('/');
     const pathCategory = parts.length >= 3 ? parts[2] : 'uncategorized';
@@ -149,10 +152,20 @@ export async function getAutoSidebar(lang: LocaleKey, version: string, baseUrl: 
     return {
       title,
       items: docs.map(doc => {
-        const slugParts = doc.slug.split('/').slice(2);
+        // doc.idは実際のファイルパス（例："en/v1/guide/01-getting-started.mdx"）
+        // doc.slugはAstroが処理したslug（例："en/v1/guide/01-getting-started"）
+        console.log(`[getAutoSidebar] Doc: ${doc.data.title}, id: ${doc.id}, slug: ${doc.slug}`);
+        
+        // 実際のファイルパスからURLを構築
+        const filePathParts = doc.id.split('/');
+        const fileName = filePathParts[filePathParts.length - 1].replace(/\.mdx?$/, ''); // .mdx拡張子を削除
+        const pathWithoutFile = filePathParts.slice(2, -1); // 言語、バージョンを除き、ファイル名も除く
+        
+        const finalPath = [...pathWithoutFile, fileName].join('/');
+        
         return {
           title: doc.data.title,
-          href: `${baseUrl}/${lang}/${version}/${slugParts.join('/')}`
+          href: `${baseUrl}/${lang}/${version}/${finalPath}`
         };
       })
     };
