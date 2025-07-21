@@ -175,17 +175,16 @@ const sidebarHash = getSidebarHash(items);
 <style>
   /* Starlightスタイルに基づくサイドバースタイル */
   .sidebar {
-    width: var(--sl-sidebar-width, 18rem);
+    width: 100%;
     flex-shrink: 0;
     height: 100%;
     overflow-y: auto;
-    position: sticky;
-    top: var(--sl-nav-height, 4rem);
-    max-height: calc(100vh - var(--sl-nav-height, 4rem));
-    padding: 1rem 0.5rem 1rem 0;
+    overflow-x: hidden;
+    padding: 0 0.5rem 0 0;
     scrollbar-width: thin;
     scrollbar-color: var(--sl-color-gray-5) transparent;
     transition: width 0.2s ease-in-out;
+    box-sizing: border-box;
   }
   
   /* 折りたたみ状態のスタイル */
@@ -296,6 +295,10 @@ const sidebarHash = getSidebarHash(items);
     padding: 0.3em var(--sl-sidebar-item-padding-inline);
     line-height: 1.4;
     transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    max-width: 100%;
   }
 
   a:hover,

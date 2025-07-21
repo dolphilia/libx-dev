@@ -106,7 +106,15 @@ export function getVersionedDocumentPath(
 }
 
 /**
- * バージョン間の移動先URLを計算します
+ * ファイル名から番号プレフィックスを削除して正規化します
+ */
+export function normalizeSlugForVersioning(slug: string): string {
+  // スラッグの各セグメントから番号プレフィックス（例: "01-"）を削除
+  return slug.replace(/\/(\d+-)([^\/]+)/g, '/$2');
+}
+
+/**
+ * バージョン間の移動先URLを計算します（番号プレフィックス対応版）
  */
 export function calculateVersionedUrl(
   currentPath: string,
@@ -126,4 +134,30 @@ export function calculateVersionedUrl(
   
   // パスのバージョン部分を置換
   return changePathVersion(currentPath, targetVersion);
+}
+
+/**
+ * バージョン間で対応するページのURLを安全に計算します
+ * 番号プレフィックス付きファイル名を考慮し、存在しない場合はフォールバックします
+ */
+export function calculateSafeVersionedUrl(
+  currentSlug: string,
+  targetVersion: string,
+  basePath: string,
+  versions: Version[]
+): string {
+  // 番号プレフィックスを正規化
+  const normalizedSlug = normalizeSlugForVersioning(currentSlug);
+  
+  // ターゲットバージョンが存在するかチェック
+  const targetVersionExists = versionExists(targetVersion, versions);
+  if (!targetVersionExists) {
+    // バージョンが存在しない場合は最新バージョンへフォールバック
+    const latestVersion = versions.find(v => v.isLatest) || versions[0];
+    return `${basePath}/${latestVersion.id}/`;
+  }
+  
+  // 理想的には、ここでターゲットバージョンに実際にページが存在するかチェックすべきですが、
+  // 静的サイト生成時にはこの情報にアクセスできないため、正規化されたスラッグを使用
+  return `${basePath}/${targetVersion}/${normalizedSlug}`;
 }

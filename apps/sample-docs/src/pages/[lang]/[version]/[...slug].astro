@@ -4,6 +4,9 @@ import DocLayout from '../../../layouts/DocLayout.astro';
 import type { GetStaticPathsResult } from 'astro';
 import type { LocaleKey } from '@docs/i18n/locales';
 import { TableOfContents, Pagination, EditLink } from '@docs/ui/components';
+import docsConfig from '../../../config/docs.config';
+import { generatePagination, mergePagination, type PageLink } from '@docs/versioning/utils';
+import { getSidebarAsync } from '../../../config/sidebar.config';
 
 // 見出しの型定義
 interface Heading {
@@ -62,6 +65,37 @@ const tableOfContents: TOCItem[] = headings.filter((heading: Heading) => heading
   slug: heading.slug,
   indent: (heading.depth - 1) * 16 // インデントのサイズを計算
 }));
+
+// 自動ページネーション生成
+let autoPagination = {};
+try {
+  // サイドバーデータを取得
+  const sidebarItems = await getSidebarAsync(lang, version, docsConfig.baseUrl);
+  
+  // 現在のページのスラッグを構築（言語とバージョンを含む）
+  const currentSlug = `/${lang}/${version}/${entry.slug.split('/').slice(2).join('/')}`;
+  
+  // 自動ページネーションを生成
+  autoPagination = generatePagination(currentSlug, sidebarItems, docsConfig.baseUrl);
+  
+  console.log(`[Auto Pagination] Generated for ${currentSlug}:`, autoPagination);
+} catch (error) {
+  console.error('[Auto Pagination] Error generating pagination:', error);
+}
+
+// 手動設定のページネーション情報を取得
+const manualPrev: PageLink | undefined = entry.data.prev ? {
+  title: entry.data.prev.text,
+  url: docsConfig.baseUrl + entry.data.prev.link
+} : undefined;
+
+const manualNext: PageLink | undefined = entry.data.next ? {
+  title: entry.data.next.text,
+  url: docsConfig.baseUrl + entry.data.next.link
+} : undefined;
+
+// 手動設定と自動生成を統合（手動設定を優先）
+const finalPagination = mergePagination(manualPrev, manualNext, autoPagination);
 ---
 
 <DocLayout title={entry.data.title} lang={lang} version={version}>
@@ -73,8 +107,8 @@ const tableOfContents: TOCItem[] = headings.filter((heading: Heading) => heading
   {/* ページナビゲーション */}
   <div class="navigation-container">
     <Pagination 
-      prev={entry.data.prev ? { title: entry.data.prev.text, url: entry.data.prev.link } : undefined}
-      next={entry.data.next ? { title: entry.data.next.text, url: entry.data.next.link } : undefined}
+      prev={finalPagination.prev}
+      next={finalPagination.next}
     />
   </div>
   

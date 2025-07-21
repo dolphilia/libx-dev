@@ -194,7 +194,9 @@ const hasToc = true;
   }
 
   .sidebar-content {
-    padding: 1rem var(--sl-sidebar-pad-x) 0;
+    padding-top: 1.5rem;
+    padding-inline: var(--sl-sidebar-pad-x, 1rem);
+    padding-bottom: 0;
     height: 100%;
   }
 
@@ -205,7 +207,9 @@ const hasToc = true;
   }
 
   .content-panel {
-    padding: 1.5rem var(--sl-content-pad-x);
+    padding-top: 1.5rem;
+    padding-inline: var(--sl-content-pad-x, 1rem);
+    padding-bottom: 1.5rem;
   }
 
   /* 目次（右カラム）スタイル */
@@ -217,9 +221,9 @@ const hasToc = true;
   }
 
   .toc-content {
-    position: sticky;
-    top: calc(var(--sl-nav-height) + 1rem);
-    padding: 1rem;
+    padding-top: 1.5rem;
+    padding-inline: 1rem;
+    padding-bottom: 1rem;
   }
 
   /* タブレット表示（2カラム）*/
@@ -237,6 +241,7 @@ const hasToc = true;
       top: var(--sl-nav-height);
       height: calc(100vh - var(--sl-nav-height));
       overflow-y: auto;
+      align-self: flex-start;
     }
 
     .main-column {
@@ -272,12 +277,15 @@ const hasToc = true;
       top: var(--sl-nav-height);
       height: calc(100vh - var(--sl-nav-height));
       overflow-y: auto;
+      align-self: flex-start;
     }
     
     /* 目次内のコンテンツが表示されるようにする */
     .toc-content {
       display: block;
-      padding: 1rem;
+      padding-top: 1.5rem;
+      padding-inline: 1rem;
+      padding-bottom: 1rem;
     }
   }
 </style>

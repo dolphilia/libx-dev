@@ -1,6 +1,7 @@
 ---
 import { Dropdown, DropdownItem, Icon } from '@docs/ui/components';
 import type { Version } from '../utils/version';
+import { calculateSafeVersionedUrl } from '../utils/version';
 
 interface Props {
   versions: Version[];
@@ -9,6 +10,7 @@ interface Props {
   currentSlug?: string; // 追加
   className?: string;
   showVersionHistory?: boolean;
+  showVersionAlert?: boolean; // バージョン警告を表示するかどうか
 }
 
 const {
@@ -17,7 +19,8 @@ const {
   basePath,
   currentSlug = '', // 追加
   className = '',
-  showVersionHistory = false
+  showVersionHistory = false,
+  showVersionAlert = false // デフォルトで非表示
 } = Astro.props;
 
 // 現在のバージョンオブジェクトを取得
@@ -61,14 +64,16 @@ function getVersionTag(version: Version): { text: string; type: 'latest' | 'stab
   return null;
 }
 
-// バージョン間のパス生成
+// バージョン間のパス生成（安全版を使用）
 function getVersionPath(versionId: string): string {
-  let path = `${basePath}/${versionId}`;
   if (currentSlug) {
-    path += `/${currentSlug}`;
+    // 安全なバージョンURL計算を使用
+    return calculateSafeVersionedUrl(currentSlug, versionId, basePath, versions);
   }
-  // パスの末尾がスラッシュでない場合、スラッシュを追加 (ただし、ベースパスのみの場合は除く)
-  if (!path.endsWith('/') && path !== basePath) {
+  
+  // currentSlugがない場合は、バージョンのルートページへ
+  let path = `${basePath}/${versionId}`;
+  if (!path.endsWith('/')) {
     path += '/';
   }
   return path;
@@ -83,8 +88,14 @@ function getDiffPath(): string {
     // currentVersion が basePath に含まれない場合、単純に末尾に追加
     // これは理想的ではないが、一旦のフォールバック
   }
-  // スラッグの前に version-diff を挿入する
-  const slugPart = currentSlug ? `/${currentSlug}` : '';
+  
+  // 番号プレフィックスを正規化してからパスに追加
+  let slugPart = '';
+  if (currentSlug) {
+    const normalizedSlug = currentSlug.replace(/\/(\d+-)([^\/]+)/g, '/$2');
+    slugPart = `/${normalizedSlug}`;
+  }
+  
   return `${diffBasePath}/version-diff${slugPart}`;
 }
 ---
@@ -137,7 +148,7 @@ function getDiffPath(): string {
   </Dropdown>
   
   <div class="version-info">
-    {currentVersion !== latestVersion.id && (
+    {showVersionAlert && currentVersion !== latestVersion.id && (
       <div class="version-alert">
         <Icon name="warning" class="version-alert-icon" />
         <span>
