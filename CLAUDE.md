@@ -1,169 +1,171 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+**重要:** このプロジェクトでは日本語で回答してください。コードのコメントや文書化も日本語で行ってください。
 
-## Project Overview
+このファイルは、このリポジトリのコードを扱う際のClaude Code (claude.ai/code) へのガイダンスを提供します。
 
-This is a monorepo for managing multiple Astro documentation sites with shared components and themes. The project primarily handles translated technical documentation (English to Japanese) and manages approximately 20 projects.
+## プロジェクト概要
 
-Key characteristics:
-- Monorepo structure using pnpm workspaces
-- Shared UI components and theming system
-- Multi-language support (English/Japanese)  
-- Document versioning system
-- Cross-project search functionality
-- Integrated build system for GitHub Pages deployment
+これは、共有コンポーネントとテーマを持つ複数のAstroドキュメントサイトを管理するモノレポです。このプロジェクトは主に翻訳された技術文書（英語から日本語）を処理し、約20のプロジェクトを管理しています。
 
-## Development Commands
+主な特徴：
+- pnpm workspacesを使用したモノレポ構造
+- 共有UIコンポーネントとテーマシステム
+- 多言語サポート（英語/日本語）
+- ドキュメントバージョニングシステム
+- プロジェクト横断検索機能
+- GitHub Pagesデプロイ用の統合ビルドシステム
 
-### Core Development
+## 開発コマンド
+
+### 基本開発
 ```bash
-# Install dependencies
+# 依存関係をインストール
 pnpm install
 
-# Start all development servers
+# すべての開発サーバーを開始
 pnpm dev
 
-# Start specific app
+# 特定のアプリを開始
 pnpm --filter=apps-sample-docs dev
 pnpm --filter=apps-top-page dev
 
-# Lint all code
+# すべてのコードをlint
 pnpm lint
 
-# Format all code  
+# すべてのコードをフォーマット  
 pnpm format
 ```
 
-### Build Commands
+### ビルドコマンド
 ```bash
-# Build all apps and integrate into single dist/
+# すべてのアプリをビルドして単一のdist/に統合
 pnpm build
 
-# Local development build (removes GitHub Pages base path)
+# ローカル開発ビルド（GitHub Pagesのベースパスを削除）
 pnpm build:local
 
-# Build apps separately (no integration)
+# アプリを個別にビルド（統合なし）
 pnpm build:separate
 
-# Generate sidebar JSON files
+# サイドバーJSONファイルを生成
 pnpm build:sidebar
 
-# Generate search indices
+# 検索インデックスを生成
 pnpm build:search-index
 
-# Full deploy pipeline (sidebar → search → build → copy to ../docs-astro/)
+# 完全なデプロイパイプライン（sidebar → search → build → copy to ../docs-astro/）
 pnpm build:deploy
 
-# Copy build output to ../docs-astro/
+# ビルド出力を../docs-astro/にコピー
 pnpm copy:docs
 ```
 
-### Content Management
+### コンテンツ管理
 ```bash
-# Create new version for a project
+# プロジェクト用の新しいバージョンを作成
 pnpm create:version [project-name] [version]
-# Example: pnpm create:version sample-docs v3
+# 例: pnpm create:version sample-docs v3
 
-# Create new document
+# 新しいドキュメントを作成
 pnpm create:doc [project-name] [lang] [version] [slug]  
-# Example: pnpm create:doc sample-docs en v1 guide/installation
+# 例: pnpm create:doc sample-docs en v1 guide/installation
 ```
 
-## Architecture
+## アーキテクチャ
 
-### Monorepo Structure
+### モノレポ構造
 ```
 packages/
-├── ui/           # Shared Astro components (@docs/ui)
-├── theme/        # Common theming system (@docs/theme)  
-├── i18n/         # Internationalization utilities (@docs/i18n)
-├── search/       # Search functionality (@docs/search)
-└── versioning/   # Version management (@docs/versioning)
+├── ui/           # 共有Astroコンポーネント (@docs/ui)
+├── theme/        # 共通テーマシステム (@docs/theme)  
+├── i18n/         # 国際化ユーティリティ (@docs/i18n)
+├── search/       # 検索機能 (@docs/search)
+└── versioning/   # バージョン管理 (@docs/versioning)
 
 apps/
-├── sample-docs/  # Example documentation site
-└── top-page/     # Landing page
+├── sample-docs/  # サンプルドキュメントサイト
+└── top-page/     # ランディングページ
 
 config/
-├── eslint/       # Shared ESLint configuration
-└── tsconfig/     # Shared TypeScript configuration
+├── eslint/       # 共有ESLint設定
+└── tsconfig/     # 共有TypeScript設定
 
 scripts/
-├── build-integrated.js    # Main build orchestration
-├── build-sidebar.js       # Sidebar generation
-├── build-search-index.js  # Search index generation
-└── copy-to-docs.js        # Deploy output copying
+├── build-integrated.js    # メインビルドオーケストレーション
+├── build-sidebar.js       # サイドバー生成
+├── build-search-index.js  # 検索インデックス生成
+└── copy-to-docs.js        # デプロイ出力コピー
 ```
 
-### Package Dependencies
-All apps depend on the shared packages:
-- `@docs/ui` - Common Astro components (Button, Card, Navigation, Sidebar, etc.)
-- `@docs/theme` - Theming system
-- `@docs/i18n` - Language utilities
-- `@docs/search` - Search functionality  
-- `@docs/versioning` - Version management
+### パッケージ依存関係
+すべてのアプリは共有パッケージに依存します：
+- `@docs/ui` - 共通Astroコンポーネント（Button、Card、Navigation、Sidebarなど）
+- `@docs/theme` - テーマシステム
+- `@docs/i18n` - 言語ユーティリティ
+- `@docs/search` - 検索機能  
+- `@docs/versioning` - バージョン管理
 
-### Build System
-The integrated build system (`scripts/build-integrated.js`):
-1. Builds each app individually
-2. Copies outputs to unified `dist/` directory
-3. Handles path prefixes (top-page at root, others at `/docs/[project]/`)
-4. Generates search manifest from all indices
-5. Supports local vs production builds (base path handling)
+### ビルドシステム
+統合ビルドシステム（`scripts/build-integrated.js`）：
+1. 各アプリを個別にビルド
+2. 出力を統一された`dist/`ディレクトリにコピー
+3. パスプレフィックスを処理（top-pageはルート、その他は`/docs/[project]/`）
+4. すべてのインデックスから検索マニフェストを生成
+5. ローカル vs プロダクションビルド（ベースパス処理）をサポート
 
-### Configuration Files
-Each documentation project has:
+### 設定ファイル
+各ドキュメントプロジェクトには以下があります：
 ```
 apps/[project]/src/config/
-├── docs.config.ts      # Project metadata, URLs, features
-├── sidebar.config.ts   # Sidebar navigation structure  
-└── versions.config.ts  # Available versions and paths
+├── docs.config.ts      # プロジェクトメタデータ、URL、機能
+├── sidebar.config.ts   # サイドバーナビゲーション構造  
+└── versions.config.ts  # 利用可能なバージョンとパス
 ```
 
-## Key Patterns
+## 主要なパターン
 
-### Component Architecture
-- Astro components in `packages/ui/src/components/`
-- Exported via `packages/ui/src/components/index.ts`
-- Starlight-style components for documentation UX
-- Icon system with centralized `Icons.ts` registry
+### コンポーネントアーキテクチャ
+- `packages/ui/src/components/`内のAstroコンポーネント
+- `packages/ui/src/components/index.ts`経由でエクスポート
+- ドキュメントUX用のStarlightスタイルコンポーネント
+- 中央集権化された`Icons.ts`レジストリを持つアイコンシステム
 
-### Content Structure
-- MDX content in `apps/[project]/src/content/docs/[lang]/[version]/`
-- Frontmatter-driven metadata
-- Automatic sidebar generation support
-- Version-based content organization
+### コンテンツ構造
+- `apps/[project]/src/content/docs/[lang]/[version]/`内のMDXコンテンツ
+- フロントマター駆動のメタデータ
+- 自動サイドバー生成サポート
+- バージョンベースのコンテンツ整理
 
-### Language Support
-- URL structure: `/[lang]/[version]/[...slug]` 
-- Language detection and switching
-- Separate content trees per language
+### 言語サポート
+- URL構造：`/[lang]/[version]/[...slug]` 
+- 言語検出と切り替え
+- 言語ごとの個別コンテンツツリー
 
-### Search System
-- Per-project search indices in `public/search/`
-- Aggregated manifest for cross-project search
-- JSON-based index files with gzip compression
+### 検索システム
+- `public/search/`内のプロジェクト別検索インデックス
+- プロジェクト横断検索用の集約マニフェスト
+- gzip圧縮付きのJSONベースインデックスファイル
 
-## Working with This Codebase
+## このコードベースでの作業
 
-### Adding New Projects
-1. Create new Astro app in `apps/`
-2. Add shared package dependencies
-3. Configure `astro.config.mjs` with proper settings
-4. Set up language and version structure
-5. Update build integration script if needed
+### 新規プロジェクトの追加
+1. `apps/`内に新しいAstroアプリを作成
+2. 共有パッケージ依存関係を追加
+3. 適切な設定で`astro.config.mjs`を設定
+4. 言語とバージョン構造をセットアップ
+5. 必要に応じてビルド統合スクリプトを更新
 
-### Modifying Shared Components  
-- Edit components in `packages/ui/src/components/`
-- Update exports in `index.ts`
-- Test across multiple apps
-- Run `pnpm lint` before committing
+### 共有コンポーネントの変更  
+- `packages/ui/src/components/`内のコンポーネントを編集
+- `index.ts`内のエクスポートを更新
+- 複数のアプリでテスト
+- コミット前に`pnpm lint`を実行
 
-### Build Troubleshooting
-- Use `pnpm build:local` for local testing
-- Check `scripts/build-integrated.js` for path handling
-- Verify search indices are generated correctly
-- Ensure sidebar JSON files are current
+### ビルドトラブルシューティング
+- ローカルテスト用に`pnpm build:local`を使用
+- パス処理について`scripts/build-integrated.js`を確認
+- 検索インデックスが正しく生成されていることを確認
+- サイドバーJSONファイルが最新であることを確認
 
-Run linting after changes: `pnpm lint`
+変更後にlintを実行：`pnpm lint`
