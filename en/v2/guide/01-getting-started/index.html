@@ -1,0 +1,305 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-has-toc data-has-sidebar class="astro-ouamjn2i" data-astro-cid-ouamjn2i> <head><meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="/docs/sample-docs/favicon.svg"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="Astro v5.12.0"><meta name="description" content="Documentation site built with Astro"><title>Getting Started | Docs</title><script type="module" src="/docs/sample-docs/assets/MainLayout.astro_astro_type_script_index_0_lang.cDhau0eJ.js"></script><link rel="stylesheet" href="/docs/sample-docs/assets/style.BUoJ5tk7.css"></head> <body data-astro-cid-ouamjn2i> <div class="page" data-astro-cid-ouamjn2i> <header class="header" data-astro-cid-ouamjn2i> <div class="header-container" data-astro-cid-ouamjn2i> <div class="header-content" data-astro-cid-ouamjn2i> <div class="title-wrapper" data-astro-cid-ouamjn2i> <a href="/en" class="site-title" data-astro-cid-ouamjn2i>Libx</a> </div> <div class="print:hidden right-group" data-astro-cid-ouamjn2i> <div class="search-container" data-astro-cid-ouamjn2i> <site-search class data-translations="{&#34;placeholder&#34;:&#34;ドキュメントを検索...&#34;,&#34;searchResults&#34;:&#34;Search Results&#34;,&#34;noResults&#34;:&#34;No results found for '{query}'&#34;,&#34;oneResult&#34;:&#34;1 result for '{query}'&#34;,&#34;manyResults&#34;:&#34;{count} results for '{query}'&#34;,&#34;searching&#34;:&#34;Searching...&#34;,&#34;closeSearch&#34;:&#34;Close&#34;,&#34;searchError&#34;:&#34;Search error&#34;,&#34;ctrlKey&#34;:&#34;Ctrl&#34;,&#34;slashKey&#34;:&#34;/&#34;}" data-lang="en" data-base-url="/docs/sample-docs" data-astro-cid-nts43m2j="true"> <button data-open-modal aria-label="Search" aria-keyshortcuts="Control+K /" data-astro-cid-nts43m2j> <svg aria-hidden="true" class="icon " width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-rfpnirwl style="--icon-size: 1em;"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg> <span class="search-text" data-astro-cid-nts43m2j>Search</span> <kbd class="shortcut-hint" data-astro-cid-nts43m2j> <kbd class="platform-key" data-astro-cid-nts43m2j>Ctrl</kbd><kbd data-astro-cid-nts43m2j>K</kbd> </kbd> </button> <dialog style="padding:0" aria-label="Search" data-astro-cid-nts43m2j> <div class="dialog-frame" data-astro-cid-nts43m2j> <div class="dialog-header" data-astro-cid-nts43m2j> <div class="search-input-container" data-astro-cid-nts43m2j> <svg aria-hidden="true" class="icon search-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-rfpnirwl style="--icon-size: 1em;"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg> <input type="search" id="search-input" placeholder="ドキュメントを検索..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-astro-cid-nts43m2j> </div> <button data-close-modal class="close-button" data-astro-cid-nts43m2j> <svg aria-hidden="true" class="icon " width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-rfpnirwl style="--icon-size: 1em;"></svg> <span class="sr-only" data-astro-cid-nts43m2j>Close</span> </button> </div> <div class="search-results" data-astro-cid-nts43m2j> <div id="search-results-container" class="results-container" data-astro-cid-nts43m2j> <div class="loading-indicator" data-astro-cid-nts43m2j> <div class="loading-spinner" data-astro-cid-nts43m2j></div> <p data-astro-cid-nts43m2j>Searching...</p> </div> </div> </div> </div> </dialog> </site-search>  <script type="module" src="/docs/sample-docs/assets/SearchBar.astro_astro_type_script_index_0_lang.D5rxUStD.js"></script>  </div> <div class="version-selector-container" data-astro-cid-ouamjn2i> <div class="version-selector" data-astro-cid-ca7gk2tr> <docs-dropdown data-astro-cid-ca7gk2tr="true" data-astro-cid-da7d4gqt="true" style="--align: right;--width: 14rem;" class="dropdown version-dropdown">  <div data-astro-cid-da7d4gqt style="--align: right;--width: 14rem;"> <button type="button" class="dropdown-button" id="dropdown-button-fhrzt9wfx" aria-expanded="false" aria-haspopup="true" aria-controls="dropdown-menu-heioyroze" data-dropdown-button data-astro-cid-da7d4gqt style="--align: right;--width: 14rem;"> <span class="dropdown-label" data-astro-cid-da7d4gqt style="--align: right;--width: 14rem;">Version 2.0</span> <span class="dropdown-icon" data-astro-cid-da7d4gqt style="--align: right;--width: 14rem;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></span> </button> </div>  <div class="dropdown-menu hidden" id="dropdown-menu-heioyroze" role="menu" aria-orientation="vertical" aria-labelledby="dropdown-button-fhrzt9wfx" tabindex="-1" data-dropdown-menu data-align="right" style="width: 14rem;; --align: right;--width: 14rem;" data-astro-cid-da7d4gqt> <div class="dropdown-content" role="none" data-astro-cid-da7d4gqt style="--align: right;--width: 14rem;">   <a href="/docs/sample-docs/en/v2/guide/01-getting-started" class="dropdown-item dropdown-item-active" role="menuitem" tabindex="-1" aria-current="page" data-version-link="true" data-astro-cid-ca7gk2tr="true" data-astro-cid-p3cozcfz><span class="dropdown-item-label" data-astro-cid-p3cozcfz>Version 2.0</span><span class="version-badge version-badge-latest" data-astro-cid-ca7gk2tr> 最新 </span><div class="version-meta" data-astro-cid-ca7gk2tr> <div class="version-date" data-astro-cid-ca7gk2tr> 2025年1月1日 </div>  </div> </a><a href="/docs/sample-docs/en/v1/guide/01-getting-started" class="dropdown-item" role="menuitem" tabindex="-1" data-version-link="true" data-astro-cid-ca7gk2tr="true" data-astro-cid-p3cozcfz><span class="dropdown-item-label" data-astro-cid-p3cozcfz>Version 1.0</span><div class="version-meta" data-astro-cid-ca7gk2tr> <div class="version-date" data-astro-cid-ca7gk2tr> 2024年1月1日 </div>  </div> </a>  </div> </div> </docs-dropdown>  <div class="version-info" data-astro-cid-ca7gk2tr>   </div> </div>  <script type="module" src="/docs/sample-docs/assets/VersionSelector.astro_astro_type_script_index_0_lang.Cnt5jYhd.js"></script> </div> <div class="language-selector-container" aria-label="言語選択" data-astro-cid-ouamjn2i> <div class="language-selector-container" data-astro-cid-ltpqzwiw> <script>
+  class DocsDropdown extends HTMLElement {
+    constructor() {
+      super();
+    }
+  }
+  
+  // カスタム要素として登録
+  customElements.define('docs-dropdown', DocsDropdown);
+  </script><script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // すべてのドロップダウンコンポーネントを初期化
+    document.querySelectorAll('docs-dropdown').forEach(dropdown => {
+      if (dropdown._initialized) return;
+      dropdown._initialized = true;
+      
+      const button = dropdown.querySelector('[data-dropdown-button]');
+      const menu = dropdown.querySelector('[data-dropdown-menu]');
+      
+      if (button && menu) {
+        // ボタンクリックでメニューの表示/非表示を切り替え
+        button.addEventListener('click', function() {
+          const expanded = button.getAttribute('aria-expanded') === 'true';
+          button.setAttribute('aria-expanded', (!expanded).toString());
+          menu.classList.toggle('hidden');
+        });
+        
+        // 外部クリックでメニューを閉じる
+        document.addEventListener('click', function(event) {
+          if (!dropdown.contains(event.target)) {
+            button.setAttribute('aria-expanded', 'false');
+            menu.classList.add('hidden');
+          }
+        });
+        
+        // ESCキーでメニューを閉じる
+        document.addEventListener('keydown', function(event) {
+          if (event.key === 'Escape' && button.getAttribute('aria-expanded') === 'true') {
+            button.setAttribute('aria-expanded', 'false');
+            menu.classList.add('hidden');
+          }
+        });
+      }
+    });
+  });
+  </script><docs-dropdown data-astro-cid-ltpqzwiw="true" data-astro-cid-da7d4gqt="true" style="--align: right;--width: 14rem;" class="dropdown language-dropdown ">  <div data-astro-cid-da7d4gqt style="--align: right;--width: 14rem;"> <button type="button" class="dropdown-button" id="dropdown-button-tf7kvs5bi" aria-expanded="false" aria-haspopup="true" aria-controls="dropdown-menu-rzymxtm56" data-dropdown-button data-astro-cid-da7d4gqt style="--align: right;--width: 14rem;"> <span class="dropdown-label" data-astro-cid-da7d4gqt style="--align: right;--width: 14rem;">English</span> <span class="dropdown-icon" data-astro-cid-da7d4gqt style="--align: right;--width: 14rem;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></span> </button> </div>  <div class="dropdown-menu hidden" id="dropdown-menu-rzymxtm56" role="menu" aria-orientation="vertical" aria-labelledby="dropdown-button-tf7kvs5bi" tabindex="-1" data-dropdown-menu data-align="right" style="width: 14rem;; --align: right;--width: 14rem;" data-astro-cid-da7d4gqt> <div class="dropdown-content" role="none" data-astro-cid-da7d4gqt style="--align: right;--width: 14rem;">   <a href="/docs/sample-docs/en/v2/guide/01-getting-started/" class="dropdown-item dropdown-item-active" role="menuitem" tabindex="-1" aria-current="page" data-astro-cid-ltpqzwiw="true" data-astro-cid-p3cozcfz><span class="language-flag" data-astro-cid-ltpqzwiw>🇺🇸</span><span class="dropdown-item-label" data-astro-cid-p3cozcfz>English</span><span class="language-current-badge" data-astro-cid-ltpqzwiw>現在</span>  </a><a href="/docs/sample-docs/ja/v2/guide/01-getting-started/" class="dropdown-item" role="menuitem" tabindex="-1" data-astro-cid-ltpqzwiw="true" data-astro-cid-p3cozcfz><span class="language-flag" data-astro-cid-ltpqzwiw>🇯🇵</span><span class="dropdown-item-label" data-astro-cid-p3cozcfz>日本語</span>  </a>  </div> </div> </docs-dropdown>   </div>  <script type="module" src="/docs/sample-docs/assets/LanguageSelector.astro_astro_type_script_index_0_lang.ez8J5BWL.js"></script> </div> <theme-toggle data-astro-cid-di27vj2s="true"> <button class="theme-toggle" type="button" aria-label="テーマを切り替える" data-astro-cid-di27vj2s> <span class="theme-toggle-icon" data-astro-cid-di27vj2s> <!-- 太陽アイコン（ライトモード用） --> <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-di27vj2s> <circle cx="12" cy="12" r="5" data-astro-cid-di27vj2s></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-di27vj2s></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-di27vj2s></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-di27vj2s></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-di27vj2s></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-di27vj2s></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-di27vj2s></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-di27vj2s></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-di27vj2s></line> </svg> <!-- 月アイコン（ダークモード用） --> <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-di27vj2s> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-di27vj2s></path> </svg> </span> </button> </theme-toggle>  <script type="module" src="/docs/sample-docs/assets/ThemeToggle.astro_astro_type_script_index_0_lang.BDHHZQnD.js"></script> </div> </div> </div> </header> <div class="main-frame" data-astro-cid-ouamjn2i> <main id="main-content" data-astro-cid-ouamjn2i>  <div class="doc-layout-container" data-astro-cid-fz5pa65a> <aside class="sidebar-column print:hidden" data-astro-cid-fz5pa65a> <div class="sidebar-content" data-astro-cid-fz5pa65a> <aside class="sidebar" role="complementary" aria-label="Documentation" id="sidebar" style="position: relative;" data-astro-cid-smjyiz3p> <div class="sidebar-resizer" aria-hidden="true" data-astro-cid-fbvwgyvt style="--minWidth: 200;--maxWidth: 400;--initialWidth: 280;--collapsedWidth: 50;"> <div class="resizer-handle" title="サイドバーの幅を調整" data-astro-cid-fbvwgyvt style="--minWidth: 200;--maxWidth: 400;--initialWidth: 280;--collapsedWidth: 50;"> <div class="handle-line" data-astro-cid-fbvwgyvt style="--minWidth: 200;--maxWidth: 400;--initialWidth: 280;--collapsedWidth: 50;"></div> </div> <button class="collapse-button" title="サイドバーを折りたたむ/展開する" data-astro-cid-fbvwgyvt style="--minWidth: 200;--maxWidth: 400;--initialWidth: 280;--collapsedWidth: 50;"> <span class="collapse-icon" data-astro-cid-fbvwgyvt style="--minWidth: 200;--maxWidth: 400;--initialWidth: 280;--collapsedWidth: 50;"></span> </button> </div>  <script>(function(){const minWidth = 200;
+const maxWidth = 400;
+const initialWidth = 280;
+const collapsedWidth = 50;
+const storageKey = "sidebar-width";
+
+document.addEventListener('DOMContentLoaded', () => {
+  const sidebar = document.getElementById('sidebar');
+  const resizer = document.querySelector('.sidebar-resizer');
+  const collapseButton = document.querySelector('.collapse-button');
+  
+  if (!sidebar || !resizer || !collapseButton) return;
+  
+  // ローカルストレージから幅と折りたたみ状態を取得
+  const savedWidth = localStorage.getItem(storageKey);
+  const savedCollapsed = localStorage.getItem(`${storageKey}-collapsed`) === 'true';
+  
+  // 初期幅を設定
+  let sidebarWidth = savedWidth ? parseInt(savedWidth) : initialWidth;
+  
+  // 初期状態を設定
+  if (savedCollapsed) {
+    sidebar.classList.add('sidebar-collapsed');
+    sidebarWidth = collapsedWidth;
+  }
+  
+  // サイドバーの幅を設定
+  sidebar.style.width = `${sidebarWidth}px`;
+  
+  // リサイズ処理
+  let isResizing = false;
+  let startX = 0;
+  let startWidth = 0;
+  
+  // リサイズ開始
+  const startResize = (e) => {
+    isResizing = true;
+    startX = e.clientX || e.touches[0].clientX;
+    startWidth = parseInt(sidebar.offsetWidth);
+    resizer.classList.add('resizing');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    
+    // イベントリスナーを追加
+    document.addEventListener('mousemove', resize);
+    document.addEventListener('touchmove', resize, { passive: false });
+    document.addEventListener('mouseup', stopResize);
+    document.addEventListener('touchend', stopResize);
+  };
+  
+  // リサイズ中
+  const resize = (e) => {
+    if (!isResizing) return;
+    
+    e.preventDefault();
+    
+    const clientX = e.clientX || e.touches[0].clientX;
+    let newWidth = startWidth + (clientX - startX);
+    
+    // 最小幅と最大幅の制限
+    newWidth = Math.max(minWidth, Math.min(maxWidth, newWidth));
+    
+    // サイドバーの幅を更新
+    sidebar.style.width = `${newWidth}px`;
+    
+    // 折りたたみ状態を解除
+    if (sidebar.classList.contains('sidebar-collapsed') && newWidth > collapsedWidth) {
+      sidebar.classList.remove('sidebar-collapsed');
+      localStorage.setItem(`${storageKey}-collapsed`, 'false');
+    }
+  };
+  
+  // リサイズ終了
+  const stopResize = () => {
+    if (!isResizing) return;
+    
+    isResizing = false;
+    resizer.classList.remove('resizing');
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+    
+    // 現在の幅をローカルストレージに保存
+    if (!sidebar.classList.contains('sidebar-collapsed')) {
+      localStorage.setItem(storageKey, sidebar.offsetWidth);
+    }
+    
+    // イベントリスナーを削除
+    document.removeEventListener('mousemove', resize);
+    document.removeEventListener('touchmove', resize);
+    document.removeEventListener('mouseup', stopResize);
+    document.removeEventListener('touchend', stopResize);
+  };
+  
+  // 折りたたみ/展開ボタンのクリックイベント
+  const toggleCollapse = () => {
+    const isCollapsed = sidebar.classList.toggle('sidebar-collapsed');
+    
+    if (isCollapsed) {
+      // 現在の幅を一時保存
+      if (!localStorage.getItem(`${storageKey}-width-before-collapse`)) {
+        localStorage.setItem(`${storageKey}-width-before-collapse`, sidebar.offsetWidth);
+      }
+      
+      // 折りたたみ幅に設定
+      sidebar.style.width = `${collapsedWidth}px`;
+    } else {
+      // 以前の幅に戻す
+      const widthBeforeCollapse = localStorage.getItem(`${storageKey}-width-before-collapse`) || initialWidth;
+      sidebar.style.width = `${widthBeforeCollapse}px`;
+      localStorage.removeItem(`${storageKey}-width-before-collapse`);
+    }
+    
+    // 折りたたみ状態をローカルストレージに保存
+    localStorage.setItem(`${storageKey}-collapsed`, isCollapsed);
+  };
+  
+  // イベントリスナーを設定
+  resizer.addEventListener('mousedown', startResize);
+  resizer.addEventListener('touchstart', startResize, { passive: false });
+  collapseButton.addEventListener('click', toggleCollapse);
+});
+})();</script> <h3 class="sidebar-title" id="sidebar-title" data-astro-cid-smjyiz3p> Documentation </h3> <nav aria-labelledby="sidebar-title" data-astro-cid-smjyiz3p> <sl-sidebar-state-persist data-hash="sidebar-hash" data-astro-cid-v3uphlwa="true"> <script aria-hidden="true">
+    (() => {
+      try {
+        if (!matchMedia('(min-width: 50em)').matches) return;
+        /** @type {HTMLElement | null} */
+        const target = document.querySelector('sl-sidebar-state-persist');
+        const state = JSON.parse(sessionStorage.getItem('sidebar-state') || '0');
+        if (!target || !state || target.dataset.hash !== state.hash) return;
+        window._sidebarScrollRestore = state.scroll;
+        customElements.define(
+          'sl-sidebar-restore',
+          class SidebarRestore extends HTMLElement {
+            connectedCallback() {
+              try {
+                const idx = parseInt(this.dataset.index || '');
+                const details = this.closest('details');
+                if (details && typeof state.open[idx] === 'boolean') details.open = state.open[idx];
+              } catch {}
+            }
+          }
+        );
+      } catch {}
+    })();
+  </script>  <ul class="top-level" data-astro-cid-smjyiz3p> <li data-astro-cid-smjyiz3p> <details data-astro-cid-smjyiz3p> <sl-sidebar-restore data-index="0"></sl-sidebar-restore> <summary data-astro-cid-smjyiz3p> <div class="group-label" data-astro-cid-smjyiz3p> <span class="large" data-astro-cid-smjyiz3p>Guide</span>  </div> <span class="caret-container" data-astro-cid-smjyiz3p> <span class="caret-wrapper" data-astro-cid-smjyiz3p> <svg aria-hidden="true" class="icon " width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-rfpnirwl style="--icon-size: 1.25rem;"><path d="m9 18 6-6-6-6"/></svg> </span> </span> </summary> <ul data-astro-cid-smjyiz3p> <li data-astro-cid-smjyiz3p> <a href="/docs/sample-docs/en/v2/guide/01-getting-started" data-astro-cid-smjyiz3p> <span data-astro-cid-smjyiz3p>Getting Started</span>  </a> </li> </ul> </details> </li> </ul>  <script aria-hidden="true">
+    (() => {
+      const scroller = document.getElementById('sidebar');
+      if (!window._sidebarScrollRestore || !scroller) return;
+      scroller.scrollTop = window._sidebarScrollRestore;
+      delete window._sidebarScrollRestore;
+    })();
+  </script> </sl-sidebar-state-persist> <script type="module" src="/docs/sample-docs/assets/SidebarPersister.astro_astro_type_script_index_0_lang.1HBmR04Y.js"></script>  </nav> </aside>  <script type="module" src="/docs/sample-docs/assets/Sidebar.astro_astro_type_script_index_0_lang.C03IGoaM.js"></script> </div> </aside> <div class="main-column" data-astro-cid-fz5pa65a> <div class="content-panel" data-astro-cid-fz5pa65a> <article class="sl-markdown-content" data-astro-cid-fz5pa65a>  <h1 data-astro-cid-kygiwpn3>Getting Started</h1> <p class="article-description" data-astro-cid-kygiwpn3>Learn how to get started with our platform (v2)</p><h1 id="getting-started-with-v2">Getting Started with v2</h1>
+<p>Welcome to version 2 of our documentation! This guide will help you get started with our platform.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>Node.js 18 or higher</li>
+<li>npm, yarn, or pnpm</li>
+<li>Basic knowledge of JavaScript and TypeScript</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<p>You can install our package using npm:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto;white-space:pre-wrap;word-wrap:break-word" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> @our-package/core@2</span></span></code></pre>
+<p>Or using yarn:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto;white-space:pre-wrap;word-wrap:break-word" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> @our-package/core@2</span></span></code></pre>
+<p>Or using pnpm:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto;white-space:pre-wrap;word-wrap:break-word" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">pnpm</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> @our-package/core@2</span></span></code></pre>
+<h2 id="basic-usage">Basic Usage</h2>
+<p>Here’s a simple example of how to use our package with TypeScript:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto;white-space:pre-wrap;word-wrap:break-word" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { createApp, </span><span style="color:#F97583">type</span><span style="color:#E1E4E8"> AppOptions } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> &#39;@our-package/core&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> options</span><span style="color:#F97583">:</span><span style="color:#B392F0"> AppOptions</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">  // Configuration options</span></span>
+<span class="line"><span style="color:#E1E4E8">  debug: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  mode: </span><span style="color:#9ECBFF">&#39;development&#39;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">  // New in v2</span></span>
+<span class="line"><span style="color:#E1E4E8">  plugins: [],</span></span>
+<span class="line"><span style="color:#E1E4E8">  theme: </span><span style="color:#9ECBFF">&#39;light&#39;</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> app</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> createApp</span><span style="color:#E1E4E8">(options);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">app.</span><span style="color:#B392F0">start</span><span style="color:#E1E4E8">();</span></span></code></pre>
+<h2 id="new-features-in-v2">New Features in v2</h2>
+<p>Version 2 introduces several new features:</p>
+<ul>
+<li><strong>TypeScript Support</strong>: Full TypeScript support with type definitions</li>
+<li><strong>Plugin System</strong>: Extend functionality with plugins</li>
+<li><strong>Theming</strong>: Built-in theme support</li>
+<li><strong>Performance Improvements</strong>: 50% faster than v1</li>
+</ul>
+<h2 id="next-steps">Next Steps</h2>
+<p>Now that you have the basics set up, you can:</p>
+<ul>
+<li>Learn more about <a href="/en/v2/guide/configuration">configuration options</a></li>
+<li>Explore the <a href="/en/v2/api/reference">API reference</a></li>
+<li>Check out some <a href="/en/v2/examples">examples</a></li>
+<li>Read about <a href="/en/v2/guide/migration">migrating from v1</a></li>
+</ul> <div class="navigation-container" data-astro-cid-kygiwpn3> <div class="pagination-links" dir="ltr" data-astro-cid-iv7blndr>   </div>  </div> <div class="edit-link-container" data-astro-cid-kygiwpn3> <a href="https://github.com/dolphilia/edit/main/apps/sample-docs/src/content/docs/en/v2/guide/01-getting-started.mdx" class="edit-link" data-astro-cid-rt5zbesl><svg class="edit-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" data-astro-cid-rt5zbesl><path fill="currentColor" d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83l3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z" data-astro-cid-rt5zbesl></path></svg>このページをGitHubで編集</a> </div>   </article> </div> </div> <aside class="toc-column print:hidden" data-astro-cid-fz5pa65a> <div class="toc-content" data-astro-cid-fz5pa65a> <starlight-toc data-min-h="2" data-max-h="3" data-astro-cid-76im5yo4="true"><div class="starlight-toc-wrapper" data-astro-cid-76im5yo4><nav aria-labelledby="starlight-toc-heading" data-astro-cid-76im5yo4><h2 id="starlight-toc-heading" class="starlight-toc-heading" data-astro-cid-76im5yo4>On this page</h2><div class="starlight-toc-list" data-astro-cid-76im5yo4><ul class="starlight-toc__list" data-astro-cid-ybxn6gvo> <li class="starlight-toc__item" data-astro-cid-ybxn6gvo> <a class="starlight-toc__link" href="#prerequisites" data-depth="0" data-astro-cid-ybxn6gvo> <span data-astro-cid-ybxn6gvo>Prerequisites</span> </a>  </li><li class="starlight-toc__item" data-astro-cid-ybxn6gvo> <a class="starlight-toc__link" href="#installation" data-depth="0" data-astro-cid-ybxn6gvo> <span data-astro-cid-ybxn6gvo>Installation</span> </a>  </li><li class="starlight-toc__item" data-astro-cid-ybxn6gvo> <a class="starlight-toc__link" href="#basic-usage" data-depth="0" data-astro-cid-ybxn6gvo> <span data-astro-cid-ybxn6gvo>Basic Usage</span> </a>  </li><li class="starlight-toc__item" data-astro-cid-ybxn6gvo> <a class="starlight-toc__link" href="#new-features-in-v2" data-depth="0" data-astro-cid-ybxn6gvo> <span data-astro-cid-ybxn6gvo>New Features in v2</span> </a>  </li><li class="starlight-toc__item" data-astro-cid-ybxn6gvo> <a class="starlight-toc__link" href="#next-steps" data-depth="0" data-astro-cid-ybxn6gvo> <span data-astro-cid-ybxn6gvo>Next Steps</span> </a>  </li> </ul> </div></nav></div></starlight-toc><script type="module" src="/docs/sample-docs/assets/TableOfContents.astro_astro_type_script_index_0_lang.DGqPtRae.js"></script> </div> </aside> </div>  </main> </div> <footer class="footer" data-astro-cid-6zpksmg2> <div class="footer-container" data-astro-cid-6zpksmg2> <div class="footer-content" data-astro-cid-6zpksmg2>  <div class="footer-links" data-astro-cid-6zpksmg2> <div class="footer-group" data-astro-cid-6zpksmg2> <h3 class="group-title" data-astro-cid-6zpksmg2>Docs</h3> <ul class="group-links" data-astro-cid-6zpksmg2> <li data-astro-cid-6zpksmg2> <a href="/docs/sample-docs/en/v2/guide/getting-started" class="footer-link" data-astro-cid-6zpksmg2> Getting Started </a> </li><li data-astro-cid-6zpksmg2> <a href="/docs/sample-docs/en/v2/api" class="footer-link" data-astro-cid-6zpksmg2> API Reference </a> </li> </ul> </div><div class="footer-group" data-astro-cid-6zpksmg2> <h3 class="group-title" data-astro-cid-6zpksmg2>Community</h3> <ul class="group-links" data-astro-cid-6zpksmg2> <li data-astro-cid-6zpksmg2> <a href="https://github.com" class="footer-link" data-astro-cid-6zpksmg2> GitHub </a> </li><li data-astro-cid-6zpksmg2> <a href="https://discord.com" class="footer-link" data-astro-cid-6zpksmg2> Discord </a> </li> </ul> </div> </div> <div class="footer-bottom" data-astro-cid-6zpksmg2> <div class="footer-meta" data-astro-cid-6zpksmg2>  <p class="copyright" data-astro-cid-6zpksmg2>© 2025 Docs Astro. All rights reserved.</p> </div>  </div> </div> </div> </footer>  </div> </body></html> <script>(function(){const lang = "en";
+const version = "v2";
+const baseUrl = "/docs/sample-docs";
+
+  // サイドバーのプリフェッチ
+  function prefetchSidebar(lang, version) {
+    // バージョンが有効な形式（v1, v2など）かチェック
+    if (!version || !version.match(/^v\d+$/)) {
+      console.warn(`無効なバージョン形式: ${version}、デフォルトのv1を使用します`);
+      version = 'v1'; // デフォルトバージョンを設定
+    }
+    
+    const sidebarPath = `${baseUrl}/sidebar/sidebar-${lang}-${version}.json`;
+    
+    // プリフェッチ用のlink要素を作成
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.href = sidebarPath;
+    document.head.appendChild(link);
+    
+    console.log(`サイドバーをプリフェッチ: ${sidebarPath}`);
+  }
+  
+  // 現在のページの言語とバージョンを取得
+  const currentLang = document.documentElement.lang;
+  
+  // URLパスからバージョン情報を正確に抽出
+  function extractVersionFromPath() {
+    const path = window.location.pathname;
+    
+    // ベースパスを除去
+    const baseUrlPath = baseUrl.replace(/^\/|\/$/g, ''); // 先頭と末尾のスラッシュを削除
+    const pathWithoutBase = path.replace(new RegExp(`^/?${baseUrlPath}/?`), '');
+    
+    // パスを分割
+    const segments = pathWithoutBase.split('/').filter(segment => segment);
+    
+    // 言語の次のセグメントがバージョン
+    if (segments.length >= 2) {
+      const potentialVersion = segments[1];
+      // バージョン形式をチェック (v1, v2, etc.)
+      if (potentialVersion.match(/^v\d+$/)) {
+        return potentialVersion;
+      }
+    }
+    
+    // バージョンが見つからない場合はデフォルトを返す
+    return 'v1';
+  }
+  
+  const currentVersion = extractVersionFromPath();
+  
+  // 現在のサイドバーをプリフェッチ
+  prefetchSidebar(currentLang, currentVersion);
+  
+  // 関連するバージョンのサイドバーもプリフェッチ
+  const versions = ['v1', 'v2'];
+  versions.forEach(version => {
+    if (version !== currentVersion) {
+      prefetchSidebar(currentLang, version);
+    }
+  });
+})();</script>  

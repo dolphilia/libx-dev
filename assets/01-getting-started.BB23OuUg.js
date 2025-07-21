@@ -8,11 +8,7 @@ const frontmatter = {
   "pubDate": "2025-01-01T00:00:00.000Z",
   "updatedDate": "2025-01-01T00:00:00.000Z",
   "author": "ドキュメントチーム",
-  "order": 1,
-  "next": {
-    "text": "インストール",
-    "link": "/ja/v2/guide/installation"
-  }
+  "order": 1
 };
 function getHeadings() {
   return [{
@@ -463,15 +459,15 @@ function MDXContent(props = {}) {
   }) : _createMdxContent(props);
 }
 
-const url = "src/content/docs/ja/v2/guide/getting-started.mdx";
-const file = "/home/runner/work/docs-astro-dev/docs-astro-dev/apps/sample-docs/src/content/docs/ja/v2/guide/getting-started.mdx";
+const url = "src/content/docs/ja/v2/guide/01-getting-started.mdx";
+const file = "/home/runner/work/docs-astro-dev/docs-astro-dev/apps/sample-docs/src/content/docs/ja/v2/guide/01-getting-started.mdx";
 const Content = (props = {}) => MDXContent({
   ...props,
   components: { Fragment: Fragment, ...props.components, },
 });
 Content[Symbol.for('mdx-component')] = true;
 Content[Symbol.for('astro.needsHeadRendering')] = !Boolean(frontmatter.layout);
-Content.moduleId = "/home/runner/work/docs-astro-dev/docs-astro-dev/apps/sample-docs/src/content/docs/ja/v2/guide/getting-started.mdx";
+Content.moduleId = "/home/runner/work/docs-astro-dev/docs-astro-dev/apps/sample-docs/src/content/docs/ja/v2/guide/01-getting-started.mdx";
 __astro_tag_component__(Content, 'astro:jsx');
 
 export { Content, Content as default, file, frontmatter, getHeadings, url };

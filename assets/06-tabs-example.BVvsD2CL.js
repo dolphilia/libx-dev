@@ -1,27 +1,27 @@
 import { x as createVNode, F as Fragment, _ as __astro_tag_component__ } from './astro/server.BUMCauiJ.js';
-import { h as $$Tabs, i as $$TabItem } from './MainLayout.B35VslRc.js';
+import { h as $$Tabs, i as $$TabItem } from './MainLayout.BZoZU7v9.js';
 
 const frontmatter = {
-  "title": "タブコンポーネントの例",
-  "description": "ドキュメントでのタブコンポーネントの使用例"
+  "title": "Tabs Component Example",
+  "description": "Example of using the Tabs component in documentation"
 };
 function getHeadings() {
   return [{
     "depth": 1,
-    "slug": "タブコンポーネントの例",
-    "text": "タブコンポーネントの例"
+    "slug": "tabs-component-example",
+    "text": "Tabs Component Example"
   }, {
     "depth": 2,
-    "slug": "基本的な使い方",
-    "text": "基本的な使い方"
+    "slug": "basic-usage",
+    "text": "Basic Usage"
   }, {
     "depth": 2,
-    "slug": "同期タブ",
-    "text": "同期タブ"
+    "slug": "synchronized-tabs",
+    "text": "Synchronized Tabs"
   }, {
     "depth": 2,
-    "slug": "アイコン付きタブ",
-    "text": "アイコン付きタブ"
+    "slug": "with-icons",
+    "text": "With Icons"
   }];
 }
 function _createMdxContent(props) {
@@ -36,13 +36,13 @@ function _createMdxContent(props) {
   };
   return createVNode(Fragment, {
     children: [createVNode(_components.h1, {
-      id: "タブコンポーネントの例",
-      children: "タブコンポーネントの例"
+      id: "tabs-component-example",
+      children: "Tabs Component Example"
     }), "\n", createVNode(_components.p, {
-      children: "このページでは、ドキュメントでのタブコンポーネントの使用方法を示します。"
+      children: "This page demonstrates the usage of the Tabs component in documentation."
     }), "\n", createVNode(_components.h2, {
-      id: "基本的な使い方",
-      children: "基本的な使い方"
+      id: "basic-usage",
+      children: "Basic Usage"
     }), "\n", createVNode($$Tabs, {
       children: [createVNode($$TabItem, {
         label: "HTML",
@@ -504,12 +504,12 @@ function _createMdxContent(props) {
         })
       })]
     }), "\n", createVNode(_components.h2, {
-      id: "同期タブ",
-      children: "同期タブ"
+      id: "synchronized-tabs",
+      children: "Synchronized Tabs"
     }), "\n", createVNode(_components.p, {
-      children: ["これらのタブは ", createVNode(_components.code, {
+      children: ["These tabs are synchronized across the page using the ", createVNode(_components.code, {
         children: "syncKey"
-      }), " プロパティを使用してページ全体で同期されます。"]
+      }), " prop."]
     }), "\n", createVNode($$Tabs, {
       syncKey: "languages",
       children: [createVNode($$TabItem, {
@@ -532,7 +532,7 @@ function _createMdxContent(props) {
                 style: {
                   color: "#6A737D"
                 },
-                children: "// JavaScript の例"
+                children: "// JavaScript example"
               })
             }), "\n", createVNode(_components.span, {
               class: "line",
@@ -573,7 +573,7 @@ function _createMdxContent(props) {
                 style: {
                   color: "#9ECBFF"
                 },
-                children: " `こんにちは、${"
+                children: " `Hello, ${"
               }), createVNode(_components.span, {
                 style: {
                   color: "#E1E4E8"
@@ -583,7 +583,7 @@ function _createMdxContent(props) {
                 style: {
                   color: "#9ECBFF"
                 },
-                children: "}さん！`"
+                children: "}!`"
               }), createVNode(_components.span, {
                 style: {
                   color: "#E1E4E8"
@@ -631,7 +631,7 @@ function _createMdxContent(props) {
                 style: {
                   color: "#9ECBFF"
                 },
-                children: "'世界'"
+                children: "'World'"
               }), createVNode(_components.span, {
                 style: {
                   color: "#E1E4E8"
@@ -661,7 +661,7 @@ function _createMdxContent(props) {
                 style: {
                   color: "#6A737D"
                 },
-                children: "// TypeScript の例"
+                children: "// TypeScript example"
               })
             }), "\n", createVNode(_components.span, {
               class: "line",
@@ -727,7 +727,7 @@ function _createMdxContent(props) {
                 style: {
                   color: "#9ECBFF"
                 },
-                children: " `こんにちは、${"
+                children: " `Hello, ${"
               }), createVNode(_components.span, {
                 style: {
                   color: "#E1E4E8"
@@ -737,7 +737,7 @@ function _createMdxContent(props) {
                 style: {
                   color: "#9ECBFF"
                 },
-                children: "}さん！`"
+                children: "}!`"
               }), createVNode(_components.span, {
                 style: {
                   color: "#E1E4E8"
@@ -785,7 +785,7 @@ function _createMdxContent(props) {
                 style: {
                   color: "#9ECBFF"
                 },
-                children: "'世界'"
+                children: "'World'"
               }), createVNode(_components.span, {
                 style: {
                   color: "#E1E4E8"
@@ -815,7 +815,7 @@ function _createMdxContent(props) {
                 style: {
                   color: "#6A737D"
                 },
-                children: "# Python の例"
+                children: "# Python example"
               })
             }), "\n", createVNode(_components.span, {
               class: "line",
@@ -851,7 +851,7 @@ function _createMdxContent(props) {
                 style: {
                   color: "#9ECBFF"
                 },
-                children: "\"こんにちは、"
+                children: "\"Hello, "
               }), createVNode(_components.span, {
                 style: {
                   color: "#79B8FF"
@@ -871,7 +871,7 @@ function _createMdxContent(props) {
                 style: {
                   color: "#9ECBFF"
                 },
-                children: "さん！\""
+                children: "!\""
               })]
             }), "\n", createVNode(_components.span, {
               class: "line"
@@ -891,7 +891,7 @@ function _createMdxContent(props) {
                 style: {
                   color: "#9ECBFF"
                 },
-                children: "\"世界\""
+                children: "\"World\""
               }), createVNode(_components.span, {
                 style: {
                   color: "#E1E4E8"
@@ -903,48 +903,48 @@ function _createMdxContent(props) {
         })
       })]
     }), "\n", createVNode(_components.p, {
-      children: ["同じ ", createVNode(_components.code, {
+      children: ["Another set of tabs with the same ", createVNode(_components.code, {
         children: "syncKey"
-      }), " を持つ別のタブセットは、上記のタブと同期状態を維持します："]
+      }), " will stay in sync with the above tabs:"]
     }), "\n", createVNode($$Tabs, {
       syncKey: "languages",
       children: [createVNode($$TabItem, {
         label: "JavaScript",
         children: createVNode(_components.p, {
-          children: "JavaScriptは、Webページで動的なコンテンツを可能にするスクリプト言語です。"
+          children: "JavaScript is a scripting language that enables dynamic content on web pages."
         })
       }), createVNode($$TabItem, {
         label: "TypeScript",
         children: createVNode(_components.p, {
-          children: "TypeScriptは、JavaScriptをベースにした強力な型付けプログラミング言語です。"
+          children: "TypeScript is a strongly typed programming language that builds on JavaScript."
         })
       }), createVNode($$TabItem, {
         label: "Python",
         children: createVNode(_components.p, {
-          children: "Pythonは、高水準の汎用プログラミング言語です。"
+          children: "Python is a high-level, general-purpose programming language."
         })
       })]
     }), "\n", createVNode(_components.h2, {
-      id: "アイコン付きタブ",
-      children: "アイコン付きタブ"
+      id: "with-icons",
+      children: "With Icons"
     }), "\n", createVNode($$Tabs, {
       children: [createVNode($$TabItem, {
-        label: "情報",
+        label: "Info",
         icon: "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide-info\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 16v-4\"/><path d=\"M12 8h.01\"/></svg>",
         children: createVNode(_components.p, {
-          children: "このタブには情報アイコンがあります。"
+          children: "This tab has an information icon."
         })
       }), createVNode($$TabItem, {
-        label: "設定",
+        label: "Settings",
         icon: "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide-settings\"><path d=\"M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/></svg>",
         children: createVNode(_components.p, {
-          children: "このタブには設定アイコンがあります。"
+          children: "This tab has a settings icon."
         })
       }), createVNode($$TabItem, {
-        label: "警告",
+        label: "Alert",
         icon: "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide-alert-triangle\"><path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z\"/><path d=\"M12 9v4\"/><path d=\"M12 17h.01\"/></svg>",
         children: createVNode(_components.p, {
-          children: "このタブには警告アイコンがあります。"
+          children: "This tab has an alert icon."
         })
       })]
     })]
@@ -960,15 +960,15 @@ function MDXContent(props = {}) {
   }) : _createMdxContent(props);
 }
 
-const url = "src/content/docs/ja/v1/guide/05-tabs-example.mdx";
-const file = "/home/runner/work/docs-astro-dev/docs-astro-dev/apps/sample-docs/src/content/docs/ja/v1/guide/05-tabs-example.mdx";
+const url = "src/content/docs/en/v1/guide/06-tabs-example.mdx";
+const file = "/home/runner/work/docs-astro-dev/docs-astro-dev/apps/sample-docs/src/content/docs/en/v1/guide/06-tabs-example.mdx";
 const Content = (props = {}) => MDXContent({
   ...props,
   components: { Fragment: Fragment, ...props.components, },
 });
 Content[Symbol.for('mdx-component')] = true;
 Content[Symbol.for('astro.needsHeadRendering')] = !Boolean(frontmatter.layout);
-Content.moduleId = "/home/runner/work/docs-astro-dev/docs-astro-dev/apps/sample-docs/src/content/docs/ja/v1/guide/05-tabs-example.mdx";
+Content.moduleId = "/home/runner/work/docs-astro-dev/docs-astro-dev/apps/sample-docs/src/content/docs/en/v1/guide/06-tabs-example.mdx";
 __astro_tag_component__(Content, 'astro:jsx');
 
 export { Content, Content as default, file, frontmatter, getHeadings, url };
