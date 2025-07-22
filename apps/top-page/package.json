@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@docs/i18n": "workspace:*",
-    "@docs/search": "workspace:*",
     "@docs/theme": "workspace:*",
     "@docs/ui": "workspace:*",
     "astro": "^5.7.12"

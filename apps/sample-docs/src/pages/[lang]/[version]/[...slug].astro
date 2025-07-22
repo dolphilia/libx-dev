@@ -122,9 +122,6 @@ const finalPagination = mergePagination(manualPrev, manualNext, autoPagination);
 ---
 
 <DocLayout title={entry.data.title} lang={lang} version={version}>
-  <h1>{entry.data.title}</h1>
-  {entry.data.description && <p class="article-description">{entry.data.description}</p>}
-  
   <Content />
   
   {/* ページナビゲーション */}
@@ -132,6 +129,7 @@ const finalPagination = mergePagination(manualPrev, manualNext, autoPagination);
     <Pagination 
       prev={finalPagination.prev}
       next={finalPagination.next}
+      lang={lang}
     />
   </div>
   
@@ -154,15 +152,6 @@ const finalPagination = mergePagination(manualPrev, manualNext, autoPagination);
 </DocLayout>
 
 <style>
-  .article-description {
-    font-size: 1.125rem;
-    color: #4b5563;
-    margin-bottom: 1.5rem;
-  }
-
-  :global(.dark) .article-description {
-    color: #9ca3af;
-  }
 
   .navigation-container {
     margin-top: 3rem;
@@ -174,12 +163,31 @@ const finalPagination = mergePagination(manualPrev, manualNext, autoPagination);
     margin-top: 2rem;
     margin-bottom: 2rem;
     font-size: 0.875rem;
-    color: #6b7280;
+    color: var(--sl-color-gray-3);
     text-align: right;
+    transition: color 0.2s ease;
+  }
+
+  .edit-link-container:hover {
+    color: var(--sl-color-text-accent);
   }
 
   :global(.dark) .edit-link-container {
-    color: #9ca3af;
+    color: var(--sl-color-gray-3);
+  }
+
+  /* モバイル対応の改善 */
+  @media (max-width: 768px) {
+    .navigation-container {
+      margin-top: 2rem;
+      padding-top: 1rem;
+    }
+    
+    .edit-link-container {
+      text-align: center;
+      margin-top: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
   }
 
 </style>

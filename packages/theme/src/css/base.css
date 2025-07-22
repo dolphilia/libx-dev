@@ -37,27 +37,27 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: var(--font-size-4xl);
+  font-size: var(--font-size-3xl);
   margin-bottom: 1.5rem;
 }
 
 h2 {
-  font-size: var(--font-size-3xl);
+  font-size: var(--font-size-2xl);
   margin-bottom: 1.25rem;
 }
 
 h3 {
-  font-size: var(--font-size-2xl);
+  font-size: var(--font-size-xl);
   margin-bottom: 1rem;
 }
 
 h4 {
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-lg);
   margin-bottom: 0.75rem;
 }
 
 h5 {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-base);
   margin-bottom: 0.5rem;
 }
 

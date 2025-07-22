@@ -38,11 +38,8 @@ const baseUrl = docsConfig.baseUrl;
 const currentPath = Astro.url.pathname;
 
 
-// サイドバー項目の取得（非同期）- パフォーマンス計測
-console.time('getSidebarAsync execution time');
+// サイドバー項目の取得（非同期）
 const sidebarItems = await getSidebarAsync(lang, version, baseUrl);
-console.timeEnd('getSidebarAsync execution time');
-console.log(`Generated sidebar for ${lang}/${version}`);
 
 // 現在のページに対応するサイドバー項目にisCurrent=trueを設定
 function markCurrentPage(items: SidebarItem[]): SidebarItem[] {
@@ -81,7 +78,7 @@ const TRANSLATION_KEYS = {
 const hasToc = true;
 ---
 
-<MainLayout title={title} lang={lang} version={version} hasSidebar={true} hasToc={hasToc} showSearch={true} showVersionSelector={true}>
+<MainLayout title={title} lang={lang} version={version} hasSidebar={true} hasToc={hasToc} showSearch={true} showVersionSelector={true} showBreadcrumb={true}>
   <div class="doc-layout-container">
     <aside class="sidebar-column print:hidden">
       <div class="sidebar-content">
@@ -114,12 +111,11 @@ const hasToc = true;
   </div>
 </MainLayout>
 
-<script define:vars={{ lang, version, baseUrl }}>
+<script is:inline define:vars={{ lang, version, baseUrl }}>
   // サイドバーのプリフェッチ
   function prefetchSidebar(lang, version) {
     // バージョンが有効な形式（v1, v2など）かチェック
     if (!version || !version.match(/^v\d+$/)) {
-      console.warn(`無効なバージョン形式: ${version}、デフォルトのv1を使用します`);
       version = 'v1'; // デフォルトバージョンを設定
     }
     
@@ -130,8 +126,6 @@ const hasToc = true;
     link.rel = 'prefetch';
     link.href = sidebarPath;
     document.head.appendChild(link);
-    
-    console.log(`サイドバーをプリフェッチ: ${sidebarPath}`);
   }
   
   // 現在のページの言語とバージョンを取得
@@ -176,6 +170,7 @@ const hasToc = true;
 </script>
 
 <style>
+  
   /* 3カラムレイアウトのコンテナ */
   .doc-layout-container {
     display: flex;
@@ -184,6 +179,14 @@ const hasToc = true;
     min-height: calc(100vh - var(--sl-nav-height));
     max-width: 87.5rem; /* 1400px */
     margin: 0 auto;
+    padding: 0 1.5rem;
+    box-sizing: border-box;
+  }
+  
+  @media (min-width: 50em) {
+    .doc-layout-container {
+      padding: 0 2rem;
+    }
   }
 
   /* サイドバー（左カラム）スタイル */
@@ -195,8 +198,9 @@ const hasToc = true;
 
   .sidebar-content {
     padding-top: 1.5rem;
-    padding-inline: var(--sl-sidebar-pad-x, 1rem);
+    padding-inline: var(--sl-content-pad-x, 1rem);
     padding-bottom: 0;
+    padding-left: 0;
     height: 100%;
   }
 
@@ -222,7 +226,7 @@ const hasToc = true;
 
   .toc-content {
     padding-top: 1.5rem;
-    padding-inline: 1rem;
+    /* padding-inline: var(--sl-content-pad-x, 1rem); */
     padding-bottom: 1rem;
   }
 
@@ -235,8 +239,11 @@ const hasToc = true;
 
     .sidebar-column {
       width: var(--sl-sidebar-width);
-      border-right: 1px solid var(--sl-color-hairline-shade);
+      border-right: none;
       border-bottom: none;
+      border: 1px solid var(--sl-color-hairline);
+      border-radius: 0.75rem;
+      margin: 0.5rem 0.5rem 0.5rem 0;
       position: sticky;
       top: var(--sl-nav-height);
       height: calc(100vh - var(--sl-nav-height));
@@ -247,6 +254,10 @@ const hasToc = true;
     .main-column {
       width: calc(100% - var(--sl-sidebar-width));
       min-height: calc(100vh - var(--sl-nav-height));
+    }
+    
+    .content-panel {
+      padding-inline: 3rem;
     }
   }
 
@@ -272,7 +283,10 @@ const hasToc = true;
       width: var(--sl-sidebar-width);
       flex-shrink: 0;
       border-top: none;
-      border-left: 1px solid var(--sl-color-hairline);
+      border-left: none;
+      border: 1px solid var(--sl-color-hairline);
+      border-radius: 0.75rem;
+      margin: 0.5rem 0.5rem 0.5rem 0;
       position: sticky;
       top: var(--sl-nav-height);
       height: calc(100vh - var(--sl-nav-height));
@@ -284,7 +298,7 @@ const hasToc = true;
     .toc-content {
       display: block;
       padding-top: 1.5rem;
-      padding-inline: 1rem;
+      padding-inline: var(--sl-content-pad-x, 1rem);
       padding-bottom: 1rem;
     }
   }

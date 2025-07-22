@@ -94,9 +94,6 @@ export async function getAutoSidebar(lang: LocaleKey, version: string, baseUrl: 
   };
   
   docs.forEach(doc => {
-    // デバッグ用ログ
-    console.log(`[getAutoSidebar] Processing doc: ${doc.slug}, id: ${doc.id}`);
-    
     // パスからカテゴリを取得
     const parts = doc.slug.split('/');
     const pathCategory = parts.length >= 3 ? parts[2] : 'uncategorized';
@@ -152,10 +149,6 @@ export async function getAutoSidebar(lang: LocaleKey, version: string, baseUrl: 
     return {
       title,
       items: docs.map(doc => {
-        // doc.idは実際のファイルパス（例："en/v1/guide/01-getting-started.mdx"）
-        // doc.slugはAstroが処理したslug（例："en/v1/guide/01-getting-started"）
-        console.log(`[getAutoSidebar] Doc: ${doc.data.title}, id: ${doc.id}, slug: ${doc.slug}`);
-        
         // 実際のファイルパスからURLを構築
         const filePathParts = doc.id.split('/');
         const fileName = filePathParts[filePathParts.length - 1].replace(/\.mdx?$/, ''); // .mdx拡張子を削除
@@ -177,8 +170,6 @@ export async function getAutoSidebar(lang: LocaleKey, version: string, baseUrl: 
  * 自動生成に切り替えました
  */
 export function getSidebar(lang: LocaleKey, version: string, baseUrl: string): SidebarItem[] {
-  // 非同期関数のため、DocLayout.astroでは getSidebarAsync() を使用してください
-  console.warn('getSidebar()は非推奨です。getSidebarAsync()を使用してください。');
   return getFallbackSidebar(lang, version, baseUrl);
 }
 
@@ -187,21 +178,16 @@ export function getSidebar(lang: LocaleKey, version: string, baseUrl: string): S
  * 自動生成機能に切り替えました
  */
 export async function getSidebarAsync(lang: LocaleKey, version: string, baseUrl: string): Promise<SidebarItem[]> {
-  console.log(`[getSidebarAsync] Called with: lang=${lang}, version=${version}, baseUrl=${baseUrl}`);
   const cacheKey = generateCacheKey(lang, version);
-  console.log(`[getSidebarAsync] Generated cacheKey: ${cacheKey}`);
 
   // キャッシュをチェック
   const cachedData = sidebarCache.get(cacheKey);
   if (cachedData && isCacheValid(cachedData.timestamp)) {
-    console.log(`[getSidebarAsync] Cache hit for ${cacheKey}. Returning cached data.`);
     return cachedData.data;
   }
-  console.log(`[getSidebarAsync] Cache miss or expired for ${cacheKey}.`);
 
   try {
     // 自動生成サイドバーを使用
-    console.log(`[getSidebarAsync] Generating sidebar automatically from file structure`);
     const data = await getAutoSidebar(lang, version, baseUrl);
     
     // キャッシュに保存
@@ -210,23 +196,17 @@ export async function getSidebarAsync(lang: LocaleKey, version: string, baseUrl:
       timestamp: Date.now()
     });
 
-    console.log(`[getSidebarAsync] Successfully generated and cached sidebar for ${cacheKey}.`);
-    console.log('[getSidebarAsync] Generated data (first item title):', data[0]?.title);
     return data;
 
   } catch (error) {
-    console.error(`[getSidebarAsync] Error during auto sidebar generation for ${cacheKey}:`, error);
-    
     // フォールバック: 最小限のサイドバーを返す
     const fallbackSidebar = getFallbackSidebar(lang, version, baseUrl);
-    console.log(`[getSidebarAsync] Fallback to minimal sidebar for ${cacheKey}.`);
 
     // フォールバックサイドバーもキャッシュに保存
     sidebarCache.set(cacheKey, {
       data: fallbackSidebar,
       timestamp: Date.now()
     });
-    console.log(`[getSidebarAsync] Cached fallback sidebar for ${cacheKey}.`);
 
     return fallbackSidebar;
   }

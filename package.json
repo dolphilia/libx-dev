@@ -13,13 +13,16 @@
     "build:search-index": "node scripts/build-search-index.js",
     "build:sidebar": "node scripts/build-sidebar.js",
     "copy:docs": "node scripts/copy-to-docs.js",
-    "build:deploy": "node scripts/build-sidebar.js && node scripts/build-search-index.js && node scripts/build-integrated.js && node scripts/copy-to-docs.js"
+    "build:deploy": "node scripts/build-sidebar.js && node scripts/build-search-index.js && node scripts/build-integrated.js && node scripts/copy-to-docs.js",
+    "deploy": "pnpm build && pnpm deploy:pages",
+    "deploy:pages": "wrangler pages deploy dist --project-name libx"
   },
   "devDependencies": {
     "eslint": "^8.0.0",
     "glob": "^11.0.2",
     "gray-matter": "^4.0.3",
     "prettier": "^3.0.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "wrangler": "^3.0.0"
   }
 }

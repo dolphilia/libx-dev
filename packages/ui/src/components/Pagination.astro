@@ -27,14 +27,31 @@ interface Props {
    * @default 'ltr'
    */
   dir?: 'ltr' | 'rtl';
+  
+  /**
+   * 言語コード（翻訳用）
+   * @default 'ja'
+   */
+  lang?: 'en' | 'ja';
 }
 
-const { prev, next, dir = 'ltr' } = Astro.props;
+const { prev, next, dir = 'ltr', lang = 'ja' } = Astro.props;
 const isRtl = dir === 'rtl';
 
-// 翻訳テキスト（本来は翻訳システムから取得）
-const prevText = '前のページ';
-const nextText = '次のページ';
+// 言語別翻訳テキスト
+const translations = {
+  en: {
+    prev: 'Previous',
+    next: 'Next'
+  },
+  ja: {
+    prev: '前のページ',
+    next: '次のページ'
+  }
+};
+
+const prevText = translations[lang].prev;
+const nextText = translations[lang].next;
 ---
 
 <div class="pagination-links" dir={dir}>
@@ -75,13 +92,15 @@ const nextText = '次のページ';
     gap: 1rem;
     margin-top: 2rem;
     margin-bottom: 1rem;
+    /* 前のページのみの場合でもレイアウトを維持 */
+    grid-template-areas: "prev next";
   }
 
   a {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    width: 100%;
+    max-width: 100%;
     border: 1px solid var(--sl-color-gray-5);
     border-radius: 0.5rem;
     padding: 1rem;
@@ -94,14 +113,27 @@ const nextText = '次のページ';
   
   a[rel='prev'] {
     justify-content: flex-start;
-    grid-column: 1;
+    grid-area: prev;
+    justify-self: start;
   }
   
   a[rel='next'] {
     justify-content: flex-end;
     text-align: end;
     flex-direction: row-reverse;
-    grid-column: 2;
+    grid-area: next;
+    justify-self: end;
+  }
+  
+  /* 片方のリンクのみの場合の調整 */
+  .pagination-links:has(a[rel='prev']:only-child) a[rel='prev'] {
+    grid-area: prev;
+    justify-self: start;
+  }
+  
+  .pagination-links:has(a[rel='next']:only-child) a[rel='next'] {
+    grid-area: next;
+    justify-self: end;
   }
   
   a:hover {

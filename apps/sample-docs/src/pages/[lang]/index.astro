@@ -23,8 +23,9 @@ const cardLinks = await getDefaultCardLinks(lang, latestVersion, baseUrl);
 const gettingStartedLink = await findContent(lang, latestVersion, 'guide', 'getting-started');
 ---
 
-<MainLayout title={translate('docs.documentation', lang)} lang={lang} showSearch={true} showVersionSelector={false}>
-  <div class="hero-section">
+<MainLayout title={translate('docs.documentation', lang)} lang={lang} showSearch={true} showVersionSelector={false} showBreadcrumb={true} hasSidebar={false} hasToc={false}>
+  <div class="content-container">
+    <div class="hero-section">
     <h1 class="hero-title">{translate('docs.documentation', lang)}</h1>
     <p class="hero-description">
       {translate('docs.description', lang)}
@@ -45,19 +46,26 @@ const gettingStartedLink = await findContent(lang, latestVersion, 'guide', 'gett
     
   </div>
   
-  <div class="card-grid">
-    {cardLinks.map((link) => (
-      <Card
-        title={translate(link.title as any, lang)}
-        href={link.href}
-      >
-        {translate(`${link.title}_description` as any, lang)}
-      </Card>
-    ))}
+    <div class="card-grid">
+      {cardLinks.map((link) => (
+        <Card
+          title={translate(link.title as any, lang)}
+          href={link.href}
+        >
+          {translate(`${link.title}_description` as any, lang)}
+        </Card>
+      ))}
+    </div>
   </div>
 </MainLayout>
 
 <style>
+  .content-container {
+    max-width: 87.5rem; /* 1400px - DocLayoutと同じ幅 */
+    margin: 0 auto;
+    padding: 0 1rem; /* 左右のパディングを追加 */
+  }
+
   .hero-section {
     text-align: center;
     padding: 3rem 0;

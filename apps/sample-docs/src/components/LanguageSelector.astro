@@ -1,8 +1,7 @@
 ---
-import { translatePath } from '@docs/i18n/utils';
 import type { LocaleKey } from '@docs/i18n/locales';
 import { Dropdown, DropdownItem, Icon } from '@docs/ui/components';
-import docsConfig from '../config/docs.config'; // docsConfigをインポート
+import docsConfig from '../config/docs.config';
 
 // 定数定義
 // BASE_URL 定義は削除し、docsConfig.baseUrl を使用する
@@ -20,10 +19,8 @@ const LANG_FLAGS: Record<string, string> = {
 // コンポーネントのプロパティ型定義
 interface Props {
   currentLang: string;
-  currentVersion?: string;
   supportedLangs?: string[];
   className?: string;
-  showLanguageInfo?: boolean;
 }
 
 // プロパティの取得と初期値設定
@@ -32,10 +29,8 @@ const configuredSupportedLangs = docsConfig.supportedLangs; // docsConfigからs
 
 const { 
   currentLang, 
-  currentVersion, // このプロパティはパス生成ロジックでは直接使用されません
-  supportedLangs = configuredSupportedLangs, // propsのデフォルト値をconfigから取得
-  className = '',
-  showLanguageInfo = false
+  supportedLangs = configuredSupportedLangs,
+  className = ''
 } = Astro.props;
 
 // 現在のパス情報を取得
@@ -143,28 +138,6 @@ const langPaths: LangPathInfo[] = supportedLangs.map(langCode => {
   };
 });
 
-// 言語に関する追加情報
-interface LanguageInfo {
-  nativeName: string;
-  englishName: string;
-  direction: string;
-  description: string;
-}
-
-const languageInfo: Record<string, LanguageInfo> = {
-  en: {
-    nativeName: 'English',
-    englishName: 'English',
-    direction: 'ltr',
-    description: 'Official documentation in English'
-  },
-  ja: {
-    nativeName: '日本語',
-    englishName: 'Japanese',
-    direction: 'ltr',
-    description: '日本語の公式ドキュメント'
-  }
-};
 ---
 
 <div class="language-selector-container">
@@ -175,7 +148,7 @@ const languageInfo: Record<string, LanguageInfo> = {
     class={`language-dropdown ${className}`}
   >
     <div class="language-dropdown-header" slot="before-items">
-      <Icon name="document" class="language-icon" />
+      <Icon name="languages" class="language-icon" />
       <span>言語を選択</span>
     </div>
     
@@ -189,52 +162,9 @@ const languageInfo: Record<string, LanguageInfo> = {
         {pathInfo.isCurrent && (
           <span slot="after-label" class="language-current-badge">現在</span>
         )}
-        {showLanguageInfo && languageInfo[pathInfo.lang] && (
-          <div class="language-info">
-            <div class="language-native-name">
-              {languageInfo[pathInfo.lang].nativeName}
-              {languageInfo[pathInfo.lang].nativeName !== languageInfo[pathInfo.lang].englishName && (
-                <span class="language-english-name">({languageInfo[pathInfo.lang].englishName})</span>
-              )}
-            </div>
-            <div class="language-description">{languageInfo[pathInfo.lang].description}</div>
-          </div>
-        )}
       </DropdownItem>
     ))}
-    
-    <!-- <div class="language-dropdown-footer" slot="after-items">
-      <a href="https://github.com/dolphilia/tree/main/packages/i18n" class="language-footer-link" target="_blank" rel="noopener">
-        <Icon name="external-link" class="language-footer-icon" />
-        翻訳に貢献する
-      </a>
-    </div> -->
   </Dropdown>
-  
-  {showLanguageInfo && (
-    <div class="language-info-panel">
-      <h3 class="language-info-title">現在の言語: {LANG_NAMES[currentLang]}</h3>
-      <div class="language-info-content">
-        <p class="language-info-description">
-          {languageInfo[currentLang]?.description || ''}
-        </p>
-        <div class="language-info-meta">
-          <div class="language-info-item">
-            <span class="language-info-label">ネイティブ名:</span>
-            <span class="language-info-value">{languageInfo[currentLang]?.nativeName || currentLang}</span>
-          </div>
-          <div class="language-info-item">
-            <span class="language-info-label">英語名:</span>
-            <span class="language-info-value">{languageInfo[currentLang]?.englishName || currentLang}</span>
-          </div>
-          <div class="language-info-item">
-            <span class="language-info-label">テキスト方向:</span>
-            <span class="language-info-value">{languageInfo[currentLang]?.direction === 'rtl' ? '右から左' : '左から右'}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  )}
 </div>
 
 <style>
@@ -257,30 +187,6 @@ const languageInfo: Record<string, LanguageInfo> = {
     gap: 0.5rem;
   }
 
-  .language-dropdown-footer {
-    padding: 0.5rem 1rem;
-    border-top: 1px solid var(--sl-color-gray-2, #e5e7eb);
-  }
-
-  .language-footer-link {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.875rem;
-    color: var(--sl-color-primary, #2563eb);
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
-
-  .language-footer-link:hover {
-    color: var(--sl-color-primary-dark, #1d4ed8);
-    text-decoration: underline;
-  }
-
-  .language-footer-icon {
-    font-size: 1rem;
-    color: currentColor;
-  }
 
   .language-icon {
     font-size: 1rem;
@@ -306,74 +212,6 @@ const languageInfo: Record<string, LanguageInfo> = {
     color: var(--sl-color-blue-9, #1e40af);
   }
 
-  .language-info {
-    margin-top: 0.25rem;
-    font-size: 0.75rem;
-  }
-
-  .language-native-name {
-    font-weight: 500;
-    color: var(--sl-color-gray-7, #374151);
-  }
-
-  .language-english-name {
-    font-weight: normal;
-    color: var(--sl-color-gray-5, #6b7280);
-    margin-left: 0.25rem;
-  }
-
-  .language-description {
-    color: var(--sl-color-gray-6, #4b5563);
-    margin-top: 0.125rem;
-    line-height: 1.25;
-  }
-
-  .language-info-panel {
-    margin-top: 1rem;
-    border: 1px solid var(--sl-color-gray-2, #e5e7eb);
-    border-radius: 0.375rem;
-    overflow: hidden;
-  }
-
-  .language-info-title {
-    padding: 0.75rem 1rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    background-color: var(--sl-color-gray-1, #f9fafb);
-    border-bottom: 1px solid var(--sl-color-gray-2, #e5e7eb);
-    margin: 0;
-  }
-
-  .language-info-content {
-    padding: 1rem;
-  }
-
-  .language-info-description {
-    margin: 0 0 1rem 0;
-    font-size: 0.875rem;
-    line-height: 1.5;
-    color: var(--sl-color-gray-8, #1f2937);
-  }
-
-  .language-info-meta {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 0.5rem;
-  }
-
-  .language-info-item {
-    font-size: 0.75rem;
-    line-height: 1.5;
-  }
-
-  .language-info-label {
-    font-weight: 500;
-    color: var(--sl-color-gray-6, #4b5563);
-  }
-
-  .language-info-value {
-    color: var(--sl-color-gray-8, #1f2937);
-  }
 
   /* ダークモード対応 */
   :global(.dark) .language-dropdown-header,
@@ -384,39 +222,6 @@ const languageInfo: Record<string, LanguageInfo> = {
   :global(.dark) .language-current-badge {
     background-color: rgba(30, 64, 175, 0.2);
     color: var(--sl-color-blue-3, #93c5fd);
-  }
-
-  :global(.dark) .language-native-name {
-    color: var(--sl-color-gray-3, #d1d5db);
-  }
-
-  :global(.dark) .language-english-name {
-    color: var(--sl-color-gray-5, #6b7280);
-  }
-
-  :global(.dark) .language-description {
-    color: var(--sl-color-gray-4, #9ca3af);
-  }
-
-  :global(.dark) .language-info-panel {
-    border-color: var(--sl-color-gray-7, #374151);
-  }
-
-  :global(.dark) .language-info-title {
-    background-color: var(--sl-color-gray-8, #1f2937);
-    border-color: var(--sl-color-gray-7, #374151);
-  }
-
-  :global(.dark) .language-info-description {
-    color: var(--sl-color-gray-3, #d1d5db);
-  }
-
-  :global(.dark) .language-info-label {
-    color: var(--sl-color-gray-4, #9ca3af);
-  }
-
-  :global(.dark) .language-info-value {
-    color: var(--sl-color-gray-2, #e5e7eb);
   }
 
   /* アニメーション */

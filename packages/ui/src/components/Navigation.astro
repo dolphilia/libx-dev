@@ -5,8 +5,6 @@
  */
 import Icon from './icons/Icon.astro';
 import { ThemeToggle } from './index';
-// 検索機能は後で実装
-// import SearchBar from '../../../packages/search/src/components/SearchBar.astro';
 
 interface NavItem {
   /** 表示タイトル */
@@ -36,8 +34,6 @@ interface Props {
   logoUrl?: string;
   /** ソーシャルリンク */
   socialLinks?: SocialLink[];
-  /** 検索機能を表示するかどうか */
-  showSearch?: boolean;
   /** テーマ切り替えを表示するかどうか */
   showThemeToggle?: boolean;
   /** スティッキーヘッダーにするかどうか */
@@ -54,7 +50,6 @@ const {
   siteTitle = 'Docs Astro',
   logoUrl,
   socialLinks = [],
-  showSearch = false, // デフォルトで無効化
   showThemeToggle = true,
   sticky = true,
   changeOnScroll = true,
@@ -93,8 +88,6 @@ function isCurrentPage(item: NavItem): boolean {
       </nav>
       
       <div class="header-actions">
-        {/* 検索機能は後で実装 */}
-        {/* {showSearch && <div class="search-wrapper"><SearchBar /></div>} */}
         
         <div class="header-right">
           {socialLinks.length > 0 && (
@@ -130,8 +123,6 @@ function isCurrentPage(item: NavItem): boolean {
 <!-- モバイルメニュー -->
 <div class="mobile-menu" id="mobile-menu">
   <div class="mobile-menu-content">
-    {/* 検索機能は後で実装 */}
-    {/* {showSearch && <div class="mobile-search"><SearchBar /></div>} */}
     
     <ul class="mobile-nav-items">
       {items.map(item => (
@@ -273,9 +264,6 @@ function isCurrentPage(item: NavItem): boolean {
     gap: 0.5rem;
   }
 
-  .search-wrapper {
-    display: none;
-  }
 
   .header-right {
     display: none;
@@ -362,9 +350,6 @@ function isCurrentPage(item: NavItem): boolean {
     gap: 1.5rem;
   }
 
-  .mobile-search {
-    margin-bottom: 1rem;
-  }
 
   .mobile-nav-items {
     list-style: none;
@@ -430,11 +415,6 @@ function isCurrentPage(item: NavItem): boolean {
       display: block;
     }
 
-    .search-wrapper {
-      display: block;
-      width: 100%;
-      max-width: 24rem;
-    }
 
     .header-right {
       display: flex;

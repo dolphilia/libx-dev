@@ -74,7 +74,7 @@ const TOC_TITLE = 'tableOfContents.onThisPage';
   <starlight-toc data-min-h={minLevel} data-max-h={maxLevel} class:list={{ "starlight-toc--mobile": isMobile }}>
     <div class="starlight-toc-wrapper">
       <nav aria-labelledby="starlight-toc-heading">
-        <h2 id="starlight-toc-heading" class="starlight-toc-heading">{translate(TOC_TITLE, lang)}</h2>
+        <h3 id="starlight-toc-heading" class="starlight-toc-heading">{translate(TOC_TITLE, lang)}</h2>
         <div class="starlight-toc-list">
           <TableOfContentsList toc={filteredHeadings} isMobile={isMobile} />
         </div>
@@ -183,15 +183,15 @@ customElements.define('starlight-toc', StarlightTOC);
   
   .starlight-toc-wrapper {
     width: 100%;
-    padding: 1rem 0;
+    padding: 0;
   }
   
   .starlight-toc-heading {
     font-size: var(--sl-text-sm);
-    font-weight: 600;
+    font-weight: 800;
     text-transform: uppercase;
     color: var(--sl-color-gray-3);
-    margin-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
     letter-spacing: 0.05em;
   }
   
@@ -211,7 +211,7 @@ customElements.define('starlight-toc', StarlightTOC);
   }
   
   .starlight-toc--mobile .starlight-toc-wrapper {
-    padding: 1rem var(--sl-content-pad-x);
+    padding: 0;
   }
   
   .starlight-toc--mobile .starlight-toc-heading {
@@ -235,7 +235,7 @@ customElements.define('starlight-toc', StarlightTOC);
     
     .starlight-toc-wrapper {
       width: 100%;
-      padding: 1rem 0.5rem 1rem 0;
+      padding: 0;
     }
   }
 </style>

@@ -3,7 +3,6 @@
  * MainLayout - トップページの基本レイアウトコンポーネント
  */
 import { Navigation, Footer, ThemeToggle } from '@docs/ui/components';
-import { SearchBar } from '@docs/search/components';
 import LanguageSelector from '../components/LanguageSelector.astro';
 import type { LocaleKey } from '@docs/i18n/locales';
 import '../styles/global.css';
@@ -17,15 +16,12 @@ interface Props {
   title: string;
   /** 言語コード */
   lang: LocaleKey;
-  /** 検索バーを表示するか */
-  showSearch?: boolean;
 }
 
 // プロパティの取得
 const { 
   title, 
   lang, 
-  showSearch = true
 } = Astro.props;
 
 // ナビゲーション項目の定義
@@ -39,31 +35,6 @@ const navItems: NavItem[] = [
   { title: 'GitHub', href: 'https://github.com/dolphilia' },
 ];
 
-// フッターリンクグループの定義
-interface LinkGroup {
-  title: string;
-  links: {
-    title: string;
-    href: string;
-    target?: string;
-    rel?: string;
-  }[];
-}
-
-const linkGroups: LinkGroup[] = [
-  {
-    title: 'Docs',
-    links: [
-      { title: 'Sample Docs', href: `${BASE_URL}/docs/sample-docs/${lang}` }
-    ]
-  },
-  {
-    title: 'Community',
-    links: [
-      { title: 'GitHub', href: 'https://github.com/dolphilia', target: '_blank', rel: 'noopener' }
-    ]
-  }
-];
 
 // 現在の年を取得
 const currentYear = new Date().getFullYear();
@@ -109,7 +80,6 @@ const currentYear = new Date().getFullYear();
       </div>
       
       <Footer 
-        linkGroups={linkGroups}
         copyright={`© ${currentYear} Docs Astro. All rights reserved.`}
       />
     </div>
@@ -131,13 +101,27 @@ const currentYear = new Date().getFullYear();
     width: 100%;
     height: var(--sl-nav-height);
     border-bottom: 1px solid var(--sl-color-hairline-shade);
-    padding: var(--sl-nav-pad-y) var(--sl-nav-pad-x);
+    padding: var(--sl-nav-pad-y) 0;
     background-color: var(--sl-color-bg-nav);
   }
 
   .header-container {
     max-width: 87.5rem; /* 1400px */
+    width: 100%;
+    padding: 0 1.5rem;
     margin: 0 auto;
+    box-sizing: border-box;
+  }
+  
+  @media (min-width: 50em) {
+    .header-container {
+      padding: 0 2rem;
+    }
+  }
+  
+  /* スクロールバーによる幅変化を防ぐ */
+  html {
+    scrollbar-gutter: stable;
   }
 
   .header-content {
@@ -167,11 +151,6 @@ const currentYear = new Date().getFullYear();
     align-items: center;
   }
 
-  .search-container {
-    width: 100%;
-    max-width: 20rem;
-    margin-right: 1rem;
-  }
 
   .theme-toggle-container {
     margin-right: 0.5rem;
