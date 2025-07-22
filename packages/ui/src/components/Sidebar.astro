@@ -175,7 +175,8 @@ const sidebarHash = getSidebarHash(items);
 <style>
   /* Starlightスタイルに基づくサイドバースタイル */
   .sidebar {
-    width: 100%;
+    width: 100%; /* コンテナの幅に合わせる */
+    max-width: 280px; /* 最大幅を制限 */
     flex-shrink: 0;
     height: 100%;
     overflow-y: auto;
@@ -190,6 +191,7 @@ const sidebarHash = getSidebarHash(items);
   /* 折りたたみ状態のスタイル */
   .sidebar.sidebar-collapsed {
     width: 50px;
+    max-width: 50px;
     overflow-x: hidden;
   }
   
@@ -391,26 +393,34 @@ const sidebarHash = getSidebarHash(items);
     color: var(--sl-color-blue-low);
   }
 
-  /* モバイル表示の最適化 */
-  @media (max-width: 50rem) {
-    .sidebar {
+  /* モバイル表示の最適化 - オーバーレイサイドバー */
+  @media (max-width: 48em) {
+    .sidebar.mobile-overlay {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      max-height: 100vh;
-      padding: 1rem;
-      background-color: var(--sl-color-bg);
-      z-index: 20;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1000;
+      background-color: rgba(0, 0, 0, 0.5);
       transform: translateX(-100%);
-      transition: transform 0.2s ease-in-out;
+      transition: transform 0.3s ease-in-out;
+      border-radius: 0;
+    }
+
+    .sidebar.mobile-overlay .sidebar-content {
+      width: min(320px, 80vw);
+      height: 100%;
+      background-color: var(--sl-color-bg-sidebar);
+      border-right: 1px solid var(--sl-color-hairline);
+      padding: 1rem;
       overflow-y: auto;
     }
 
     .sidebar.mobile-visible {
       transform: translateX(0);
     }
+  }
 
     .sidebar-title {
       display: flex;
@@ -428,7 +438,14 @@ const sidebarHash = getSidebarHash(items);
     }
   }
 
-  @media (min-width: 50rem) {
+  /* デスクトップ表示の最適化 */
+  @media (min-width: 48em) {
+    .sidebar {
+      border-radius: 0.5rem;
+    }
+  }
+
+  @media (min-width: 75em) {
     .top-level > li + li {
       margin-top: 0.5rem;
     }

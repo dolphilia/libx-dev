@@ -12,6 +12,7 @@
     "@docs/i18n": "workspace:*",
     "@docs/theme": "workspace:*",
     "@docs/ui": "workspace:*",
-    "astro": "^5.7.12"
+    "astro": "^5.7.12",
+    "glob": "^11.0.0"
   }
 }

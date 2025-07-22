@@ -1,20 +1,21 @@
 ---
 import { Icon } from '@docs/ui/components';
 import type { Project } from '../config/projects.config';
+import { generateProjectUrl } from '../utils/project-url-generator';
 import { translate } from '@docs/i18n/utils';
 import type { LocaleKey } from '@docs/i18n/locales';
 
 interface Props {
   project: Project;
   lang: LocaleKey;
-  baseUrl: string;
+  baseUrl?: string; // 下位互換性のため残す
 }
 
-const { project, lang, baseUrl } = Astro.props;
+const { project, lang } = Astro.props;
 const { id, name, description, path, icon, tags, isNew, isUpdated } = project;
 
-// プロジェクトへのパスを構築
-const projectPath = `${baseUrl}${path}/${lang}`;
+// 設定ファイルベースでプロジェクトURLを生成
+const projectPath = await generateProjectUrl(project, lang);
 ---
 
 <a href={projectPath} class="project-card">

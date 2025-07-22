@@ -1,11 +1,7 @@
 ---
-import MainLayout from '../../layouts/MainLayout.astro';
-import { Button, Card } from '@docs/ui/components';
-import versions from '../../config/versions.config';
 import docsConfig from '../../config/docs.config';
 import type { LocaleKey } from '@docs/i18n/locales';
-import { translate } from '@docs/i18n/utils';
-import { getDefaultCardLinks, findContent } from '../../utils/content-utils';
+import { generateRedirectUrl } from '../../utils/dynamic-navigation';
 
 export function getStaticPaths() {
   return docsConfig.supportedLangs.map(lang => ({
@@ -15,100 +11,13 @@ export function getStaticPaths() {
 
 const { lang: langParam } = Astro.params;
 const lang = (langParam || 'en') as LocaleKey;
-const latestVersion = versions.find(v => v.isLatest)?.id || 'v2';
 const baseUrl = docsConfig.baseUrl;
 
-// ファイルベースのリンクを生成
-const cardLinks = await getDefaultCardLinks(lang, latestVersion, baseUrl);
-const gettingStartedLink = await findContent(lang, latestVersion, 'guide', 'getting-started');
+// 動的にリダイレクト先を決定
+const redirectUrl = await generateRedirectUrl(lang, baseUrl);
+
+// リダイレクトを実行
+return Astro.redirect(redirectUrl);
 ---
 
-<MainLayout title={translate('docs.documentation', lang)} lang={lang} showSearch={true} showVersionSelector={false} showBreadcrumb={true} hasSidebar={false} hasToc={false}>
-  <div class="content-container">
-    <div class="hero-section">
-    <h1 class="hero-title">{translate('docs.documentation', lang)}</h1>
-    <p class="hero-description">
-      {translate('docs.description', lang)}
-    </p>
-    
-    <div class="hero-buttons">
-      <Button 
-        href={gettingStartedLink ? `${baseUrl}${gettingStartedLink.url}` : `${baseUrl}/${lang}/${latestVersion}/guide/getting-started`} 
-        variant="primary" 
-        size="lg"
-      >
-        {translate('docs.get_started', lang)}
-      </Button>
-      <Button href="https://github.com" variant="outline" size="lg">
-        GitHub
-      </Button>
-    </div>
-    
-  </div>
-  
-    <div class="card-grid">
-      {cardLinks.map((link) => (
-        <Card
-          title={translate(link.title as any, lang)}
-          href={link.href}
-        >
-          {translate(`${link.title}_description` as any, lang)}
-        </Card>
-      ))}
-    </div>
-  </div>
-</MainLayout>
-
-<style>
-  .content-container {
-    max-width: 87.5rem; /* 1400px - DocLayoutと同じ幅 */
-    margin: 0 auto;
-    padding: 0 1rem; /* 左右のパディングを追加 */
-  }
-
-  .hero-section {
-    text-align: center;
-    padding: 3rem 0;
-  }
-
-  .hero-title {
-    font-size: 2.25rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-  }
-
-  .hero-description {
-    font-size: 1.25rem;
-    margin-bottom: 2rem;
-    max-width: 42rem;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .hero-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 3rem;
-  }
-
-
-  .card-grid {
-    display: grid;
-    gap: 1.5rem;
-    max-width: 72rem;
-    margin: 0 auto;
-  }
-
-  @media (min-width: 768px) {
-    .card-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .card-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-</style>
+<!-- このページは動的リダイレクトのため、HTMLコンテンツは不要 -->

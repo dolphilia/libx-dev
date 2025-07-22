@@ -14,6 +14,9 @@ export interface Project {
   tags?: string[];
   isNew?: boolean;
   isUpdated?: boolean;
+  // 動的URL生成用の情報
+  contentPath?: string; // コンテンツディレクトリのパス（sample-docs等）
+  fallbackUrl?: Record<LocaleKey, string>; // フォールバック用の固定URL
 }
 
 // プロジェクト一覧
@@ -26,9 +29,14 @@ const projects: Project[] = [
       ja: 'docs-astroプロジェクトのサンプルドキュメント'
     },
     path: '/docs/sample-docs',
-    icon: 'document',
+    icon: 'file-text',
     tags: ['sample', 'documentation'],
-    isNew: true
+    isNew: true,
+    contentPath: 'sample-docs',
+    fallbackUrl: {
+      en: '/docs/sample-docs/en/v2/guide/01-getting-started',
+      ja: '/docs/sample-docs/ja/v2/guide/01-getting-started'
+    }
   }
   // 将来的に他のプロジェクトを追加する場合はここに追加
 ];
@@ -51,7 +59,7 @@ export const topPageConfig = {
   repository: 'https://github.com/dolphilia',
   
   // サイト名
-  siteName: 'Docs Astro',
+  siteName: 'Libx',
   
   // サイトの説明
   siteDescription: {

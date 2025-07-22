@@ -171,135 +171,156 @@ const hasToc = true;
 
 <style>
   
-  /* 3カラムレイアウトのコンテナ */
+  /* レスポンシブレイアウトのコンテナ */
   .doc-layout-container {
     display: flex;
     flex-direction: column;
     width: 100%;
-    min-height: calc(100vh - var(--sl-nav-height));
     max-width: 87.5rem; /* 1400px */
     margin: 0 auto;
-    padding: 0 1.5rem;
+    padding: 0 1rem;
     box-sizing: border-box;
+    gap: 1rem;
   }
   
-  @media (min-width: 50em) {
-    .doc-layout-container {
-      padding: 0 2rem;
-    }
-  }
-
-  /* サイドバー（左カラム）スタイル */
+  /* モバイル（〜768px）: 縦スタック */
   .sidebar-column {
+    order: 1;
     width: 100%;
     background-color: var(--sl-color-bg-sidebar);
-    border-bottom: 1px solid var(--sl-color-hairline-shade);
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
   }
 
   .sidebar-content {
-    padding-top: 1.5rem;
-    padding-inline: var(--sl-content-pad-x, 1rem);
-    padding-bottom: 0;
-    padding-left: 0;
-    height: 100%;
+    padding: 1rem;
+    height: auto;
+    max-height: 60vh;
+    overflow-y: auto;
   }
 
-  /* メインコンテンツ（中央カラム）スタイル */
   .main-column {
+    order: 2;
     width: 100%;
     flex: 1;
   }
 
   .content-panel {
-    padding-top: 1.5rem;
-    padding-inline: var(--sl-content-pad-x, 1rem);
-    padding-bottom: 1.5rem;
+    padding: 1.5rem 1rem;
+    background-color: var(--sl-color-bg);
+    border-radius: 0.5rem;
   }
 
-  /* 目次（右カラム）スタイル */
   .toc-column {
-    display: none;
+    order: 3;
+    display: none; /* モバイルでは非表示 */
     width: 100%;
     background-color: var(--sl-color-bg);
-    border-top: 1px solid var(--sl-color-hairline);
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 0.5rem;
   }
 
   .toc-content {
-    padding-top: 1.5rem;
-    /* padding-inline: var(--sl-content-pad-x, 1rem); */
-    padding-bottom: 1rem;
+    padding: 1rem;
   }
 
-  /* タブレット表示（2カラム）*/
-  @media (min-width: 50em) {
+  /* タブレット（768px〜1200px）: 2カラムレイアウト */
+  @media (min-width: 48em) {
     .doc-layout-container {
       flex-direction: row;
-      flex-wrap: wrap;
+      padding: 0 1.5rem;
+      gap: 1.5rem;
+      align-items: flex-start;
     }
 
     .sidebar-column {
-      width: var(--sl-sidebar-width);
-      border-right: none;
-      border-bottom: none;
-      border: 1px solid var(--sl-color-hairline);
-      border-radius: 0.75rem;
-      margin: 0.5rem 0.5rem 0.5rem 0;
-      position: sticky;
-      top: var(--sl-nav-height);
-      height: calc(100vh - var(--sl-nav-height));
-      overflow-y: auto;
-      align-self: flex-start;
-    }
-
-    .main-column {
-      width: calc(100% - var(--sl-sidebar-width));
-      min-height: calc(100vh - var(--sl-nav-height));
-    }
-    
-    .content-panel {
-      padding-inline: 3rem;
-    }
-  }
-
-  /* デスクトップ表示（3カラム）*/
-  @media (min-width: 50rem) {
-    .doc-layout-container {
-      flex-wrap: nowrap;
-    }
-
-    .sidebar-column {
-      width: var(--sl-sidebar-width);
+      order: 1;
+      width: 260px;
+      max-width: 280px;
       flex-shrink: 0;
+      position: sticky;
+      top: calc(var(--sl-nav-height) + 1rem);
+      height: calc(100vh - var(--sl-nav-height) - 2rem);
+      margin-bottom: 0;
+    }
+
+    .sidebar-content {
+      padding: 1.5rem 1rem;
+      height: 100%;
+      max-height: none;
     }
 
     .main-column {
-      width: calc(100% - var(--sl-sidebar-width) - var(--sl-sidebar-width));
+      order: 2;
       flex: 1;
-      min-width: 0; /* flexboxでオーバーフローを防止 */
+      min-width: 0;
+    }
+
+    .content-panel {
+      padding: 2rem;
+      min-height: calc(100vh - var(--sl-nav-height) - 2rem);
     }
 
     .toc-column {
-      display: block;
-      width: var(--sl-sidebar-width);
-      flex-shrink: 0;
-      border-top: none;
-      border-left: none;
-      border: 1px solid var(--sl-color-hairline);
-      border-radius: 0.75rem;
-      margin: 0.5rem 0.5rem 0.5rem 0;
-      position: sticky;
-      top: var(--sl-nav-height);
-      height: calc(100vh - var(--sl-nav-height));
-      overflow-y: auto;
-      align-self: flex-start;
+      display: none; /* タブレットでも非表示 */
     }
-    
-    /* 目次内のコンテンツが表示されるようにする */
-    .toc-content {
+  }
+
+  /* デスクトップ（1200px〜）: 3カラムレイアウト */
+  @media (min-width: 75em) {
+    .doc-layout-container {
+      padding: 0 2rem;
+      gap: 2rem;
+    }
+
+    .sidebar-column {
+      width: 250px;
+      max-width: 270px;
+    }
+
+    .main-column {
+      flex: 1;
+      min-width: 600px; /* メインコンテンツの最小幅を確保 */
+    }
+
+    .content-panel {
+      padding: 2.5rem 3rem;
+    }
+
+    .toc-column {
+      order: 3;
       display: block;
-      padding-top: 1.5rem;
-      padding-inline: var(--sl-content-pad-x, 1rem);
-      padding-bottom: 1rem;
+      width: 240px;
+      flex-shrink: 0;
+      position: sticky;
+      top: calc(var(--sl-nav-height) + 1rem);
+      height: calc(100vh - var(--sl-nav-height) - 2rem);
+      overflow-y: auto;
+    }
+
+    .toc-content {
+      padding: 1.5rem 1rem;
+    }
+  }
+
+  /* 大型デスクトップ（1400px〜）: より余裕のあるレイアウト */
+  @media (min-width: 87.5em) {
+    .doc-layout-container {
+      gap: 2.5rem;
+    }
+
+    .sidebar-column {
+      width: 260px;
+      max-width: 280px;
+    }
+
+    .toc-column {
+      width: 260px;
+    }
+
+    .content-panel {
+      padding: 3rem 4rem;
     }
   }
 </style>

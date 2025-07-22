@@ -13,6 +13,7 @@ import docsConfig from '../config/docs.config';
 import { ThemeToggle } from '@docs/ui/components';
 import { findCorrespondingFile } from '../utils/content-utils';
 import { Icons } from '@docs/ui/components/icons/Icons';
+import { generateRedirectUrl } from '../utils/dynamic-navigation';
 
 // 定数定義
 
@@ -45,19 +46,6 @@ const {
   showBreadcrumb = false
 } = Astro.props;
 
-// 最新バージョンを取得
-const latestVersion = versions.find(v => v.isLatest)?.id || version;
-
-// ナビゲーション項目の定義
-interface NavItem {
-  title: string;
-  href: string;
-}
-
-const navItems: NavItem[] = [
-  { title: 'Home', href: `${docsConfig.baseUrl}/${lang}` },
-  { title: 'Docs', href: `${docsConfig.baseUrl}/${lang}/${version}/guide/01-getting-started` },
-];
 
 
 // 現在の年を取得
@@ -71,6 +59,9 @@ if (hasSidebar) htmlDataAttributes['data-has-sidebar'] = '';
 const numBaseSegments = docsConfig.baseUrl.split('/').filter(p => p.length > 0).length;
 const slugSliceIndex = 1 + numBaseSegments + 1 + 1; // 1 (leading empty) + base segments + lang segment + version segment
 const currentSlugForSelector = Astro.url.pathname.split('/').slice(slugSliceIndex).join('/').replace(/\/$/, ''); // 末尾のスラッシュを削除
+
+// ドキュメントトップへの動的リンクを生成
+const docTopLink = await generateRedirectUrl(lang, docsConfig.baseUrl);
 ---
 
 <!DOCTYPE html>
@@ -124,7 +115,7 @@ const currentSlugForSelector = Astro.url.pathname.split('/').slice(slugSliceInde
                 <div class="breadcrumb-title">
                   <a href={`/${lang}`} class="site-title">Libx</a>
                   <svg class="breadcrumb-separator" viewBox="0 0 24 24" set:html={Icons['chevron-right']} />
-                  <a href={`${docsConfig.baseUrl}/${lang}/`} class="doc-title">{docsConfig.name}</a>
+                  <a href={docTopLink} class="doc-title">{docsConfig.name}</a>
                 </div>
               ) : (
                 <a href={`/${lang}`} class="site-title">{docsConfig.name}</a>

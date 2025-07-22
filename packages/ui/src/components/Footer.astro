@@ -4,7 +4,6 @@
  * 改善: ソーシャルアイコンのサポート、レスポンシブデザインの強化、スティッキーフッターオプション
  */
 import Icon from './icons/Icon.astro';
-import { EditLink } from './index';
 import { Pagination } from './index';
 
 
@@ -17,8 +16,6 @@ interface SocialLink {
 interface Props {
   copyright?: string;
   socialLinks?: SocialLink[];
-  showEditLink?: boolean;
-  editUrl?: string;
   showPagination?: boolean;
   prevPage?: { title: string; url: string };
   nextPage?: { title: string; url: string };
@@ -29,8 +26,6 @@ interface Props {
 const { 
   copyright = '', 
   socialLinks = [],
-  showEditLink = false,
-  editUrl = '',
   showPagination = false,
   prevPage,
   nextPage,
@@ -47,7 +42,6 @@ const {
       
       <div class="footer-bottom">
         <div class="footer-meta">
-          {showEditLink && <EditLink url={editUrl} />}
           {copyright && <p class="copyright">{copyright}</p>}
         </div>
         

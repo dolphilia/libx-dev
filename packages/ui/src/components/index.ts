@@ -14,7 +14,6 @@ export { default as ContentPanel } from './ContentPanel.astro';
 export { default as TableOfContents } from './TableOfContents/TableOfContents.astro';
 export { default as TableOfContentsList } from './TableOfContents/TableOfContentsList.astro';
 export { default as Pagination } from './Pagination.astro';
-export { default as EditLink } from './EditLink.astro';
 
 // 新しく追加したStarlightスタイルのコンポーネント
 export { default as AnchorHeading } from './AnchorHeading.astro';

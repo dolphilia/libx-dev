@@ -16,14 +16,17 @@ export function getStaticPaths() {
 const { lang } = Astro.params;
 const currentLang = lang as LocaleKey;
 
-// プロジェクト一覧を取得
-const { projects, baseUrl, heroTitle, heroDescription, siteName, siteDescription } = topPageConfig;
+// 設定ファイルからプロジェクト一覧を取得
+const { projects, baseUrl, heroTitle, heroDescription, siteName, siteDescription, repository } = topPageConfig;
+console.log(`Displaying ${projects.length} projects from config for lang: ${currentLang}`);
 
-// ページタイトルを設定
-const pageTitle = translate('common.home', currentLang);
+// ページタイトルを設定（サイト名を使用）
+const pageTitle = siteName;
 ---
 
 <MainLayout title={pageTitle} lang={currentLang}>
+  <!-- メタデータを設定 -->
+  <meta name="description" content={siteDescription[currentLang]} slot="head" />
   <!-- ヒーローセクション -->
   <section class="hero-section">
     <h1 class="hero-title">{heroTitle[currentLang]}</h1>
@@ -42,7 +45,6 @@ const pageTitle = translate('common.home', currentLang);
           <ProjectCard 
             project={project} 
             lang={currentLang} 
-            baseUrl={baseUrl} 
           />
         ))}
       </div>
@@ -55,7 +57,7 @@ const pageTitle = translate('common.home', currentLang);
       <h2 class="section-title">{translate('contribute.title', currentLang)}</h2>
       <p class="section-description">{translate('contribute.description', currentLang)}</p>
       <div class="justify-center">
-        <a href="https://github.com/dolphilia" class="btn btn-primary" target="_blank" rel="noopener">
+        <a href={repository} class="btn btn-primary" target="_blank" rel="noopener">
           {translate('contribute.button', currentLang)}
         </a>
       </div>

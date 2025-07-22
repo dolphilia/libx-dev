@@ -49,6 +49,8 @@ const currentYear = new Date().getFullYear();
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content="Documentation site built with Astro" />
     <title>{title} | Docs Astro</title>
+    <!-- 追加のheadコンテンツ用スロット -->
+    <slot name="head" />
   </head>
   <body>
     <div class="page">
@@ -60,8 +62,8 @@ const currentYear = new Date().getFullYear();
               <a href={`${BASE_URL}/${lang}`} class="site-title">Libx</a>
             </div>
 
-            <div class="sl-hidden print:hidden right-group">
-              <div aria-label="言語選択">
+            <div class="print:hidden right-group">
+              <div class="language-selector-container" aria-label="言語選択">
                 <LanguageSelector currentLang={lang} />
               </div>
               <div class="theme-toggle-container">
@@ -101,7 +103,7 @@ const currentYear = new Date().getFullYear();
     width: 100%;
     height: var(--sl-nav-height);
     border-bottom: 1px solid var(--sl-color-hairline-shade);
-    padding: var(--sl-nav-pad-y) 0;
+    padding: 0.75rem 0;
     background-color: var(--sl-color-bg-nav);
   }
 
@@ -140,20 +142,27 @@ const currentYear = new Date().getFullYear();
   }
 
   .site-title {
-    font-size: 1.5rem;
+    font-size: var(--sl-text-lg);
     font-weight: 600;
     color: var(--sl-color-white);
     text-decoration: none;
   }
 
   .right-group {
-    gap: 1rem;
+    display: flex;
     align-items: center;
+    gap: 1rem;
   }
 
 
+  .language-selector-container {
+    display: flex;
+    align-items: center;
+  }
+
   .theme-toggle-container {
-    margin-right: 0.5rem;
+    display: flex;
+    align-items: center;
   }
 
   .main-frame {
