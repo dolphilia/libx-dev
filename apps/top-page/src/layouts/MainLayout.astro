@@ -34,10 +34,6 @@ const navItems: NavItem[] = [
   { title: 'Home', href: `${BASE_URL}/${lang}` },
   { title: 'GitHub', href: 'https://github.com/dolphilia' },
 ];
-
-
-// 現在の年を取得
-const currentYear = new Date().getFullYear();
 ---
 
 <!DOCTYPE html>
@@ -82,7 +78,9 @@ const currentYear = new Date().getFullYear();
       </div>
       
       <Footer 
-        copyright={`© ${currentYear} Docs Astro. All rights reserved.`}
+        showContribute={true}
+        contributeUrl="https://github.com/dolphilia"
+        lang={lang}
       />
     </div>
   </body>
@@ -171,7 +169,7 @@ const currentYear = new Date().getFullYear();
 
   main {
     flex-grow: 1;
-    padding: 1.5rem var(--sl-content-pad-x);
+    padding: 0;
   }
 
   @media (min-width: 50em) {

@@ -26,6 +26,7 @@ body {
   background-color: var(--color-bg-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  letter-spacing: 0.02rem;
 }
 
 /* 見出し */
@@ -34,6 +35,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: var(--font-weight-bold);
   line-height: var(--line-height-tight);
   color: var(--color-text-primary);
+  letter-spacing: 0.02rem;
 }
 
 h1 {
@@ -71,6 +73,7 @@ a {
   color: var(--color-brand-primary);
   text-decoration: none;
   transition: color 0.2s ease;
+  letter-spacing: 0.02rem;
 }
 
 a:hover {
@@ -81,6 +84,7 @@ a:hover {
 p {
   margin-top: 0;
   margin-bottom: 1rem;
+  letter-spacing: 0.02rem;
 }
 
 /* リスト */
@@ -88,10 +92,12 @@ ul, ol {
   margin-top: 0;
   margin-bottom: 1rem;
   padding-left: 2rem;
+  letter-spacing: 0.02rem;
 }
 
 li {
   margin-bottom: 0.5rem;
+  letter-spacing: 0.02rem;
 }
 
 /* 画像 */
@@ -113,11 +119,13 @@ th {
   padding: 0.75rem;
   border-bottom: 2px solid var(--color-border-default);
   font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.02rem;
 }
 
 td {
   padding: 0.75rem;
   border-bottom: 1px solid var(--color-border-light);
+  letter-spacing: 0.02rem;
 }
 
 /* コード */

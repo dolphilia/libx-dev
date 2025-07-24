@@ -1,5 +1,6 @@
 ---
 import type { LocaleKey } from '@docs/i18n/locales';
+import { translate } from '@docs/i18n/utils';
 import { Dropdown, DropdownItem, Icon } from '@docs/ui/components';
 import docsConfig from '../config/docs.config';
 
@@ -160,7 +161,7 @@ const langPaths: LangPathInfo[] = supportedLangs.map(langCode => {
       >
         <span slot="before-label" class="language-flag">{pathInfo.flag}</span>
         {pathInfo.isCurrent && (
-          <span slot="after-label" class="language-current-badge">現在</span>
+          <span slot="after-label" class="language-current-badge">{translate('docs.current', currentLang as LocaleKey)}</span>
         )}
       </DropdownItem>
     ))}

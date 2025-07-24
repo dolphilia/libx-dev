@@ -27,7 +27,9 @@
     "copyright": "© {year} All rights reserved.",
     "terms": "利用規約",
     "privacy": "プライバシーポリシー",
-    "contact": "お問い合わせ"
+    "contact": "お問い合わせ",
+    "contributeText": "して、ドキュメントの改善にご協力ください。",
+    "contributeLink": "プロジェクトに貢献"
   },
   "docs": {
     "onThisPage": "このページの内容",
@@ -47,7 +49,8 @@
     "reference": "リファレンス",
     "latest": "最新",
     "showLatest": "最新バージョンを表示",
-    "showDiff": "バージョン間の差分を表示"
+    "showDiff": "バージョン間の差分を表示",
+    "current": "現在"
   },
   "search": {
     "placeholder": "ドキュメントを検索...",

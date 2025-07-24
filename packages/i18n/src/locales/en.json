@@ -27,7 +27,9 @@
     "copyright": "© {year} All rights reserved.",
     "terms": "Terms of Service",
     "privacy": "Privacy Policy",
-    "contact": "Contact Us"
+    "contact": "Contact Us",
+    "contributeText": " to help improve the documentation.",
+    "contributeLink": "Contribute to the project"
   },
   "docs": {
     "onThisPage": "On this page",
@@ -47,7 +49,8 @@
     "reference": "Reference",
     "latest": "Latest",
     "showLatest": "Show latest version",
-    "showDiff": "Show version differences"
+    "showDiff": "Show version differences",
+    "current": "Current"
   },
   "search": {
     "placeholder": "Search documentation...",

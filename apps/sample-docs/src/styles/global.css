@@ -26,6 +26,11 @@ body {
   height: 100%;
 }
 
+/* 全ページテキストの文字間隔設定 */
+body, p, h1, h2, h3, h4, h5, h6, span, div, a, li, td, th, button, input, textarea, label {
+  letter-spacing: 0.02rem;
+}
+
 /* コンテンツスタイル */
 .article-content {
   max-width: var(--sl-content-width);
