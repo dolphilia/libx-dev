@@ -25,7 +25,7 @@ const rootDir = path.resolve(__dirname, '..');
 // 基本設定
 const config = {
   appsDir: path.join(rootDir, 'apps'),
-  baseUrl: '/docs/sample-docs',
+  excludedProjects: ['top-page'], // 除外するプロジェクト名
 };
 
 /**
@@ -89,6 +89,13 @@ async function detectProjects() {
     
     for (const dir of projectDirs) {
       const projectName = dir.name;
+      
+      // 除外プロジェクトをスキップ
+      if (config.excludedProjects.includes(projectName)) {
+        console.log(`プロジェクト ${projectName} は除外対象です。スキップします。`);
+        continue;
+      }
+      
       const projectPath = path.join(config.appsDir, projectName);
       
       // src/content/docs ディレクトリが存在するかチェック
@@ -289,16 +296,8 @@ async function generateSidebarForVersion(project, lang, version) {
  * プロジェクト固有のベースURLを取得する
  */
 async function getProjectBaseUrl(project) {
-  let projectSpecificBase = config.baseUrl;
-  
-  // プロジェクト名が 'sample-docs' でない場合、ベースURLにプロジェクト名を追加
-  // config.baseUrl が /docs/sample-docs で、project.name が my-project の場合、
-  // projectSpecificBase は /docs/sample-docs/my-project となる。
-  if (project.name !== 'sample-docs') {
-    // path.join はURL結合に向かないため、手動で結合
-    const base = config.baseUrl.endsWith('/') ? config.baseUrl.slice(0, -1) : config.baseUrl;
-    projectSpecificBase = `${base}/${project.name}`;
-  }
+  // プロジェクト名に基づく動的なベースURL生成
+  let projectSpecificBase = `/docs/${project.name}`;
   
   const configPath = path.join(project.path, 'astro.config.mjs');
   let astroBase = '';

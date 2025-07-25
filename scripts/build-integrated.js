@@ -32,24 +32,49 @@ const rootDir = path.resolve(__dirname, '..');
 const distDir = path.join(rootDir, 'dist');
 const searchIndicesCollectDir = path.join(distDir, 'search-indices'); // manifest.jsonもここに配置
 
-// アプリケーションのリスト
-const apps = [
-  {
-    name: 'top-page',
-    srcDir: path.join(rootDir, 'apps', 'top-page', 'dist'),
-    destDir: distDir,
-    // トップページはルートに配置
-    pathPrefix: ''
-  },
-  {
-    name: 'sample-docs',
-    srcDir: path.join(rootDir, 'apps', 'sample-docs', 'dist'),
-    destDir: path.join(distDir, 'docs', 'sample-docs'),
-    // sample-docsは/docs/sample-docs/に配置
-    pathPrefix: '/docs/sample-docs'
+/**
+ * appsディレクトリからアプリケーションリストを動的に生成
+ */
+async function generateAppsList() {
+  const appsDir = path.join(rootDir, 'apps');
+  const apps = [];
+  
+  try {
+    const entries = await fs.readdirSync(appsDir, { withFileTypes: true });
+    const appDirs = entries.filter(entry => entry.isDirectory());
+    
+    for (const dir of appDirs) {
+      const appName = dir.name;
+      const appPath = path.join(appsDir, appName);
+      const srcDir = path.join(appPath, 'dist');
+      
+      if (appName === 'top-page') {
+        // トップページはルートに配置
+        apps.push({
+          name: appName,
+          srcDir,
+          destDir: distDir,
+          pathPrefix: ''
+        });
+      } else {
+        // ドキュメントプロジェクトは/docs/{project-name}/に配置
+        apps.push({
+          name: appName,
+          srcDir,
+          destDir: path.join(distDir, 'docs', appName),
+          pathPrefix: `/docs/${appName}`
+        });
+      }
+    }
+  } catch (error) {
+    console.error('アプリケーションリストの生成中にエラーが発生しました:', error);
   }
-  // 他のアプリケーションがある場合はここに追加
-];
+  
+  return apps;
+}
+
+// アプリケーションのリスト（動的生成）
+let apps = [];
 
 /**
  * HTMLファイル内のベースパスを修正する関数
@@ -157,6 +182,10 @@ async function main() {
     console.log('ローカル開発環境用のビルドを行います...');
   }
 
+  // アプリケーションリストを動的生成
+  apps = await generateAppsList();
+  console.log('検出されたアプリケーション:', apps.map(app => app.name).join(', '));
+
   // 検索インデックスのマニフェストオブジェクト初期化
   const searchIndexManifest = {
     projects: {}
@@ -200,13 +229,13 @@ async function main() {
     // ディレクトリをコピー
     copyDirRecursive(app.srcDir, app.destDir);
 
-    // サイドバーJSONファイルをコピー（sample-docsの場合）
-    if (app.name === 'sample-docs') {
-      const sidebarSrcDir = path.join(rootDir, 'apps', 'sample-docs', 'public', 'sidebar');
+    // サイドバーJSONファイルをコピー（ドキュメントプロジェクトの場合）
+    if (app.name !== 'top-page') {
+      const sidebarSrcDir = path.join(rootDir, 'apps', app.name, 'public', 'sidebar');
       const sidebarDestDir = path.join(app.destDir, 'sidebar');
       
       if (fs.existsSync(sidebarSrcDir)) {
-        console.log(`サイドバーJSONファイルをコピーしています...`);
+        console.log(`${app.name}のサイドバーJSONファイルをコピーしています...`);
         if (!fs.existsSync(sidebarDestDir)) {
           fs.mkdirSync(sidebarDestDir, { recursive: true });
         }
