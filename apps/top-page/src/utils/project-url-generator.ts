@@ -4,7 +4,7 @@
 
 import type { LocaleKey } from '@docs/i18n/locales';
 import type { Project } from '../config/projects.config';
-import { topPageConfig } from '../config/projects.config';
+import { getTopPageConfig } from '../config/projects.config';
 
 /**
  * プロジェクトの最適なURLを生成
@@ -50,7 +50,8 @@ async function generateDynamicUrl(contentPath: string, lang: LocaleKey, basePath
   }
   
   // 設定ファイルから対応するプロジェクトを検索
-  const project = topPageConfig.projects.find(p => p.contentPath === contentPath);
+  const config = await getTopPageConfig();
+  const project = config.projects.find(p => p.contentPath === contentPath);
   
   if (project && project.fallbackUrl && project.fallbackUrl[lang]) {
     // 設定ファイルのフォールバックURLを使用

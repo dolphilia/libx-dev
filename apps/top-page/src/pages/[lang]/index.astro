@@ -1,13 +1,14 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
-import { topPageConfig } from '../../config/projects.config';
+import { getTopPageConfig } from '../../config/projects.config';
 import type { LocaleKey } from '@docs/i18n/locales';
 import { translate } from '@docs/i18n/utils';
 
 // 静的パスを生成する関数
-export function getStaticPaths() {
-  return topPageConfig.supportedLangs.map(lang => ({
+export async function getStaticPaths() {
+  const config = await getTopPageConfig();
+  return config.supportedLangs.map(lang => ({
     params: { lang }
   }));
 }
@@ -17,6 +18,7 @@ const { lang } = Astro.params;
 const currentLang = lang as LocaleKey;
 
 // 設定ファイルからプロジェクト一覧を取得
+const topPageConfig = await getTopPageConfig();
 const { projects, baseUrl, heroTitle, heroDescription, siteName, siteDescription, repository } = topPageConfig;
 console.log(`Displaying ${projects.length} projects from config for lang: ${currentLang}`);
 

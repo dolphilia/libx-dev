@@ -2,9 +2,10 @@
 import { translatePath, translate } from '@docs/i18n/utils';
 import type { LocaleKey } from '@docs/i18n/locales';
 import { Dropdown, DropdownItem, Icon } from '@docs/ui/components';
-import { topPageConfig } from '../config/projects.config';
+import { getTopPageConfig } from '../config/projects.config';
 
-// 定数定義
+// 設定を取得
+const topPageConfig = await getTopPageConfig();
 const BASE_URL = topPageConfig.baseUrl;
 const LANG_NAMES: Record<string, string> = {
   en: 'English',
