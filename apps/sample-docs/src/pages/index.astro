@@ -8,11 +8,9 @@ import projectConfig from '../config/project.config';
 const defaultLang = projectConfig.defaultLang;
 // GitHub Pagesのベースパス
 const baseUrl = projectConfig.baseUrl;
-// 新しいパス構造
-const docsPath = '/docs/sample-docs';
 
 // リダイレクト先のURLを構築
-const redirectUrl = `${baseUrl}${docsPath}/${defaultLang}/`;
+const redirectUrl = `${baseUrl}/${defaultLang}/`;
 
 // サーバーサイドでリダイレクト
 return Astro.redirect(redirectUrl);
@@ -27,15 +25,14 @@ return Astro.redirect(redirectUrl);
   const supportedLangs = projectConfig.supportedLangs;
   const defaultLang = projectConfig.defaultLang;
   const baseUrl = projectConfig.baseUrl;
-  const docsPath = '/docs/sample-docs';
   
   // 検出された言語がサポートされている場合はその言語にリダイレクト
   // そうでない場合はデフォルト言語にリダイレクト
   const targetLang = supportedLangs.includes(detectedLang) ? detectedLang : defaultLang;
   
   // リダイレクト
-  window.location.href = `${baseUrl}${docsPath}/${targetLang}/`;
+  window.location.href = `${baseUrl}/${targetLang}/`;
 </script>
 
 <!-- サーバーサイドレンダリング時のフォールバック -->
-<meta http-equiv="refresh" content={`0;url=${baseUrl}${docsPath}/${defaultLang}/`} />
+<meta http-equiv="refresh" content={`0;url=${baseUrl}/${defaultLang}/`} />
