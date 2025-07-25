@@ -1,9 +1,9 @@
 /**
- * サイドバー項目の設定
+ * サイドバー自動生成ユーティリティ
  */
 import type { LocaleKey } from '@docs/i18n/locales';
 import { translate } from '@docs/i18n/utils';
-import docsConfig from './docs.config';
+import projectConfig from '../config/project.config';
 
 export type SidebarItem = {
   title: string;

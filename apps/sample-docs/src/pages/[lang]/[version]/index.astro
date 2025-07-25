@@ -4,15 +4,14 @@ import MainLayout from '../../../layouts/MainLayout.astro';
 import { Card } from '@docs/ui/components';
 import type { LocaleKey } from '@docs/i18n/locales';
 import { translate } from '@docs/i18n/utils';
-import docsConfig from '../../../config/docs.config';
-import versions from '../../../config/versions.config';
+import projectConfig from '../../../config/project.config';
 
 // 型定義
 type DocEntry = CollectionEntry<'docs'>;
 
 export async function getStaticPaths() {
-  const allVersions = versions.map(v => v.id);
-  const allLangs = docsConfig.supportedLangs;
+  const allVersions = projectConfig.versions.map(v => v.id);
+  const allLangs = projectConfig.supportedLangs;
   
   const paths = [];
   
@@ -33,7 +32,7 @@ const lang = (langParam || 'en') as LocaleKey;
 const version = versionParam || 'v1';
 
 // GitHub Pagesのベースパス
-const baseUrl = docsConfig.baseUrl;
+const baseUrl = projectConfig.baseUrl;
 
 // 指定された言語とバージョンのドキュメントを取得
 const docs = await getCollection('docs', (entry: DocEntry) => {

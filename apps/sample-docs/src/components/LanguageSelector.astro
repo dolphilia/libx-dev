@@ -2,10 +2,10 @@
 import type { LocaleKey } from '@docs/i18n/locales';
 import { translate } from '@docs/i18n/utils';
 import { Dropdown, DropdownItem, Icon } from '@docs/ui/components';
-import docsConfig from '../config/docs.config';
+import projectConfig from '../config/project.config';
 
 // 定数定義
-// BASE_URL 定義は削除し、docsConfig.baseUrl を使用する
+// BASE_URL 定義は削除し、projectConfig.baseUrl を使用する
 const LANG_NAMES: Record<string, string> = {
   en: 'English',
   ja: '日本語'
@@ -25,8 +25,8 @@ interface Props {
 }
 
 // プロパティの取得と初期値設定
-const ACTUAL_BASE_URL = docsConfig.baseUrl; // docsConfigからbaseUrlを取得
-const configuredSupportedLangs = docsConfig.supportedLangs; // docsConfigからsupportedLangsを取得
+const ACTUAL_BASE_URL = projectConfig.baseUrl; // projectConfigからbaseUrlを取得
+const configuredSupportedLangs = projectConfig.supportedLangs; // projectConfigからsupportedLangsを取得
 
 const { 
   currentLang, 

@@ -2,12 +2,12 @@
 // シンプルなリダイレクト
 // i18nパッケージの言語検出を使用して、ブラウザの言語設定に基づいてリダイレクト
 import { getLanguage } from '@docs/i18n/utils';
-import docsConfig from '../config/docs.config';
+import projectConfig from '../config/project.config';
 
 // サーバーサイドでは言語検出できないため、デフォルト言語を使用
-const defaultLang = docsConfig.defaultLang;
+const defaultLang = projectConfig.defaultLang;
 // GitHub Pagesのベースパス
-const baseUrl = docsConfig.baseUrl;
+const baseUrl = projectConfig.baseUrl;
 // 新しいパス構造
 const docsPath = '/docs/sample-docs';
 
@@ -21,12 +21,12 @@ return Astro.redirect(redirectUrl);
 <script>
   // クライアントサイドで言語を検出
   import { getLanguage } from '@docs/i18n/utils';
-  import docsConfig from '../config/docs.config';
+  import projectConfig from '../config/project.config';
   
   const detectedLang = getLanguage();
-  const supportedLangs = docsConfig.supportedLangs;
-  const defaultLang = docsConfig.defaultLang;
-  const baseUrl = docsConfig.baseUrl;
+  const supportedLangs = projectConfig.supportedLangs;
+  const defaultLang = projectConfig.defaultLang;
+  const baseUrl = projectConfig.baseUrl;
   const docsPath = '/docs/sample-docs';
   
   // 検出された言語がサポートされている場合はその言語にリダイレクト

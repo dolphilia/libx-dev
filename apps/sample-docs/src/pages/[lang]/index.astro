@@ -1,17 +1,17 @@
 ---
-import docsConfig from '../../config/docs.config';
+import projectConfig from '../../config/project.config';
 import type { LocaleKey } from '@docs/i18n/locales';
 import { generateRedirectUrl } from '../../utils/dynamic-navigation';
 
 export function getStaticPaths() {
-  return docsConfig.supportedLangs.map(lang => ({
+  return projectConfig.supportedLangs.map(lang => ({
     params: { lang }
   }));
 }
 
 const { lang: langParam } = Astro.params;
 const lang = (langParam || 'en') as LocaleKey;
-const baseUrl = docsConfig.baseUrl;
+const baseUrl = projectConfig.baseUrl;
 
 // 動的にリダイレクト先を決定
 const redirectUrl = await generateRedirectUrl(lang, baseUrl);

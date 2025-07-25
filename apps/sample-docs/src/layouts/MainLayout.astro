@@ -6,10 +6,9 @@
 import { Navigation, Footer } from '@docs/ui/components';
 import { VersionSelector } from '@docs/versioning/components';
 import LanguageSelector from '../components/LanguageSelector.astro';
-import versions from '../config/versions.config';
 import type { LocaleKey } from '@docs/i18n/locales';
 import '../styles/global.css';
-import docsConfig from '../config/docs.config';
+import projectConfig from '../config/project.config';
 import { ThemeToggle } from '@docs/ui/components';
 import { findCorrespondingFile } from '../utils/content-utils';
 import { Icons } from '@docs/ui/components/icons/Icons';
@@ -54,19 +53,19 @@ const htmlDataAttributes: Record<string, string> = { 'data-theme': 'dark' };
 if (hasToc) htmlDataAttributes['data-has-toc'] = '';
 if (hasSidebar) htmlDataAttributes['data-has-sidebar'] = '';
 
-const numBaseSegments = docsConfig.baseUrl.split('/').filter(p => p.length > 0).length;
+const numBaseSegments = projectConfig.baseUrl.split('/').filter(p => p.length > 0).length;
 const slugSliceIndex = 1 + numBaseSegments + 1 + 1; // 1 (leading empty) + base segments + lang segment + version segment
 const currentSlugForSelector = Astro.url.pathname.split('/').slice(slugSliceIndex).join('/').replace(/\/$/, ''); // 末尾のスラッシュを削除
 
 // ドキュメントトップへの動的リンクを生成
-const docTopLink = await generateRedirectUrl(lang, docsConfig.baseUrl);
+const docTopLink = await generateRedirectUrl(lang, projectConfig.baseUrl);
 ---
 
 <!DOCTYPE html>
 <html lang={lang} {...htmlDataAttributes}>
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href={`${docsConfig.baseUrl}/favicon.svg`} />
+    <link rel="icon" type="image/svg+xml" href={`${projectConfig.baseUrl}/favicon.svg`} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content="Documentation site built with Astro" />
@@ -113,10 +112,10 @@ const docTopLink = await generateRedirectUrl(lang, docsConfig.baseUrl);
                 <div class="breadcrumb-title">
                   <a href={`/${lang}`} class="site-title">Libx</a>
                   <svg class="breadcrumb-separator" viewBox="0 0 24 24" set:html={Icons['chevron-right']} />
-                  <a href={docTopLink} class="doc-title">{docsConfig.name}</a>
+                  <a href={docTopLink} class="doc-title">{projectConfig.name}</a>
                 </div>
               ) : (
-                <a href={`/${lang}`} class="site-title">{docsConfig.name}</a>
+                <a href={`/${lang}`} class="site-title">{projectConfig.name}</a>
               )}
             </div>
             <div class="print:hidden right-group">
@@ -124,8 +123,8 @@ const docTopLink = await generateRedirectUrl(lang, docsConfig.baseUrl);
                 <div class="version-selector-container">
                   <VersionSelector
                     currentVersion={version}
-                    versions={versions}
-                    basePath={`${docsConfig.baseUrl}/${lang}`}
+                    versions={projectConfig.versions}
+                    basePath={`${projectConfig.baseUrl}/${lang}`}
                     currentSlug={currentSlugForSelector}
                   />
                 </div>

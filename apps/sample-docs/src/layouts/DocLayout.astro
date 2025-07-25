@@ -5,9 +5,8 @@ import { translate } from '@docs/i18n/utils';
 import type { LocaleKey } from '@docs/i18n/locales';
 
 // 設定ファイルのインポート
-import docsConfig from '../config/docs.config';
-import versions from '../config/versions.config';
-import { getSidebarAsync } from '../config/sidebar.config';
+import projectConfig from '../config/project.config';
+import { getSidebarAsync } from '../utils/sidebar-generator';
 
 // Sidebarコンポーネントで使用されるSidebarItem型を定義
 interface SidebarItem {
@@ -32,7 +31,7 @@ const { title, lang: langProp, version } = Astro.props;
 const lang = langProp as LocaleKey;
 
 // ベースパスの取得
-const baseUrl = docsConfig.baseUrl;
+const baseUrl = projectConfig.baseUrl;
 
 // 現在のパスを取得
 const currentPath = Astro.url.pathname;
