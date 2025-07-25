@@ -4,6 +4,7 @@
 
 import type { LocaleKey } from '@docs/i18n/locales';
 import type { Project } from '../config/projects.config';
+import { topPageConfig } from '../config/projects.config';
 
 /**
  * プロジェクトの最適なURLを生成
@@ -37,7 +38,7 @@ export async function generateProjectUrl(project: Project, lang: LocaleKey): Pro
 }
 
 /**
- * 動的URL生成（sample-docs等のプロジェクト用）
+ * 動的URL生成（設定ファイルベース）
  */
 async function generateDynamicUrl(contentPath: string, lang: LocaleKey, basePath: string): Promise<string | null> {
   // import.meta.env.PROD でビルド環境かどうか判定
@@ -48,11 +49,15 @@ async function generateDynamicUrl(contentPath: string, lang: LocaleKey, basePath
     return null;
   }
   
-  // 開発環境での動的生成ロジック（sample-docsの場合の例）
-  if (contentPath === 'sample-docs') {
-    // 最新バージョン（v2）と最初のページを想定
-    return `${basePath}/${lang}/v2/guide/01-getting-started`;
+  // 設定ファイルから対応するプロジェクトを検索
+  const project = topPageConfig.projects.find(p => p.contentPath === contentPath);
+  
+  if (project && project.fallbackUrl && project.fallbackUrl[lang]) {
+    // 設定ファイルのフォールバックURLを使用
+    return project.fallbackUrl[lang];
   }
   
-  return null;
+  // プロジェクトが見つからない場合は汎用的なパターンを生成
+  // ほとんどのドキュメントプロジェクトで共通のパターンを使用
+  return `${basePath}/${lang}/v2/guide/01-getting-started`;
 }
