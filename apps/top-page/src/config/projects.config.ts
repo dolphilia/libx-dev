@@ -60,6 +60,24 @@ async function generateAutoProjects(): Promise<Project[]> {
       });
     } catch (error) {
       console.warn(`プロジェクト ${id} の自動検出に失敗しました:`, error);
+      
+      // 設定ファイルが見つからなくても基本情報でプロジェクトを追加
+      const decoration = projectDecorations[id] || {};
+      projects.push({
+        id,
+        name: id.charAt(0).toUpperCase() + id.slice(1).replace('-', ' '),
+        description: {
+          en: `Documentation for ${id}`,
+          ja: `${id}のドキュメント`
+        },
+        path: `/docs/${id}`,
+        contentPath: id,
+        fallbackUrl: {
+          en: `/docs/${id}/en/v1/guide/getting-started`,
+          ja: `/docs/${id}/ja/v1/guide/getting-started`
+        },
+        ...decoration
+      });
     }
   }
   

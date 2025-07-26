@@ -113,18 +113,30 @@ export async function detectProject(projectId: string): Promise<DetectedProject>
 }
 
 /**
- * docs.config.ts から基本設定を読み込み
+ * project.config.ts または docs.config.ts から基本設定を読み込み
  */
 async function loadDocsConfig(projectPath: string) {
-  const configPath = path.join(projectPath, 'src', 'config', 'docs.config.ts');
+  // 統合設定ファイル（project.config.ts）を優先
+  const projectConfigPath = path.join(projectPath, 'src', 'config', 'project.config.ts');
+  const docsConfigPath = path.join(projectPath, 'src', 'config', 'docs.config.ts');
   
   try {
-    const configContent = await fs.readFile(configPath, 'utf-8');
+    let configContent: string;
+    let isProjectConfig = false;
+    
+    // project.config.ts を優先的に読み込み
+    try {
+      configContent = await fs.readFile(projectConfigPath, 'utf-8');
+      isProjectConfig = true;
+    } catch {
+      // フォールバック: docs.config.ts を読み込み
+      configContent = await fs.readFile(docsConfigPath, 'utf-8');
+    }
     
     // 設定値を抽出するシンプルなパーサー
     const name = extractConfigValue(configContent, 'name') || 'Unknown Project';
     const description = extractConfigValue(configContent, 'description') || 'No description available';
-    const baseUrl = extractConfigValue(configContent, 'baseUrl') || `/docs/${path.basename(projectPath)}`;
+    const baseUrl = extractConfigValue(configContent, isProjectConfig ? 'baseUrl' : 'baseUrl') || `/docs/${path.basename(projectPath)}`;
     const supportedLangs = extractArrayValue(configContent, 'supportedLangs') || ['en', 'ja'];
     
     return {
@@ -137,7 +149,7 @@ async function loadDocsConfig(projectPath: string) {
       supportedLangs: supportedLangs as LocaleKey[]
     };
   } catch (error) {
-    console.warn(`docs.config.ts の読み込みに失敗: ${projectPath}`, error);
+    console.warn(`設定ファイルの読み込みに失敗: ${projectPath}`, error);
     
     // フォールバック設定
     return {
@@ -153,29 +165,50 @@ async function loadDocsConfig(projectPath: string) {
 }
 
 /**
- * versions.config.ts から最新バージョンを取得
+ * project.config.ts または versions.config.ts から最新バージョンを取得
  */
 async function getLatestVersion(projectPath: string): Promise<string> {
+  const projectConfigPath = path.join(projectPath, 'src', 'config', 'project.config.ts');
   const versionsPath = path.join(projectPath, 'src', 'config', 'versions.config.ts');
   
+  // 統合設定ファイル（project.config.ts）を優先
   try {
-    const versionsContent = await fs.readFile(versionsPath, 'utf-8');
+    const projectContent = await fs.readFile(projectConfigPath, 'utf-8');
     
     // isLatest: true を持つバージョンを検索
-    const latestMatch = versionsContent.match(/id:\s*['"`]([^'"`]+)['"`][^}]*isLatest:\s*true/);
+    const latestMatch = projectContent.match(/id:\s*['"`]([^'"`]+)['"`][^}]*isLatest:\s*true/);
     if (latestMatch) {
       return latestMatch[1];
     }
     
     // フォールバック: v2 > v1 の順で検索
-    if (versionsContent.includes("'v2'") || versionsContent.includes('"v2"')) {
+    if (projectContent.includes("'v2'") || projectContent.includes('"v2"')) {
       return 'v2';
     }
-    if (versionsContent.includes("'v1'") || versionsContent.includes('"v1"')) {
+    if (projectContent.includes("'v1'") || projectContent.includes('"v1"')) {
       return 'v1';
     }
-  } catch (error) {
-    console.warn(`versions.config.ts の読み込みに失敗: ${projectPath}`, error);
+  } catch {
+    // project.config.ts が見つからない場合、versions.config.ts を試す
+    try {
+      const versionsContent = await fs.readFile(versionsPath, 'utf-8');
+      
+      // isLatest: true を持つバージョンを検索
+      const latestMatch = versionsContent.match(/id:\s*['"`]([^'"`]+)['"`][^}]*isLatest:\s*true/);
+      if (latestMatch) {
+        return latestMatch[1];
+      }
+      
+      // フォールバック: v2 > v1 の順で検索
+      if (versionsContent.includes("'v2'") || versionsContent.includes('"v2"')) {
+        return 'v2';
+      }
+      if (versionsContent.includes("'v1'") || versionsContent.includes('"v1"')) {
+        return 'v1';
+      }
+    } catch (error) {
+      console.warn(`バージョン設定ファイルの読み込みに失敗: ${projectPath}`, error);
+    }
   }
   
   return 'v1'; // デフォルト
