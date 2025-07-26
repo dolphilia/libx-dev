@@ -36,15 +36,34 @@ function isCacheValid(timestamp: number): boolean {
 }
 
 /**
+ * カテゴリ名を翻訳します
+ */
+function translateCategory(category: string, lang: LocaleKey): string {
+  const translations = projectConfig.categoryTranslations;
+  
+  if (translations && translations[lang] && translations[lang][category]) {
+    return translations[lang][category];
+  }
+  
+  // フォールバック: 英語の翻訳があればそれを使用
+  if (translations && translations['en'] && translations['en'][category]) {
+    return translations['en'][category];
+  }
+  
+  // 最終フォールバック: カテゴリ名の先頭を大文字にして返す
+  return category.charAt(0).toUpperCase() + category.slice(1);
+}
+
+/**
  * フォールバック用の最小限のサイドバー項目を生成します
  */
 function getFallbackSidebar(lang: LocaleKey, version: string, baseUrl: string): SidebarItem[] {
   return [
     {
-      title: translate('docs.guide', lang),
+      title: translateCategory('guide', lang),
       items: [
         { 
-          title: translate('docs.getting_started', lang), 
+          title: translateCategory('getting_started', lang), 
           href: `${baseUrl}/${lang}/${version}/guide/01-getting-started` 
         }
       ]
@@ -141,10 +160,8 @@ export async function getAutoSidebar(lang: LocaleKey, version: string, baseUrl: 
   
   // サイドバー項目の生成
   return sortedCategories.map(([category, { docs }]) => {
-    // カテゴリ名の翻訳を試みる
-    const categoryTitle = translate(`docs.${category}`, lang);
-    const title = categoryTitle !== `docs.${category}` ? categoryTitle : 
-                 (category.charAt(0).toUpperCase() + category.slice(1));
+    // カテゴリ名を翻訳
+    const title = translateCategory(category, lang);
     
     return {
       title,

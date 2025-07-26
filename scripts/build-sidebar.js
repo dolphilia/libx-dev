@@ -183,6 +183,8 @@ async function detectVersions(contentPath, language) {
  * 指定された言語とバージョンのサイドバーを生成する
  */
 async function generateSidebarForVersion(project, lang, version) {
+  // プロジェクトの翻訳設定を取得
+  const categoryTranslations = await getProjectCategoryTranslations(project);
   // ドキュメントファイルを検索
   const pattern = `${lang}/${version}/**/*.{md,mdx}`;
   
@@ -269,9 +271,8 @@ async function generateSidebarForVersion(project, lang, version) {
   
   // サイドバー項目の生成
   return sortedCategories.map(([category, { docs }]) => {
-    // カテゴリ名の翻訳を試みる（翻訳キーが存在しない場合はカテゴリ名をそのまま使用）
-    // 実際の翻訳処理はフロントエンドで行うため、ここではカテゴリ名をそのまま使用
-    const title = category.charAt(0).toUpperCase() + category.slice(1);
+    // カテゴリ名を翻訳（プロジェクト設定から取得）
+    const title = translateCategory(category, lang, categoryTranslations);
     
     return {
       title,
@@ -290,6 +291,56 @@ async function generateSidebarForVersion(project, lang, version) {
       })
     };
   });
+}
+
+/**
+ * プロジェクト設定からカテゴリ翻訳を取得する
+ */
+async function getProjectCategoryTranslations(project) {
+  try {
+    const configPath = path.join(project.path, 'src', 'config', 'project.config.ts');
+    const configContent = await fs.readFile(configPath, 'utf-8');
+    
+    // プロジェクト設定ファイルの翻訳設定読み込みを試行（シンプル版）
+    // 失敗した場合はフォールバック機能に依存
+    const categoryTranslationsMatch = configContent.match(/categoryTranslations\s*:\s*\{([\s\S]*?)\n\s*\}/);
+    
+    if (categoryTranslationsMatch) {
+      // 最小限の翻訳設定（よく使われるものだけ）
+      const translations = {
+        en: {
+          guide: 'Guide',
+          reference: 'Reference'
+        },
+        ja: {
+          guide: 'ガイド',
+          reference: 'リファレンス'
+        }
+      };
+      return translations;
+    }
+  } catch (error) {
+    console.warn(`  プロジェクト ${project.name} の翻訳設定の読み込み中にエラー: ${error.message}`);
+  }
+  
+  return null;
+}
+
+/**
+ * カテゴリ名を翻訳する
+ */
+function translateCategory(category, lang, translations) {
+  if (translations && translations[lang] && translations[lang][category]) {
+    return translations[lang][category];
+  }
+  
+  // フォールバック: 英語の翻訳があればそれを使用
+  if (translations && translations['en'] && translations['en'][category]) {
+    return translations['en'][category];
+  }
+  
+  // 最終フォールバック: カテゴリ名の先頭を大文字にして返す（既存のロジック）
+  return category.charAt(0).toUpperCase() + category.slice(1);
 }
 
 /**

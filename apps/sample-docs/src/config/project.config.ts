@@ -25,7 +25,39 @@ const projectConfig = {
       date: new Date('2025-01-01'), 
       isLatest: true 
     }
-  ] as Version[]
+  ] as Version[],
+  
+  // カテゴリ翻訳
+  categoryTranslations: {
+    en: {
+      guide: 'Guide',
+      reference: 'Reference',
+      api: 'API',
+      examples: 'Examples',
+      advanced: 'Advanced',
+      plugins: 'Plugins',
+      migration: 'Migration',
+      faq: 'FAQ',
+      getting_started: 'Getting Started',
+      installation: 'Installation',
+      configuration: 'Configuration',
+      overview: 'Overview'
+    },
+    ja: {
+      guide: 'ガイド',
+      reference: 'リファレンス',
+      api: 'API',
+      examples: 'サンプル',
+      advanced: '高度な設定',
+      plugins: 'プラグイン',
+      migration: '移行',
+      faq: 'よくある質問',
+      getting_started: 'はじめに',
+      installation: 'インストール',
+      configuration: '設定',
+      overview: '概要'
+    }
+  }
 };
 
 export default projectConfig;
