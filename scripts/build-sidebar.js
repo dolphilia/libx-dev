@@ -180,6 +180,16 @@ async function detectVersions(contentPath, language) {
 }
 
 /**
+ * ディレクトリ名から順序番号を抽出します
+ * @param dirname ディレクトリ名（例: "01-guide"）
+ * @returns 順序番号（例: 1）、見つからない場合は999
+ */
+function extractOrderFromDirectoryName(dirname) {
+  const match = dirname.match(/^(\d+)-/);
+  return match ? parseInt(match[1], 10) : 999;
+}
+
+/**
  * 指定された言語とバージョンのサイドバーを生成する
  */
 async function generateSidebarForVersion(project, lang, version) {
@@ -213,28 +223,19 @@ async function generateSidebarForVersion(project, lang, version) {
   // カテゴリごとにドキュメントを整理
   const categories = {};
   
-  // カテゴリの順序マッピング（デフォルト値）
-  const categoryOrder = {
-    'guide': 1,
-    'api': 2,
-    'examples': 3,
-    'reference': 4,
-    'advanced': 5,
-    'plugins': 6,
-    'migration': 7,
-    'faq': 8
-  };
   
   docs.forEach(doc => {
-    // フロントマターからカテゴリを取得（指定されていない場合はパスから取得）
+    // パスからカテゴリを取得
     const parts = doc.slug.split('/');
     const pathCategory = parts.length >= 3 ? parts[2] : 'uncategorized';
-    const category = doc.data.category || pathCategory;
     
-    // カテゴリの順序を取得（フロントマターから、または定義済みマッピングから）
-    const order = doc.data.categoryOrder !== undefined 
-      ? doc.data.categoryOrder 
-      : (categoryOrder[category] || 999);
+    // ディレクトリ名から純粋なカテゴリ名を抽出（数字プレフィックスを除去）
+    const cleanCategory = pathCategory.replace(/^\d+-/, '');
+    const category = doc.data.category || cleanCategory;
+    
+    // ディレクトリ名から順序を取得
+    const categoryDirName = parts[2] || 'uncategorized';
+    const order = extractOrderFromDirectoryName(categoryDirName);
     
     if (!categories[category]) {
       categories[category] = {

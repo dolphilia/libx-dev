@@ -82,6 +82,16 @@ function extractOrderFromFilename(filename: string): number {
 }
 
 /**
+ * ディレクトリ名から順序番号を抽出します
+ * @param dirname ディレクトリ名（例: "01-guide"）
+ * @returns 順序番号（例: 1）、見つからない場合は999
+ */
+function extractOrderFromDirectoryName(dirname: string): number {
+  const match = dirname.match(/^(\d+)-/);
+  return match ? parseInt(match[1], 10) : 999;
+}
+
+/**
  * ディレクトリ構造とファイル名から自動生成されるサイドバー項目を取得します
  * この関数はgetCollectionを使用するため、非同期関数です
  */
@@ -100,28 +110,19 @@ export async function getAutoSidebar(lang: LocaleKey, version: string, baseUrl: 
     title?: string
   }> = {};
   
-  // カテゴリの順序マッピング（デフォルト値）
-  const categoryOrder: Record<string, number> = {
-    'guide': 1,
-    'api': 2,
-    'examples': 3,
-    'reference': 4,
-    'advanced': 5,
-    'plugins': 6,
-    'migration': 7,
-    'faq': 8
-  };
   
   docs.forEach(doc => {
     // パスからカテゴリを取得
     const parts = doc.slug.split('/');
     const pathCategory = parts.length >= 3 ? parts[2] : 'uncategorized';
-    const category = doc.data.category || pathCategory;
     
-    // カテゴリの順序を取得
-    const order = doc.data.categoryOrder !== undefined 
-      ? doc.data.categoryOrder 
-      : (categoryOrder[category] || 999);
+    // ディレクトリ名から純粋なカテゴリ名を抽出（数字プレフィックスを除去）
+    const cleanCategory = pathCategory.replace(/^\d+-/, '');
+    const category = doc.data.category || cleanCategory;
+    
+    // ディレクトリ名から順序を取得
+    const categoryDirName = parts[2] || 'uncategorized';
+    const order = extractOrderFromDirectoryName(categoryDirName);
     
     if (!categories[category]) {
       categories[category] = {
