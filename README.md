@@ -8,7 +8,7 @@
 - 共通UIコンポーネントとテーマ
 - 多言語対応（英語・日本語）
 - ドキュメントのバージョン管理
-- GitHub Pagesへの自動デプロイ
+- Cloudflare Pagesへの自動デプロイ
 
 ## プロジェクト構造
 
@@ -95,10 +95,23 @@ pnpm build:sidebar
 
 ### デプロイ
 
-ビルドしたファイルをデプロイするには、以下のコマンドを使用します：
+#### Cloudflare Pagesへの自動デプロイ
+
+GitHub Actionsを使用してCloudflare Pagesに自動デプロイされます：
+
+- **mainブランチ**: プッシュ時に自動デプロイ
+- **PRブランチ**: リント・フォーマットチェックのみ実行
+- **手動**: GitHub ActionsのWeb UIから手動実行可能
+
+#### 手動デプロイ
+
+ローカル環境から手動でデプロイする場合：
 
 ```bash
-# 一連のビルドプロセスとデプロイを実行
+# Cloudflare Pagesに直接デプロイ
+pnpm build && pnpm deploy:pages
+
+# または一連のビルドプロセスとデプロイを実行
 # 1. サイドバーを構築
 # 2. 統合ビルドを実行
 # 3. ビルド出力を../docs-astro/にコピー
@@ -107,6 +120,36 @@ pnpm build:deploy
 # ビルド出力を../docs-astro/にコピーのみ実行
 pnpm copy:docs
 ```
+
+#### GitHub Actions設定
+
+自動デプロイを有効にするには、以下のGitHub Secretsを設定してください：
+
+1. GitHubリポジトリの「Settings」→「Secrets and variables」→「Actions」
+2. 「New repository secret」で以下を追加：
+   - `CLOUDFLARE_API_TOKEN`: Cloudflare API Token（Pages:Edit権限が必要）
+
+Cloudflare API Tokenの取得方法：
+
+1. [Cloudflare Dashboard](https://dash.cloudflare.com/)にログイン
+2. 右上のプロフィールアイコン →「My Profile」→「API Tokens」タブ
+3. 「Create Token」→「Custom token」の「Get started」をクリック
+4. 以下の権限を設定：
+
+   **必須権限：**
+   - **Account permissions**: `Cloudflare Pages:Edit`
+   - **Zone permissions**: `Zone:Read`
+   - **Account Resources**: `Include - All accounts`（または特定のアカウント）
+   - **Zone Resources**: `Include - All zones`（または特定のゾーン）
+
+   **より安全な設定（推奨）：**
+   - 特定のアカウントとゾーンのみを指定することでセキュリティを向上
+
+5. **Token name**: 識別しやすい名前を設定（例：`GitHub Actions - docs-astro`）
+6. **TTL**: 有効期限を設定（デフォルトまたは必要に応じて）
+7. トークンを作成し、表示されたトークンをコピー
+
+⚠️ **重要**: トークンは一度しか表示されないため、必ずコピーしてGitHub Secretsに保存してください。
 
 ## ドキュメント管理
 
