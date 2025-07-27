@@ -203,7 +203,3 @@ pnpm create:doc sample-docs en v1 guide/installation
 - ドキュメントファイル（MDX）の作成
 - 前後のページへのリンクの自動生成
 - サイドバー設定の更新ガイダンスの表示
-
-## ライセンス
-
-MIT
