@@ -137,14 +137,20 @@ Cloudflare API Tokenの取得方法：
 4. 以下の権限を設定：
 
    **必須権限：**
-   - **Account permissions**: `Cloudflare Pages:Edit`
+   - **Account permissions**: 
+     - `Cloudflare Pages:Edit` (Pages プロジェクトの編集)
+     - `Account:Read` (アカウント情報の読み取り - membershipエラー解消)
    - **User permissions**: `User:Read` (ユーザー詳細の読み取り - 認証に必要)
-   - **Zone permissions**: `Zone:Read`
+   - **Zone permissions**: `Zone:Read` (ドメイン設定用)
    - **Account Resources**: `Include - All accounts`（または特定のアカウント）
    - **Zone Resources**: `Include - All zones`（または特定のゾーン）
 
    **より安全な設定（推奨）：**
    - 特定のアカウントとゾーンのみを指定することでセキュリティを向上
+   
+   **⚠️ トラブルシューティング:**
+   - `Authentication error [code: 10000]`が発生する場合は`Account:Read`権限を確認
+   - `/memberships`エラーは通常、アカウントレベルでの読み取り権限不足が原因
 
 5. **Token name**: 識別しやすい名前を設定（例：`GitHub Actions - docs-astro`）
 6. **TTL**: 有効期限を設定（デフォルトまたは必要に応じて）
