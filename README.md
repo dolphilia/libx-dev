@@ -8,7 +8,6 @@
 - 共通UIコンポーネントとテーマ
 - 多言語対応（英語・日本語）
 - ドキュメントのバージョン管理
-- 横断的な検索機能
 - GitHub Pagesへの自動デプロイ
 
 ## プロジェクト構造
@@ -19,7 +18,6 @@ docs-astro-dev/
 │   ├── ui/           # 共通UIコンポーネント
 │   ├── theme/        # 共通テーマ
 │   ├── i18n/         # 国際化ユーティリティ
-│   ├── search/       # 検索機能
 │   └── versioning/   # バージョン管理機能
 ├── apps/             # 各ドキュメントプロジェクト
 ├── config/           # 共通設定
@@ -93,8 +91,6 @@ pnpm build:separate
 # サイドバーJSONファイルを生成
 pnpm build:sidebar
 
-# 検索インデックスを生成
-pnpm build:search-index
 ```
 
 ### デプロイ
@@ -104,9 +100,8 @@ pnpm build:search-index
 ```bash
 # 一連のビルドプロセスとデプロイを実行
 # 1. サイドバーを構築
-# 2. 検索インデックスを構築
-# 3. 統合ビルドを実行
-# 4. ビルド出力を../docs-astro/にコピー
+# 2. 統合ビルドを実行
+# 3. ビルド出力を../docs-astro/にコピー
 pnpm build:deploy
 
 # ビルド出力を../docs-astro/にコピーのみ実行

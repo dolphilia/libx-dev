@@ -13,7 +13,6 @@
 - 共有UIコンポーネントとテーマシステム
 - 多言語サポート（英語/日本語）
 - ドキュメントバージョニングシステム
-- プロジェクト横断検索機能
 - GitHub Pagesデプロイ用の統合ビルドシステム
 
 ## 開発コマンド
@@ -51,10 +50,7 @@ pnpm build:separate
 # サイドバーJSONファイルを生成
 pnpm build:sidebar
 
-# 検索インデックスを生成
-pnpm build:search-index
-
-# 完全なデプロイパイプライン（sidebar → search → build → copy to ../docs-astro/）
+# 完全なデプロイパイプライン（sidebar → build → copy to ../docs-astro/）
 pnpm build:deploy
 
 # ビルド出力を../docs-astro/にコピー
@@ -80,7 +76,6 @@ packages/
 ├── ui/           # 共有Astroコンポーネント (@docs/ui)
 ├── theme/        # 共通テーマシステム (@docs/theme)  
 ├── i18n/         # 国際化ユーティリティ (@docs/i18n)
-├── search/       # 検索機能 (@docs/search)
 └── versioning/   # バージョン管理 (@docs/versioning)
 
 apps/
@@ -94,7 +89,6 @@ config/
 scripts/
 ├── build-integrated.js    # メインビルドオーケストレーション
 ├── build-sidebar.js       # サイドバー生成
-├── build-search-index.js  # 検索インデックス生成
 └── copy-to-docs.js        # デプロイ出力コピー
 ```
 
@@ -103,7 +97,6 @@ scripts/
 - `@docs/ui` - 共通Astroコンポーネント（Button、Card、Navigation、Sidebarなど）
 - `@docs/theme` - テーマシステム
 - `@docs/i18n` - 言語ユーティリティ
-- `@docs/search` - 検索機能  
 - `@docs/versioning` - バージョン管理
 
 ### ビルドシステム
@@ -111,8 +104,7 @@ scripts/
 1. 各アプリを個別にビルド
 2. 出力を統一された`dist/`ディレクトリにコピー
 3. パスプレフィックスを処理（top-pageはルート、その他は`/docs/[project]/`）
-4. すべてのインデックスから検索マニフェストを生成
-5. ローカル vs プロダクションビルド（ベースパス処理）をサポート
+4. ローカル vs プロダクションビルド（ベースパス処理）をサポート
 
 ### 設定ファイル
 各ドキュメントプロジェクトには以下があります：
@@ -142,10 +134,6 @@ apps/[project]/src/config/
 - 言語検出と切り替え
 - 言語ごとの個別コンテンツツリー
 
-### 検索システム
-- `public/search/`内のプロジェクト別検索インデックス
-- プロジェクト横断検索用の集約マニフェスト
-- gzip圧縮付きのJSONベースインデックスファイル
 
 ## このコードベースでの作業
 
@@ -165,7 +153,6 @@ apps/[project]/src/config/
 ### ビルドトラブルシューティング
 - ローカルテスト用に`pnpm build:local`を使用
 - パス処理について`scripts/build-integrated.js`を確認
-- 検索インデックスが正しく生成されていることを確認
 - サイドバーJSONファイルが最新であることを確認
 
 変更後にlintを実行：`pnpm lint`
