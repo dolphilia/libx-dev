@@ -41,7 +41,8 @@ const projectConfig = {
       getting_started: 'Getting Started',
       installation: 'Installation',
       configuration: 'Configuration',
-      overview: 'Overview'
+      overview: 'Overview',
+      components: 'Components',
     },
     ja: {
       guide: 'ガイド',
@@ -55,7 +56,8 @@ const projectConfig = {
       getting_started: 'はじめに',
       installation: 'インストール',
       configuration: '設定',
-      overview: '概要'
+      overview: '概要',
+      components: 'コンポーネント',
     }
   }
 };
