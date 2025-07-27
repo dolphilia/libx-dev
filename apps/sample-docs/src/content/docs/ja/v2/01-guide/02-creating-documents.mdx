@@ -173,12 +173,14 @@ app.start();
 
 ### ステップバイステップガイド
 
-```markdown
+```yaml
 ---
 title: "パッケージインストールガイド"
 description: "コアパッケージのインストールと検証方法を学ぶ"
 ---
+```
 
+```markdown
 # パッケージインストールガイド
 
 パッケージをインストールするには以下の手順に従ってください：
@@ -187,35 +189,31 @@ description: "コアパッケージのインストールと検証方法を学ぶ
 
 Node.js 18+がインストールされていることを確認：
 
-```bash
-node --version
-```
+    node --version
 
 ## ステップ2：パッケージのインストール
 
 インストールコマンドを実行：
 
-```bash
-npm install @our-package/core
-```
+    npm install @our-package/core
 
 ## ステップ3：インストールの確認
 
 インストールが成功したことを確認：
 
-```bash
-npm list @our-package/core
-```
+    npm list @our-package/core
 ```
 
 ### リファレンスドキュメント
 
-```markdown
+```yaml
 ---
 title: "APIリファレンス"
 description: "コアライブラリの完全なAPIドキュメント"
 ---
+```
 
+```markdown
 # APIリファレンス
 
 ## `createApp(options)`
@@ -230,9 +228,7 @@ description: "コアライブラリの完全なAPIドキュメント"
 **戻り値：** アプリケーションインスタンス
 
 **例：**
-```javascript
-const app = createApp({ debug: true });
-```
+    const app = createApp({ debug: true });
 ```
 
 ## 次のステップ

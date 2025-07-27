@@ -38,31 +38,29 @@ description: "編集プロセスとドキュメント保守のベストプラク
 
 既存のコンテンツを更新する際：
 
+**変更前:**
 ```markdown
-{/* 変更前 */}
 ## インストール
 
 npmを使用してパッケージをインストールできます：
 
-```bash
-npm install @our-package/core
+    npm install @our-package/core
 ```
 
-{/* 変更後 - より多くのパッケージマネージャーを追加 */}
+**変更後 - より多くのパッケージマネージャーを追加:**
+```markdown
 ## インストール
 
 お好みのパッケージマネージャーを使用してパッケージをインストールできます：
 
-```bash
-# npmを使用
-npm install @our-package/core
+    # npmを使用
+    npm install @our-package/core
 
-# yarnを使用
-yarn add @our-package/core
+    # yarnを使用
+    yarn add @our-package/core
 
-# pnpmを使用
-pnpm add @our-package/core
-```
+    # pnpmを使用
+    pnpm add @our-package/core
 ```
 
 ### 例の改善
@@ -129,24 +127,24 @@ description: "このドキュメントの簡潔な説明"
 ```markdown
 `createApp()`にオプションオブジェクトを渡してアプリを構成します：
 
-```javascript
-const app = createApp({
-  debug: true,
-  theme: 'dark',
-  apiUrl: 'https://api.example.com'
-});
-```
+    const app = createApp({
+      debug: true,
+      theme: 'dark',
+      apiUrl: 'https://api.example.com'
+    });
 ```
 
 ### 視覚的要素の追加
 
 概念を明確にするための画像、図表、コンポーネントを含める：
 
+**変更前：テキストのみ**
 ```markdown
-{/* 変更前：テキストのみ */}
 サイドバーは、カテゴリ別に整理されたすべての利用可能なドキュメントを表示します。
+```
 
-{/* 変更後：視覚的補助付き */}
+**変更後：視覚的補助付き**
+```markdown
 サイドバーは、カテゴリ別に整理されたすべての利用可能なドキュメントを表示します：
 
 ![サイドバーの例](/images/sidebar-screenshot.png)
@@ -158,18 +156,18 @@ const app = createApp({
 
 なぜ重要なのかを説明：
 
+**変更前：指示のみ**
 ```markdown
-{/* 変更前：指示のみ */}
 開発時は`debug: true`を設定してください。
+```
 
-{/* 変更後：文脈付き */}
+**変更後：文脈付き**
+```markdown
 詳細なエラーメッセージとパフォーマンス指標を有効にするため、開発時は`debug: true`を設定します：
 
-```javascript
-const app = createApp({
-  debug: process.env.NODE_ENV === 'development'
-});
-```
+    const app = createApp({
+      debug: process.env.NODE_ENV === 'development'
+    });
 
 これは開発中の問題特定に役立ちますが、パフォーマンスのため本番環境では無効にしてください。
 ```

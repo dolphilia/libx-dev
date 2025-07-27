@@ -80,12 +80,14 @@ src/content/docs/ja/
 
 ### 移行ガイドの例
 
-```markdown
+```yaml
 ---
 title: "v1からv2への移行"
 description: "バージョン1.0から2.0への移行に必要な変更点"
 ---
+```
 
+```markdown
 # v1からv2への移行
 
 ## 主な変更点
@@ -103,34 +105,32 @@ description: "バージョン1.0から2.0への移行に必要な変更点"
 ## 移行手順
 
 ### 1. ファイル構造の更新
+
 古い構造：
-```
-docs/guide/basics.md
-docs/components/buttons.md
-```
+    docs/guide/basics.md
+    docs/components/buttons.md
 
 新しい構造：
-```
-docs/01-guide/01-basics.mdx
-docs/02-components/01-buttons.mdx
-```
+    docs/01-guide/01-basics.mdx
+    docs/02-components/01-buttons.mdx
 
 ### 2. フロントマターの簡素化
+
 古いフロントマター：
-```yaml
-title: "基本"
-description: "基本的な使用法"
-order: 1
-category: "guide"
-author: "Author Name"
-pubDate: 2024-01-01
-```
+    ---
+    title: "基本"
+    description: "基本的な使用法"
+    order: 1
+    category: "guide"
+    author: "Author Name"
+    pubDate: 2024-01-01
+    ---
 
 新しいフロントマター：
-```yaml
-title: "基本"
-description: "基本的な使用法"
-```
+    ---
+    title: "基本"
+    description: "基本的な使用法"
+    ---
 ```
 
 ## バージョン切り替え

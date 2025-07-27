@@ -38,31 +38,29 @@ Before making changes:
 
 When updating existing content:
 
+**Before:**
 ```markdown
-{/* Before */}
 ## Installation
 
 You can install our package using npm:
 
-```bash
-npm install @our-package/core
+    npm install @our-package/core
 ```
 
-{/* After - Added more package managers */}
+**After - Added more package managers:**
+```markdown
 ## Installation
 
 You can install our package using your preferred package manager:
 
-```bash
-# Using npm
-npm install @our-package/core
+    # Using npm
+    npm install @our-package/core
 
-# Using yarn
-yarn add @our-package/core
+    # Using yarn
+    yarn add @our-package/core
 
-# Using pnpm
-pnpm add @our-package/core
-```
+    # Using pnpm
+    pnpm add @our-package/core
 ```
 
 ### Improving Examples
@@ -154,13 +152,11 @@ Configure the app with the settings.
 ```markdown
 Configure the app by passing an options object to `createApp()`:
 
-```javascript
-const app = createApp({
-  debug: true,
-  theme: 'dark',
-  apiUrl: 'https://api.example.com'
-});
-```
+    const app = createApp({
+      debug: true,
+      theme: 'dark',
+      apiUrl: 'https://api.example.com'
+    });
 ```
 
 ### Add Visual Elements
@@ -183,18 +179,18 @@ For interactive navigation, see the [Navigation component](/en/v2/components/nav
 
 Explain why something matters:
 
+**Before: Just instructions**
 ```markdown
-{/* Before: Just instructions */}
 Set `debug: true` in development.
+```
 
-{/* After: With context */}
+**After: With context**
+```markdown
 Set `debug: true` in development to enable detailed error messages and performance metrics:
 
-```javascript
-const app = createApp({
-  debug: process.env.NODE_ENV === 'development'
-});
-```
+    const app = createApp({
+      debug: process.env.NODE_ENV === 'development'
+    });
 
 This helps identify issues during development but should be disabled in production for performance.
 ```
