@@ -6,14 +6,14 @@
 
 ## プロジェクト概要
 
-これは、共有コンポーネントとテーマを持つ複数のAstroドキュメントサイトを管理するモノレポです。このプロジェクトは主に翻訳された技術文書（英語から日本語）を処理し、約20のプロジェクトを管理しています。
+これは、共有コンポーネントとテーマを持つ複数のAstroドキュメントサイトを管理するモノレポです。このプロジェクトは主に翻訳された技術文書（英語から日本語）を処理し、現在2つのアプリケーション（sample-docs、top-page）を管理しています。
 
 主な特徴：
 - pnpm workspacesを使用したモノレポ構造
 - 共有UIコンポーネントとテーマシステム
 - 多言語サポート（英語/日本語）
 - ドキュメントバージョニングシステム
-- GitHub Pagesデプロイ用の統合ビルドシステム
+- Cloudflare Pagesデプロイ用の統合ビルドシステム
 
 ## 開発コマンド
 
@@ -26,8 +26,8 @@ pnpm install
 pnpm dev
 
 # 特定のアプリを開始
-pnpm --filter=apps-sample-docs dev
-pnpm --filter=apps-top-page dev
+pnpm --filter=sample-docs dev
+pnpm --filter=top-page dev
 
 # すべてのコードをlint
 pnpm lint
@@ -41,7 +41,7 @@ pnpm format
 # すべてのアプリをビルドして単一のdist/に統合
 pnpm build
 
-# ローカル開発ビルド（GitHub Pagesのベースパスを削除）
+# ローカル開発ビルド（ベースパスなし）
 pnpm build:local
 
 # アプリを個別にビルド（統合なし）
@@ -55,17 +55,21 @@ pnpm build:deploy
 
 # ビルド出力を../docs-astro/にコピー
 pnpm copy:docs
+
+# Cloudflare Pagesにデプロイ
+pnpm deploy
+pnpm deploy:pages
 ```
 
 ### コンテンツ管理
 ```bash
 # プロジェクト用の新しいバージョンを作成
-pnpm create:version [project-name] [version]
-# 例: pnpm create:version sample-docs v3
+node scripts/create-version.js [project-name] [version]
+# 例: node scripts/create-version.js sample-docs v3
 
 # 新しいドキュメントを作成
-pnpm create:doc [project-name] [lang] [version] [slug]  
-# 例: pnpm create:doc sample-docs en v1 guide/installation
+node scripts/create-document.js [project-name] [lang] [version] [slug]  
+# 例: node scripts/create-document.js sample-docs en v1 guide/installation
 ```
 
 ## アーキテクチャ
@@ -89,7 +93,10 @@ config/
 scripts/
 ├── build-integrated.js    # メインビルドオーケストレーション
 ├── build-sidebar.js       # サイドバー生成
-└── copy-to-docs.js        # デプロイ出力コピー
+├── copy-to-docs.js        # デプロイ出力コピー
+├── create-document.js     # 新しいドキュメント作成
+├── create-version.js      # 新しいバージョン作成
+└── utils.js               # 共通ユーティリティ
 ```
 
 ### パッケージ依存関係
@@ -110,9 +117,10 @@ scripts/
 各ドキュメントプロジェクトには以下があります：
 ```
 apps/[project]/src/config/
-├── docs.config.ts      # プロジェクトメタデータ、URL、機能
-├── sidebar.config.ts   # サイドバーナビゲーション構造  
-└── versions.config.ts  # 利用可能なバージョンとパス
+└── project.config.ts   # プロジェクト統合設定（メタデータ、バージョン、カテゴリ翻訳）
+
+apps/top-page/src/config/
+└── projects.config.ts  # トップページのプロジェクト一覧設定
 ```
 
 ## 主要なパターン

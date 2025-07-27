@@ -36,8 +36,8 @@ docs-astro-dev/
 
 1. リポジトリのクローン：
    ```bash
-   git clone https://github.com/yourusername/docs-astro.git
-   cd docs-astro
+   git clone https://github.com/dolphilia/docs-astro-dev.git
+   cd docs-astro-dev
    ```
 
 2. 依存関係のインストール：
@@ -51,7 +51,8 @@ docs-astro-dev/
    pnpm dev
    
    # 特定のプロジェクトのみ起動
-   pnpm --filter=@docs/project-name dev
+   pnpm --filter=sample-docs dev
+   pnpm --filter=top-page dev
    ```
 
 ## 新規プロジェクトの追加方法
@@ -63,14 +64,14 @@ docs-astro-dev/
 
 2. 共有パッケージの依存関係を追加：
    ```bash
-   pnpm --filter=@docs/new-project add @docs/ui @docs/theme @docs/i18n @docs/search
+   pnpm --filter=new-project add @docs/ui @docs/theme @docs/i18n @docs/versioning
    ```
 
 3. プロジェクト設定の調整：
    - `astro.config.mjs`の設定
+   - `src/config/project.config.ts`の設定
    - 多言語対応の設定
    - バージョン管理の設定
-   - 検索機能の設定
 
 ## ビルドとデプロイ
 
@@ -82,7 +83,7 @@ docs-astro-dev/
 # 統合ビルドを実行（すべてのアプリケーションをビルドして統合）
 pnpm build
 
-# ローカル開発環境用のビルドを実行（GitHub Pagesのベースパスを削除）
+# ローカル開発環境用のビルドを実行（ベースパスなし）
 pnpm build:local
 
 # 各アプリケーションを個別にビルド
@@ -95,13 +96,10 @@ pnpm build:sidebar
 
 ### デプロイ
 
-#### Cloudflare Pagesへの自動デプロイ
+#### Cloudflare Pagesへのデプロイ
 
-GitHub Actionsを使用してCloudflare Pagesに自動デプロイされます：
-
-- **mainブランチ**: プッシュ時に自動デプロイ
-- **PRブランチ**: リント・フォーマットチェックのみ実行
-- **手動**: GitHub ActionsのWeb UIから手動実行可能
+現在はCloudflare Wrangler CLIを使用してデプロイします。
+プロジェクト名：`libx`
 
 #### 手動デプロイ
 
@@ -121,42 +119,24 @@ pnpm build:deploy
 pnpm copy:docs
 ```
 
-#### GitHub Actions設定
+## 自動プロジェクト検出機能
 
-自動デプロイを有効にするには、以下のGitHub Secretsを設定してください：
+`apps/top-page`では自動プロジェクト検出機能を使用しており、`apps/`ディレクトリ内のプロジェクトを自動的に検出してトップページに表示します。
 
-1. GitHubリポジトリの「Settings」→「Secrets and variables」→「Actions」
-2. 「New repository secret」で以下を追加：
-   - `CLOUDFLARE_API_TOKEN`: Cloudflare API Token（Pages:Edit権限が必要）
+### プロジェクト装飾設定
 
-Cloudflare API Tokenの取得方法：
+`apps/top-page/src/config/projects.config.ts`でプロジェクトのアイコンやタグなどの装飾情報を設定できます：
 
-1. [Cloudflare Dashboard](https://dash.cloudflare.com/)にログイン
-2. 右上のプロフィールアイコン →「My Profile」→「API Tokens」タブ
-3. 「Create Token」→「Custom token」の「Get started」をクリック
-4. 以下の権限を設定：
-
-   **必須権限：**
-   - **Account permissions**: 
-     - `Cloudflare Pages:Edit` (Pages プロジェクトの編集)
-     - `Account:Read` (アカウント情報の読み取り - membershipエラー解消)
-   - **User permissions**: `User:Read` (ユーザー詳細の読み取り - 認証に必要)
-   - **Zone permissions**: `Zone:Read` (ドメイン設定用)
-   - **Account Resources**: `Include - All accounts`（または特定のアカウント）
-   - **Zone Resources**: `Include - All zones`（または特定のゾーン）
-
-   **より安全な設定（推奨）：**
-   - 特定のアカウントとゾーンのみを指定することでセキュリティを向上
-   
-   **⚠️ トラブルシューティング:**
-   - `Authentication error [code: 10000]`が発生する場合は`Account:Read`権限を確認
-   - `/memberships`エラーは通常、アカウントレベルでの読み取り権限不足が原因
-
-5. **Token name**: 識別しやすい名前を設定（例：`GitHub Actions - docs-astro`）
-6. **TTL**: 有効期限を設定（デフォルトまたは必要に応じて）
-7. トークンを作成し、表示されたトークンをコピー
-
-⚠️ **重要**: トークンは一度しか表示されないため、必ずコピーしてGitHub Secretsに保存してください。
+```typescript
+const projectDecorations: Record<string, ProjectDecoration> = {
+  'sample-docs': {
+    icon: 'file-text',
+    tags: ['sample', 'documentation'],
+    isNew: true
+  }
+  // 新しいプロジェクトを追加する場合はここに装飾情報を追加
+};
+```
 
 ## ドキュメント管理
 
@@ -166,9 +146,10 @@ Cloudflare API Tokenの取得方法：
 
 ```
 apps/[project-name]/src/config/
-├── docs.config.ts      # ドキュメント全体の設定
-├── sidebar.config.ts   # サイドバー項目の設定
-└── versions.config.ts  # バージョン情報の設定
+└── project.config.ts   # プロジェクト統合設定（メタデータ、バージョン、カテゴリ翻訳）
+
+apps/top-page/src/config/
+└── projects.config.ts  # トップページのプロジェクト一覧設定
 ```
 
 ### 新しいバージョンの追加
@@ -176,10 +157,10 @@ apps/[project-name]/src/config/
 新しいバージョンを追加するには、以下のコマンドを実行します：
 
 ```bash
-pnpm create:version [project-name] [version]
+node scripts/create-version.js [project-name] [version]
 
 # 例: sample-docsプロジェクトにv3バージョンを追加
-pnpm create:version sample-docs v3
+node scripts/create-version.js sample-docs v3
 ```
 
 このコマンドは以下の処理を行います：
@@ -193,10 +174,10 @@ pnpm create:version sample-docs v3
 新しいドキュメントを追加するには、以下のコマンドを実行します：
 
 ```bash
-pnpm create:doc [project-name] [lang] [version] [slug]
+node scripts/create-document.js [project-name] [lang] [version] [slug]
 
 # 例: sample-docsプロジェクトの英語版v1にインストールガイドを追加
-pnpm create:doc sample-docs en v1 guide/installation
+node scripts/create-document.js sample-docs en v1 guide/installation
 ```
 
 このコマンドは以下の処理を行います：
