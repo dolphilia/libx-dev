@@ -1,0 +1,311 @@
+---
+title: "Editing Documents"
+description: "Master the editing process and best practices for maintaining documentation"
+---
+
+# Editing Documents
+
+Learn how to effectively edit and maintain your documentation to keep it accurate, useful, and up-to-date.
+
+## Editing Workflow
+
+### 1. Review and Plan
+
+Before making changes:
+
+- **Identify the goal**: What needs to be updated or improved?
+- **Check current state**: Read through the existing content
+- **Plan changes**: Outline what you'll modify, add, or remove
+- **Consider impact**: How will changes affect related documents?
+
+### 2. Make Incremental Changes
+
+- **Start small**: Make one logical change at a time
+- **Test frequently**: Verify changes work as expected
+- **Preview locally**: Use the development server to see changes
+- **Check links**: Ensure all references remain valid
+
+### 3. Review and Finalize
+
+- **Proofread**: Check for typos, grammar, and clarity
+- **Validate structure**: Ensure logical flow and organization
+- **Update metadata**: Modify `updatedDate` and other frontmatter
+- **Test thoroughly**: Verify all examples and instructions work
+
+## Common Editing Tasks
+
+### Updating Content
+
+When updating existing content:
+
+```markdown
+{/* Before */}
+## Installation
+
+You can install our package using npm:
+
+```bash
+npm install @our-package/core
+```
+
+{/* After - Added more package managers */}
+## Installation
+
+You can install our package using your preferred package manager:
+
+```bash
+# Using npm
+npm install @our-package/core
+
+# Using yarn
+yarn add @our-package/core
+
+# Using pnpm
+pnpm add @our-package/core
+```
+```
+
+### Improving Examples
+
+Make examples more comprehensive:
+
+```javascript
+// Before: Basic example
+const app = createApp();
+
+// After: Complete example with error handling
+import { createApp } from '@our-package/core';
+
+const app = createApp({
+  debug: process.env.NODE_ENV === 'development',
+  theme: 'light'
+});
+
+app.start().catch(error => {
+  console.error('Failed to start app:', error);
+});
+```
+
+### Adding Cross-References
+
+Link related content:
+
+```markdown
+<!-- Before -->
+The sidebar will automatically update when you add new files.
+
+<!-- After -->
+The sidebar will automatically update when you add new files. 
+Learn more about [sidebar auto-generation](/en/v2/components/sidebar-generation).
+```
+
+## Frontmatter Updates
+
+### Updating Dates
+
+Always update the `updatedDate` when making changes:
+
+```yaml
+---
+title: "Document Title"
+# ... other fields
+updatedDate: 2025-01-27  # Update to current date
+---
+```
+
+### Modifying Navigation
+
+Update previous/next links when document order changes:
+
+```yaml
+---
+# ... other fields
+prev:
+  text: "New Previous Document"
+  link: "/en/v2/guide/new-previous"
+next:
+  text: "New Next Document"
+  link: "/en/v2/guide/new-next"
+---
+```
+
+### Changing Categories
+
+When moving documents between categories:
+
+```yaml
+---
+# ... other fields
+category: "advanced"      # Changed from "guide"
+categoryOrder: 3          # Update order as needed
+---
+```
+
+## Content Improvement Strategies
+
+### Enhance Clarity
+
+**Before:**
+```markdown
+Configure the app with the settings.
+```
+
+**After:**
+```markdown
+Configure the app by passing an options object to `createApp()`:
+
+```javascript
+const app = createApp({
+  debug: true,
+  theme: 'dark',
+  apiUrl: 'https://api.example.com'
+});
+```
+```
+
+### Add Visual Elements
+
+Include images, diagrams, or components to clarify concepts:
+
+```markdown
+{/* Before: Text only */}
+The sidebar shows all available documents organized by category.
+
+{/* After: With visual aid */}
+The sidebar shows all available documents organized by category:
+
+![Sidebar example](/images/sidebar-screenshot.png)
+
+For interactive navigation, see the [Navigation component](/en/v2/components/navigation).
+```
+
+### Provide Context
+
+Explain why something matters:
+
+```markdown
+{/* Before: Just instructions */}
+Set `debug: true` in development.
+
+{/* After: With context */}
+Set `debug: true` in development to enable detailed error messages and performance metrics:
+
+```javascript
+const app = createApp({
+  debug: process.env.NODE_ENV === 'development'
+});
+```
+
+This helps identify issues during development but should be disabled in production for performance.
+```
+
+## Advanced Editing Techniques
+
+### Using MDX Components
+
+Enhance documentation with interactive components:
+
+```markdown
+import { Tabs, TabItem, Icon } from '@docs/ui';
+
+## Package Manager Instructions
+
+<Tabs>
+  <TabItem label="npm">
+    {/* bash code block */}
+    npm install @our-package/core
+  </TabItem>
+  <TabItem label="yarn">
+    {/* bash code block */}
+    yarn add @our-package/core
+  </TabItem>
+  <TabItem label="pnpm">
+    {/* bash code block */}
+    pnpm add @our-package/core
+  </TabItem>
+</Tabs>
+
+<Icon name="info" /> Choose the package manager that matches your project setup.
+```
+
+### Creating Callouts
+
+Use components to highlight important information:
+
+```markdown
+import { Alert } from '@docs/ui';
+
+<Alert type="warning">
+  <Icon name="triangle-alert" />
+  **Important:** Always backup your data before upgrading.
+</Alert>
+
+<Alert type="info">
+  <Icon name="info" />
+  **Tip:** Use the `--dry-run` flag to preview changes first.
+</Alert>
+```
+
+### Code Annotations
+
+Add explanations to code blocks:
+
+```javascript
+import { createApp } from '@our-package/core';
+
+const app = createApp({
+  // Enable debug mode for development
+  debug: process.env.NODE_ENV === 'development',
+  
+  // Set the UI theme
+  theme: 'light',
+  
+  // Configure API endpoints
+  apiUrl: process.env.API_URL || 'https://api.example.com'
+});
+
+// Start the application
+await app.start();
+```
+
+## Quality Checklist
+
+Before finalizing edits, verify:
+
+- [ ] **Accuracy**: All information is correct and current
+- [ ] **Completeness**: No missing steps or information
+- [ ] **Clarity**: Easy to understand for the target audience
+- [ ] **Consistency**: Matches style and terminology of other docs
+- [ ] **Links**: All internal and external links work
+- [ ] **Examples**: Code examples are tested and functional
+- [ ] **Metadata**: Frontmatter is updated appropriately
+- [ ] **Structure**: Logical flow and proper heading hierarchy
+
+## Collaboration Guidelines
+
+### Making Suggestions
+
+When editing others' work:
+
+- **Be constructive**: Focus on improving clarity and accuracy
+- **Explain changes**: Provide rationale for significant modifications
+- **Preserve voice**: Maintain the original author's writing style
+- **Test changes**: Verify that your edits don't break anything
+
+### Review Process
+
+For team documentation:
+
+1. **Draft changes** in a feature branch
+2. **Preview locally** to verify formatting and links
+3. **Request review** from subject matter experts
+4. **Address feedback** and make necessary adjustments
+5. **Merge changes** after approval
+
+## Next Steps
+
+Now that you understand editing best practices:
+
+- **[Organize Content](/en/v2/guide/organizing-content)**: Learn how to structure documentation effectively
+- **[Use Components](/en/v2/components/overview)**: Discover available UI components for enhanced documentation
+- **[Advanced Topics](/en/v2/advanced/customization)**: Explore customization and automation options

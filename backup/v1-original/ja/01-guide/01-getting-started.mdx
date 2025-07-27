@@ -1,0 +1,63 @@
+---
+title: "入門"
+description: "プラットフォームの使い方を学ぶ"
+category: "guide"
+categoryOrder: 1
+pubDate: 2024-01-01
+updatedDate: 2025-01-01
+author: "ドキュメントチーム"
+---
+
+# はじめに
+
+ドキュメントへようこそ！このガイドでは、プラットフォームの使い方について説明します。
+
+## 前提条件
+
+- Node.js 18以上
+- npm、yarn、またはpnpm
+- JavaScriptの基本的な知識
+
+## インストール
+
+npmを使用してパッケージをインストールできます：
+
+```bash
+npm install @our-package/core
+```
+
+または、yarnを使用：
+
+```bash
+yarn add @our-package/core
+```
+
+または、pnpmを使用：
+
+```bash
+pnpm add @our-package/core
+```
+
+## 基本的な使い方
+
+パッケージの使用例：
+
+```javascript
+import { createApp } from '@our-package/core';
+
+const app = createApp({
+  // 設定オプション
+  debug: true,
+  mode: 'development'
+});
+
+app.start();
+```
+
+## 次のステップ
+
+基本的なセットアップが完了したら、以下のことができます：
+
+- [設定オプション](/ja/v1/guide/configuration)について詳しく学ぶ
+- [APIリファレンス](/ja/v1/api/reference)を調べる
+- [サンプル](/ja/v1/examples)を確認する

@@ -1,79 +1,100 @@
 ---
-title: "Getting Started"
-description: "Learn how to get started with our platform (v2)"
-category: "guide"
-categoryOrder: 1
-pubDate: 2025-01-01
-updatedDate: 2025-01-01
-author: "Docs Team"
-order: 1
+title: "Documentation Creation Basics"
+description: "Learn the fundamentals of creating and managing documentation"
 ---
 
-# Getting Started with v2
+# Documentation Creation Basics
 
-Welcome to version 2 of our documentation! This guide will help you get started with our platform.
+Welcome to the comprehensive documentation guide! This section will teach you everything you need to know about creating, editing, and managing documentation effectively.
 
-## Prerequisites
+## What You'll Learn
 
-- Node.js 18 or higher
-- npm, yarn, or pnpm
-- Basic knowledge of JavaScript and TypeScript
+In this comprehensive guide, you'll discover:
 
-## Installation
+- **Document Creation**: How to create new documents with proper structure
+- **Content Organization**: Best practices for organizing and categorizing content
+- **Component Usage**: How to use built-in UI components to enhance your documentation
+- **Advanced Features**: Automation, customization, and deployment strategies
 
-You can install our package using npm:
+## Documentation Philosophy
 
-```bash
-npm install @our-package/core@2
+Good documentation should be:
+
+1. **Clear and Concise**: Easy to understand and follow
+2. **Well-Organized**: Logical structure and navigation
+3. **Comprehensive**: Covers all necessary topics
+4. **Maintainable**: Easy to update and keep current
+5. **Accessible**: Available to all users regardless of ability
+
+## Getting Started Checklist
+
+Before you begin creating documentation, ensure you have:
+
+- [ ] **Development Environment**: Node.js 18+, pnpm, and a code editor
+- [ ] **Project Understanding**: Familiarity with the project structure
+- [ ] **Content Plan**: Clear idea of what you want to document
+- [ ] **Audience Awareness**: Understanding of who will read your documentation
+
+## Project Structure Overview
+
+This documentation system is organized as follows:
+
+```
+src/content/docs/
+├── en/                    # English documentation
+│   ├── v1/               # Version 1 (simple intro)
+│   └── v2/               # Version 2 (comprehensive)
+│       ├── guide/        # Step-by-step guides
+│       ├── components/   # UI component examples
+│       ├── advanced/     # Advanced topics
+│       └── reference/    # Reference materials
+└── ja/                   # Japanese documentation
+    ├── v1/
+    └── v2/
 ```
 
-Or using yarn:
+## Key Features
 
-```bash
-yarn add @our-package/core@2
-```
+### Automatic Sidebar Generation
+The documentation system automatically generates sidebar navigation based on your content structure and frontmatter configuration.
 
-Or using pnpm:
+### Multi-language Support
+Content can be created in multiple languages with automatic language switching and URL management.
 
-```bash
-pnpm add @our-package/core@2
-```
+### Component Integration
+Rich UI components are available to enhance your documentation with interactive elements, code examples, and visual aids.
 
-## Basic Usage
+### Version Management
+Multiple versions of documentation can be maintained simultaneously, allowing for gradual migration and historical reference.
 
-Here's a simple example of how to use our package with TypeScript:
+## Content Creation Workflow
 
-```typescript
-import { createApp, type AppOptions } from '@our-package/core';
+The typical workflow for creating documentation involves:
 
-const options: AppOptions = {
-  // Configuration options
-  debug: true,
-  mode: 'development',
-  // New in v2
-  plugins: [],
-  theme: 'light'
-};
+1. **Planning**: Define the scope and structure of your content
+2. **Creating**: Write the initial content using Markdown and MDX
+3. **Enhancing**: Add components, examples, and interactive elements
+4. **Organizing**: Set up proper categories and navigation
+5. **Testing**: Verify links, formatting, and functionality
+6. **Publishing**: Deploy and make available to users
 
-const app = createApp(options);
+## Writing Guidelines
 
-app.start();
-```
+When creating documentation:
 
-## New Features in v2
-
-Version 2 introduces several new features:
-
-- **TypeScript Support**: Full TypeScript support with type definitions
-- **Plugin System**: Extend functionality with plugins
-- **Theming**: Built-in theme support
-- **Performance Improvements**: 50% faster than v1
+- **Start with the user's goal**: What are they trying to accomplish?
+- **Use clear headings**: Create a logical hierarchy of information
+- **Include examples**: Show, don't just tell
+- **Be consistent**: Use the same terminology and formatting throughout
+- **Test everything**: Verify that instructions actually work
 
 ## Next Steps
 
-Now that you have the basics set up, you can:
+Ready to start creating documentation? The next guides will walk you through:
 
-- Learn more about [configuration options](/en/v2/guide/configuration)
-- Explore the [API reference](/en/v2/api/reference)
-- Check out some [examples](/en/v2/examples)
-- Read about [migrating from v1](/en/v2/guide/migration)
+1. **[Creating Documents](/en/v2/guide/creating-documents)**: Learn how to create new documentation files
+2. **[Editing Documents](/en/v2/guide/editing-documents)**: Master the editing process and best practices
+3. **[Organizing Content](/en/v2/guide/organizing-content)**: Structure your content for maximum usability
+4. **[Version Management](/en/v2/guide/version-management)**: Handle multiple versions effectively
+
+Let's begin your documentation creation journey!

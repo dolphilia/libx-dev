@@ -1,0 +1,470 @@
+---
+title: "タブコンポーネント"
+description: "ドキュメント内でコンテンツを整理するためのTabsコンポーネントの使用方法を学ぶ"
+---
+
+import { Tabs, TabItem } from '@docs/ui';
+
+# タブコンポーネント例
+
+このページでは、ドキュメントでのTabsコンポーネントの使用方法を実演します。
+
+## 基本的な使用法
+
+<Tabs>
+  <TabItem label="HTML">
+    ```html
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Hello World</title>
+      </head>
+      <body>
+        <h1>こんにちは、世界！</h1>
+      </body>
+    </html>
+    ```
+  </TabItem>
+  <TabItem label="CSS">
+    ```css
+    body {
+      font-family: system-ui, sans-serif;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+    
+    h1 {
+      color: navy;
+    }
+    ```
+  </TabItem>
+  <TabItem label="JavaScript">
+    ```javascript
+    document.addEventListener('DOMContentLoaded', function() {
+      const heading = document.querySelector('h1');
+      heading.addEventListener('click', function() {
+        alert('タイトルがクリックされました！');
+      });
+    });
+    ```
+  </TabItem>
+</Tabs>
+
+## パッケージマネージャーの例
+
+異なるパッケージマネージャーの指示を整理するのに便利です：
+
+<Tabs>
+  <TabItem label="npm">
+    ```bash
+    # パッケージをインストール
+    npm install @our-package/core
+    
+    # 開発依存関係として追加
+    npm install --save-dev @our-package/dev-tools
+    
+    # スクリプトを実行
+    npm run dev
+    ```
+  </TabItem>
+  <TabItem label="yarn">
+    ```bash
+    # パッケージをインストール
+    yarn add @our-package/core
+    
+    # 開発依存関係として追加
+    yarn add --dev @our-package/dev-tools
+    
+    # スクリプトを実行
+    yarn dev
+    ```
+  </TabItem>
+  <TabItem label="pnpm">
+    ```bash
+    # パッケージをインストール
+    pnpm add @our-package/core
+    
+    # 開発依存関係として追加
+    pnpm add -D @our-package/dev-tools
+    
+    # スクリプトを実行
+    pnpm dev
+    ```
+  </TabItem>
+</Tabs>
+
+## 設定例
+
+異なる環境やフレームワークの設定例：
+
+<Tabs>
+  <TabItem label="開発環境">
+    ```javascript
+    // development.config.js
+    export default {
+      debug: true,
+      apiUrl: 'http://localhost:3000/api',
+      database: {
+        host: 'localhost',
+        port: 5432,
+        name: 'myapp_dev'
+      },
+      logging: {
+        level: 'debug',
+        console: true
+      }
+    };
+    ```
+  </TabItem>
+  <TabItem label="本番環境">
+    ```javascript
+    // production.config.js
+    export default {
+      debug: false,
+      apiUrl: 'https://api.myapp.com',
+      database: {
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
+        name: process.env.DB_NAME
+      },
+      logging: {
+        level: 'error',
+        console: false,
+        file: '/var/log/myapp.log'
+      }
+    };
+    ```
+  </TabItem>
+  <TabItem label="テスト環境">
+    ```javascript
+    // test.config.js
+    export default {
+      debug: true,
+      apiUrl: 'http://localhost:3001/api',
+      database: {
+        host: 'localhost',
+        port: 5433,
+        name: 'myapp_test'
+      },
+      logging: {
+        level: 'warn',
+        console: true
+      }
+    };
+    ```
+  </TabItem>
+</Tabs>
+
+## 言語固有の例
+
+プログラミング言語別の実装例：
+
+<Tabs>
+  <TabItem label="JavaScript">
+    ```javascript
+    // ユーザークラスの定義
+    class User {
+      constructor(name, email) {
+        this.name = name;
+        this.email = email;
+      }
+      
+      greet() {
+        return `こんにちは、${this.name}さん！`;
+      }
+      
+      getProfile() {
+        return {
+          name: this.name,
+          email: this.email
+        };
+      }
+    }
+    
+    // 使用例
+    const user = new User('田中太郎', 'tanaka@example.com');
+    console.log(user.greet());
+    ```
+  </TabItem>
+  <TabItem label="Python">
+    ```python
+    # ユーザークラスの定義
+    class User:
+        def __init__(self, name, email):
+            self.name = name
+            self.email = email
+        
+        def greet(self):
+            return f"こんにちは、{self.name}さん！"
+        
+        def get_profile(self):
+            return {
+                'name': self.name,
+                'email': self.email
+            }
+    
+    # 使用例
+    user = User('田中太郎', 'tanaka@example.com')
+    print(user.greet())
+    ```
+  </TabItem>
+  <TabItem label="TypeScript">
+    ```typescript
+    // ユーザーインターフェースの定義
+    interface IUser {
+      name: string;
+      email: string;
+      greet(): string;
+      getProfile(): UserProfile;
+    }
+    
+    interface UserProfile {
+      name: string;
+      email: string;
+    }
+    
+    // ユーザークラスの実装
+    class User implements IUser {
+      constructor(
+        public name: string, 
+        public email: string
+      ) {}
+      
+      greet(): string {
+        return `こんにちは、${this.name}さん！`;
+      }
+      
+      getProfile(): UserProfile {
+        return {
+          name: this.name,
+          email: this.email
+        };
+      }
+    }
+    
+    // 使用例
+    const user = new User('田中太郎', 'tanaka@example.com');
+    console.log(user.greet());
+    ```
+  </TabItem>
+</Tabs>
+
+## プラットフォーム別手順
+
+異なるオペレーティングシステムでの手順：
+
+<Tabs>
+  <TabItem label="Windows">
+    ```powershell
+    # Node.jsのインストール確認
+    node --version
+    npm --version
+    
+    # プロジェクトのセットアップ
+    mkdir my-project
+    cd my-project
+    npm init -y
+    
+    # 依存関係のインストール
+    npm install express
+    
+    # アプリケーションの起動
+    npm start
+    ```
+  </TabItem>
+  <TabItem label="macOS">
+    ```bash
+    # Homebrewを使用してNode.jsをインストール
+    brew install node
+    
+    # バージョン確認
+    node --version
+    npm --version
+    
+    # プロジェクトのセットアップ
+    mkdir my-project
+    cd my-project
+    npm init -y
+    
+    # 依存関係のインストール
+    npm install express
+    
+    # アプリケーションの起動
+    npm start
+    ```
+  </TabItem>
+  <TabItem label="Linux">
+    ```bash
+    # Node.jsのインストール（Ubuntu/Debian）
+    curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+    sudo apt-get install -y nodejs
+    
+    # バージョン確認
+    node --version
+    npm --version
+    
+    # プロジェクトのセットアップ
+    mkdir my-project
+    cd my-project
+    npm init -y
+    
+    # 依存関係のインストール
+    npm install express
+    
+    # アプリケーションの起動
+    npm start
+    ```
+  </TabItem>
+</Tabs>
+
+## APIレスポンス例
+
+異なるデータ形式での応答例：
+
+<Tabs>
+  <TabItem label="JSON">
+    ```json
+    {
+      "status": "success",
+      "data": {
+        "id": 1,
+        "name": "田中太郎",
+        "email": "tanaka@example.com",
+        "profile": {
+          "age": 30,
+          "department": "開発部",
+          "position": "エンジニア"
+        },
+        "preferences": {
+          "language": "ja",
+          "theme": "dark",
+          "notifications": true
+        }
+      },
+      "meta": {
+        "timestamp": "2025-01-27T16:00:00Z",
+        "version": "1.0"
+      }
+    }
+    ```
+  </TabItem>
+  <TabItem label="XML">
+    ```xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <response>
+      <status>success</status>
+      <data>
+        <id>1</id>
+        <name>田中太郎</name>
+        <email>tanaka@example.com</email>
+        <profile>
+          <age>30</age>
+          <department>開発部</department>
+          <position>エンジニア</position>
+        </profile>
+        <preferences>
+          <language>ja</language>
+          <theme>dark</theme>
+          <notifications>true</notifications>
+        </preferences>
+      </data>
+      <meta>
+        <timestamp>2025-01-27T16:00:00Z</timestamp>
+        <version>1.0</version>
+      </meta>
+    </response>
+    ```
+  </TabItem>
+  <TabItem label="YAML">
+    ```yaml
+    status: success
+    data:
+      id: 1
+      name: 田中太郎
+      email: tanaka@example.com
+      profile:
+        age: 30
+        department: 開発部
+        position: エンジニア
+      preferences:
+        language: ja
+        theme: dark
+        notifications: true
+    meta:
+      timestamp: "2025-01-27T16:00:00Z"
+      version: "1.0"
+    ```
+  </TabItem>
+</Tabs>
+
+## 技術仕様
+
+### プロパティ
+
+#### Tabsコンポーネント
+
+| プロパティ | 型 | デフォルト | 説明 |
+|-----------|---|---------|-----|
+| `children` | ReactNode | - | TabItemコンポーネント（必須） |
+| `defaultValue` | string | 最初のタブ | デフォルトで選択されるタブ |
+| `className` | string | - | 追加のCSSクラス |
+
+#### TabItemコンポーネント
+
+| プロパティ | 型 | デフォルト | 説明 |
+|-----------|---|---------|-----|
+| `label` | string | - | タブのラベル（必須） |
+| `value` | string | label | タブの識別子 |
+| `children` | ReactNode | - | タブの内容 |
+
+### MDXでの使用
+
+MDXファイルでタブを使用する方法：
+
+```markdown
+---
+title: "私のドキュメント"
+---
+
+import { Tabs, TabItem } from '@docs/ui';
+
+# コードサンプル
+
+<Tabs>
+  <TabItem label="JavaScript">
+    {/* JavaScript コード例 */}
+    console.log('Hello, World!');
+  </TabItem>
+  <TabItem label="Python">
+    {/* Python コード例 */}
+    print('Hello, World!')
+  </TabItem>
+</Tabs>
+```
+
+## ベストプラクティス
+
+### タブの整理
+
+- **論理的グループ化**: 関連するコンテンツをまとめる
+- **一貫したラベル**: 分かりやすく一貫したタブラベルを使用
+- **適切な数**: タブが多すぎると使いにくくなるため、5-7個以下を推奨
+
+### アクセシビリティ
+
+- **キーボードナビゲーション**: 矢印キーとTabキーでの操作をサポート
+- **スクリーンリーダー**: 適切なARIAラベルとロール
+- **フォーカス管理**: 視覚的に明確なフォーカス表示
+
+### パフォーマンス
+
+- **遅延読み込み**: 大きなコンテンツは必要時のみ読み込み
+- **コンテンツサイズ**: 各タブの内容は適度なサイズに保つ
+
+## 次のステップ
+
+タブコンポーネントをマスターしたら：
+
+- **[サイドバー生成](/ja/v2/components/sidebar-generation)**: 自動ナビゲーションシステム
+- **[カスタマイズ](/ja/v2/advanced/customization)**: コンポーネントの高度なカスタマイズ
+- **[アニメーション](/ja/v2/advanced/animations)**: インタラクションの強化

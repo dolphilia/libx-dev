@@ -3,41 +3,8 @@
     "title": "Guide",
     "items": [
       {
-        "title": "Tabs Component Example",
-        "href": "/docs/sample-docs/en/v1/01-guide/06-tabs-example"
-      },
-      {
-        "title": "Built-in Icons Example",
-        "href": "/docs/sample-docs/en/v1/01-guide/05-extended-icons-example"
-      },
-      {
-        "title": "Icons Example",
-        "href": "/docs/sample-docs/en/v1/01-guide/04-icons-example"
-      },
-      {
-        "title": "Sidebar Auto-Generation",
-        "href": "/docs/sample-docs/en/v1/01-guide/03-sidebar-auto-generation"
-      },
-      {
-        "title": "Installation",
-        "href": "/docs/sample-docs/en/v1/01-guide/02-installation"
-      },
-      {
-        "title": "Getting Started",
+        "title": "Documentation Versioning Overview",
         "href": "/docs/sample-docs/en/v1/01-guide/01-getting-started"
-      }
-    ]
-  },
-  {
-    "title": "Reference",
-    "items": [
-      {
-        "title": "Installation",
-        "href": "/docs/sample-docs/en/v1/02-reference/02-installation"
-      },
-      {
-        "title": "Getting Started",
-        "href": "/docs/sample-docs/en/v1/02-reference/01-getting-started"
       }
     ]
   }

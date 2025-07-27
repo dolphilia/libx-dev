@@ -1,0 +1,257 @@
+---
+title: "アイコンコンポーネント"
+description: "ドキュメントに視覚的要素を追加するためのアイコンコンポーネントの使用方法を学ぶ"
+---
+
+import { Icon } from '@docs/ui';
+
+# アイコンコンポーネント例
+
+アイコンコンポーネントを使用して、ドキュメントにさまざまなアイコンを表示できます。
+
+## 基本的な使用法
+
+アイコンコンポーネントの基本的な使用例：
+
+<Icon name="info" />
+
+## アイコンサイズ
+
+さまざまな単位を使用してアイコンのサイズを指定できます：
+
+<div style="display: flex; align-items: center; gap: 1rem;">
+  <Icon name="info" size="1em" />
+  <Icon name="info" size="1.5em" />
+  <Icon name="info" size="2em" />
+  <Icon name="info" size="3em" />
+</div>
+
+ピクセル単位も使用できます：
+
+<div style="display: flex; align-items: center; gap: 1rem;">
+  <Icon name="info" size="16px" />
+  <Icon name="info" size="24px" />
+  <Icon name="info" size="32px" />
+  <Icon name="info" size="48px" />
+</div>
+
+## アイコンの色
+
+アイコンの色をカスタマイズできます：
+
+<div style="display: flex; align-items: center; gap: 1rem;">
+  <Icon name="info" color="#007bff" />
+  <Icon name="triangle-alert" color="#ffc107" />
+  <Icon name="circle-alert" color="#dc3545" />
+  <Icon name="circle-check" color="#28a745" />
+</div>
+
+## 利用可能なアイコン
+
+### 情報・ステータスアイコン
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1rem 0;">
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
+    <Icon name="info" color="#007bff" />
+    <code>info</code>
+  </div>
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
+    <Icon name="triangle-alert" color="#ffc107" />
+    <code>triangle-alert</code>
+  </div>
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
+    <Icon name="circle-alert" color="#dc3545" />
+    <code>circle-alert</code>
+  </div>
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
+    <Icon name="circle-check" color="#28a745" />
+    <code>circle-check</code>
+  </div>
+</div>
+
+### ナビゲーションアイコン
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1rem 0;">
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
+    <Icon name="arrow-left" />
+    <code>arrow-left</code>
+  </div>
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
+    <Icon name="arrow-right" />
+    <code>arrow-right</code>
+  </div>
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
+    <Icon name="arrow-up" />
+    <code>arrow-up</code>
+  </div>
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
+    <Icon name="arrow-down" />
+    <code>arrow-down</code>
+  </div>
+</div>
+
+### ユーティリティアイコン
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1rem 0;">
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
+    <Icon name="search" />
+    <code>search</code>
+  </div>
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
+    <Icon name="settings" />
+    <code>settings</code>
+  </div>
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
+    <Icon name="download" />
+    <code>download</code>
+  </div>
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
+    <Icon name="external-link" />
+    <code>external-link</code>
+  </div>
+</div>
+
+## 実用的な例
+
+### ステータスメッセージ
+
+異なる種類のメッセージでアイコンを使用：
+
+<div style="margin: 1rem 0;">
+  <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: #e7f3ff; border: 1px solid #b3d4fc; border-radius: 4px; margin: 0.5rem 0;">
+    <Icon name="info" color="#0066cc" />
+    <span>これは情報メッセージです。</span>
+  </div>
+  
+  <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 4px; margin: 0.5rem 0;">
+    <Icon name="triangle-alert" color="#856404" />
+    <span>これは警告メッセージです。</span>
+  </div>
+  
+  <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 4px; margin: 0.5rem 0;">
+    <Icon name="circle-alert" color="#721c24" />
+    <span>これはエラーメッセージです。</span>
+  </div>
+  
+  <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px; margin: 0.5rem 0;">
+    <Icon name="circle-check" color="#155724" />
+    <span>これは成功メッセージです。</span>
+  </div>
+</div>
+
+### リスト項目での使用
+
+リスト項目にアイコンを追加して視認性を向上：
+
+<ul style="list-style: none; padding-left: 0;">
+  <li style="display: flex; align-items: center; gap: 0.5rem; margin: 0.5rem 0;">
+    <Icon name="circle-check" color="#28a745" />
+    完了したタスク
+  </li>
+  <li style="display: flex; align-items: center; gap: 0.5rem; margin: 0.5rem 0;">
+    <Icon name="circle-check" color="#28a745" />
+    設定の確認
+  </li>
+  <li style="display: flex; align-items: center; gap: 0.5rem; margin: 0.5rem 0;">
+    <Icon name="triangle-alert" color="#ffc107" />
+    注意が必要な項目
+  </li>
+</ul>
+
+## 技術仕様
+
+### プロパティ
+
+| プロパティ | 型 | デフォルト | 説明 |
+|-----------|---|---------|-----|
+| `name` | string | - | 表示するアイコンの名前（必須） |
+| `size` | string | "1em" | アイコンのサイズ（CSS単位） |
+| `color` | string | "currentColor" | アイコンの色（CSS色値） |
+| `className` | string | - | 追加のCSSクラス |
+| `style` | object | - | インラインスタイル |
+
+### MDXでの使用
+
+MDXファイルでアイコンを使用する例：
+
+```markdown
+---
+title: "私のドキュメント"
+---
+
+import { Icon } from '@docs/ui';
+
+# ドキュメント
+
+<Icon name="info" /> 重要な情報があります。
+
+## 手順
+
+1. <Icon name="circle-check" color="green" /> 最初の手順
+2. <Icon name="circle-check" color="green" /> 2番目の手順
+3. <Icon name="triangle-alert" color="orange" /> 注意点
+
+詳細については <Icon name="external-link" /> [公式ドキュメント](https://example.com) をご覧ください。
+```
+
+### アクセシビリティ
+
+アイコンコンポーネントは以下のアクセシビリティ機能を提供：
+
+- **ARIAラベル**: 自動的にアクセシブルな名前を提供
+- **装飾的使用**: 純粋に装飾的なアイコンは適切にマーク
+- **スクリーンリーダー対応**: 意味のあるアイコンには説明テキストを含める
+
+アクセシビリティを向上させるために、重要なアイコンには説明テキストを含めることを推奨：
+
+```jsx
+<Icon name="triangle-alert" /> 
+<span className="sr-only">警告:</span> 
+この操作は元に戻せません。
+```
+
+## カスタマイズ
+
+### CSSでのスタイリング
+
+アイコンのカスタムスタイルを作成：
+
+```css
+.custom-icon {
+  filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+  transition: transform 0.2s ease;
+}
+
+.custom-icon:hover {
+  transform: scale(1.1);
+}
+```
+
+```jsx
+<Icon name="settings" className="custom-icon" />
+```
+
+### テーマ統合
+
+CSSカスタムプロパティを使用してテーマに統合：
+
+```css
+:root {
+  --icon-color-primary: #007bff;
+  --icon-color-success: #28a745;
+  --icon-color-warning: #ffc107;
+  --icon-color-danger: #dc3545;
+}
+```
+
+```jsx
+<Icon name="info" color="var(--icon-color-primary)" />
+```
+
+## 次のステップ
+
+アイコンコンポーネントをマスターしたら：
+
+- **[タブコンポーネント](/ja/v2/components/tabs)**: タブ付きインターフェースでコンテンツを整理
+- **[サイドバー生成](/ja/v2/components/sidebar-generation)**: 自動ナビゲーションシステム
+- **[カスタマイズ](/ja/v2/advanced/customization)**: 高度なスタイリングオプション

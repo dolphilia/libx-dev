@@ -1,0 +1,106 @@
+---
+title: "Frontmatter Reference"
+description: "Complete reference for all frontmatter properties and their usage"
+---
+
+# Frontmatter Reference
+
+Complete reference for frontmatter properties available in documentation files. This documentation system uses a minimalist approach focusing on essential metadata only.
+
+## Required Properties
+
+### title
+- **Type:** `string`
+- **Description:** The title of the document, displayed in navigation and page headers
+- **Usage:** Should be descriptive and unique within the documentation
+
+```yaml
+title: "Getting Started Guide"
+```
+
+### description
+- **Type:** `string`
+- **Description:** Brief description used for SEO meta tags and content previews
+- **Usage:** Should be 50-160 characters for optimal SEO
+
+```yaml
+description: "Learn how to get started with our documentation system"
+```
+
+## Automatic Features
+
+This documentation system automatically handles many aspects that traditionally require manual frontmatter configuration:
+
+### Navigation
+- **Previous/Next links**: Automatically generated based on file structure and numbering
+- **Category organization**: Derived from directory structure
+- **Ordering**: Based on file naming convention (01-, 02-, etc.)
+
+### Metadata
+- **Publication dates**: Managed through Git history
+- **Author information**: Tracked via Git commits
+- **Update dates**: Automatically updated based on file modifications
+
+## File Organization
+
+### Directory Structure
+Content organization is handled through the file system structure:
+
+```
+src/content/docs/[lang]/[version]/[category]/[document].mdx
+```
+
+- **Categories** are automatically detected from directory names
+- **Ordering** is controlled by numerical prefixes (01-, 02-, etc.)
+- **Navigation** is generated based on file structure
+
+### Naming Convention
+
+Use numbered prefixes to control document order:
+
+```
+01-getting-started.mdx    # First document
+02-installation.mdx       # Second document
+03-configuration.mdx      # Third document
+```
+
+### Categories
+
+Standard categories used in this system:
+
+- `01-guide/` - Step-by-step tutorials and getting started content
+- `02-components/` - UI component documentation and examples  
+- `03-advanced/` - Advanced topics and customization
+- `04-reference/` - API references and detailed specifications
+
+## Example Usage
+
+Here's the recommended minimal frontmatter for most documents:
+
+```yaml
+---
+title: "Your Document Title"
+description: "A brief description of what this document covers"
+---
+```
+
+This simple approach provides all the essential metadata while relying on the system's automatic features for organization and navigation.
+
+## Best Practices
+
+### Title Guidelines
+- Use descriptive, keyword-rich titles
+- Keep titles concise but informative
+- Ensure titles are unique within each section
+
+### Description Guidelines  
+- Keep descriptions between 50-160 characters for optimal SEO
+- Write clear, actionable descriptions
+- Focus on what the user will learn or accomplish
+
+### File Organization
+- Use numbered prefixes to control ordering (01-, 02-, etc.)
+- Group related content in appropriate directories
+- Follow consistent naming conventions across all documents
+
+This minimalist approach reduces maintenance overhead while ensuring all essential information is captured efficiently.

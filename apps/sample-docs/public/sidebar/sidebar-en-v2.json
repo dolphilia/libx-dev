@@ -3,8 +3,71 @@
     "title": "Guide",
     "items": [
       {
-        "title": "Getting Started",
+        "title": "Version Management",
+        "href": "/docs/sample-docs/en/v2/01-guide/05-version-management"
+      },
+      {
+        "title": "Organizing Content",
+        "href": "/docs/sample-docs/en/v2/01-guide/04-organizing-content"
+      },
+      {
+        "title": "Editing Documents",
+        "href": "/docs/sample-docs/en/v2/01-guide/03-editing-documents"
+      },
+      {
+        "title": "Creating Documents",
+        "href": "/docs/sample-docs/en/v2/01-guide/02-creating-documents"
+      },
+      {
+        "title": "Documentation Creation Basics",
         "href": "/docs/sample-docs/en/v2/01-guide/01-getting-started"
+      }
+    ]
+  },
+  {
+    "title": "Components",
+    "items": [
+      {
+        "title": "Sidebar Auto-Generation",
+        "href": "/docs/sample-docs/en/v2/02-components/04-sidebar-generation"
+      },
+      {
+        "title": "Tab Component",
+        "href": "/docs/sample-docs/en/v2/02-components/03-tabs"
+      },
+      {
+        "title": "Icon Component",
+        "href": "/docs/sample-docs/en/v2/02-components/02-icons"
+      },
+      {
+        "title": "Component Overview",
+        "href": "/docs/sample-docs/en/v2/02-components/01-overview"
+      }
+    ]
+  },
+  {
+    "title": "Advanced",
+    "items": [
+      {
+        "title": "Deployment",
+        "href": "/docs/sample-docs/en/v2/03-advanced/03-deployment"
+      },
+      {
+        "title": "Automation",
+        "href": "/docs/sample-docs/en/v2/03-advanced/02-automation"
+      },
+      {
+        "title": "Customization",
+        "href": "/docs/sample-docs/en/v2/03-advanced/01-customization"
+      }
+    ]
+  },
+  {
+    "title": "Reference",
+    "items": [
+      {
+        "title": "Frontmatter Reference",
+        "href": "/docs/sample-docs/en/v2/04-reference/01-frontmatter"
       }
     ]
   }

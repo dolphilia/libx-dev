@@ -1,0 +1,760 @@
+---
+title: "デプロイメント"
+description: "ドキュメントサイトの高度なデプロイ戦略とベストプラクティスを学ぶ"
+---
+
+# デプロイメント
+
+シンプルな静的ホスティングから複雑なマルチ環境セットアップまで、ドキュメントサイトの高度なデプロイ戦略をマスターします。
+
+## デプロイオプション
+
+### 静的サイトホスティング
+
+#### Cloudflare Pages
+このプロジェクトのデフォルトデプロイターゲット：
+
+```bash
+# Wrangler CLIをインストール
+npm install -g wrangler
+
+# Cloudflareにログイン
+wrangler auth login
+
+# Cloudflare Pagesにデプロイ
+pnpm build && pnpm deploy:pages
+```
+
+`wrangler.toml`での設定：
+```toml
+name = "your-docs-site"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "dist"
+
+[env.production]
+vars = { NODE_ENV = "production" }
+
+[env.staging]
+vars = { NODE_ENV = "staging" }
+```
+
+#### Vercel
+
+Vercelでの高速デプロイ：
+
+```bash
+# Vercel CLIをインストール
+npm install -g vercel
+
+# プロジェクトを初期化
+vercel init
+
+# デプロイ
+vercel --prod
+```
+
+`vercel.json`設定：
+```json
+{
+  "buildCommand": "pnpm build",
+  "outputDirectory": "dist",
+  "framework": "astro",
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    }
+  ]
+}
+```
+
+#### Netlify
+
+Netlifyでの継続的デプロイ：
+
+```bash
+# Netlify CLIをインストール
+npm install -g netlify-cli
+
+# プロジェクトを初期化
+netlify init
+
+# デプロイ
+netlify deploy --prod
+```
+
+`netlify.toml`設定：
+```toml
+[build]
+  command = "pnpm build"
+  publish = "dist"
+
+[build.environment]
+  NODE_ENV = "production"
+  PNPM_VERSION = "8"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+
+[[redirects]]
+  from = "/old-path/*"
+  to = "/new-path/:splat"
+  status = 301
+```
+
+### セルフホスティング
+
+#### Docker化
+
+Dockerを使用したコンテナ化：
+
+```dockerfile
+# Dockerfile
+FROM node:18-alpine AS builder
+
+WORKDIR /app
+
+# pnpmをインストール
+RUN npm install -g pnpm
+
+# 依存関係をコピーしてインストール
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+
+# ソースコードをコピーしてビルド
+COPY . .
+RUN pnpm build
+
+# 本番用の軽量イメージ
+FROM nginx:alpine
+
+# カスタムnginx設定
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# ビルド済みファイルをコピー
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# ヘルスチェックを追加
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost/ || exit 1
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+Nginx設定（`nginx.conf`）：
+```nginx
+events {
+    worker_connections 1024;
+}
+
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+    
+    # Gzip圧縮を有効化
+    gzip on;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+    
+    # キャッシュ設定
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+    
+    server {
+        listen 80;
+        server_name localhost;
+        root /usr/share/nginx/html;
+        index index.html;
+        
+        # SPAのためのフォールバック
+        location / {
+            try_files $uri $uri/ /index.html;
+        }
+        
+        # セキュリティヘッダー
+        add_header X-Frame-Options "DENY" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-XSS-Protection "1; mode=block" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    }
+}
+```
+
+Docker Compose設定：
+```yaml
+# docker-compose.yml
+version: '3.8'
+
+services:
+  docs:
+    build: .
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./logs:/var/log/nginx
+    restart: unless-stopped
+    
+  docs-ssl:
+    build: .
+    ports:
+      - "443:443"
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./ssl:/etc/nginx/ssl
+      - ./logs:/var/log/nginx
+    restart: unless-stopped
+```
+
+## CI/CDパイプライン
+
+### GitHub Actions
+
+包括的なGitHub Actionsワークフロー：
+
+```yaml
+# .github/workflows/deploy.yml
+name: Build and Deploy Documentation
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  NODE_VERSION: '18'
+  PNPM_VERSION: '8'
+
+jobs:
+  test:
+    name: Test and Lint
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+          
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        
+      - name: Run linting
+        run: pnpm lint
+        
+      - name: Run type checking
+        run: pnpm type-check
+        
+      - name: Run tests
+        run: pnpm test
+        
+      - name: Check link validity
+        run: pnpm check-links
+        
+  build:
+    name: Build Documentation
+    needs: test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+          
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        
+      - name: Generate sidebar
+        run: pnpm build:sidebar
+        
+      - name: Build documentation
+        run: pnpm build
+        env:
+          NODE_ENV: production
+          
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 30
+          
+  deploy-staging:
+    name: Deploy to Staging
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    
+    environment:
+      name: staging
+      url: https://staging.docs.example.com
+      
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          
+      - name: Deploy to Cloudflare Pages (Staging)
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: docs-staging
+          directory: dist
+          
+  deploy-production:
+    name: Deploy to Production
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    environment:
+      name: production
+      url: https://docs.example.com
+      
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          
+      - name: Deploy to Cloudflare Pages (Production)
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: docs-production
+          directory: dist
+          
+      - name: Notify Slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: success
+          channel: '#docs'
+          text: 'ドキュメントが本番環境にデプロイされました！'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+```
+
+### GitLab CI/CD
+
+GitLab CI/CDでの自動デプロイ：
+
+```yaml
+# .gitlab-ci.yml
+stages:
+  - test
+  - build
+  - deploy
+
+variables:
+  NODE_VERSION: "18"
+  PNPM_VERSION: "8"
+
+cache:
+  key: $CI_COMMIT_REF_SLUG
+  paths:
+    - node_modules/
+    - .pnpm-store/
+
+before_script:
+  - npm install -g pnpm@$PNPM_VERSION
+  - pnpm config set store-dir .pnpm-store
+  - pnpm install --frozen-lockfile
+
+test:
+  stage: test
+  script:
+    - pnpm lint
+    - pnpm type-check
+    - pnpm test
+    - pnpm check-links
+
+build:
+  stage: build
+  script:
+    - pnpm build:sidebar
+    - pnpm build
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 week
+
+deploy-staging:
+  stage: deploy
+  script:
+    - pnpm deploy:staging
+  environment:
+    name: staging
+    url: https://staging.docs.example.com
+  only:
+    - develop
+
+deploy-production:
+  stage: deploy
+  script:
+    - pnpm deploy:production
+  environment:
+    name: production
+    url: https://docs.example.com
+  only:
+    - main
+  when: manual
+```
+
+## 環境別設定
+
+### 環境変数管理
+
+```bash
+# .env.local (開発環境)
+NODE_ENV=development
+PUBLIC_SITE_URL=http://localhost:4321
+PUBLIC_API_URL=http://localhost:3000/api
+DEBUG=true
+
+# .env.staging (ステージング環境)
+NODE_ENV=staging
+PUBLIC_SITE_URL=https://staging.docs.example.com
+PUBLIC_API_URL=https://staging-api.example.com
+DEBUG=false
+
+# .env.production (本番環境)
+NODE_ENV=production
+PUBLIC_SITE_URL=https://docs.example.com
+PUBLIC_API_URL=https://api.example.com
+DEBUG=false
+ANALYTICS_ID=G-XXXXXXXXXX
+```
+
+### ビルド設定の分離
+
+```javascript
+// astro.config.mjs
+import { defineConfig } from 'astro/config';
+
+const isDev = process.env.NODE_ENV === 'development';
+const isStaging = process.env.NODE_ENV === 'staging';
+const isProd = process.env.NODE_ENV === 'production';
+
+export default defineConfig({
+  site: process.env.PUBLIC_SITE_URL,
+  base: isProd ? '/docs/' : '/',
+  
+  // 環境別設定
+  build: {
+    assets: isDev ? 'assets' : '_astro',
+    inlineStylesheets: isProd ? 'auto' : 'never'
+  },
+  
+  // 開発時の設定
+  server: isDev ? {
+    port: 4321,
+    host: true
+  } : undefined,
+  
+  // 本番時の最適化
+  vite: {
+    build: {
+      minify: isProd ? 'esbuild' : false,
+      sourcemap: !isProd,
+      rollupOptions: isProd ? {
+        output: {
+          manualChunks: {
+            vendor: ['react', 'react-dom'],
+            ui: ['@docs/ui']
+          }
+        }
+      } : undefined
+    }
+  }
+});
+```
+
+## パフォーマンス最適化
+
+### CDN設定
+
+Cloudflareでのキャッシュ設定：
+
+```javascript
+// cloudflare-cache-rules.js
+const cacheRules = [
+  {
+    // 静的アセット
+    expression: '(http.request.uri.path matches ".*\\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2)$")',
+    action: {
+      cache: {
+        cacheStatus: 'cache',
+        edgeTtl: 31536000, // 1年
+        browserTtl: 31536000
+      }
+    }
+  },
+  {
+    // HTMLファイル
+    expression: '(http.request.uri.path matches ".*\\.html$") or (http.request.uri.path eq "/")',
+    action: {
+      cache: {
+        cacheStatus: 'cache',
+        edgeTtl: 3600, // 1時間
+        browserTtl: 0 // ブラウザキャッシュなし
+      }
+    }
+  }
+];
+```
+
+### 画像最適化
+
+レスポンシブ画像の自動生成：
+
+```javascript
+// scripts/generate-responsive-images.js
+import sharp from 'sharp';
+import fs from 'fs';
+
+const sizes = [320, 640, 1024, 1920];
+const formats = ['webp', 'avif', 'jpg'];
+
+async function generateResponsiveImages() {
+  const images = fs.readdirSync('src/assets/images');
+  
+  for (const image of images) {
+    for (const size of sizes) {
+      for (const format of formats) {
+        await sharp(`src/assets/images/${image}`)
+          .resize(size)
+          .toFormat(format, { quality: 80 })
+          .toFile(`public/images/${image}-${size}w.${format}`);
+      }
+    }
+  }
+}
+```
+
+## 監視とメンテナンス
+
+### アップタイム監視
+
+```javascript
+// scripts/health-check.js
+import fetch from 'node-fetch';
+
+class HealthChecker {
+  constructor(urls) {
+    this.urls = urls;
+  }
+  
+  async checkAll() {
+    const results = [];
+    
+    for (const url of this.urls) {
+      const result = await this.checkUrl(url);
+      results.push(result);
+    }
+    
+    return results;
+  }
+  
+  async checkUrl(url) {
+    try {
+      const start = Date.now();
+      const response = await fetch(url, { timeout: 10000 });
+      const responseTime = Date.now() - start;
+      
+      return {
+        url,
+        status: response.status,
+        responseTime,
+        ok: response.ok
+      };
+    } catch (error) {
+      return {
+        url,
+        status: 0,
+        responseTime: 0,
+        ok: false,
+        error: error.message
+      };
+    }
+  }
+}
+
+// 使用例
+const checker = new HealthChecker([
+  'https://docs.example.com',
+  'https://docs.example.com/en/v2/guide/getting-started',
+  'https://docs.example.com/ja/v2/guide/getting-started'
+]);
+
+const results = await checker.checkAll();
+console.log(results);
+```
+
+### ログ分析
+
+```javascript
+// scripts/analyze-logs.js
+import fs from 'fs';
+
+class LogAnalyzer {
+  constructor(logFile) {
+    this.logFile = logFile;
+  }
+  
+  analyze() {
+    const logs = fs.readFileSync(this.logFile, 'utf-8').split('\n');
+    const stats = {
+      totalRequests: 0,
+      errorRequests: 0,
+      popularPages: {},
+      statusCodes: {},
+      userAgents: {}
+    };
+    
+    for (const log of logs) {
+      if (!log.trim()) continue;
+      
+      const parsed = this.parseLogLine(log);
+      if (!parsed) continue;
+      
+      stats.totalRequests++;
+      
+      // ステータスコード集計
+      stats.statusCodes[parsed.status] = (stats.statusCodes[parsed.status] || 0) + 1;
+      
+      // エラーリクエスト集計
+      if (parsed.status >= 400) {
+        stats.errorRequests++;
+      }
+      
+      // 人気ページ集計
+      if (parsed.status === 200) {
+        stats.popularPages[parsed.path] = (stats.popularPages[parsed.path] || 0) + 1;
+      }
+    }
+    
+    return stats;
+  }
+  
+  parseLogLine(line) {
+    // ログ形式に応じた解析
+    const match = line.match(/(\S+) - - \[(.*?)\] "(\S+) (\S+) (\S+)" (\d+) (\d+) "(.*?)" "(.*?)"/);
+    
+    if (!match) return null;
+    
+    return {
+      ip: match[1],
+      timestamp: match[2],
+      method: match[3],
+      path: match[4],
+      protocol: match[5],
+      status: parseInt(match[6]),
+      size: parseInt(match[7]),
+      referer: match[8],
+      userAgent: match[9]
+    };
+  }
+}
+```
+
+## セキュリティ
+
+### セキュリティヘッダー
+
+```javascript
+// security-headers.js
+const securityHeaders = {
+  'X-Frame-Options': 'DENY',
+  'X-Content-Type-Options': 'nosniff',
+  'X-XSS-Protection': '1; mode=block',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+  'Content-Security-Policy': `
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' https://www.googletagmanager.com;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    font-src 'self' https://fonts.gstatic.com;
+    img-src 'self' data: https:;
+    connect-src 'self' https://api.example.com;
+  `.replace(/\s+/g, ' ').trim()
+};
+```
+
+### 脆弱性スキャン
+
+```bash
+# セキュリティ監査スクリプト
+#!/bin/bash
+
+echo "セキュリティスキャンを開始..."
+
+# 依存関係の脆弱性チェック
+echo "依存関係の脆弱性をチェック中..."
+pnpm audit
+
+# Dockerfile のセキュリティチェック
+if [ -f "Dockerfile" ]; then
+  echo "Dockerfileをスキャン中..."
+  docker run --rm -v "$PWD":/project -w /project aquasec/trivy fs .
+fi
+
+# Lighthouseセキュリティ監査
+echo "Lighthouse セキュリティ監査を実行中..."
+lighthouse --only-categories=best-practices --output=json --output-path=./lighthouse-security.json https://docs.example.com
+
+echo "セキュリティスキャン完了"
+```
+
+## 次のステップ
+
+デプロイメントをマスターしたら：
+
+- **[カスタマイズ](/ja/v2/advanced/customization)**: 高度な設定とカスタマイズ
+- **[自動化](/ja/v2/advanced/automation)**: デプロイプロセスの自動化
+- **[リファレンス](/ja/v2/reference/frontmatter)**: 設定オプションの詳細リファレンス

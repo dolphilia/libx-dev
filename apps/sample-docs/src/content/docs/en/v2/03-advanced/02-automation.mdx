@@ -1,0 +1,576 @@
+---
+title: "Automation"
+description: "Learn about automation and scripting for efficient documentation management"
+---
+
+# Automation
+
+Discover how to automate documentation tasks, from content generation to deployment, making your documentation workflow more efficient and reliable.
+
+## Built-in Scripts
+
+### Document Creation
+
+Automatically create new documents with proper structure:
+
+```bash
+# Create a new guide document
+node scripts/create-document.js sample-docs en v2 guide/new-feature
+
+# Create a component example
+node scripts/create-document.js sample-docs en v2 components/new-component
+
+# Create an advanced topic
+node scripts/create-document.js sample-docs en v2 advanced/optimization
+```
+
+The script automatically:
+- Creates the directory structure
+- Generates frontmatter with proper metadata
+- Sets up navigation links
+- Provides a content template
+
+### Version Management
+
+Create new documentation versions:
+
+```bash
+# Create a new version
+node scripts/create-version.js sample-docs v3
+
+# This creates:
+# - New version directories for all languages
+# - Updated configuration
+# - Version-specific index pages
+# - Optional content migration from previous version
+```
+
+### Sidebar Generation
+
+Generate sidebar navigation automatically:
+
+```bash
+# Generate sidebar files for all versions and languages
+pnpm build:sidebar
+
+# This creates JSON files in public/sidebar/
+# - sidebar-en-v2.json
+# - sidebar-ja-v2.json
+# - etc.
+```
+
+## Custom Automation Scripts
+
+### Content Analysis
+
+Create scripts to analyze your documentation:
+
+```javascript
+// scripts/analyze-content.js
+import fs from 'fs';
+import path from 'path';
+import { glob } from 'glob';
+import matter from 'gray-matter';
+
+async function analyzeContent() {
+  const files = await glob('src/content/docs/**/*.mdx');
+  const analysis = {
+    totalDocuments: files.length,
+    byCategory: {},
+    byLanguage: {},
+    missingDescriptions: [],
+    brokenLinks: []
+  };
+  
+  for (const file of files) {
+    const content = fs.readFileSync(file, 'utf-8');
+    const { data: frontmatter } = matter(content);
+    
+    // Analyze frontmatter
+    if (!frontmatter.description) {
+      analysis.missingDescriptions.push(file);
+    }
+    
+    // Count by category
+    const category = frontmatter.category || 'uncategorized';
+    analysis.byCategory[category] = (analysis.byCategory[category] || 0) + 1;
+    
+    // Count by language
+    const lang = file.split('/')[3]; // Extract language from path
+    analysis.byLanguage[lang] = (analysis.byLanguage[lang] || 0) + 1;
+    
+    // Check for broken internal links
+    const linkMatches = content.match(/\[.*?\]\((\/.*?)\)/g);
+    if (linkMatches) {
+      for (const link of linkMatches) {
+        const url = link.match(/\((.*?)\)/)[1];
+        if (url.startsWith('/') && !fs.existsSync(`src/content/docs${url}.mdx`)) {
+          analysis.brokenLinks.push({ file, link: url });
+        }
+      }
+    }
+  }
+  
+  // Generate report
+  console.log('📊 Content Analysis Report');
+  console.log('==========================');
+  console.log(`Total documents: ${analysis.totalDocuments}`);
+  console.log('\nBy category:');
+  Object.entries(analysis.byCategory).forEach(([cat, count]) => {
+    console.log(`  ${cat}: ${count}`);
+  });
+  console.log('\nBy language:');
+  Object.entries(analysis.byLanguage).forEach(([lang, count]) => {
+    console.log(`  ${lang}: ${count}`);
+  });
+  
+  if (analysis.missingDescriptions.length > 0) {
+    console.log('\n⚠️  Missing descriptions:');
+    analysis.missingDescriptions.forEach(file => console.log(`  ${file}`));
+  }
+  
+  if (analysis.brokenLinks.length > 0) {
+    console.log('\n🔗 Broken links:');
+    analysis.brokenLinks.forEach(({ file, link }) => {
+      console.log(`  ${file}: ${link}`);
+    });
+  }
+}
+
+analyzeContent().catch(console.error);
+```
+
+### Link Validation
+
+Validate all links in your documentation:
+
+```javascript
+// scripts/validate-links.js
+import fs from 'fs';
+import { glob } from 'glob';
+import matter from 'gray-matter';
+
+async function validateLinks() {
+  const files = await glob('src/content/docs/**/*.mdx');
+  const allUrls = new Set();
+  const brokenLinks = [];
+  
+  // Collect all valid internal URLs
+  for (const file of files) {
+    const content = fs.readFileSync(file, 'utf-8');
+    const { data } = matter(content);
+    
+    // Build URL from file path
+    const urlPath = file
+      .replace('src/content/docs/', '/')
+      .replace('.mdx', '')
+      .replace(/\/\d\d-/g, '/'); // Remove number prefixes
+    
+    allUrls.add(urlPath);
+  }
+  
+  // Check all links
+  for (const file of files) {
+    const content = fs.readFileSync(file, 'utf-8');
+    const { data, content: body } = matter(content);
+    
+    // Check frontmatter links
+    ['prev', 'next'].forEach(key => {
+      if (data[key]?.link && !allUrls.has(data[key].link)) {
+        brokenLinks.push({ file, type: 'frontmatter', link: data[key].link });
+      }
+    });
+    
+    // Check content links
+    const linkMatches = body.match(/\[.*?\]\((\/.*?)\)/g) || [];
+    for (const match of linkMatches) {
+      const link = match.match(/\((.*?)\)/)[1];
+      if (link.startsWith('/') && !allUrls.has(link)) {
+        brokenLinks.push({ file, type: 'content', link });
+      }
+    }
+  }
+  
+  if (brokenLinks.length === 0) {
+    console.log('✅ All links are valid!');
+  } else {
+    console.log('🔗 Broken links found:');
+    brokenLinks.forEach(({ file, type, link }) => {
+      console.log(`  ${file} (${type}): ${link}`);
+    });
+    process.exit(1);
+  }
+}
+
+validateLinks().catch(console.error);
+```
+
+### Auto-translation
+
+Automate translation workflows:
+
+```javascript
+// scripts/auto-translate.js
+import fs from 'fs';
+import path from 'path';
+import { glob } from 'glob';
+import matter from 'gray-matter';
+
+async function translateDocument(filePath, targetLang) {
+  const content = fs.readFileSync(filePath, 'utf-8');
+  const { data, content: body } = matter(content);
+  
+  // Translate frontmatter
+  const translatedData = {
+    ...data,
+    title: await translateText(data.title, targetLang),
+    description: await translateText(data.description, targetLang)
+  };
+  
+  // Translate content (preserve code blocks and components)
+  const translatedBody = await translateContent(body, targetLang);
+  
+  // Generate target file path
+  const targetPath = filePath
+    .replace('/en/', `/${targetLang}/`)
+    .replace('/src/content/docs/en/', `/src/content/docs/${targetLang}/`);
+  
+  // Ensure directory exists
+  fs.mkdirSync(path.dirname(targetPath), { recursive: true });
+  
+  // Write translated file
+  const translatedContent = matter.stringify(translatedBody, translatedData);
+  fs.writeFileSync(targetPath, translatedContent);
+  
+  console.log(`Translated: ${filePath} → ${targetPath}`);
+}
+
+async function translateText(text, targetLang) {
+  // Implementation would use translation service
+  // (Google Translate, DeepL, etc.)
+  return `[${targetLang.toUpperCase()}] ${text}`;
+}
+
+async function translateContent(content, targetLang) {
+  // Preserve code blocks, MDX components, etc.
+  // Only translate regular text content
+  return content.replace(/^(?!```|import |<)(.+)$/gm, (match) => {
+    return `[${targetLang.toUpperCase()}] ${match}`;
+  });
+}
+
+// Usage
+const englishFiles = await glob('src/content/docs/en/**/*.mdx');
+for (const file of englishFiles) {
+  await translateDocument(file, 'ja');
+}
+```
+
+## GitHub Actions Integration
+
+### Automated Content Validation
+
+```yaml
+# .github/workflows/validate-docs.yml
+name: Validate Documentation
+
+on:
+  pull_request:
+    paths:
+      - 'src/content/docs/**'
+      - 'scripts/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+      
+      - name: Install dependencies
+        run: pnpm install
+      
+      - name: Validate links
+        run: node scripts/validate-links.js
+      
+      - name: Analyze content
+        run: node scripts/analyze-content.js
+      
+      - name: Check formatting
+        run: pnpm lint
+      
+      - name: Build documentation
+        run: pnpm build
+```
+
+### Automated Translation Updates
+
+```yaml
+# .github/workflows/auto-translate.yml
+name: Auto-translate Documentation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/content/docs/en/**'
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+      
+      - name: Install dependencies
+        run: pnpm install
+      
+      - name: Run auto-translation
+        run: node scripts/auto-translate.js
+        env:
+          TRANSLATE_API_KEY: ${{ secrets.TRANSLATE_API_KEY }}
+      
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          title: 'Auto-translate documentation updates'
+          body: 'Automated translation of recent English documentation changes.'
+          branch: auto-translate
+```
+
+## Content Generation
+
+### API Documentation Generation
+
+Generate documentation from code:
+
+```javascript
+// scripts/generate-api-docs.js
+import fs from 'fs';
+import path from 'path';
+import { parse } from '@typescript-eslint/parser';
+
+function generateApiDocs(sourceDir, outputDir) {
+  const files = fs.readdirSync(sourceDir).filter(f => f.endsWith('.ts'));
+  
+  for (const file of files) {
+    const content = fs.readFileSync(path.join(sourceDir, file), 'utf-8');
+    const ast = parse(content, { loc: true, range: true });
+    
+    const documentation = extractDocumentation(ast);
+    const markdown = generateMarkdown(documentation);
+    
+    const outputFile = path.join(outputDir, file.replace('.ts', '.mdx'));
+    fs.writeFileSync(outputFile, markdown);
+  }
+}
+
+function extractDocumentation(ast) {
+  // Parse TypeScript AST and extract:
+  // - Interface definitions
+  // - Function signatures
+  // - JSDoc comments
+  // - Type definitions
+  return {
+    interfaces: [],
+    functions: [],
+    types: []
+  };
+}
+
+function generateMarkdown(docs) {
+  return `---
+title: "API Reference"
+description: "Generated API documentation"
+category: "reference"
+---
+
+# API Reference
+
+${docs.interfaces.map(generateInterfaceDoc).join('\n\n')}
+${docs.functions.map(generateFunctionDoc).join('\n\n')}
+`;
+}
+```
+
+### Changelog Generation
+
+Automatically generate changelogs:
+
+```javascript
+// scripts/generate-changelog.js
+import { execSync } from 'child_process';
+import fs from 'fs';
+
+function generateChangelog() {
+  const commits = execSync('git log --oneline --since="1 month ago"')
+    .toString()
+    .split('\n')
+    .filter(Boolean);
+  
+  const changelog = {
+    features: [],
+    fixes: [],
+    docs: [],
+    other: []
+  };
+  
+  commits.forEach(commit => {
+    const [hash, ...messageParts] = commit.split(' ');
+    const message = messageParts.join(' ');
+    
+    if (message.startsWith('feat:')) {
+      changelog.features.push({ hash, message });
+    } else if (message.startsWith('fix:')) {
+      changelog.fixes.push({ hash, message });
+    } else if (message.startsWith('docs:')) {
+      changelog.docs.push({ hash, message });
+    } else {
+      changelog.other.push({ hash, message });
+    }
+  });
+  
+  const markdown = `# Changelog
+
+## Features
+${changelog.features.map(c => `- ${c.message} (${c.hash})`).join('\n')}
+
+## Bug Fixes
+${changelog.fixes.map(c => `- ${c.message} (${c.hash})`).join('\n')}
+
+## Documentation
+${changelog.docs.map(c => `- ${c.message} (${c.hash})`).join('\n')}
+`;
+  
+  fs.writeFileSync('CHANGELOG.md', markdown);
+}
+```
+
+## Performance Monitoring
+
+### Build Time Tracking
+
+```javascript
+// scripts/build-monitor.js
+import { performance } from 'perf_hooks';
+import fs from 'fs';
+
+const buildMetrics = {
+  startTime: performance.now(),
+  phases: {}
+};
+
+function trackPhase(name, fn) {
+  const start = performance.now();
+  const result = fn();
+  buildMetrics.phases[name] = performance.now() - start;
+  return result;
+}
+
+// Usage in build process
+trackPhase('content-processing', () => {
+  // Process MDX files
+});
+
+trackPhase('sidebar-generation', () => {
+  // Generate sidebar
+});
+
+trackPhase('build-astro', () => {
+  // Run Astro build
+});
+
+// Save metrics
+buildMetrics.totalTime = performance.now() - buildMetrics.startTime;
+fs.writeFileSync('build-metrics.json', JSON.stringify(buildMetrics, null, 2));
+```
+
+## Development Tools
+
+### Live Reload for Content
+
+```javascript
+// scripts/watch-content.js
+import chokidar from 'chokidar';
+import { execSync } from 'child_process';
+
+const watcher = chokidar.watch('src/content/docs/**/*.mdx');
+
+watcher.on('change', (path) => {
+  console.log(`📝 Content changed: ${path}`);
+  
+  // Regenerate sidebar if needed
+  if (path.includes('frontmatter')) {
+    execSync('pnpm build:sidebar');
+    console.log('🔄 Sidebar regenerated');
+  }
+  
+  // Validate links
+  execSync('node scripts/validate-links.js');
+  console.log('✅ Links validated');
+});
+
+console.log('👀 Watching for content changes...');
+```
+
+### Content Preview Server
+
+```javascript
+// scripts/preview-server.js
+import express from 'express';
+import { marked } from 'marked';
+import matter from 'gray-matter';
+import fs from 'fs';
+
+const app = express();
+
+app.get('/preview/:lang/:version/*', (req, res) => {
+  const { lang, version } = req.params;
+  const slug = req.params[0];
+  
+  try {
+    const filePath = `src/content/docs/${lang}/${version}/${slug}.mdx`;
+    const content = fs.readFileSync(filePath, 'utf-8');
+    const { data, content: body } = matter(content);
+    
+    const html = marked(body);
+    
+    res.send(`
+      <html>
+        <head><title>${data.title}</title></head>
+        <body>
+          <h1>${data.title}</h1>
+          <p>${data.description}</p>
+          ${html}
+        </body>
+      </html>
+    `);
+  } catch (error) {
+    res.status(404).send('Document not found');
+  }
+});
+
+app.listen(3001, () => {
+  console.log('📖 Preview server running at http://localhost:3001');
+});
+```
+
+## Next Steps
+
+Ready to implement automation in your workflow?
+
+- **[Deployment](/en/v2/advanced/deployment)**: Learn about automated deployment strategies
+- **[Reference](/en/v2/reference/frontmatter)**: Detailed configuration options
+- **[Project Config](/en/v2/reference/project-config)**: Comprehensive configuration reference

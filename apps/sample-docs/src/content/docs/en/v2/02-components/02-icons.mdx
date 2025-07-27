@@ -1,0 +1,192 @@
+---
+title: "Icon Component"
+description: "Learn how to use the Icon component to add visual elements to your documentation"
+---
+
+import { Icon } from '@docs/ui';
+
+# Icon Component Examples
+
+The Icon component allows you to display various icons in your documentation.
+
+## Basic Usage
+
+Here's a basic example of using the Icon component:
+
+<Icon name="info" />
+
+## Icon Sizes
+
+You can specify different sizes for icons using various units:
+
+<div style="display: flex; align-items: center; gap: 1rem;">
+  <Icon name="info" size="1em" />
+  <Icon name="info" size="1.5em" />
+  <Icon name="info" size="2em" />
+  <Icon name="info" size="3em" />
+</div>
+
+You can also use pixel units:
+
+<div style="display: flex; align-items: center; gap: 1rem;">
+  <Icon name="info" size="16px" />
+  <Icon name="info" size="24px" />
+  <Icon name="info" size="32px" />
+  <Icon name="info" size="48px" />
+</div>
+
+## Icon Colors
+
+You can customize the color of icons:
+
+<div style="display: flex; align-items: center; gap: 1rem;">
+  <Icon name="info" color="#007bff" />
+  <Icon name="triangle-alert" color="#ffc107" />
+  <Icon name="circle-alert" color="#dc3545" />
+  <Icon name="circle-check" color="#28a745" />
+</div>
+
+## Available Icons
+
+Here are all the available icons:
+
+### Basic Icons
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="info" />
+    <span>info</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="settings" />
+    <span>settings</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="triangle-alert" />
+    <span>triangle-alert</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="circle-alert" />
+    <span>circle-alert</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="code" />
+    <span>code</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="file-text" />
+    <span>file-text</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="search" />
+    <span>search</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="x" />
+    <span>x</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="languages" />
+    <span>languages</span>
+  </div>
+</div>
+
+### Navigation Icons
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="arrow-right" />
+    <span>arrow-right</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="arrow-left" />
+    <span>arrow-left</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="arrow-down" />
+    <span>arrow-down</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="arrow-up" />
+    <span>arrow-up</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="external-link" />
+    <span>external-link</span>
+  </div>
+</div>
+
+### Action Icons
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="pencil" />
+    <span>pencil</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="copy" />
+    <span>copy</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="download" />
+    <span>download</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="circle-check" />
+    <span>circle-check</span>
+  </div>
+</div>
+
+### Documentation Icons
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="sticky-note" />
+    <span>sticky-note</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="lightbulb" />
+    <span>lightbulb</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="circle-alert" />
+    <span>circle-alert (important)</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="triangle-alert" />
+    <span>triangle-alert (caution)</span>
+  </div>
+</div>
+
+### Theme Icons
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="sun" />
+    <span>sun</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <Icon name="moon" />
+    <span>moon</span>
+  </div>
+</div>
+
+## Using Icons in Text
+
+Icons can be used inline with text:
+
+This is an information <Icon name="info" /> message.
+
+This is a warning <Icon name="triangle-alert" color="#ffc107" /> message.
+
+This is an error <Icon name="circle-alert" color="#dc3545" /> message.
+
+This is a success <Icon name="circle-check" color="#28a745" /> message.
+
+## Accessibility
+
+For accessibility purposes, you can provide a label for the icon:
+
+<Icon name="info" label="Information" />
+
+When a label is provided, the icon will be announced by screen readers. Without a label, the icon is treated as decorative and will be ignored by screen readers.
