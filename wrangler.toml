@@ -1,8 +1,9 @@
 name = "libx"
 compatibility_date = "2024-01-01"
+pages_build_output_dir = "dist"
 
-[env.production]
+# Pages専用プロジェクト設定
+[pages]
 name = "libx"
-
-# Pages設定
+compatibility_date = "2024-01-01"
 pages_build_output_dir = "dist"

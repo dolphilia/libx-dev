@@ -138,6 +138,7 @@ Cloudflare API Tokenの取得方法：
 
    **必須権限：**
    - **Account permissions**: `Cloudflare Pages:Edit`
+   - **User permissions**: `User:Read` (ユーザー詳細の読み取り - 認証に必要)
    - **Zone permissions**: `Zone:Read`
    - **Account Resources**: `Include - All accounts`（または特定のアカウント）
    - **Zone Resources**: `Include - All zones`（または特定のゾーン）
