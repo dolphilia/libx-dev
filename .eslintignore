@@ -1,0 +1,18 @@
+# ビルド出力ディレクトリ
+dist/
+**/dist/
+
+# Node modules
+node_modules/
+**/node_modules/
+
+# 自動生成ファイル
+*.gen.js
+*.gen.ts
+
+# 一時ファイル
+.temp/
+.cache/
+
+# ログファイル
+*.log
