@@ -11,6 +11,16 @@ const projectConfig = {
   supportedLangs: ['en', 'ja'],
   defaultLang: 'en',
   
+  // 多言語対応の表示名と説明（トップページでの表示用）
+  displayName: {
+    en: 'Sample Documentation',
+    ja: 'サンプルドキュメント'
+  },
+  displayDescription: {
+    en: 'A comprehensive sample documentation showcasing multi-language and multi-version support.',
+    ja: '多言語・多バージョン対応を実演する包括的なサンプルドキュメントです。'
+  },
+  
   // バージョン情報
   versions: [
     { 

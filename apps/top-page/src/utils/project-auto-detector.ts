@@ -139,12 +139,51 @@ async function loadDocsConfig(projectPath: string) {
     const baseUrl = extractConfigValue(configContent, isProjectConfig ? 'baseUrl' : 'baseUrl') || `/docs/${path.basename(projectPath)}`;
     const supportedLangs = extractArrayValue(configContent, 'supportedLangs') || ['en', 'ja'];
     
-    return {
-      name,
-      description: {
+    // multi-language サポート: displayName と displayDescription の検出
+    const displayName = extractMultiLanguageValue(configContent, 'displayName');
+    const displayDescription = extractMultiLanguageValue(configContent, 'displayDescription');
+    
+    // multi-language 対応の名前と説明を生成
+    let finalName: Record<LocaleKey, string>;
+    let finalDescription: Record<LocaleKey, string>;
+    
+    if (displayName && typeof displayName === 'object') {
+      // multi-language displayName が利用可能
+      finalName = displayName as Record<LocaleKey, string>;
+    } else if (displayName && typeof displayName === 'string') {
+      // single-language displayName の場合、全言語で使用
+      finalName = {
+        en: displayName,
+        ja: displayName
+      } as Record<LocaleKey, string>;
+    } else {
+      // フォールバック: name を全言語で使用
+      finalName = {
+        en: name,
+        ja: name
+      } as Record<LocaleKey, string>;
+    }
+    
+    if (displayDescription && typeof displayDescription === 'object') {
+      // multi-language displayDescription が利用可能
+      finalDescription = displayDescription as Record<LocaleKey, string>;
+    } else if (displayDescription && typeof displayDescription === 'string') {
+      // single-language displayDescription の場合、全言語で使用
+      finalDescription = {
+        en: displayDescription,
+        ja: displayDescription
+      } as Record<LocaleKey, string>;
+    } else {
+      // フォールバック: description を全言語で使用
+      finalDescription = {
         en: description,
         ja: description
-      } as Record<LocaleKey, string>,
+      } as Record<LocaleKey, string>;
+    }
+    
+    return {
+      name: finalName.en, // 後方互換性のため、single value として en を使用
+      description: finalDescription,
       basePath: baseUrl,
       supportedLangs: supportedLangs as LocaleKey[]
     };
@@ -334,4 +373,35 @@ function extractArrayValue(content: string, key: string): string[] | null {
       .filter(item => item.length > 0);
   }
   return null;
+}
+
+/**
+ * 設定ファイルから multi-language 値を抽出するヘルパー
+ * string または Record<LocaleKey, string> の両方に対応
+ */
+function extractMultiLanguageValue(content: string, key: string): string | Record<string, string> | null {
+  // オブジェクト形式の検出を試行
+  const objectRegex = new RegExp(`${key}:\\s*\\{([^}]+)\\}`, 's');
+  const objectMatch = content.match(objectRegex);
+  
+  if (objectMatch) {
+    // オブジェクトから各言語の値を抽出
+    const objectContent = objectMatch[1];
+    const result: Record<string, string> = {};
+    
+    // en: 'value', ja: 'value' のようなパターンを抽出
+    const propRegex = /(\w+):\s*['"`]([^'"`]+)['"`]/g;
+    let propMatch;
+    
+    while ((propMatch = propRegex.exec(objectContent)) !== null) {
+      result[propMatch[1]] = propMatch[2];
+    }
+    
+    if (Object.keys(result).length > 0) {
+      return result;
+    }
+  }
+  
+  // フォールバック: string 値として抽出を試行
+  return extractConfigValue(content, key);
 }
