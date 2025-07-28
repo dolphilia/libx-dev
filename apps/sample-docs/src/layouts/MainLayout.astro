@@ -3,7 +3,7 @@
  * MainLayout - ドキュメントサイトの基本レイアウトコンポーネント
  * Starlightスタイルに基づいたレイアウト
  */
-import { Navigation, Footer } from '@docs/ui/components';
+import { Navigation, Footer, Search } from '@docs/ui/components';
 import { VersionSelector } from '@docs/versioning/components';
 import LanguageSelector from '../components/LanguageSelector.astro';
 import type { LocaleKey } from '@docs/i18n/locales';
@@ -123,6 +123,9 @@ const docTopLink = await generateRedirectUrl(lang, projectConfig.basic.baseUrl);
               )}
             </div>
             <div class="print:hidden right-group">
+              <div class="search-container">
+                <Search placeholder={lang === 'ja' ? '検索...' : 'Search...'} />
+              </div>
               {showVersionSelector && version && (
                 <div class="version-selector-container">
                   <VersionSelector
@@ -251,16 +254,20 @@ const docTopLink = await generateRedirectUrl(lang, projectConfig.basic.baseUrl);
     display: flex;
     align-items: center;
     justify-content: right;
+    gap: 0.5rem;
   }
 
+  .search-container {
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+  }
 
   .version-selector-container {
-    margin-right: 0.5rem;
     height: 2.5rem;
   }
 
   .language-selector-container {
-    margin-right: 0.5rem;
     height: 2.5rem;
   }
 

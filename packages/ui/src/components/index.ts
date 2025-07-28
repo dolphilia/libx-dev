@@ -29,3 +29,6 @@ export { default as CardGrid } from './CardGrid.astro';
 export { Tabs, TabItem } from './Tabs';
 export { Icon, Icons, type IconName } from './icons';
 export { Dropdown, DropdownItem } from './Dropdown';
+
+// 検索機能
+export { default as Search } from './Search.astro';

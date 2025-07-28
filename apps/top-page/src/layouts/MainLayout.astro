@@ -2,7 +2,7 @@
 /**
  * MainLayout - トップページの基本レイアウトコンポーネント
  */
-import { Navigation, Footer, ThemeToggle } from '@docs/ui/components';
+import { Navigation, Footer, ThemeToggle, Search } from '@docs/ui/components';
 import LanguageSelector from '../components/LanguageSelector.astro';
 import type { LocaleKey } from '@docs/i18n/locales';
 import '../styles/global.css';
@@ -59,6 +59,9 @@ const navItems: NavItem[] = [
             </div>
 
             <div class="print:hidden right-group">
+              <div class="search-container">
+                <Search placeholder={lang === 'ja' ? '検索...' : 'Search...'} />
+              </div>
               <div class="language-selector-container" aria-label="言語選択">
                 <LanguageSelector currentLang={lang} />
               </div>
@@ -152,6 +155,10 @@ const navItems: NavItem[] = [
     gap: 1rem;
   }
 
+  .search-container {
+    display: flex;
+    align-items: center;
+  }
 
   .language-selector-container {
     display: flex;

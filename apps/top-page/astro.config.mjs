@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import pagefind from 'astro-pagefind';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -12,6 +13,9 @@ export default defineConfig({
   site: 'https://dolphilia.github.io',
   // GitHub Pagesのサブディレクトリにデプロイするためのベースパス
   base: '',
+  integrations: [
+    pagefind()
+  ],
   vite: {
     resolve: {
       alias: {

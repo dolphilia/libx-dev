@@ -1,0 +1,321 @@
+---
+// 検索コンポーネント
+// Pagefindの検索インターフェースを提供
+export interface Props {
+  placeholder?: string;
+  className?: string;
+}
+
+const { placeholder = "検索...", className = "" } = Astro.props;
+---
+
+<div class={`search-container ${className}`}>
+  <div class="search-input-wrapper">
+    <input
+      type="search"
+      id="pagefind-search"
+      class="search-input"
+      placeholder={placeholder}
+      autocomplete="off"
+    />
+    <div class="search-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="M21 21l-4.35-4.35"></path>
+      </svg>
+    </div>
+  </div>
+  <div id="pagefind-results" class="search-results"></div>
+</div>
+
+<script>
+  // Pagefindスクリプトの動的読み込み
+  async function loadPagefind() {
+    try {
+      // Pagefindスクリプトが既に読み込まれているかチェック
+      if (window.pagefind) {
+        return window.pagefind;
+      }
+
+      // 現在のページのパスに基づいてPagefindの場所を決定
+      const currentPath = window.location.pathname;
+      let pagefindBasePath = '';
+      
+      // ローカル開発環境の確認
+      const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      
+      if (isLocalDev) {
+        // ローカル開発環境では統合されたpagefindディレクトリを使用
+        pagefindBasePath = '/pagefind';
+      } else if (currentPath.startsWith('/docs/sample-docs/')) {
+        // sample-docsの場合
+        pagefindBasePath = '/docs/sample-docs/pagefind';
+      } else if (currentPath.startsWith('/docs/')) {
+        // 他のドキュメントプロジェクトの場合
+        pagefindBasePath = currentPath.split('/').slice(0, 3).join('/') + '/pagefind';
+      } else {
+        // トップページまたはルートの場合
+        pagefindBasePath = '/pagefind';
+      }
+
+      // デバッグ情報
+      console.log('[Search] Current path:', currentPath);
+      console.log('[Search] Pagefind loading from:', `${pagefindBasePath}/pagefind.js`);
+      console.log('[Search] Is local dev:', isLocalDev);
+      
+      // Pagefindスクリプトを動的に読み込み（ESモジュールとして）
+      const pagefindScript = document.createElement('script');
+      pagefindScript.src = `${pagefindBasePath}/pagefind.js`;
+      pagefindScript.type = 'module';
+      
+      await new Promise((resolve, reject) => {
+        pagefindScript.onload = () => {
+          console.log('[Search] Pagefind script loaded successfully');
+          resolve();
+        };
+        pagefindScript.onerror = (error) => {
+          console.error('[Search] Failed to load Pagefind script:', error);
+          reject(error);
+        };
+        document.head.appendChild(pagefindScript);
+      });
+
+      // Pagefindオブジェクトの初期化を待機
+      // ESモジュールの場合、動的インポートを使用
+      let pagefindModule;
+      try {
+        console.log('[Search] Attempting dynamic import of Pagefind...');
+        pagefindModule = await import(`${pagefindBasePath}/pagefind.js`);
+        console.log('[Search] Dynamic import successful:', pagefindModule);
+      } catch (importError) {
+        console.log('[Search] Dynamic import failed, falling back to global object:', importError);
+        
+        // フォールバック: グローバルオブジェクトの確認
+        let attempts = 0;
+        while (!window.pagefind && attempts < 50) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+          attempts++;
+        }
+
+        if (!window.pagefind) {
+          throw new Error('Pagefindの初期化に失敗しました');
+        }
+      }
+
+      // pagefindオブジェクトを返す
+      // 動的インポートが成功した場合はそのdefaultエクスポートを使用
+      const pagefindObj = pagefindModule?.default || pagefindModule || window.pagefind;
+      console.log('[Search] pagefindModule:', pagefindModule);
+      console.log('[Search] pagefindModule.default:', pagefindModule?.default);
+      console.log('[Search] window.pagefind:', window.pagefind);
+      console.log('[Search] Final pagefind object:', pagefindObj);
+      console.log('[Search] Pagefind initialization complete:', !!pagefindObj);
+      return pagefindObj;
+    } catch (error) {
+      console.error('[Search] Pagefind の読み込みに失敗しました:', error);
+      return null;
+    }
+  }
+
+  // 検索機能の初期化
+  document.addEventListener('DOMContentLoaded', async () => {
+    const searchInput = document.getElementById('pagefind-search') as HTMLInputElement;
+    const searchResults = document.getElementById('pagefind-results') as HTMLElement;
+    
+    if (!searchInput || !searchResults) {
+      return;
+    }
+
+    const pagefind = await loadPagefind();
+    if (!pagefind) {
+      console.error('[Search] Pagefind が利用できません');
+      return;
+    }
+    
+    console.log('[Search] Search functionality initialized successfully');
+
+    // 検索結果のデバウンス処理
+    let searchTimeout: number;
+    
+    searchInput.addEventListener('input', async (e) => {
+      const query = (e.target as HTMLInputElement).value.trim();
+      
+      // 前回のタイムアウトをクリア
+      clearTimeout(searchTimeout);
+      
+      if (query.length === 0) {
+        searchResults.innerHTML = '';
+        searchResults.style.display = 'none';
+        return;
+      }
+
+      // 300ms後に検索実行
+      searchTimeout = setTimeout(async () => {
+        console.log('[Search] Executing search for query:', query);
+        try {
+          const search = await pagefind.search(query);
+          console.log('[Search] Search results:', search);
+          
+          if (search.results.length === 0) {
+            searchResults.innerHTML = '<div class="no-results">検索結果が見つかりませんでした</div>';
+            searchResults.style.display = 'block';
+            return;
+          }
+
+          // 検索結果の詳細データを取得
+          const results = await Promise.all(
+            search.results.slice(0, 10).map(result => result.data())
+          );
+
+          // 検索結果をHTML形式で表示
+          searchResults.innerHTML = results.map(result => `
+            <div class="search-result">
+              <a href="${result.url}" class="result-link">
+                <div class="result-title">${result.meta.title || 'タイトルなし'}</div>
+                <div class="result-excerpt">${result.excerpt}</div>
+              </a>
+            </div>
+          `).join('');
+          
+          searchResults.style.display = 'block';
+        } catch (error) {
+          console.error('検索中にエラーが発生しました:', error);
+          searchResults.innerHTML = '<div class="search-error">検索中にエラーが発生しました</div>';
+          searchResults.style.display = 'block';
+        }
+      }, 300);
+    });
+
+    // 結果をクリックした時に非表示にする
+    searchResults.addEventListener('click', () => {
+      searchResults.style.display = 'none';
+      searchInput.value = '';
+    });
+
+    // 外部をクリックした時に結果を非表示にする
+    document.addEventListener('click', (e) => {
+      if (!searchInput.contains(e.target as Node) && !searchResults.contains(e.target as Node)) {
+        searchResults.style.display = 'none';
+      }
+    });
+  });
+</script>
+
+<style>
+  .search-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 8px 12px 8px 36px;
+    border: 1px solid var(--sl-color-gray-3);
+    border-radius: 6px;
+    background: var(--sl-color-white);
+    color: var(--sl-color-text);
+    font-size: 14px;
+    line-height: 1.5;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-input:focus {
+    border-color: var(--sl-color-accent);
+    box-shadow: 0 0 0 2px var(--sl-color-accent-low);
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--sl-color-gray-3);
+    pointer-events: none;
+  }
+
+  .search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--sl-color-white);
+    border: 1px solid var(--sl-color-gray-3);
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+  }
+
+  .search-result {
+    border-bottom: 1px solid var(--sl-color-gray-2);
+  }
+
+  .search-result:last-child {
+    border-bottom: none;
+  }
+
+  .result-link {
+    display: block;
+    padding: 12px;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.2s;
+  }
+
+  .result-link:hover {
+    background: var(--sl-color-gray-1);
+  }
+
+  .result-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--sl-color-text);
+  }
+
+  .result-excerpt {
+    font-size: 13px;
+    color: var(--sl-color-text-accent);
+    line-height: 1.4;
+  }
+
+  .no-results,
+  .search-error {
+    padding: 12px;
+    text-align: center;
+    color: var(--sl-color-text-accent);
+    font-size: 13px;
+  }
+
+  .search-error {
+    color: var(--sl-color-red);
+  }
+
+  /* ダークモード対応 */
+  @media (prefers-color-scheme: dark) {
+    .search-input {
+      background: var(--sl-color-gray-6);
+      border-color: var(--sl-color-gray-4);
+      color: var(--sl-color-text);
+    }
+
+    .search-results {
+      background: var(--sl-color-gray-6);
+      border-color: var(--sl-color-gray-4);
+    }
+
+    .result-link:hover {
+      background: var(--sl-color-gray-5);
+    }
+  }
+</style>

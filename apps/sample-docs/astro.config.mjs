@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
+import pagefind from 'astro-pagefind';
 
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -26,7 +27,8 @@ export default defineConfig({
       // MDXの設定
       remarkPlugins: [],
       rehypePlugins: []
-    })
+    }),
+    pagefind()
   ],
   vite: {
     resolve: {
