@@ -168,14 +168,42 @@ const { placeholder = "検索...", className = "" } = Astro.props;
           );
 
           // 検索結果をHTML形式で表示
-          searchResults.innerHTML = results.map(result => `
-            <div class="search-result">
-              <a href="${result.url}" class="result-link">
-                <div class="result-title">${result.meta.title || 'タイトルなし'}</div>
-                <div class="result-excerpt">${result.excerpt}</div>
-              </a>
-            </div>
-          `).join('');
+          searchResults.innerHTML = results.map((result, index) => {
+            // URLからページ種別を判定
+            const urlPath = result.url;
+            let pageType = 'ドキュメント';
+            let typeIcon = '📄';
+            
+            if (urlPath.includes('/guide/')) {
+              pageType = 'ガイド';
+              typeIcon = '📖';
+            } else if (urlPath.includes('/components/')) {
+              pageType = 'コンポーネント';
+              typeIcon = '🧩';
+            } else if (urlPath.includes('/reference/')) {
+              pageType = 'リファレンス';
+              typeIcon = '📚';
+            } else if (urlPath.includes('/advanced/')) {
+              pageType = '高度な機能';
+              typeIcon = '⚡';
+            }
+
+            return `
+              <div class="search-result" data-index="${index}">
+                <a href="${result.url}" class="result-link">
+                  <div class="result-header">
+                    <span class="result-type">
+                      <span class="type-icon">${typeIcon}</span>
+                      <span class="type-text">${pageType}</span>
+                    </span>
+                  </div>
+                  <div class="result-title">${result.meta.title || 'タイトルなし'}</div>
+                  <div class="result-excerpt">${result.excerpt}</div>
+                  <div class="result-url">${result.url}</div>
+                </a>
+              </div>
+            `;
+          }).join('');
           
           searchResults.style.display = 'block';
         } catch (error) {
@@ -249,9 +277,9 @@ const { placeholder = "検索...", className = "" } = Astro.props;
     background: var(--sl-color-white);
     border: 1px solid var(--sl-color-gray-3);
     border-top: none;
-    border-radius: 0 0 6px 6px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    max-height: 400px;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    max-height: 480px;
     overflow-y: auto;
     z-index: 1000;
     display: none;
@@ -259,46 +287,105 @@ const { placeholder = "検索...", className = "" } = Astro.props;
 
   .search-result {
     border-bottom: 1px solid var(--sl-color-gray-2);
+    transition: all 0.2s ease;
   }
 
   .search-result:last-child {
     border-bottom: none;
   }
 
-  .result-link {
-    display: block;
-    padding: 12px;
-    text-decoration: none;
-    color: inherit;
-    transition: background-color 0.2s;
+  .search-result:hover {
+    background: var(--sl-color-accent-low);
+    transform: translateX(2px);
   }
 
-  .result-link:hover {
-    background: var(--sl-color-gray-1);
+  .result-link {
+    display: block;
+    padding: 16px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+  }
+
+  .result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .result-type {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--sl-color-accent);
+    background: var(--sl-color-accent-low);
+    padding: 4px 8px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .type-icon {
+    font-size: 12px;
   }
 
   .result-title {
     font-weight: 600;
-    margin-bottom: 4px;
+    font-size: 15px;
+    margin-bottom: 6px;
     color: var(--sl-color-text);
+    line-height: 1.3;
   }
 
   .result-excerpt {
     font-size: 13px;
     color: var(--sl-color-text-accent);
-    line-height: 1.4;
+    line-height: 1.5;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .result-url {
+    font-size: 11px;
+    color: var(--sl-color-gray-4);
+    font-family: var(--sl-font-mono);
+    opacity: 0.7;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .no-results,
   .search-error {
-    padding: 12px;
+    padding: 24px;
     text-align: center;
     color: var(--sl-color-text-accent);
-    font-size: 13px;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .no-results::before {
+    content: '🔍';
+    font-size: 24px;
+    opacity: 0.5;
   }
 
   .search-error {
     color: var(--sl-color-red);
+  }
+
+  .search-error::before {
+    content: '⚠️';
+    font-size: 24px;
   }
 
   /* ダークモード対応 */
@@ -312,10 +399,58 @@ const { placeholder = "検索...", className = "" } = Astro.props;
     .search-results {
       background: var(--sl-color-gray-6);
       border-color: var(--sl-color-gray-4);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
 
-    .result-link:hover {
-      background: var(--sl-color-gray-5);
+    .search-result {
+      border-bottom-color: var(--sl-color-gray-5);
     }
+
+    .search-result:hover {
+      background: var(--sl-color-accent-low);
+    }
+
+    .result-type {
+      background: var(--sl-color-accent-low);
+      color: var(--sl-color-accent);
+    }
+
+    .result-url {
+      color: var(--sl-color-gray-3);
+    }
+  }
+
+  /* アニメーション効果 */
+  .search-results {
+    animation: slideDown 0.2s ease-out;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* スクロールバーの見た目を改善 */
+  .search-results::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .search-results::-webkit-scrollbar-track {
+    background: var(--sl-color-gray-2);
+  }
+
+  .search-results::-webkit-scrollbar-thumb {
+    background: var(--sl-color-gray-4);
+    border-radius: 3px;
+  }
+
+  .search-results::-webkit-scrollbar-thumb:hover {
+    background: var(--sl-color-gray-5);
   }
 </style>
