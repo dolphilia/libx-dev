@@ -5,8 +5,6 @@ import type { Version } from '@docs/versioning';
 
 const projectConfig = {
   // プロジェクト基本情報
-  name: 'Sample Docs',
-  description: 'Sample documentation for the docs-astro project',
   baseUrl: '/docs/sample-docs',
   supportedLangs: ['en', 'ja'],
   defaultLang: 'en',
@@ -41,33 +39,17 @@ const projectConfig = {
   categoryTranslations: {
     en: {
       guide: 'Guide',
-      reference: 'Reference',
-      api: 'API',
-      examples: 'Examples',
-      advanced: 'Advanced',
-      plugins: 'Plugins',
-      migration: 'Migration',
-      faq: 'FAQ',
-      getting_started: 'Getting Started',
-      installation: 'Installation',
-      configuration: 'Configuration',
-      overview: 'Overview',
       components: 'Components',
+      advanced: 'Advanced',
+      reference: 'Reference',
     },
     ja: {
       guide: 'ガイド',
+      components: 'コンポーネント',
+      advanced: '高度な設定',
       reference: 'リファレンス',
       api: 'API',
       examples: 'サンプル',
-      advanced: '高度な設定',
-      plugins: 'プラグイン',
-      migration: '移行',
-      faq: 'よくある質問',
-      getting_started: 'はじめに',
-      installation: 'インストール',
-      configuration: '設定',
-      overview: '概要',
-      components: 'コンポーネント',
     }
   }
 };

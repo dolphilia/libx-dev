@@ -22,7 +22,7 @@ const projectPath = await generateProjectUrl(project, lang);
   <div class="project-card-content">
     <div class="project-card-header">
       {icon && <Icon name={icon} class="project-card-icon" />}
-      <h3 class="project-card-title">{name}</h3>
+      <h3 class="project-card-title">{name[lang] || name.en}</h3>
       {isNew && <span class="project-card-badge project-card-badge-new">{translate('common.new', lang)}</span>}
       {isUpdated && <span class="project-card-badge project-card-badge-updated">{translate('common.updated', lang)}</span>}
     </div>

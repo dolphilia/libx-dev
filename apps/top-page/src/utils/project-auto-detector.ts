@@ -10,7 +10,7 @@ import type { LocaleKey } from '@docs/i18n/locales';
 
 export interface DetectedProject {
   id: string;
-  name: string;
+  name: Record<LocaleKey, string>;
   description: Record<LocaleKey, string>;
   basePath: string;
   supportedLangs: LocaleKey[];
@@ -104,8 +104,8 @@ export async function detectProject(projectId: string): Promise<DetectedProject>
   
   return {
     id: projectId,
-    name: docsConfig.name,
-    description: docsConfig.description,
+    name: docsConfig.displayName,
+    description: docsConfig.displayDescription,
     basePath: docsConfig.basePath,
     supportedLangs: docsConfig.supportedLangs,
     fallbackUrls
@@ -183,7 +183,9 @@ async function loadDocsConfig(projectPath: string) {
     
     return {
       name: finalName.en, // 後方互換性のため、single value として en を使用
+      displayName: finalName,
       description: finalDescription,
+      displayDescription: finalDescription,
       basePath: baseUrl,
       supportedLangs: supportedLangs as LocaleKey[]
     };
@@ -191,12 +193,20 @@ async function loadDocsConfig(projectPath: string) {
     console.warn(`設定ファイルの読み込みに失敗: ${projectPath}`, error);
     
     // フォールバック設定
+    const fallbackDisplayName = {
+      en: path.basename(projectPath),
+      ja: path.basename(projectPath)
+    } as Record<LocaleKey, string>;
+    const fallbackDisplayDescription = {
+      en: `Documentation for ${path.basename(projectPath)}`,
+      ja: `${path.basename(projectPath)}のドキュメント`
+    } as Record<LocaleKey, string>;
+    
     return {
       name: path.basename(projectPath),
-      description: {
-        en: `Documentation for ${path.basename(projectPath)}`,
-        ja: `${path.basename(projectPath)}のドキュメント`
-      } as Record<LocaleKey, string>,
+      displayName: fallbackDisplayName,
+      description: fallbackDisplayDescription,
+      displayDescription: fallbackDisplayDescription,
       basePath: `/docs/${path.basename(projectPath)}`,
       supportedLangs: ['en', 'ja'] as LocaleKey[]
     };

@@ -8,7 +8,7 @@ import { scanAppsDirectory, detectProject, type DetectedProject } from '../utils
 // プロジェクト情報の型定義
 export interface Project {
   id: string;
-  name: string;
+  name: Record<LocaleKey, string>;
   description: Record<LocaleKey, string>;
   path: string;
   icon?: IconName;
@@ -65,7 +65,10 @@ async function generateAutoProjects(): Promise<Project[]> {
       const decoration = projectDecorations[id] || {};
       projects.push({
         id,
-        name: id.charAt(0).toUpperCase() + id.slice(1).replace('-', ' '),
+        name: {
+          en: id.charAt(0).toUpperCase() + id.slice(1).replace('-', ' '),
+          ja: id.charAt(0).toUpperCase() + id.slice(1).replace('-', ' ')
+        },
         description: {
           en: `Documentation for ${id}`,
           ja: `${id}のドキュメント`

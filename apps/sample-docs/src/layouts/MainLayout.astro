@@ -112,10 +112,10 @@ const docTopLink = await generateRedirectUrl(lang, projectConfig.baseUrl);
                 <div class="breadcrumb-title">
                   <a href={`/${lang}`} class="site-title">Libx</a>
                   <svg class="breadcrumb-separator" viewBox="0 0 24 24" set:html={Icons['chevron-right']} />
-                  <a href={docTopLink} class="doc-title">{projectConfig.name}</a>
+                  <a href={docTopLink} class="doc-title">{projectConfig.displayName[lang] || projectConfig.displayName.en}</a>
                 </div>
               ) : (
-                <a href={`/${lang}`} class="site-title">{projectConfig.name}</a>
+                <a href={`/${lang}`} class="site-title">{projectConfig.displayName[lang] || projectConfig.displayName.en}</a>
               )}
             </div>
             <div class="print:hidden right-group">
