@@ -1,0 +1,47 @@
+{
+  "basic": {
+    "baseUrl": "/docs/sample-docs",
+    "supportedLangs": ["en", "ja"],
+    "defaultLang": "en"
+  },
+  "translations": {
+    "en": {
+      "displayName": "Sample Documentation",
+      "displayDescription": "A comprehensive sample documentation showcasing multi-language and multi-version support.",
+      "categories": {
+        "guide": "Guide",
+        "components": "Components",
+        "advanced": "Advanced",
+        "reference": "Reference"
+      }
+    },
+    "ja": {
+      "displayName": "サンプルドキュメント",
+      "displayDescription": "多言語・多バージョン対応を実演する包括的なサンプルドキュメントです。",
+      "categories": {
+        "guide": "ガイド",
+        "components": "コンポーネント",
+        "advanced": "高度な設定",
+        "reference": "リファレンス",
+        "api": "API",
+        "examples": "サンプル"
+      }
+    }
+  },
+  "versioning": {
+    "versions": [
+      {
+        "id": "v1",
+        "name": "Version 1.0",
+        "date": "2024-01-01T00:00:00.000Z",
+        "isLatest": false
+      },
+      {
+        "id": "v2",
+        "name": "Version 2.0",
+        "date": "2025-01-01T00:00:00.000Z",
+        "isLatest": true
+      }
+    ]
+  }
+}

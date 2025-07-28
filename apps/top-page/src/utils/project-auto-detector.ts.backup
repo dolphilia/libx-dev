@@ -1,0 +1,565 @@
+/**
+ * プロジェクト自動検出ユーティリティ
+ * apps/ディレクトリ内のドキュメントプロジェクトを自動検出し、
+ * 設定ファイルとコンテンツ構造から完全なプロジェクト情報を生成
+ */
+
+import fs from 'fs/promises';
+import path from 'path';
+import type { LocaleKey } from '@docs/i18n/locales';
+
+export interface DetectedProject {
+  id: string;
+  name: Record<LocaleKey, string>;
+  description: Record<LocaleKey, string>;
+  basePath: string;
+  supportedLangs: LocaleKey[];
+  fallbackUrls: Record<LocaleKey, string>;
+}
+
+export interface ContentFile {
+  lang: string;
+  version: string;
+  section: string;
+  fileName: string;
+  url: string;
+}
+
+/**
+ * apps/ディレクトリ内のドキュメントプロジェクトを検出
+ */
+export async function scanAppsDirectory(): Promise<string[]> {
+  const appsDir = path.resolve(process.cwd(), '..', '..');
+  const projects: string[] = [];
+  
+  try {
+    const entries = await fs.readdir(appsDir, { withFileTypes: true });
+    
+    for (const entry of entries) {
+      if (!entry.isDirectory() || entry.name === 'top-page') {
+        continue;
+      }
+      
+      // 中身がappsディレクトリの場合、その中のプロジェクトをチェック
+      if (entry.name === 'apps') {
+        const appsSubDir = path.join(appsDir, entry.name);
+        try {
+          const appEntries = await fs.readdir(appsSubDir, { withFileTypes: true });
+          for (const appEntry of appEntries) {
+            if (!appEntry.isDirectory() || appEntry.name === 'top-page') {
+              continue;
+            }
+            
+            const contentPath = path.join(appsSubDir, appEntry.name, 'src', 'content', 'docs');
+            try {
+              await fs.access(contentPath);
+              projects.push(appEntry.name);
+            } catch {
+              // ドキュメントディレクトリがない場合はスキップ
+            }
+          }
+        } catch (error) {
+          console.warn(`appsディレクトリのスキャンに失敗: ${error}`);
+        }
+      } else {
+        // 通常のディレクトリとして処理
+        const contentPath = path.join(appsDir, entry.name, 'src', 'content', 'docs');
+        try {
+          await fs.access(contentPath);
+          projects.push(entry.name);
+        } catch {
+          // ドキュメントディレクトリがない場合はスキップ
+        }
+      }
+    }
+  } catch (error) {
+    console.warn('apps/ディレクトリのスキャンに失敗しました:', error);
+  }
+  
+  return projects;
+}
+
+/**
+ * 指定されたプロジェクトの情報を自動検出
+ */
+export async function detectProject(projectId: string): Promise<DetectedProject> {
+  const appsDir = path.resolve(process.cwd(), '..', '..');
+  const projectPath = path.join(appsDir, 'apps', projectId);
+  
+  // 基本情報を docs.config.ts から取得
+  const docsConfig = await loadDocsConfig(projectPath);
+  
+  // 最新バージョンを versions.config.ts から取得
+  const latestVersion = await getLatestVersion(projectPath);
+  
+  // コンテンツファイルをスキャン
+  const contentFiles = await scanProjectContent(projectPath);
+  
+  // 各言語の最初のページを自動特定
+  const fallbackUrls: Record<string, string> = {};
+  for (const lang of docsConfig.supportedLangs) {
+    const firstFile = findFirstContentFile(contentFiles, lang, latestVersion);
+    fallbackUrls[lang] = `${docsConfig.basePath}/${lang}/${latestVersion}/${firstFile}`;
+  }
+  
+  return {
+    id: projectId,
+    name: docsConfig.displayName,
+    description: docsConfig.displayDescription,
+    basePath: docsConfig.basePath,
+    supportedLangs: docsConfig.supportedLangs,
+    fallbackUrls
+  };
+}
+
+/**
+ * project.config.ts または docs.config.ts から基本設定を読み込み
+ */
+async function loadDocsConfig(projectPath: string) {
+  // 統合設定ファイル（project.config.ts）を優先
+  const projectConfigPath = path.join(projectPath, 'src', 'config', 'project.config.ts');
+  const docsConfigPath = path.join(projectPath, 'src', 'config', 'docs.config.ts');
+  
+  try {
+    let configContent: string;
+    let isProjectConfig = false;
+    
+    // project.config.ts を優先的に読み込み
+    try {
+      configContent = await fs.readFile(projectConfigPath, 'utf-8');
+      isProjectConfig = true;
+    } catch {
+      // フォールバック: docs.config.ts を読み込み
+      configContent = await fs.readFile(docsConfigPath, 'utf-8');
+    }
+    
+    // 設定値を抽出するシンプルなパーサー
+    const name = extractConfigValue(configContent, 'name') || 'Unknown Project';
+    const description = extractConfigValue(configContent, 'description') || 'No description available';
+    const baseUrl = extractConfigValue(configContent, isProjectConfig ? 'baseUrl' : 'baseUrl') || `/docs/${path.basename(projectPath)}`;
+    const supportedLangs = extractArrayValue(configContent, 'supportedLangs') || ['en', 'ja'];
+    
+    // multi-language サポート: 新しい translations 構造を優先
+    // 新しい translations 構造からの抽出を最初に試行
+    const translations = extractTranslationsObject(configContent);
+    let displayName = null;
+    let displayDescription = null;
+    
+    if (translations) {
+      displayName = extractDisplayNameFromTranslations(translations);
+      displayDescription = extractDisplayDescriptionFromTranslations(translations);
+    }
+    
+    // フォールバック: 旧構造からの抽出
+    if (!displayName) {
+      displayName = extractMultiLanguageValue(configContent, 'displayName');
+    }
+    if (!displayDescription) {
+      displayDescription = extractMultiLanguageValue(configContent, 'displayDescription');
+    }
+    
+    
+    // multi-language 対応の名前と説明を生成
+    let finalName: Record<LocaleKey, string>;
+    let finalDescription: Record<LocaleKey, string>;
+    
+    if (displayName && typeof displayName === 'object') {
+      // multi-language displayName が利用可能
+      finalName = displayName as Record<LocaleKey, string>;
+    } else if (displayName && typeof displayName === 'string') {
+      // single-language displayName の場合、全言語で使用
+      finalName = {
+        en: displayName,
+        ja: displayName
+      } as Record<LocaleKey, string>;
+    } else {
+      // フォールバック: name を全言語で使用
+      finalName = {
+        en: name,
+        ja: name
+      } as Record<LocaleKey, string>;
+    }
+    
+    if (displayDescription && typeof displayDescription === 'object') {
+      // multi-language displayDescription が利用可能
+      finalDescription = displayDescription as Record<LocaleKey, string>;
+    } else if (displayDescription && typeof displayDescription === 'string') {
+      // single-language displayDescription の場合、全言語で使用
+      finalDescription = {
+        en: displayDescription,
+        ja: displayDescription
+      } as Record<LocaleKey, string>;
+    } else {
+      // フォールバック: description を全言語で使用
+      finalDescription = {
+        en: description,
+        ja: description
+      } as Record<LocaleKey, string>;
+    }
+    
+    return {
+      name: finalName.en, // 後方互換性のため、single value として en を使用
+      displayName: finalName,
+      description: finalDescription,
+      displayDescription: finalDescription,
+      basePath: baseUrl,
+      supportedLangs: supportedLangs as LocaleKey[]
+    };
+  } catch (error) {
+    console.warn(`設定ファイルの読み込みに失敗: ${projectPath}`, error);
+    
+    // フォールバック設定
+    const fallbackDisplayName = {
+      en: path.basename(projectPath),
+      ja: path.basename(projectPath)
+    } as Record<LocaleKey, string>;
+    const fallbackDisplayDescription = {
+      en: `Documentation for ${path.basename(projectPath)}`,
+      ja: `${path.basename(projectPath)}のドキュメント`
+    } as Record<LocaleKey, string>;
+    
+    return {
+      name: path.basename(projectPath),
+      displayName: fallbackDisplayName,
+      description: fallbackDisplayDescription,
+      displayDescription: fallbackDisplayDescription,
+      basePath: `/docs/${path.basename(projectPath)}`,
+      supportedLangs: ['en', 'ja'] as LocaleKey[]
+    };
+  }
+}
+
+/**
+ * project.config.ts または versions.config.ts から最新バージョンを取得
+ */
+async function getLatestVersion(projectPath: string): Promise<string> {
+  const projectConfigPath = path.join(projectPath, 'src', 'config', 'project.config.ts');
+  const versionsPath = path.join(projectPath, 'src', 'config', 'versions.config.ts');
+  
+  // 統合設定ファイル（project.config.ts）を優先
+  try {
+    const projectContent = await fs.readFile(projectConfigPath, 'utf-8');
+    
+    // isLatest: true を持つバージョンを検索
+    const latestMatch = projectContent.match(/id:\s*['"`]([^'"`]+)['"`][^}]*isLatest:\s*true/);
+    if (latestMatch) {
+      return latestMatch[1];
+    }
+    
+    // フォールバック: v2 > v1 の順で検索
+    if (projectContent.includes("'v2'") || projectContent.includes('"v2"')) {
+      return 'v2';
+    }
+    if (projectContent.includes("'v1'") || projectContent.includes('"v1"')) {
+      return 'v1';
+    }
+  } catch {
+    // project.config.ts が見つからない場合、versions.config.ts を試す
+    try {
+      const versionsContent = await fs.readFile(versionsPath, 'utf-8');
+      
+      // isLatest: true を持つバージョンを検索
+      const latestMatch = versionsContent.match(/id:\s*['"`]([^'"`]+)['"`][^}]*isLatest:\s*true/);
+      if (latestMatch) {
+        return latestMatch[1];
+      }
+      
+      // フォールバック: v2 > v1 の順で検索
+      if (versionsContent.includes("'v2'") || versionsContent.includes('"v2"')) {
+        return 'v2';
+      }
+      if (versionsContent.includes("'v1'") || versionsContent.includes('"v1"')) {
+        return 'v1';
+      }
+    } catch (error) {
+      console.warn(`バージョン設定ファイルの読み込みに失敗: ${projectPath}`, error);
+    }
+  }
+  
+  return 'v1'; // デフォルト
+}
+
+/**
+ * プロジェクトのコンテンツファイルをスキャン
+ */
+async function scanProjectContent(projectPath: string): Promise<ContentFile[]> {
+  const contentDir = path.join(projectPath, 'src', 'content', 'docs');
+  const files: ContentFile[] = [];
+  
+  try {
+    const mdxFiles = await scanDirectory(contentDir);
+    
+    for (const filePath of mdxFiles) {
+      const pathParts = filePath.split(path.sep);
+      
+      if (pathParts.length >= 4) {
+        const [lang, version, section, fileName] = pathParts;
+        
+        // ファイル名から拡張子を除去
+        const fileSlug = fileName.replace(/\.mdx?$/, '');
+        
+        files.push({
+          lang,
+          version,
+          section,
+          fileName: fileSlug,
+          url: `${section}/${fileSlug}`
+        });
+      }
+    }
+  } catch (error) {
+    console.warn(`コンテンツスキャンに失敗: ${projectPath}`, error);
+  }
+  
+  return files;
+}
+
+/**
+ * ディレクトリを再帰的にスキャンしてMDXファイルを探す
+ */
+async function scanDirectory(dirPath: string, basePath: string = ''): Promise<string[]> {
+  const files: string[] = [];
+  
+  try {
+    const entries = await fs.readdir(dirPath, { withFileTypes: true });
+    
+    for (const entry of entries) {
+      const fullPath = path.join(dirPath, entry.name);
+      const relativePath = basePath ? path.join(basePath, entry.name) : entry.name;
+      
+      if (entry.isDirectory()) {
+        const subFiles = await scanDirectory(fullPath, relativePath);
+        files.push(...subFiles);
+      } else if (entry.isFile() && entry.name.match(/\.mdx?$/)) {
+        files.push(relativePath);
+      }
+    }
+  } catch (error) {
+    // ディレクトリが存在しない場合やアクセス権限がない場合はスキップ
+  }
+  
+  return files;
+}
+
+/**
+ * 指定した言語・バージョンの最初のコンテンツファイルを特定
+ */
+function findFirstContentFile(files: ContentFile[], lang: string, version: string): string {
+  const filtered = files
+    .filter(f => f.lang === lang && f.version === version)
+    .sort((a, b) => {
+      // セクション優先度
+      const sectionPriority: Record<string, number> = { 
+        guide: 0, 
+        api: 1, 
+        examples: 2, 
+        reference: 3,
+        faq: 4
+      };
+      const aPriority = sectionPriority[a.section] || 99;
+      const bPriority = sectionPriority[b.section] || 99;
+      
+      if (aPriority !== bPriority) {
+        return aPriority - bPriority;
+      }
+      
+      // ファイル番号でソート（01-getting-started等）
+      const aNum = parseInt(a.fileName.match(/^(\d+)-/)?.[1] || '999');
+      const bNum = parseInt(b.fileName.match(/^(\d+)-/)?.[1] || '999');
+      return aNum - bNum;
+    });
+    
+  if (filtered.length > 0) {
+    return filtered[0].url;
+  }
+  
+  // フォールバック
+  return 'guide/getting-started';
+}
+
+/**
+ * 設定ファイルから値を抽出するヘルパー
+ */
+function extractConfigValue(content: string, key: string): string | null {
+  const regex = new RegExp(`${key}:\\s*['"\`]([^'"\`]+)['"\`]`);
+  const match = content.match(regex);
+  return match ? match[1] : null;
+}
+
+/**
+ * 設定ファイルから配列値を抽出するヘルパー
+ */
+function extractArrayValue(content: string, key: string): string[] | null {
+  const regex = new RegExp(`${key}:\\s*\\[([^\\]]+)\\]`);
+  const match = content.match(regex);
+  if (match) {
+    return match[1]
+      .split(',')
+      .map(item => item.trim().replace(/['"`]/g, ''))
+      .filter(item => item.length > 0);
+  }
+  return null;
+}
+
+/**
+ * 新しい translations オブジェクト構造を抽出するヘルパー
+ */
+function extractTranslationsObject(content: string): Record<string, any> | null {
+  // より堅牢な正規表現：ネストした括弧を考慮して完全な translations オブジェクトを抽出
+  // まず '// 翻訳データ（統合）' コメントの後を探す
+  const commentIndex = content.indexOf('// 翻訳データ（統合）');
+  const searchStart = commentIndex >= 0 ? commentIndex : 0;
+  
+  const translationsStart = content.indexOf('translations:', searchStart);
+  if (translationsStart === -1) return null;
+  
+  const openBraceIndex = content.indexOf('{', translationsStart);
+  if (openBraceIndex === -1) return null;
+  
+  // 括弧のバランスを取って翻訳オブジェクト全体を抽出
+  let braceCount = 1;
+  let endIndex = openBraceIndex + 1;
+  
+  for (let i = openBraceIndex + 1; i < content.length && braceCount > 0; i++) {
+    if (content[i] === '{') {
+      braceCount++;
+    } else if (content[i] === '}') {
+      braceCount--;
+    }
+    endIndex = i;
+  }
+  
+  if (braceCount !== 0) return null;
+  
+  const translationsContent = content.substring(openBraceIndex + 1, endIndex);
+  const match = { 1: translationsContent };
+  
+  if (match) {
+    try {
+      // 簡易パーサーで translations オブジェクトを解析
+      const translationsContent = match[1];
+      const result: Record<string, any> = {};
+      
+      // 各言語セクションを抽出（改善されたアルゴリズム）
+      // まず言語名を見つける
+      const langNameRegex = /(\w+):\s*\{/g;
+      let langMatch;
+      while ((langMatch = langNameRegex.exec(translationsContent)) !== null) {
+        const lang = langMatch[1];
+        const startPos = langMatch.index + langMatch[0].length;
+        
+        // この言語ブロックの終わりを見つける（括弧のバランスを考慮）
+        let braceCount = 1;
+        let endPos = startPos;
+        
+        for (let i = startPos; i < translationsContent.length && braceCount > 0; i++) {
+          if (translationsContent[i] === '{') {
+            braceCount++;
+          } else if (translationsContent[i] === '}') {
+            braceCount--;
+          }
+          endPos = i;
+        }
+        
+        if (braceCount === 0) {
+          const langContent = translationsContent.substring(startPos, endPos);
+          result[lang] = parseLangSection(langContent);
+        }
+      }
+      
+      
+      return result;
+    } catch (error) {
+      console.warn('translations オブジェクトの解析に失敗:', error);
+    }
+  }
+  
+  return null;
+}
+
+/**
+ * 言語セクションの内容を解析
+ */
+function parseLangSection(content: string): Record<string, any> {
+  const result: Record<string, any> = {};
+  
+  // displayName と displayDescription を抽出（シングル/ダブルクォート、マルチライン対応）
+  const displayNameMatch = content.match(/displayName:\s*['"]([^'"]*(?:\\.[^'"]*)*)['"]/s);
+  if (displayNameMatch) {
+    result.displayName = displayNameMatch[1];
+  } else {
+  }
+  
+  const displayDescriptionMatch = content.match(/displayDescription:\s*['"]([^'"]*(?:\\.[^'"]*)*)['"]/s);
+  if (displayDescriptionMatch) {
+    result.displayDescription = displayDescriptionMatch[1];
+  } else {
+  }
+  
+  return result;
+}
+
+/**
+ * translations オブジェクトから displayName を抽出
+ */
+function extractDisplayNameFromTranslations(translations: Record<string, any>): Record<string, string> | null {
+  const result: Record<string, string> = {};
+  let hasValue = false;
+  
+  for (const [lang, langData] of Object.entries(translations)) {
+    if (langData && langData.displayName) {
+      result[lang] = langData.displayName;
+      hasValue = true;
+    }
+  }
+  
+  return hasValue ? result : null;
+}
+
+/**
+ * translations オブジェクトから displayDescription を抽出
+ */
+function extractDisplayDescriptionFromTranslations(translations: Record<string, any>): Record<string, string> | null {
+  const result: Record<string, string> = {};
+  let hasValue = false;
+  
+  for (const [lang, langData] of Object.entries(translations)) {
+    if (langData && langData.displayDescription) {
+      result[lang] = langData.displayDescription;
+      hasValue = true;
+    }
+  }
+  
+  return hasValue ? result : null;
+}
+
+/**
+ * 設定ファイルから multi-language 値を抽出するヘルパー
+ * string または Record<LocaleKey, string> の両方に対応
+ */
+function extractMultiLanguageValue(content: string, key: string): string | Record<string, string> | null {
+  // オブジェクト形式の検出を試行（ネストした括弧に対応）
+  const objectRegex = new RegExp(`${key}:\\s*\\{([\\s\\S]*?)\\n\\s*\\}`, 's');
+  const objectMatch = content.match(objectRegex);
+  
+  if (objectMatch) {
+    // オブジェクトから各言語の値を抽出
+    const objectContent = objectMatch[1];
+    const result: Record<string, string> = {};
+    
+    // en: 'value', ja: 'value' のようなパターンを抽出（シングル/ダブルクォート両対応）
+    const propRegex = /(\w+):\s*['"]([^'"]+)['"]/g;
+    let propMatch;
+    
+    while ((propMatch = propRegex.exec(objectContent)) !== null) {
+      result[propMatch[1]] = propMatch[2];
+    }
+    
+    if (Object.keys(result).length > 0) {
+      return result;
+    }
+  }
+  
+  // フォールバック: string 値として抽出を試行
+  return extractConfigValue(content, key);
+}

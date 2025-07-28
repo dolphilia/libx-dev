@@ -4,12 +4,16 @@ import MainLayout from '../../../layouts/MainLayout.astro';
 import { Card } from '@docs/ui/components';
 import type { LocaleKey } from '@docs/i18n/locales';
 import { translate } from '@docs/i18n/utils';
-import projectConfig from '../../../config/project.config';
+import { getLegacyProjectConfig, initializeConfig } from '../../../config/project.config.new';
 
 // 型定義
 type DocEntry = CollectionEntry<'docs'>;
 
 export async function getStaticPaths() {
+  // getStaticPaths内で設定を初期化
+  await initializeConfig();
+  const projectConfig = await getLegacyProjectConfig();
+  
   const allVersions = projectConfig.versions.map(v => v.id);
   const allLangs = projectConfig.supportedLangs;
   
@@ -30,6 +34,10 @@ export async function getStaticPaths() {
 const { lang: langParam, version: versionParam } = Astro.props;
 const lang = (langParam || 'en') as LocaleKey;
 const version = versionParam || 'v1';
+
+// 設定を再度初期化（プロパティセクション）
+await initializeConfig();
+const projectConfig = await getLegacyProjectConfig();
 
 // GitHub Pagesのベースパス
 const baseUrl = projectConfig.baseUrl;

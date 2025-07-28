@@ -2,7 +2,11 @@
 // シンプルなリダイレクト
 // i18nパッケージの言語検出を使用して、ブラウザの言語設定に基づいてリダイレクト
 import { getLanguage } from '@docs/i18n/utils';
-import projectConfig from '../config/project.config';
+import { getLegacyProjectConfig, initializeConfig } from '../config/project.config.new';
+
+// 設定を初期化
+await initializeConfig();
+const projectConfig = await getLegacyProjectConfig();
 
 // サーバーサイドでは言語検出できないため、デフォルト言語を使用
 const defaultLang = projectConfig.defaultLang;
@@ -19,9 +23,10 @@ return Astro.redirect(redirectUrl);
 <script>
   // クライアントサイドで言語を検出
   import { getLanguage } from '@docs/i18n/utils';
-  import projectConfig from '../config/project.config';
+  import { getLegacyConfig } from '../config/project.config.new';
   
   const detectedLang = getLanguage();
+  const projectConfig = getLegacyConfig();
   const supportedLangs = projectConfig.supportedLangs;
   const defaultLang = projectConfig.defaultLang;
   const baseUrl = projectConfig.baseUrl;

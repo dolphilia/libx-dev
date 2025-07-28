@@ -2,7 +2,7 @@
 import type { LocaleKey } from '@docs/i18n/locales';
 import { translate } from '@docs/i18n/utils';
 import { Dropdown, DropdownItem, Icon } from '@docs/ui/components';
-import projectConfig from '../config/project.config';
+import { getProjectConfig } from '../config/project.config.new';
 
 // 定数定義
 // BASE_URL 定義は削除し、projectConfig.baseUrl を使用する
@@ -24,9 +24,12 @@ interface Props {
   className?: string;
 }
 
+// プロジェクト設定を読み込み
+const projectConfig = await getProjectConfig();
+
 // プロパティの取得と初期値設定
-const ACTUAL_BASE_URL = projectConfig.baseUrl; // projectConfigからbaseUrlを取得
-const configuredSupportedLangs = projectConfig.supportedLangs; // projectConfigからsupportedLangsを取得
+const ACTUAL_BASE_URL = projectConfig.basic.baseUrl; // projectConfigからbaseUrlを取得
+const configuredSupportedLangs = projectConfig.basic.supportedLangs; // projectConfigからsupportedLangsを取得
 
 const { 
   currentLang, 

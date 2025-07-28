@@ -4,9 +4,14 @@ import DocLayout from '../../../layouts/DocLayout.astro';
 import type { GetStaticPathsResult } from 'astro';
 import type { LocaleKey } from '@docs/i18n/locales';
 import { TableOfContents, Pagination } from '@docs/ui/components';
-import projectConfig from '../../../config/project.config';
+import { getLegacyProjectConfig, initializeConfig } from '../../../config/project.config.new';
 import { mergePagination, type PageLink } from '@docs/versioning/utils';
+
 import { generateFileBasedPagination, checkFileExists } from '../../../utils/content-utils';
+
+// 設定を初期化
+await initializeConfig();
+const projectConfig = await getLegacyProjectConfig();
 
 // 見出しの型定義
 interface Heading {

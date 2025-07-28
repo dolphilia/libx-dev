@@ -5,8 +5,12 @@ import { translate } from '@docs/i18n/utils';
 import type { LocaleKey } from '@docs/i18n/locales';
 
 // 設定ファイルのインポート
-import projectConfig from '../config/project.config';
+import { getLegacyProjectConfig, initializeConfig } from '../config/project.config.new';
 import { getSidebarAsync } from '../utils/sidebar-generator';
+
+// 設定を初期化
+await initializeConfig();
+const projectConfig = await getLegacyProjectConfig();
 
 // Sidebarコンポーネントで使用されるSidebarItem型を定義
 interface SidebarItem {

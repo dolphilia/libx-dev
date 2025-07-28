@@ -2,7 +2,7 @@
  * サイドバー自動生成ユーティリティ
  */
 import type { LocaleKey } from '@docs/i18n/locales';
-import { getCategoryTranslations } from '../config/project.config';
+import { getCategoryTranslationsAsync } from '../config/project.config.new';
 
 export type SidebarItem = {
   title: string;
@@ -37,8 +37,8 @@ function isCacheValid(timestamp: number): boolean {
 /**
  * カテゴリ名を翻訳します
  */
-function translateCategory(category: string, lang: LocaleKey): string {
-  const translations = getCategoryTranslations();
+async function translateCategory(category: string, lang: LocaleKey): Promise<string> {
+  const translations = await getCategoryTranslationsAsync();
   
   if (translations && translations[lang] && translations[lang][category]) {
     return translations[lang][category];

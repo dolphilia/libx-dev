@@ -1,7 +1,7 @@
 /**
- * プロジェクト自動検出ユーティリティ
+ * プロジェクト自動検出ユーティリティ（JSON対応版）
  * apps/ディレクトリ内のドキュメントプロジェクトを自動検出し、
- * 設定ファイルとコンテンツ構造から完全なプロジェクト情報を生成
+ * JSON設定ファイルとコンテンツ構造から完全なプロジェクト情報を生成
  */
 
 import fs from 'fs/promises';
@@ -86,197 +86,124 @@ export async function detectProject(projectId: string): Promise<DetectedProject>
   const appsDir = path.resolve(process.cwd(), '..', '..');
   const projectPath = path.join(appsDir, 'apps', projectId);
   
-  // 基本情報を docs.config.ts から取得
-  const docsConfig = await loadDocsConfig(projectPath);
+  // 基本情報をJSON設定ファイルから取得
+  const docsConfig = await loadDocsConfigFromJSON(projectPath);
   
-  // 最新バージョンを versions.config.ts から取得
-  const latestVersion = await getLatestVersion(projectPath);
+  // 最新バージョンを取得
+  const latestVersion = getLatestVersion(docsConfig.versioning.versions);
   
   // コンテンツファイルをスキャン
   const contentFiles = await scanProjectContent(projectPath);
   
   // 各言語の最初のページを自動特定
   const fallbackUrls: Record<string, string> = {};
-  for (const lang of docsConfig.supportedLangs) {
+  for (const lang of docsConfig.basic.supportedLangs) {
     const firstFile = findFirstContentFile(contentFiles, lang, latestVersion);
-    fallbackUrls[lang] = `${docsConfig.basePath}/${lang}/${latestVersion}/${firstFile}`;
+    fallbackUrls[lang] = `${docsConfig.basic.baseUrl}/${lang}/${latestVersion}/${firstFile}`;
   }
   
   return {
     id: projectId,
-    name: docsConfig.displayName,
-    description: docsConfig.displayDescription,
-    basePath: docsConfig.basePath,
-    supportedLangs: docsConfig.supportedLangs,
+    name: extractDisplayNames(docsConfig),
+    description: extractDisplayDescriptions(docsConfig),
+    basePath: docsConfig.basic.baseUrl,
+    supportedLangs: docsConfig.basic.supportedLangs,
     fallbackUrls
   };
 }
 
 /**
- * project.config.ts または docs.config.ts から基本設定を読み込み
+ * JSON設定ファイルからプロジェクト設定を読み込み
  */
-async function loadDocsConfig(projectPath: string) {
-  // 統合設定ファイル（project.config.ts）を優先
-  const projectConfigPath = path.join(projectPath, 'src', 'config', 'project.config.ts');
-  const docsConfigPath = path.join(projectPath, 'src', 'config', 'docs.config.ts');
+async function loadDocsConfigFromJSON(projectPath: string) {
+  const configPath = path.join(projectPath, 'src', 'config', 'project.config.json');
   
   try {
-    let configContent: string;
-    let isProjectConfig = false;
+    const configContent = await fs.readFile(configPath, 'utf-8');
+    const config = JSON.parse(configContent);
     
-    // project.config.ts を優先的に読み込み
-    try {
-      configContent = await fs.readFile(projectConfigPath, 'utf-8');
-      isProjectConfig = true;
-    } catch {
-      // フォールバック: docs.config.ts を読み込み
-      configContent = await fs.readFile(docsConfigPath, 'utf-8');
+    // Date文字列をDateオブジェクトに変換
+    if (config.versioning?.versions) {
+      config.versioning.versions = config.versioning.versions.map((version: any) => ({
+        ...version,
+        date: new Date(version.date)
+      }));
     }
     
-    // 設定値を抽出するシンプルなパーサー
-    const name = extractConfigValue(configContent, 'name') || 'Unknown Project';
-    const description = extractConfigValue(configContent, 'description') || 'No description available';
-    const baseUrl = extractConfigValue(configContent, isProjectConfig ? 'baseUrl' : 'baseUrl') || `/docs/${path.basename(projectPath)}`;
-    const supportedLangs = extractArrayValue(configContent, 'supportedLangs') || ['en', 'ja'];
-    
-    // multi-language サポート: 新しい translations 構造を優先
-    // 新しい translations 構造からの抽出を最初に試行
-    const translations = extractTranslationsObject(configContent);
-    let displayName = null;
-    let displayDescription = null;
-    
-    if (translations) {
-      displayName = extractDisplayNameFromTranslations(translations);
-      displayDescription = extractDisplayDescriptionFromTranslations(translations);
-    }
-    
-    // フォールバック: 旧構造からの抽出
-    if (!displayName) {
-      displayName = extractMultiLanguageValue(configContent, 'displayName');
-    }
-    if (!displayDescription) {
-      displayDescription = extractMultiLanguageValue(configContent, 'displayDescription');
-    }
-    
-    
-    // multi-language 対応の名前と説明を生成
-    let finalName: Record<LocaleKey, string>;
-    let finalDescription: Record<LocaleKey, string>;
-    
-    if (displayName && typeof displayName === 'object') {
-      // multi-language displayName が利用可能
-      finalName = displayName as Record<LocaleKey, string>;
-    } else if (displayName && typeof displayName === 'string') {
-      // single-language displayName の場合、全言語で使用
-      finalName = {
-        en: displayName,
-        ja: displayName
-      } as Record<LocaleKey, string>;
-    } else {
-      // フォールバック: name を全言語で使用
-      finalName = {
-        en: name,
-        ja: name
-      } as Record<LocaleKey, string>;
-    }
-    
-    if (displayDescription && typeof displayDescription === 'object') {
-      // multi-language displayDescription が利用可能
-      finalDescription = displayDescription as Record<LocaleKey, string>;
-    } else if (displayDescription && typeof displayDescription === 'string') {
-      // single-language displayDescription の場合、全言語で使用
-      finalDescription = {
-        en: displayDescription,
-        ja: displayDescription
-      } as Record<LocaleKey, string>;
-    } else {
-      // フォールバック: description を全言語で使用
-      finalDescription = {
-        en: description,
-        ja: description
-      } as Record<LocaleKey, string>;
-    }
-    
-    return {
-      name: finalName.en, // 後方互換性のため、single value として en を使用
-      displayName: finalName,
-      description: finalDescription,
-      displayDescription: finalDescription,
-      basePath: baseUrl,
-      supportedLangs: supportedLangs as LocaleKey[]
-    };
+    return config;
   } catch (error) {
-    console.warn(`設定ファイルの読み込みに失敗: ${projectPath}`, error);
-    
-    // フォールバック設定
-    const fallbackDisplayName = {
-      en: path.basename(projectPath),
-      ja: path.basename(projectPath)
-    } as Record<LocaleKey, string>;
-    const fallbackDisplayDescription = {
-      en: `Documentation for ${path.basename(projectPath)}`,
-      ja: `${path.basename(projectPath)}のドキュメント`
-    } as Record<LocaleKey, string>;
-    
-    return {
-      name: path.basename(projectPath),
-      displayName: fallbackDisplayName,
-      description: fallbackDisplayDescription,
-      displayDescription: fallbackDisplayDescription,
-      basePath: `/docs/${path.basename(projectPath)}`,
-      supportedLangs: ['en', 'ja'] as LocaleKey[]
-    };
+    throw new Error(`JSONプロジェクト設定ファイルの読み込みに失敗: ${configPath} - ${error}`);
   }
 }
 
 /**
- * project.config.ts または versions.config.ts から最新バージョンを取得
+ * 表示名を抽出
  */
-async function getLatestVersion(projectPath: string): Promise<string> {
-  const projectConfigPath = path.join(projectPath, 'src', 'config', 'project.config.ts');
-  const versionsPath = path.join(projectPath, 'src', 'config', 'versions.config.ts');
+function extractDisplayNames(config: any): Record<LocaleKey, string> {
+  const result: Record<LocaleKey, string> = {} as Record<LocaleKey, string>;
   
-  // 統合設定ファイル（project.config.ts）を優先
-  try {
-    const projectContent = await fs.readFile(projectConfigPath, 'utf-8');
-    
-    // isLatest: true を持つバージョンを検索
-    const latestMatch = projectContent.match(/id:\s*['"`]([^'"`]+)['"`][^}]*isLatest:\s*true/);
-    if (latestMatch) {
-      return latestMatch[1];
-    }
-    
-    // フォールバック: v2 > v1 の順で検索
-    if (projectContent.includes("'v2'") || projectContent.includes('"v2"')) {
-      return 'v2';
-    }
-    if (projectContent.includes("'v1'") || projectContent.includes('"v1"')) {
-      return 'v1';
-    }
-  } catch {
-    // project.config.ts が見つからない場合、versions.config.ts を試す
-    try {
-      const versionsContent = await fs.readFile(versionsPath, 'utf-8');
-      
-      // isLatest: true を持つバージョンを検索
-      const latestMatch = versionsContent.match(/id:\s*['"`]([^'"`]+)['"`][^}]*isLatest:\s*true/);
-      if (latestMatch) {
-        return latestMatch[1];
+  if (config.translations) {
+    for (const [lang, translation] of Object.entries(config.translations)) {
+      if (translation && typeof translation === 'object' && (translation as any).displayName) {
+        result[lang as LocaleKey] = (translation as any).displayName;
       }
-      
-      // フォールバック: v2 > v1 の順で検索
-      if (versionsContent.includes("'v2'") || versionsContent.includes('"v2"')) {
-        return 'v2';
-      }
-      if (versionsContent.includes("'v1'") || versionsContent.includes('"v1"')) {
-        return 'v1';
-      }
-    } catch (error) {
-      console.warn(`バージョン設定ファイルの読み込みに失敗: ${projectPath}`, error);
     }
   }
   
-  return 'v1'; // デフォルト
+  // フォールバック
+  if (Object.keys(result).length === 0) {
+    result.en = 'Unknown Project';
+    result.ja = '不明なプロジェクト';
+  }
+  
+  return result;
+}
+
+/**
+ * 表示説明を抽出
+ */
+function extractDisplayDescriptions(config: any): Record<LocaleKey, string> {
+  const result: Record<LocaleKey, string> = {} as Record<LocaleKey, string>;
+  
+  if (config.translations) {
+    for (const [lang, translation] of Object.entries(config.translations)) {
+      if (translation && typeof translation === 'object' && (translation as any).displayDescription) {
+        result[lang as LocaleKey] = (translation as any).displayDescription;
+      }
+    }
+  }
+  
+  // フォールバック
+  if (Object.keys(result).length === 0) {
+    result.en = 'No description available';
+    result.ja = '説明がありません';
+  }
+  
+  return result;
+}
+
+/**
+ * 最新バージョンを取得
+ */
+function getLatestVersion(versions: any[]): string {
+  if (!versions || versions.length === 0) {
+    return 'v1';
+  }
+  
+  const latestVersion = versions.find(v => v.isLatest);
+  if (latestVersion) {
+    return latestVersion.id;
+  }
+  
+  // フォールバック: v2 > v1 の順で検索
+  const v2 = versions.find(v => v.id === 'v2');
+  if (v2) return 'v2';
+  
+  const v1 = versions.find(v => v.id === 'v1');
+  if (v1) return 'v1';
+  
+  // 最後のフォールバック
+  return versions[0]?.id || 'v1';
 }
 
 /**
@@ -375,191 +302,4 @@ function findFirstContentFile(files: ContentFile[], lang: string, version: strin
   
   // フォールバック
   return 'guide/getting-started';
-}
-
-/**
- * 設定ファイルから値を抽出するヘルパー
- */
-function extractConfigValue(content: string, key: string): string | null {
-  const regex = new RegExp(`${key}:\\s*['"\`]([^'"\`]+)['"\`]`);
-  const match = content.match(regex);
-  return match ? match[1] : null;
-}
-
-/**
- * 設定ファイルから配列値を抽出するヘルパー
- */
-function extractArrayValue(content: string, key: string): string[] | null {
-  const regex = new RegExp(`${key}:\\s*\\[([^\\]]+)\\]`);
-  const match = content.match(regex);
-  if (match) {
-    return match[1]
-      .split(',')
-      .map(item => item.trim().replace(/['"`]/g, ''))
-      .filter(item => item.length > 0);
-  }
-  return null;
-}
-
-/**
- * 新しい translations オブジェクト構造を抽出するヘルパー
- */
-function extractTranslationsObject(content: string): Record<string, any> | null {
-  // より堅牢な正規表現：ネストした括弧を考慮して完全な translations オブジェクトを抽出
-  // まず '// 翻訳データ（統合）' コメントの後を探す
-  const commentIndex = content.indexOf('// 翻訳データ（統合）');
-  const searchStart = commentIndex >= 0 ? commentIndex : 0;
-  
-  const translationsStart = content.indexOf('translations:', searchStart);
-  if (translationsStart === -1) return null;
-  
-  const openBraceIndex = content.indexOf('{', translationsStart);
-  if (openBraceIndex === -1) return null;
-  
-  // 括弧のバランスを取って翻訳オブジェクト全体を抽出
-  let braceCount = 1;
-  let endIndex = openBraceIndex + 1;
-  
-  for (let i = openBraceIndex + 1; i < content.length && braceCount > 0; i++) {
-    if (content[i] === '{') {
-      braceCount++;
-    } else if (content[i] === '}') {
-      braceCount--;
-    }
-    endIndex = i;
-  }
-  
-  if (braceCount !== 0) return null;
-  
-  const translationsContent = content.substring(openBraceIndex + 1, endIndex);
-  const match = { 1: translationsContent };
-  
-  if (match) {
-    try {
-      // 簡易パーサーで translations オブジェクトを解析
-      const translationsContent = match[1];
-      const result: Record<string, any> = {};
-      
-      // 各言語セクションを抽出（改善されたアルゴリズム）
-      // まず言語名を見つける
-      const langNameRegex = /(\w+):\s*\{/g;
-      let langMatch;
-      while ((langMatch = langNameRegex.exec(translationsContent)) !== null) {
-        const lang = langMatch[1];
-        const startPos = langMatch.index + langMatch[0].length;
-        
-        // この言語ブロックの終わりを見つける（括弧のバランスを考慮）
-        let braceCount = 1;
-        let endPos = startPos;
-        
-        for (let i = startPos; i < translationsContent.length && braceCount > 0; i++) {
-          if (translationsContent[i] === '{') {
-            braceCount++;
-          } else if (translationsContent[i] === '}') {
-            braceCount--;
-          }
-          endPos = i;
-        }
-        
-        if (braceCount === 0) {
-          const langContent = translationsContent.substring(startPos, endPos);
-          result[lang] = parseLangSection(langContent);
-        }
-      }
-      
-      
-      return result;
-    } catch (error) {
-      console.warn('translations オブジェクトの解析に失敗:', error);
-    }
-  }
-  
-  return null;
-}
-
-/**
- * 言語セクションの内容を解析
- */
-function parseLangSection(content: string): Record<string, any> {
-  const result: Record<string, any> = {};
-  
-  // displayName と displayDescription を抽出（シングル/ダブルクォート、マルチライン対応）
-  const displayNameMatch = content.match(/displayName:\s*['"]([^'"]*(?:\\.[^'"]*)*)['"]/s);
-  if (displayNameMatch) {
-    result.displayName = displayNameMatch[1];
-  } else {
-  }
-  
-  const displayDescriptionMatch = content.match(/displayDescription:\s*['"]([^'"]*(?:\\.[^'"]*)*)['"]/s);
-  if (displayDescriptionMatch) {
-    result.displayDescription = displayDescriptionMatch[1];
-  } else {
-  }
-  
-  return result;
-}
-
-/**
- * translations オブジェクトから displayName を抽出
- */
-function extractDisplayNameFromTranslations(translations: Record<string, any>): Record<string, string> | null {
-  const result: Record<string, string> = {};
-  let hasValue = false;
-  
-  for (const [lang, langData] of Object.entries(translations)) {
-    if (langData && langData.displayName) {
-      result[lang] = langData.displayName;
-      hasValue = true;
-    }
-  }
-  
-  return hasValue ? result : null;
-}
-
-/**
- * translations オブジェクトから displayDescription を抽出
- */
-function extractDisplayDescriptionFromTranslations(translations: Record<string, any>): Record<string, string> | null {
-  const result: Record<string, string> = {};
-  let hasValue = false;
-  
-  for (const [lang, langData] of Object.entries(translations)) {
-    if (langData && langData.displayDescription) {
-      result[lang] = langData.displayDescription;
-      hasValue = true;
-    }
-  }
-  
-  return hasValue ? result : null;
-}
-
-/**
- * 設定ファイルから multi-language 値を抽出するヘルパー
- * string または Record<LocaleKey, string> の両方に対応
- */
-function extractMultiLanguageValue(content: string, key: string): string | Record<string, string> | null {
-  // オブジェクト形式の検出を試行（ネストした括弧に対応）
-  const objectRegex = new RegExp(`${key}:\\s*\\{([\\s\\S]*?)\\n\\s*\\}`, 's');
-  const objectMatch = content.match(objectRegex);
-  
-  if (objectMatch) {
-    // オブジェクトから各言語の値を抽出
-    const objectContent = objectMatch[1];
-    const result: Record<string, string> = {};
-    
-    // en: 'value', ja: 'value' のようなパターンを抽出（シングル/ダブルクォート両対応）
-    const propRegex = /(\w+):\s*['"]([^'"]+)['"]/g;
-    let propMatch;
-    
-    while ((propMatch = propRegex.exec(objectContent)) !== null) {
-      result[propMatch[1]] = propMatch[2];
-    }
-    
-    if (Object.keys(result).length > 0) {
-      return result;
-    }
-  }
-  
-  // フォールバック: string 値として抽出を試行
-  return extractConfigValue(content, key);
 }

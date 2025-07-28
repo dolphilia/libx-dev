@@ -1,9 +1,13 @@
 ---
-import projectConfig from '../../config/project.config';
+import { getLegacyProjectConfig, initializeConfig } from '../../config/project.config.new';
 import type { LocaleKey } from '@docs/i18n/locales';
 import { generateRedirectUrl } from '../../utils/dynamic-navigation';
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
+  // getStaticPaths内で設定を初期化
+  await initializeConfig();
+  const projectConfig = await getLegacyProjectConfig();
+  
   return projectConfig.supportedLangs.map(lang => ({
     params: { lang }
   }));
@@ -11,6 +15,10 @@ export function getStaticPaths() {
 
 const { lang: langParam } = Astro.params;
 const lang = (langParam || 'en') as LocaleKey;
+
+// 設定を再度初期化（プロパティセクション）
+await initializeConfig();
+const projectConfig = await getLegacyProjectConfig();
 const baseUrl = projectConfig.baseUrl;
 
 // 動的にリダイレクト先を決定
