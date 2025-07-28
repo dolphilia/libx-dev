@@ -139,9 +139,25 @@ async function loadDocsConfig(projectPath: string) {
     const baseUrl = extractConfigValue(configContent, isProjectConfig ? 'baseUrl' : 'baseUrl') || `/docs/${path.basename(projectPath)}`;
     const supportedLangs = extractArrayValue(configContent, 'supportedLangs') || ['en', 'ja'];
     
-    // multi-language サポート: displayName と displayDescription の検出
-    const displayName = extractMultiLanguageValue(configContent, 'displayName');
-    const displayDescription = extractMultiLanguageValue(configContent, 'displayDescription');
+    // multi-language サポート: 新しい translations 構造を優先
+    // 新しい translations 構造からの抽出を最初に試行
+    const translations = extractTranslationsObject(configContent);
+    let displayName = null;
+    let displayDescription = null;
+    
+    if (translations) {
+      displayName = extractDisplayNameFromTranslations(translations);
+      displayDescription = extractDisplayDescriptionFromTranslations(translations);
+    }
+    
+    // フォールバック: 旧構造からの抽出
+    if (!displayName) {
+      displayName = extractMultiLanguageValue(configContent, 'displayName');
+    }
+    if (!displayDescription) {
+      displayDescription = extractMultiLanguageValue(configContent, 'displayDescription');
+    }
+    
     
     // multi-language 対応の名前と説明を生成
     let finalName: Record<LocaleKey, string>;
@@ -386,12 +402,144 @@ function extractArrayValue(content: string, key: string): string[] | null {
 }
 
 /**
+ * 新しい translations オブジェクト構造を抽出するヘルパー
+ */
+function extractTranslationsObject(content: string): Record<string, any> | null {
+  // より堅牢な正規表現：ネストした括弧を考慮して完全な translations オブジェクトを抽出
+  // まず '// 翻訳データ（統合）' コメントの後を探す
+  const commentIndex = content.indexOf('// 翻訳データ（統合）');
+  const searchStart = commentIndex >= 0 ? commentIndex : 0;
+  
+  const translationsStart = content.indexOf('translations:', searchStart);
+  if (translationsStart === -1) return null;
+  
+  const openBraceIndex = content.indexOf('{', translationsStart);
+  if (openBraceIndex === -1) return null;
+  
+  // 括弧のバランスを取って翻訳オブジェクト全体を抽出
+  let braceCount = 1;
+  let endIndex = openBraceIndex + 1;
+  
+  for (let i = openBraceIndex + 1; i < content.length && braceCount > 0; i++) {
+    if (content[i] === '{') {
+      braceCount++;
+    } else if (content[i] === '}') {
+      braceCount--;
+    }
+    endIndex = i;
+  }
+  
+  if (braceCount !== 0) return null;
+  
+  const translationsContent = content.substring(openBraceIndex + 1, endIndex);
+  const match = { 1: translationsContent };
+  
+  if (match) {
+    try {
+      // 簡易パーサーで translations オブジェクトを解析
+      const translationsContent = match[1];
+      const result: Record<string, any> = {};
+      
+      // 各言語セクションを抽出（改善されたアルゴリズム）
+      // まず言語名を見つける
+      const langNameRegex = /(\w+):\s*\{/g;
+      let langMatch;
+      while ((langMatch = langNameRegex.exec(translationsContent)) !== null) {
+        const lang = langMatch[1];
+        const startPos = langMatch.index + langMatch[0].length;
+        
+        // この言語ブロックの終わりを見つける（括弧のバランスを考慮）
+        let braceCount = 1;
+        let endPos = startPos;
+        
+        for (let i = startPos; i < translationsContent.length && braceCount > 0; i++) {
+          if (translationsContent[i] === '{') {
+            braceCount++;
+          } else if (translationsContent[i] === '}') {
+            braceCount--;
+          }
+          endPos = i;
+        }
+        
+        if (braceCount === 0) {
+          const langContent = translationsContent.substring(startPos, endPos);
+          result[lang] = parseLangSection(langContent);
+        }
+      }
+      
+      
+      return result;
+    } catch (error) {
+      console.warn('translations オブジェクトの解析に失敗:', error);
+    }
+  }
+  
+  return null;
+}
+
+/**
+ * 言語セクションの内容を解析
+ */
+function parseLangSection(content: string): Record<string, any> {
+  const result: Record<string, any> = {};
+  
+  // displayName と displayDescription を抽出（シングル/ダブルクォート、マルチライン対応）
+  const displayNameMatch = content.match(/displayName:\s*['"]([^'"]*(?:\\.[^'"]*)*)['"]/s);
+  if (displayNameMatch) {
+    result.displayName = displayNameMatch[1];
+  } else {
+  }
+  
+  const displayDescriptionMatch = content.match(/displayDescription:\s*['"]([^'"]*(?:\\.[^'"]*)*)['"]/s);
+  if (displayDescriptionMatch) {
+    result.displayDescription = displayDescriptionMatch[1];
+  } else {
+  }
+  
+  return result;
+}
+
+/**
+ * translations オブジェクトから displayName を抽出
+ */
+function extractDisplayNameFromTranslations(translations: Record<string, any>): Record<string, string> | null {
+  const result: Record<string, string> = {};
+  let hasValue = false;
+  
+  for (const [lang, langData] of Object.entries(translations)) {
+    if (langData && langData.displayName) {
+      result[lang] = langData.displayName;
+      hasValue = true;
+    }
+  }
+  
+  return hasValue ? result : null;
+}
+
+/**
+ * translations オブジェクトから displayDescription を抽出
+ */
+function extractDisplayDescriptionFromTranslations(translations: Record<string, any>): Record<string, string> | null {
+  const result: Record<string, string> = {};
+  let hasValue = false;
+  
+  for (const [lang, langData] of Object.entries(translations)) {
+    if (langData && langData.displayDescription) {
+      result[lang] = langData.displayDescription;
+      hasValue = true;
+    }
+  }
+  
+  return hasValue ? result : null;
+}
+
+/**
  * 設定ファイルから multi-language 値を抽出するヘルパー
  * string または Record<LocaleKey, string> の両方に対応
  */
 function extractMultiLanguageValue(content: string, key: string): string | Record<string, string> | null {
-  // オブジェクト形式の検出を試行
-  const objectRegex = new RegExp(`${key}:\\s*\\{([^}]+)\\}`, 's');
+  // オブジェクト形式の検出を試行（ネストした括弧に対応）
+  const objectRegex = new RegExp(`${key}:\\s*\\{([\\s\\S]*?)\\n\\s*\\}`, 's');
   const objectMatch = content.match(objectRegex);
   
   if (objectMatch) {
@@ -399,8 +547,8 @@ function extractMultiLanguageValue(content: string, key: string): string | Recor
     const objectContent = objectMatch[1];
     const result: Record<string, string> = {};
     
-    // en: 'value', ja: 'value' のようなパターンを抽出
-    const propRegex = /(\w+):\s*['"`]([^'"`]+)['"`]/g;
+    // en: 'value', ja: 'value' のようなパターンを抽出（シングル/ダブルクォート両対応）
+    const propRegex = /(\w+):\s*['"]([^'"]+)['"]/g;
     let propMatch;
     
     while ((propMatch = propRegex.exec(objectContent)) !== null) {

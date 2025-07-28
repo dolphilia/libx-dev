@@ -302,9 +302,18 @@ async function getProjectCategoryTranslations(project) {
     const configPath = path.join(project.path, 'src', 'config', 'project.config.ts');
     const configContent = await fs.readFile(configPath, 'utf-8');
     
-    // プロジェクト設定ファイルの翻訳設定読み込みを試行（シンプル版）
-    // 失敗した場合はフォールバック機能に依存
-    const categoryTranslationsMatch = configContent.match(/categoryTranslations\s*:\s*\{([\s\S]*?)\n\s*\}/);
+    // プロジェクト設定ファイルの翻訳設定読み込みを試行（新構造対応）
+    // 新しい translations 構造と古い categoryTranslations 構造の両方をサポート
+    let categoryTranslationsMatch = configContent.match(/categoryTranslations\s*:\s*\{([\s\S]*?)\n\s*\}/);
+    
+    // 新しい translations 構造からも抽出を試行
+    if (!categoryTranslationsMatch) {
+      const translationsMatch = configContent.match(/translations\s*:\s*\{([\s\S]*?)\n\s*\}/);
+      if (translationsMatch) {
+        // translations 構造から categories を抽出
+        categoryTranslationsMatch = extractCategoriesFromTranslations(translationsMatch[1]);
+      }
+    }
     
     if (categoryTranslationsMatch) {
       // 最小限の翻訳設定（よく使われるものだけ）
@@ -400,6 +409,42 @@ async function getProjectBaseUrl(project) {
   }
 
   return finalBaseUrl;
+}
+
+/**
+ * 新しい translations 構造から categories 部分を抽出
+ */
+function extractCategoriesFromTranslations(translationsContent) {
+  try {
+    // 各言語のセクションを抽出
+    const langSections = {};
+    const langRegex = /(\w+):\s*\{([\s\S]*?)\n\s*\}/g;
+    let langMatch;
+    
+    while ((langMatch = langRegex.exec(translationsContent)) !== null) {
+      const lang = langMatch[1];
+      const langContent = langMatch[2];
+      
+      // categories オブジェクトを抽出
+      const categoriesMatch = langContent.match(/categories:\s*\{([\s\S]*?)\n\s*\}/);
+      if (categoriesMatch) {
+        langSections[lang] = categoriesMatch[1];
+      }
+    }
+    
+    // categoryTranslations と同じ形式に変換
+    if (Object.keys(langSections).length > 0) {
+      let result = '';
+      for (const [lang, content] of Object.entries(langSections)) {
+        result += `    ${lang}: {\n${content}\n    },\n`;
+      }
+      return [result]; // match オブジェクトと同じ形式で返す
+    }
+  } catch (error) {
+    console.warn('translations 構造からの categories 抽出に失敗:', error);
+  }
+  
+  return null;
 }
 
 // スクリプトの実行

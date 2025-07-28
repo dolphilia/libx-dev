@@ -27,7 +27,7 @@ const projectPath = await generateProjectUrl(project, lang);
       {isUpdated && <span class="project-card-badge project-card-badge-updated">{translate('common.updated', lang)}</span>}
     </div>
     
-    <p class="project-card-description">{description[lang]}</p>
+    <p class="project-card-description">{description[lang] || description.en}</p>
     
     {tags && tags.length > 0 && (
       <div class="project-card-tags">

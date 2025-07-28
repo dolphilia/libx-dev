@@ -8,7 +8,7 @@ import { VersionSelector } from '@docs/versioning/components';
 import LanguageSelector from '../components/LanguageSelector.astro';
 import type { LocaleKey } from '@docs/i18n/locales';
 import '../styles/global.css';
-import projectConfig from '../config/project.config';
+import projectConfig, { getDisplayName } from '../config/project.config';
 import { ThemeToggle } from '@docs/ui/components';
 import { findCorrespondingFile } from '../utils/content-utils';
 import { Icons } from '@docs/ui/components/icons/Icons';
@@ -112,10 +112,10 @@ const docTopLink = await generateRedirectUrl(lang, projectConfig.baseUrl);
                 <div class="breadcrumb-title">
                   <a href={`/${lang}`} class="site-title">Libx</a>
                   <svg class="breadcrumb-separator" viewBox="0 0 24 24" set:html={Icons['chevron-right']} />
-                  <a href={docTopLink} class="doc-title">{projectConfig.displayName[lang] || projectConfig.displayName.en}</a>
+                  <a href={docTopLink} class="doc-title">{getDisplayName(lang)}</a>
                 </div>
               ) : (
-                <a href={`/${lang}`} class="site-title">{projectConfig.displayName[lang] || projectConfig.displayName.en}</a>
+                <a href={`/${lang}`} class="site-title">{getDisplayName(lang)}</a>
               )}
             </div>
             <div class="print:hidden right-group">
