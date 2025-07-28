@@ -1,0 +1,30 @@
+{
+  "siteConfig": {
+    "baseUrl": "",
+    "supportedLangs": ["en", "ja"],
+    "defaultLang": "en",
+    "repository": "https://github.com/dolphilia",
+    "siteName": "Libx"
+  },
+  "content": {
+    "siteDescription": {
+      "en": "Documentation site built with Astro",
+      "ja": "Astroで構築されたドキュメントサイト"
+    },
+    "heroTitle": {
+      "en": "Documentation Hub",
+      "ja": "ドキュメントハブ"
+    },
+    "heroDescription": {
+      "en": "Find all the documentation you need in one place",
+      "ja": "必要なすべてのドキュメントを一箇所で見つけることができます"
+    }
+  },
+  "projectDecorations": {
+    "sample-docs": {
+      "icon": "file-text",
+      "tags": ["sample", "documentation"],
+      "isNew": true
+    }
+  }
+}

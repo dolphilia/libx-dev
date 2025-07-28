@@ -3,8 +3,8 @@
  */
 
 import type { LocaleKey } from '@docs/i18n/locales';
-import type { Project } from '../config/projects.config';
-import { getTopPageConfig } from '../config/projects.config';
+import type { Project } from '../config/projects.config.new';
+import { getTopPageConfig } from '../config/projects.config.new';
 
 /**
  * プロジェクトの最適なURLを生成
