@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import pagefind from 'astro-pagefind';
+import { remarkLinkTransformer } from '../../scripts/plugins/remark-link-transformer.js';
 
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -25,7 +26,9 @@ export default defineConfig({
         wrap: true
       },
       // MDXの設定
-      remarkPlugins: [],
+      remarkPlugins: [
+        [remarkLinkTransformer, { baseUrl: '/docs/sample-docs' }]
+      ],
       rehypePlugins: []
     }),
     pagefind()
