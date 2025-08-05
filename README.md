@@ -1,4 +1,4 @@
-# docs-astro
+# libx
 
 複数のAstroプロジェクトをモノレポ構造で管理するドキュメントサイトです。主に英語の技術ドキュメントを日本語に翻訳したコンテンツを扱います。
 
@@ -13,7 +13,7 @@
 ## プロジェクト構造
 
 ```
-docs-astro-dev/
+libx-dev/
 ├── packages/         # 共有パッケージ
 │   ├── ui/           # 共通UIコンポーネント
 │   ├── theme/        # 共通テーマ
@@ -36,8 +36,8 @@ docs-astro-dev/
 
 1. リポジトリのクローン：
    ```bash
-   git clone https://github.com/dolphilia/docs-astro-dev.git
-   cd docs-astro-dev
+   git clone https://github.com/dolphilia/libx-dev.git
+   cd libx-dev
    ```
 
 2. 依存関係のインストール：
@@ -112,10 +112,10 @@ pnpm build && pnpm deploy:pages
 # または一連のビルドプロセスとデプロイを実行
 # 1. サイドバーを構築
 # 2. 統合ビルドを実行
-# 3. ビルド出力を../docs-astro/にコピー
+# 3. ビルド出力を../libx/にコピー
 pnpm build:deploy
 
-# ビルド出力を../docs-astro/にコピーのみ実行
+# ビルド出力を../libx/にコピーのみ実行
 pnpm copy:docs
 ```
 

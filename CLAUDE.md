@@ -50,10 +50,10 @@ pnpm build:separate
 # サイドバーJSONファイルを生成
 pnpm build:sidebar
 
-# 完全なデプロイパイプライン（sidebar → build → copy to ../docs-astro/）
+# 完全なデプロイパイプライン（sidebar → build → copy to ../libx/）
 pnpm build:deploy
 
-# ビルド出力を../docs-astro/にコピー
+# ビルド出力を../libx/にコピー
 pnpm copy:docs
 
 # Cloudflare Pagesにデプロイ

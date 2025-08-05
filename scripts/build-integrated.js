@@ -86,7 +86,7 @@ function updateBasePath(filePath, oldBasePath, newBasePath) {
   
   // ローカルビルドの場合は、ベースパスを削除
   if (isLocalBuild) {
-    oldBasePath = '/docs-astro';
+    oldBasePath = '/libx';
     newBasePath = '';
   }
   
@@ -247,12 +247,12 @@ async function main() {
     // ベースパスの修正が必要な場合
     if (app.pathPrefix) {
       console.log(`${app.name}のベースパスを修正しています...`);
-      let oldBasePath = '/docs-astro'; 
-      let newBasePath = '/docs-astro' + app.pathPrefix; 
+      let oldBasePath = '/libx'; 
+      let newBasePath = '/libx' + app.pathPrefix; 
       
       if (isLocalBuild) {
         console.log(`ローカル開発環境用にベースパスを削除します...`);
-        oldBasePath = '/docs-astro';
+        oldBasePath = '/libx';
         newBasePath = '';
       }
       

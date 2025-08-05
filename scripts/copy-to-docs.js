@@ -3,7 +3,7 @@
 /**
  * ビルド出力コピースクリプト
  * 
- * このスクリプトは、`dist/`ディレクトリ内のすべてのファイルを`../docs-astro/`にコピーします。
+ * このスクリプトは、`dist/`ディレクトリ内のすべてのファイルを`../libx/`にコピーします。
  * 重複するファイルがある場合は上書きします。
  * 
  * 使用方法:
@@ -22,7 +22,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
 const distDir = path.join(rootDir, 'dist');
-const docsDir = path.resolve(rootDir, '..', 'docs-astro');
+const docsDir = path.resolve(rootDir, '..', 'libx');
 
 /**
  * メイン処理
@@ -37,7 +37,7 @@ async function main() {
     process.exit(1);
   }
 
-  // docs-astroディレクトリの存在確認（存在しない場合は作成）
+  // libxディレクトリの存在確認（存在しない場合は作成）
   if (!fs.existsSync(docsDir)) {
     console.log(`コピー先ディレクトリを作成します: ${docsDir}`);
     fs.mkdirSync(docsDir, { recursive: true });
