@@ -217,35 +217,48 @@ apps/top-page/src/config/
 
 ### 新しいバージョンの追加
 
-新しいバージョンを追加するには、以下のコマンドを実行します：
+新しいドキュメントバージョンを作成するには、以下のコマンドを実行します：
 
 ```bash
+# 基本的な使用方法
 node scripts/create-version.js [project-name] [version]
 
 # 例: sample-docsプロジェクトにv3バージョンを追加
 node scripts/create-version.js sample-docs v3
+
+# インタラクティブモードで実行（推奨）
+node scripts/create-version.js sample-docs v3 --interactive
+
+# 前バージョンからのコピーを行わない場合
+node scripts/create-version.js sample-docs v3 --no-copy
 ```
 
-このコマンドは以下の処理を行います：
+このコマンド（改良版）は以下の処理を自動で行います：
 
-- バージョン設定ファイルの更新
-- 各言語のディレクトリ構造の作成
-- インデックスページの作成
-- 前のバージョンからのドキュメントのコピー（オプション）
+- `project.config.json`のバージョン設定更新
+- 全言語に対応したディレクトリ構造作成
+- 前バージョンからのコンテンツコピー（オプション）
+- バージョン管理の自動更新
 
 ### 新しいドキュメントの追加
 
-新しいドキュメントを追加するには、以下のコマンドを実行します：
+新しいドキュメントを作成するには、以下のコマンドを実行します：
 
 ```bash
-node scripts/create-document.js [project-name] [lang] [version] [slug]
+# 基本的な使用方法
+node scripts/create-document.js [project-name] [lang] [version] [category] [title]
 
-# 例: sample-docsプロジェクトの英語版v1にインストールガイドを追加
-node scripts/create-document.js sample-docs en v1 guide/installation
+# 例: sample-docsの英語版v2にガイドドキュメントを追加
+node scripts/create-document.js sample-docs en v2 guide "Getting Started"
+
+# インタラクティブモードで実行（推奨）
+node scripts/create-document.js sample-docs ja v2 --interactive
 ```
 
-このコマンドは以下の処理を行います：
+このコマンド（改良版）は以下の処理を自動で行います：
 
-- ドキュメントファイル（MDX）の作成
-- 前後のページへのリンクの自動生成
-- サイドバー設定の更新ガイダンスの表示
+- 既存プロジェクト構造の自動解析
+- カテゴリとファイル番号の自動採番
+- 適切なディレクトリ構造での配置
+- MDXテンプレートファイルの自動生成
+- インタラクティブなカテゴリ選択機能

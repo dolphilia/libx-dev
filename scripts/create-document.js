@@ -1,158 +1,261 @@
 #!/usr/bin/env node
+
 /**
- * 新しいドキュメントを追加するスクリプト
- * 使用例: node scripts/create-document.js sample-docs en v1 guide/installation
+ * 新しいドキュメントを作成するスクリプト（改良版）
+ * 使用例: 
+ * node scripts/create-document.js sample-docs en v2 guide "Getting Started"
+ * node scripts/create-document.js sample-docs en v2 --interactive
  */
+
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import readline from 'readline';
+import {
+  loadProjectConfig,
+  analyzeProjectStructure,
+  getNextCategoryNumber,
+  normalizeFileName,
+  getCategoryDisplayName,
+  generateDocumentTemplate,
+  validateDocumentPath,
+  createDocumentFile,
+  displayProjectStructure
+} from './document-utils.js';
 
-// __dirnameの代替を作成
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// コマンドライン引数の解析
+function parseArguments() {
+  const args = process.argv.slice(2);
+  
+  if (args.length < 2) {
+    console.error('使用法: node scripts/create-document.js <project-name> <lang> <version> [category] [title] [options]');
+    console.error('');
+    console.error('引数:');
+    console.error('  project-name    プロジェクト名');
+    console.error('  lang           言語 (en, ja)');
+    console.error('  version        バージョン (v1, v2)');
+    console.error('  category       カテゴリ名（省略可）');
+    console.error('  title          ドキュメントタイトル（省略可）');
+    console.error('');
+    console.error('オプション:');
+    console.error('  --interactive  インタラクティブモードで実行');
+    console.error('  --help         このヘルプを表示');
+    console.error('');
+    console.error('例:');
+    console.error('  node scripts/create-document.js sample-docs en v2 guide "Getting Started"');
+    console.error('  node scripts/create-document.js sample-docs ja v2 --interactive');
+    process.exit(1);
+  }
 
-// コマンドライン引数の取得
-const [, , projectName, lang, version, slug] = process.argv;
+  const [projectName, lang, version, ...rest] = args;
+  const isInteractive = rest.includes('--interactive');
+  const isHelp = rest.includes('--help');
+  
+  if (isHelp) {
+    console.log('ドキュメント作成ツール - 詳細ヘルプ');
+    console.log('=====================================');
+    console.log('');
+    console.log('このツールは現在のプロジェクト構造に基づいて新しいドキュメントを作成します。');
+    console.log('- 既存のカテゴリを自動検出');
+    console.log('- ファイル番号の自動採番');  
+    console.log('- 適切なテンプレートの自動生成');
+    console.log('');
+    process.exit(0);
+  }
 
-if (!projectName || !lang || !version || !slug) {
-  console.error('使用法: node scripts/create-document.js <project-name> <lang> <version> <slug>');
-  process.exit(1);
+  // 非インタラクティブモードの場合
+  if (!isInteractive) {
+    const [category, title] = rest.filter(arg => !arg.startsWith('--'));
+    return { projectName, lang, version, category, title, isInteractive: false };
+  }
+
+  return { projectName, lang, version, isInteractive: true };
 }
 
-// プロジェクトのパス
-const projectPath = path.join(__dirname, '..', 'apps', projectName);
+// インタラクティブモードの実装
+async function runInteractiveMode(projectName, lang, version) {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
 
-// プロジェクトが存在するか確認
-if (!fs.existsSync(projectPath)) {
-  console.error(`プロジェクト "${projectName}" が見つかりません`);
-  process.exit(1);
-}
+  const ask = (question) => new Promise((resolve) => rl.question(question, resolve));
 
-// ドキュメントのパス
-const docPath = path.join(projectPath, 'src', 'content', 'docs', lang, version, `${slug}.mdx`);
-
-// ディレクトリの作成
-fs.mkdirSync(path.dirname(docPath), { recursive: true });
-
-// ドキュメントのタイトルを生成
-const title = slug.split('/').pop().split('-').map(word => 
-  word.charAt(0).toUpperCase() + word.slice(1)
-).join(' ');
-
-// カテゴリを取得
-const category = slug.split('/')[0];
-
-// 前後のページのリンクを生成
-let prevLink = null;
-let nextLink = null;
-
-// 同じカテゴリの他のドキュメントを検索
-const categoryDir = path.join(projectPath, 'src', 'content', 'docs', lang, version, category);
-if (fs.existsSync(categoryDir)) {
   try {
-    const files = fs.readdirSync(categoryDir)
-      .filter(file => file.endsWith('.mdx'))
-      .map(file => file.replace('.mdx', ''));
+    console.log(`\n🚀 ドキュメント作成ツール (インタラクティブモード)`);
+    console.log(`プロジェクト: ${projectName} | 言語: ${lang} | バージョン: ${version}\n`);
+
+    // プロジェクト設定を読み込み
+    const config = loadProjectConfig(projectName);
     
-    // ファイル名でソート
-    files.sort();
+    // 現在の構造を分析
+    const categories = analyzeProjectStructure(projectName, lang, version);
     
-    // 現在のスラグの位置を取得
-    const currentSlug = slug.split('/').pop();
-    const index = files.indexOf(currentSlug);
+    // プロジェクト構造を表示
+    displayProjectStructure(categories, lang, config);
+
+    // カテゴリの選択
+    let categoryName, categoryDir, fileName;
     
-    // 前のページ
-    if (index > 0) {
-      const prevSlug = files[index - 1];
-      prevLink = {
-        text: prevSlug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
-        link: `/${lang}/${version}/${category}/${prevSlug}`
-      };
+    if (Object.keys(categories).length > 0) {
+      console.log('\n📋 カテゴリ選択:');
+      console.log('1. 既存のカテゴリを使用');
+      console.log('2. 新しいカテゴリを作成');
+      
+      const categoryChoice = await ask('選択してください (1-2): ');
+      
+      if (categoryChoice === '1') {
+        // 既存カテゴリから選択
+        const categoryList = Object.keys(categories);
+        console.log('\n既存のカテゴリ:');
+        categoryList.forEach((cat, index) => {
+          const displayName = getCategoryDisplayName(config, lang, cat);
+          console.log(`${index + 1}. ${cat} (${displayName})`);
+        });
+        
+        const categoryIndex = await ask('カテゴリ番号を選択してください: ');
+        const selectedIndex = parseInt(categoryIndex) - 1;
+        
+        if (selectedIndex >= 0 && selectedIndex < categoryList.length) {
+          categoryName = categoryList[selectedIndex];
+          categoryDir = categories[categoryName].fullDir;
+        } else {
+          console.error('無効な選択です');
+          process.exit(1);
+        }
+      } else if (categoryChoice === '2') {
+        // 新しいカテゴリを作成
+        categoryName = await ask('新しいカテゴリ名を入力してください: ');
+        const categoryNumber = getNextCategoryNumber(categories);
+        categoryDir = `${categoryNumber}-${normalizeFileName(categoryName)}`;
+      } else {
+        console.error('無効な選択です');
+        process.exit(1);
+      }
+    } else {
+      // 初回作成
+      console.log('\n📁 最初のカテゴリを作成します');
+      categoryName = await ask('カテゴリ名を入力してください: ');
+      categoryDir = `01-${normalizeFileName(categoryName)}`;
+    }
+
+    // ドキュメントタイトルの入力
+    const title = await ask('\nドキュメントタイトルを入力してください: ');
+    const description = await ask('ドキュメントの説明を入力してください (省略可): ');
+    
+    // ファイル名の生成
+    if (categories[categoryName]) {
+      const nextNumber = categories[categoryName].nextNumber;
+      fileName = `${nextNumber}-${normalizeFileName(title)}`;
+    } else {
+      fileName = `01-${normalizeFileName(title)}`;
+    }
+
+    console.log(`\n📄 作成予定のファイル: ${categoryDir}/${fileName}.mdx`);
+    const confirm = await ask('作成しますか？ (y/N): ');
+    
+    if (confirm.toLowerCase() === 'y' || confirm.toLowerCase() === 'yes') {
+      return { categoryName, categoryDir, fileName, title, description };
+    } else {
+      console.log('キャンセルされました');
+      process.exit(0);
     }
     
-    // 次のページ
-    if (index < files.length - 1) {
-      const nextSlug = files[index + 1];
-      nextLink = {
-        text: nextSlug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
-        link: `/${lang}/${version}/${category}/${nextSlug}`
-      };
+  } finally {
+    rl.close();
+  }
+}
+
+// メイン処理
+async function main() {
+  try {
+    const args = parseArguments();
+    
+    // 基本バリデーション
+    const validationErrors = validateDocumentPath(
+      args.projectName, 
+      args.lang, 
+      args.version, 
+      args.category || 'test',
+      'test'
+    );
+    
+    if (validationErrors.length > 0) {
+      console.error('❌ バリデーションエラー:');
+      validationErrors.forEach(error => console.error(`  - ${error}`));
+      process.exit(1);
     }
+
+    console.log(`\n🚀 ドキュメント作成ツール`);
+    console.log(`プロジェクト: ${args.projectName}`);
+    console.log(`言語: ${args.lang}`);
+    console.log(`バージョン: ${args.version}`);
+
+    let categoryName, categoryDir, fileName, title, description;
+
+    if (args.isInteractive) {
+      // インタラクティブモード
+      const result = await runInteractiveMode(args.projectName, args.lang, args.version);
+      ({ categoryName, categoryDir, fileName, title, description } = result);
+    } else {
+      // 非インタラクティブモード
+      if (!args.category || !args.title) {
+        console.error('❌ 非インタラクティブモードではカテゴリとタイトルが必要です');
+        process.exit(1);
+      }
+
+      // プロジェクト設定を読み込み
+      const config = loadProjectConfig(args.projectName);
+      const categories = analyzeProjectStructure(args.projectName, args.lang, args.version);
+      
+      categoryName = args.category;
+      title = args.title;
+      description = '';
+
+      // カテゴリディレクトリを決定
+      if (categories[categoryName]) {
+        categoryDir = categories[categoryName].fullDir;
+        const nextNumber = categories[categoryName].nextNumber;
+        fileName = `${nextNumber}-${normalizeFileName(title)}`;
+      } else {
+        // 新しいカテゴリ
+        const categoryNumber = getNextCategoryNumber(categories);
+        categoryDir = `${categoryNumber}-${normalizeFileName(categoryName)}`;
+        fileName = `01-${normalizeFileName(title)}`;
+      }
+    }
+
+    // ドキュメントファイルの作成
+    console.log('\n📝 ドキュメントファイルを作成しています...');
+    
+    const content = generateDocumentTemplate(title, description, categoryName);
+    const docPath = createDocumentFile(
+      args.projectName, 
+      args.lang, 
+      args.version, 
+      categoryDir, 
+      fileName, 
+      content
+    );
+
+    console.log('✅ ドキュメントファイルが作成されました!');
+    console.log(`📄 ファイルパス: ${docPath}`);
+    console.log(`🌐 URL: /${args.lang}/${args.version}/${categoryDir.replace(/^\d+-/, '')}/${fileName.replace(/^\d+-/, '')}`);
+
+    // 次のステップの案内
+    console.log('\n📋 次のステップ:');
+    console.log('1. 作成されたファイルを編集してコンテンツを追加');
+    console.log('2. 開発サーバーで確認: pnpm dev');
+    console.log('3. 必要に応じて他の言語版も作成');
+
   } catch (error) {
-    console.warn(`カテゴリディレクトリの読み込み中にエラーが発生しました: ${error.message}`);
+    console.error('❌ エラーが発生しました:', error.message);
+    process.exit(1);
   }
 }
 
-// ドキュメントのテンプレート
-let docContent = `---
-title: "${title}"
-description: "Description of ${title}"
-pubDate: ${new Date().toISOString().split('T')[0]}
-author: "Docs Team"
-order: 1
-`;
-
-// 前のページへのリンクがある場合
-if (prevLink) {
-  docContent += `prev:
-  text: "${prevLink.text}"
-  link: "${prevLink.link}"
-`;
+// スクリプトが直接実行された場合のみ実行
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main();
 }
 
-// 次のページへのリンクがある場合
-if (nextLink) {
-  docContent += `next:
-  text: "${nextLink.text}"
-  link: "${nextLink.link}"
-`;
-}
-
-// フロントマターの終了
-docContent += `---
-
-# ${title}
-
-Write your content here...
-`;
-
-// ドキュメントの作成
-fs.writeFileSync(docPath, docContent);
-console.log(`ドキュメントを作成しました: ${docPath}`);
-
-// サイドバー設定ファイルのパス
-const sidebarConfigPath = path.join(projectPath, 'src', 'config', 'sidebar.config.ts');
-
-// サイドバー設定ファイルが存在するか確認
-if (fs.existsSync(sidebarConfigPath)) {
-  console.log(`注意: 必要に応じて ${sidebarConfigPath} を更新してください`);
-  console.log(`新しいドキュメントのパス: /${lang}/${version}/${slug}`);
-  
-  // サイドバー設定ファイルの内容を読み込む
-  const sidebarConfigContent = fs.readFileSync(sidebarConfigPath, 'utf-8');
-  
-  // カテゴリが既に存在するか確認
-  const categoryRegex = new RegExp(`title: translate\\('docs\\.${category}'`);
-  if (categoryRegex.test(sidebarConfigContent)) {
-    console.log(`カテゴリ "${category}" は既にサイドバーに存在します`);
-    console.log(`以下のようなコードを追加してください:
-
-{ 
-  title: translate('docs.${title.toLowerCase().replace(/ /g, '_')}', lang), 
-  href: \`\${baseUrl}/\${lang}/\${version}/${slug}\` 
-},`);
-  } else {
-    console.log(`カテゴリ "${category}" はサイドバーに存在しません`);
-    console.log(`以下のようなコードを追加してください:
-
-{
-  title: translate('docs.${category}', lang),
-  items: [
-    { 
-      title: translate('docs.${title.toLowerCase().replace(/ /g, '_')}', lang), 
-      href: \`\${baseUrl}/\${lang}/\${version}/${slug}\` 
-    },
-  ]
-},`);
-  }
-}
+export { main };

@@ -1,7 +1,10 @@
 {
   "basic": {
     "baseUrl": "/docs/sample-docs",
-    "supportedLangs": ["en", "ja"],
+    "supportedLangs": [
+      "en",
+      "ja"
+    ],
     "defaultLang": "en"
   },
   "translations": {
