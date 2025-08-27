@@ -1,7 +1,10 @@
 {
   "siteConfig": {
     "baseUrl": "",
-    "supportedLangs": ["en", "ja"],
+    "supportedLangs": [
+      "en",
+      "ja"
+    ],
     "defaultLang": "en",
     "repository": "https://github.com/dolphilia",
     "siteName": "Libx"
@@ -23,7 +26,20 @@
   "projectDecorations": {
     "sample-docs": {
       "icon": "file-text",
-      "tags": ["sample", "documentation"],
+      "tags": [
+        "sample",
+        "documentation",
+        "example"
+      ],
+      "isNew": false
+    },
+    "project-template": {
+      "icon": "layers",
+      "tags": [
+        "template",
+        "base",
+        "starter"
+      ],
       "isNew": true
     }
   }

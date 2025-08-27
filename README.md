@@ -51,11 +51,58 @@ libx-dev/
    pnpm dev
    
    # 特定のプロジェクトのみ起動
-   pnpm --filter=sample-docs dev
+   pnpm --filter=project-template dev
    pnpm --filter=top-page dev
    ```
 
 ## 新規プロジェクトの追加方法
+
+### 自動プロジェクト作成スクリプト（推奨）
+
+新しいドキュメントプロジェクトを自動で作成するスクリプトを利用できます：
+
+```bash
+# 基本的な使用
+pnpm create:project プロジェクト名 "英語表示名" "日本語表示名"
+
+# 例: API文書プロジェクトを作成
+pnpm create:project api-docs "API Documentation" "API文書"
+
+# オプション付きで作成
+pnpm create:project my-project "My Documentation" "私のドキュメント" \
+  --description-en="Comprehensive documentation" \
+  --description-ja="包括的なドキュメント" \
+  --icon="book" \
+  --tags="documentation,guide"
+
+# テストスキップで高速作成
+pnpm create:project quick-project "Quick Project" "クイックプロジェクト" --skip-test
+```
+
+このスクリプトは以下の処理を自動で実行します：
+- テンプレートプロジェクト（project-template）のコピー
+- 全設定ファイルの自動更新（package.json、astro.config.mjs、project.config.json等）
+- 依存関係の自動インストール
+- 動作確認テスト
+- トップページへのプロジェクト追加
+
+#### 利用可能なオプション
+
+| オプション | 説明 | デフォルト値 |
+|-----------|------|-------------|
+| `--description-en` | 英語説明文 | "Documentation for [表示名]" |
+| `--description-ja` | 日本語説明文 | "[表示名]のドキュメントです" |
+| `--icon` | アイコン名 | "file-text" |
+| `--tags` | カンマ区切りタグ | "documentation" |
+| `--template` | テンプレートプロジェクト | "project-template" |
+| `--skip-test` | 動作テストをスキップ | false |
+
+#### 利用可能なアイコン
+`file-text`, `book`, `code`, `settings`, `database`, `globe`, `layers`, `package` など
+
+### 手動でのプロジェクト作成
+
+自動スクリプトを使わない場合の手動作成方法：
 
 1. 新しいAstroプロジェクトを作成：
    ```bash
@@ -73,6 +120,8 @@ libx-dev/
    - 多言語対応の設定
    - バージョン管理の設定
 
+手動作成の詳細手順は`docs/新しいドキュメントサイトの作成手順.md`を参照してください。
+
 ## ビルドとデプロイ
 
 ### ビルドコマンド
@@ -80,6 +129,9 @@ libx-dev/
 以下のコマンドを使用してプロジェクトをビルドできます：
 
 ```bash
+# 新しいドキュメントプロジェクトを作成
+pnpm create:project
+
 # 統合ビルドを実行（すべてのアプリケーションをビルドして統合）
 pnpm build
 
@@ -140,11 +192,22 @@ const projectDecorations: Record<string, ProjectDecoration> = {
 
 ## ドキュメント管理
 
+### プロジェクト作成
+
+新しいドキュメントプロジェクトを作成するには：
+
+```bash
+# 新しいプロジェクトを作成
+pnpm create:project project-name "Project Name" "プロジェクト名"
+```
+
+詳細なオプションについては上記の「新規プロジェクトの追加方法」セクションを参照してください。
+
 ### 設定ファイル
 
 ドキュメントの設定は以下のファイルで管理されています：
 
-```
+```text
 apps/[project-name]/src/config/
 └── project.config.ts   # プロジェクト統合設定（メタデータ、バージョン、カテゴリ翻訳）
 
@@ -164,6 +227,7 @@ node scripts/create-version.js sample-docs v3
 ```
 
 このコマンドは以下の処理を行います：
+
 - バージョン設定ファイルの更新
 - 各言語のディレクトリ構造の作成
 - インデックスページの作成
@@ -181,6 +245,7 @@ node scripts/create-document.js sample-docs en v1 guide/installation
 ```
 
 このコマンドは以下の処理を行います：
+
 - ドキュメントファイル（MDX）の作成
 - 前後のページへのリンクの自動生成
 - サイドバー設定の更新ガイダンスの表示

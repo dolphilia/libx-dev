@@ -1,0 +1,233 @@
+---
+title: "Component Overview"
+description: "Discover the available UI components for enhancing your documentation"
+---
+
+import { Icon, Button, Card } from '@docs/ui';
+
+# Component Overview
+
+This documentation system includes a comprehensive set of UI components designed to enhance your documentation with interactive elements, visual aids, and improved user experience.
+
+## Available Components
+
+### Content Components
+
+| Component | Purpose | Example Use Case |
+|-----------|---------|------------------|
+| **Icon** | Display scalable vector icons | Status indicators, navigation, emphasis |
+| **Button** | Interactive buttons and links | Call-to-action, navigation, downloads |
+| **Card** | Content containers | Feature highlights, summaries, links |
+| **Alert** | Important notices | Warnings, tips, information callouts |
+
+### Navigation Components
+
+| Component | Purpose | Example Use Case |
+|-----------|---------|------------------|
+| **Tabs** | Organize content in tabs | Code examples, multi-option instructions |
+| **TableOfContents** | Page navigation | Long documents, reference pages |
+| **Breadcrumbs** | Path navigation | Deep content hierarchies |
+| **Pagination** | Sequential navigation | Multi-page guides, tutorials |
+
+### Layout Components
+
+| Component | Purpose | Example Use Case |
+|-----------|---------|------------------|
+| **Grid** | Responsive layouts | Image galleries, feature grids |
+| **TwoColumn** | Side-by-side content | Comparisons, before/after examples |
+| **Sidebar** | Contextual information | Related links, quick references |
+| **Hero** | Prominent headers | Landing pages, major section starts |
+
+## Quick Examples
+
+### Icons with Text
+
+<div style="display: flex; align-items: center; gap: 0.5rem; margin: 1rem 0;">
+  <Icon name="info" color="#007bff" />
+  <span>Information message with icon</span>
+</div>
+
+<div style="display: flex; align-items: center; gap: 0.5rem; margin: 1rem 0;">
+  <Icon name="triangle-alert" color="#ffc107" />
+  <span>Warning message with icon</span>
+</div>
+
+<div style="display: flex; align-items: center; gap: 0.5rem; margin: 1rem 0;">
+  <Icon name="circle-check" color="#28a745" />
+  <span>Success message with icon</span>
+</div>
+
+### Interactive Elements
+
+<div style="display: flex; gap: 1rem; margin: 1rem 0;">
+  <Button href="/en/v2/guide/getting-started">Get Started</Button>
+  <Button variant="outline" href="/en/v2/components/icons">View Icons</Button>
+</div>
+
+### Content Cards
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin: 1rem 0;">
+  <Card title="Getting Started" href="/en/v2/guide/getting-started">
+    Learn the basics of creating and managing documentation with our step-by-step guide.
+  </Card>
+  
+  <Card title="Components" href="/en/v2/components/icons">
+    Explore the available UI components to enhance your documentation with interactive elements.
+  </Card>
+  
+  <Card title="Advanced Topics" href="/en/v2/advanced/customization">
+    Discover advanced customization options and automation techniques for power users.
+  </Card>
+</div>
+
+## Using Components
+
+### Import Statement
+
+All components are available from the `@docs/ui` package:
+
+```jsx
+import { Icon, Button, Card, Tabs, TabItem } from '@docs/ui';
+```
+
+### MDX Integration
+
+Components work seamlessly in MDX files:
+
+```markdown
+---
+title: "My Document"
+---
+
+import { Icon, Alert } from '@docs/ui';
+
+# My Document
+
+<Alert type="info">
+  <Icon name="info" />
+  This is an information callout using components.
+</Alert>
+
+Regular markdown content continues here...
+```
+
+### Component Props
+
+Most components accept standard props:
+
+- **className**: CSS classes for styling
+- **style**: Inline styles object
+- **children**: Content to render inside the component
+- **Component-specific props**: Documented in individual component pages
+
+## Design Principles
+
+### Consistency
+
+All components follow consistent design patterns:
+
+- **Color scheme**: Uses CSS custom properties for theming
+- **Typography**: Matches documentation typography scale
+- **Spacing**: Follows consistent spacing units
+- **Accessibility**: WCAG 2.1 AA compliant
+
+### Flexibility
+
+Components are designed to be flexible:
+
+- **Customizable**: Accept style and className props
+- **Responsive**: Work well on all screen sizes
+- **Composable**: Can be combined to create complex layouts
+- **Themeable**: Support both light and dark themes
+
+### Performance
+
+Components are optimized for performance:
+
+- **Tree-shakeable**: Only import what you use
+- **Lightweight**: Minimal bundle impact
+- **Server-side rendering**: Full SSR support
+- **Fast loading**: Optimized for quick page loads
+
+## Component Categories
+
+### Content Enhancement
+
+Make your content more engaging:
+
+- **[Icons](/en/v2/components/icons)**: Add visual indicators and emphasis
+- **[Buttons](/en/v2/components/buttons)**: Create interactive call-to-action elements
+- **[Alerts](/en/v2/components/alerts)**: Highlight important information
+
+### Organization
+
+Structure your content effectively:
+
+- **[Tabs](/en/v2/components/tabs)**: Organize related content in tabs
+- **[Cards](/en/v2/components/cards)**: Group related information
+- **[Grids](/en/v2/components/grids)**: Create responsive layouts
+
+### Navigation
+
+Help users navigate your content:
+
+- **[Table of Contents](/en/v2/components/toc)**: In-page navigation
+- **[Breadcrumbs](/en/v2/components/breadcrumbs)**: Show current location
+- **[Pagination](/en/v2/components/pagination)**: Sequential navigation
+
+## Accessibility Features
+
+All components include accessibility features:
+
+- **Keyboard navigation**: Full keyboard support
+- **Screen reader support**: Proper ARIA labels and roles
+- **Focus management**: Logical focus order
+- **Color contrast**: Meets WCAG contrast requirements
+- **Reduced motion**: Respects user motion preferences
+
+## Customization
+
+### CSS Custom Properties
+
+Components use CSS custom properties for theming:
+
+```css
+:root {
+  --color-primary: #007bff;
+  --color-secondary: #6c757d;
+  --color-success: #28a745;
+  --color-warning: #ffc107;
+  --color-danger: #dc3545;
+}
+```
+
+### Style Overrides
+
+Override component styles with CSS classes:
+
+```css
+.custom-button {
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+  border: none;
+  border-radius: 25px;
+}
+```
+
+```jsx
+<Button className="custom-button">Custom Styled Button</Button>
+```
+
+## Getting Started with Components
+
+1. **[Explore Icons](/en/v2/components/icons)**: Start with the most commonly used component
+2. **[Try Tabs](/en/v2/components/tabs)**: Learn how to organize content effectively
+3. **[Create Layouts](/en/v2/components/grids)**: Build responsive page layouts
+4. **[Add Navigation](/en/v2/components/toc)**: Improve content discoverability
+
+## Next Steps
+
+Ready to enhance your documentation with components?
+
+- **[Icon Component](/en/v2/components/icons)**: Learn about the versatile icon system
+- **[Tab Component](/en/v2/components/tabs)**: Organize content with tabbed interfaces
+- **[Sidebar Generation](/en/v2/components/sidebar-generation)**: Understand automatic navigation

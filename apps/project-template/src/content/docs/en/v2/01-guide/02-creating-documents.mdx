@@ -1,0 +1,240 @@
+---
+title: "Creating Documents"
+description: "Learn how to create new documentation files with proper structure and metadata"
+---
+
+# Creating Documents
+
+This guide walks you through the process of creating new documentation files, from understanding the file structure to writing effective content.
+
+## File Structure and Naming
+
+### Directory Organization
+
+Documents are organized in a hierarchical structure:
+
+```
+src/content/docs/[lang]/[version]/[category]/[document].mdx
+```
+
+Example paths:
+- `src/content/docs/en/v2/guide/creating-documents.mdx`
+- `src/content/docs/ja/v2/components/icons.mdx`
+- `src/content/docs/en/v2/advanced/customization.mdx`
+
+### Naming Conventions
+
+- Use **kebab-case** for file names: `creating-documents.mdx`
+- Include numbers for ordering: `01-getting-started.mdx`, `02-creating-documents.mdx`
+- Be descriptive but concise: `sidebar-auto-generation.mdx` not `sidebar.mdx`
+
+## Using the Creation Script
+
+The easiest way to create new documents is using the built-in script:
+
+```bash
+node scripts/create-document.js [project-name] [lang] [version] [slug]
+```
+
+### Examples
+
+```bash
+# Create an English guide document
+node scripts/create-document.js sample-docs en v2 guide/installation
+
+# Create a Japanese component example
+node scripts/create-document.js sample-docs ja v2 components/buttons
+
+# Create an advanced configuration guide
+node scripts/create-document.js sample-docs en v2 advanced/custom-themes
+```
+
+### What the Script Does
+
+The creation script automatically:
+
+1. **Creates the file** with proper directory structure
+2. **Generates minimal frontmatter** with title and description
+3. **Provides content template** to get you started
+4. **Handles automatic organization** through file naming and structure
+
+## Manual Document Creation
+
+If you prefer to create documents manually, follow these steps:
+
+### 1. Create the File
+
+Create a new `.mdx` file in the appropriate directory:
+
+```bash
+touch src/content/docs/en/v2/guide/my-new-guide.mdx
+```
+
+### 2. Add Frontmatter
+
+Every document must start with minimal YAML frontmatter:
+
+```yaml
+---
+title: "My New Guide"
+description: "Description of what this guide covers"
+---
+```
+
+This system uses an automatic approach for organization and navigation, so only title and description are required.
+
+### 3. Write Content
+
+Add your content using Markdown and MDX:
+
+```markdown
+# My New Guide
+
+This is the main content of your guide.
+
+## Section Heading
+
+Content goes here...
+
+### Subsection
+
+More detailed content...
+```
+
+## Frontmatter Reference
+
+### Required Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `title` | string | Document title (appears in navigation and page header) |
+| `description` | string | Brief description for SEO and previews (50-160 characters recommended) |
+
+### Automatic Features
+
+This documentation system automatically handles:
+
+- **Navigation**: Previous/next links based on file structure
+- **Categorization**: From directory names (01-guide, 02-components, etc.)
+- **Ordering**: From file name prefixes (01-, 02-, etc.)
+- **Metadata**: Publication and update dates from Git history
+
+## Content Guidelines
+
+### Writing Style
+
+- **Be conversational**: Write as if explaining to a colleague
+- **Use active voice**: "Create a file" not "A file should be created"
+- **Be specific**: Include exact commands, file names, and paths
+- **Add context**: Explain why something is important
+
+### Structure Best Practices
+
+1. **Start with overview**: What will the reader learn?
+2. **Use clear headings**: Create logical content hierarchy
+3. **Include examples**: Show practical applications
+4. **End with next steps**: Guide the reader forward
+
+### Code Examples
+
+Include working code examples:
+
+```javascript
+// Good: Complete, working example
+import { createApp } from '@our-package/core';
+
+const app = createApp({
+  debug: true,
+  theme: 'dark'
+});
+
+app.start();
+```
+
+### Images and Assets
+
+Store images in the `public` directory:
+
+```markdown
+![Alt text](/images/screenshot.png)
+```
+
+## Testing Your Document
+
+Before finalizing, verify:
+
+- [ ] **Frontmatter is valid**: No syntax errors in YAML
+- [ ] **Links work**: All internal and external links are functional
+- [ ] **Code runs**: Any code examples actually work
+- [ ] **Navigation flows**: Previous/next links create logical progression
+- [ ] **Formatting**: Headers, lists, and emphasis render correctly
+
+## Common Patterns
+
+### Step-by-Step Guides
+
+```yaml
+---
+title: "Package Installation Guide"
+description: "Learn how to install and verify the core package"
+---
+```
+
+```markdown
+# Package Installation Guide
+
+Follow these steps to install the package:
+
+## Step 1: Prerequisites
+
+Ensure you have Node.js 18+ installed:
+
+    node --version
+
+## Step 2: Install Package
+
+Run the installation command:
+
+    npm install @our-package/core
+
+## Step 3: Verify Installation
+
+Check that installation was successful:
+
+    npm list @our-package/core
+```
+
+### Reference Documentation
+
+```yaml
+---
+title: "API Reference"
+description: "Complete API documentation for the core library"
+---
+```
+
+```markdown
+# API Reference
+
+## `createApp(options)`
+
+Creates a new application instance.
+
+**Parameters:**
+- `options` (Object): Configuration options
+  - `debug` (boolean): Enable debug mode
+  - `theme` (string): UI theme ('light' | 'dark')
+
+**Returns:** Application instance
+
+**Example:**
+    const app = createApp({ debug: true });
+```
+
+## Next Steps
+
+Now that you know how to create documents, learn about:
+
+- **[Editing Documents](/en/v2/guide/editing-documents)**: Best practices for editing and updating content
+- **[Content Organization](/en/v2/guide/organizing-content)**: How to structure and categorize your documentation
+- **[Using Components](/en/v2/components/overview)**: Enhance your docs with interactive elements

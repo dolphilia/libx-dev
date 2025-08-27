@@ -1,0 +1,339 @@
+---
+title: "サイドバー自動生成"
+description: "自動サイドバー生成機能の動作方法を学ぶ"
+---
+
+# サイドバー自動生成
+
+このガイドでは、コンテンツ構造に基づいてサイドバーナビゲーションを自動的に作成するサイドバー自動生成機能の使用方法を説明します。
+
+## 概要
+
+サイドバー自動生成機能により以下が可能です：
+
+1. コンテンツファイルに基づくサイドバーナビゲーションの自動生成
+2. ファイル構造とディレクトリを使用したカテゴリと順序の定義
+3. 設定ファイルを手動更新することなくサイドバー表示をカスタマイズ
+4. 複数言語とバージョンでの一貫したナビゲーション構造
+
+## 動作原理
+
+### ファイルベースの生成
+
+サイドバーは以下の規則に従って自動生成されます：
+
+```
+src/content/docs/[lang]/[version]/
+├── 01-guide/           # カテゴリ「ガイド」
+│   ├── 01-getting-started.mdx    # 順序: 1
+│   ├── 02-creating-documents.mdx # 順序: 2
+│   └── 03-editing-documents.mdx  # 順序: 3
+├── 02-components/      # カテゴリ「コンポーネント」
+│   ├── 01-overview.mdx
+│   ├── 02-icons.mdx
+│   └── 03-tabs.mdx
+└── 03-advanced/        # カテゴリ「高度」
+    ├── 01-customization.mdx
+    └── 02-automation.mdx
+```
+
+### 命名規則
+
+#### ディレクトリ命名
+- **数字接頭辞**: `01-guide`、`02-components` - カテゴリの表示順序を制御
+- **ケバブケース**: `advanced-topics`、`getting-started` - 読みやすい名前
+
+#### ファイル命名
+- **数字接頭辞**: `01-basics.mdx`、`02-installation.mdx` - ドキュメントの順序を制御
+- **説明的な名前**: `creating-documents.mdx`、`sidebar-generation.mdx`
+
+## 自動生成されるサイドバー構造
+
+### カテゴリの決定
+
+カテゴリ名はディレクトリ名から自動的に生成されます：
+
+| ディレクトリ名 | 生成されるカテゴリ名 |
+|--------------|------------------|
+| `01-guide` | ガイド |
+| `02-components` | コンポーネント |
+| `03-advanced` | 高度 |
+| `04-reference` | リファレンス |
+
+### ドキュメントタイトル
+
+ドキュメントのタイトルはフロントマターの`title`フィールドから取得されます：
+
+```yaml
+---
+title: "ドキュメントの作成"
+description: "新しいドキュメントファイルの作成方法"
+---
+```
+
+### URL生成
+
+URLは自動的にファイル構造から生成されます：
+
+```
+ファイル: src/content/docs/ja/v2/01-guide/02-creating-documents.mdx
+URL: /docs/sample-docs/ja/v2/01-guide/02-creating-documents
+```
+
+## 生成例
+
+### 英語版サイドバー
+
+```json
+[
+  {
+    "title": "Guide",
+    "items": [
+      {
+        "title": "Getting Started",
+        "href": "/docs/sample-docs/en/v2/01-guide/01-getting-started"
+      },
+      {
+        "title": "Creating Documents", 
+        "href": "/docs/sample-docs/en/v2/01-guide/02-creating-documents"
+      },
+      {
+        "title": "Editing Documents",
+        "href": "/docs/sample-docs/en/v2/01-guide/03-editing-documents"
+      }
+    ]
+  },
+  {
+    "title": "Components",
+    "items": [
+      {
+        "title": "Overview",
+        "href": "/docs/sample-docs/en/v2/02-components/01-overview"
+      },
+      {
+        "title": "Icon Component",
+        "href": "/docs/sample-docs/en/v2/02-components/02-icons"
+      }
+    ]
+  }
+]
+```
+
+### 日本語版サイドバー
+
+```json
+[
+  {
+    "title": "ガイド",
+    "items": [
+      {
+        "title": "ドキュメント作成の基本",
+        "href": "/docs/sample-docs/ja/v2/01-guide/01-getting-started"
+      },
+      {
+        "title": "ドキュメントの作成",
+        "href": "/docs/sample-docs/ja/v2/01-guide/02-creating-documents"
+      },
+      {
+        "title": "ドキュメントの編集", 
+        "href": "/docs/sample-docs/ja/v2/01-guide/03-editing-documents"
+      }
+    ]
+  },
+  {
+    "title": "コンポーネント",
+    "items": [
+      {
+        "title": "コンポーネント概要",
+        "href": "/docs/sample-docs/ja/v2/02-components/01-overview"
+      },
+      {
+        "title": "アイコンコンポーネント",
+        "href": "/docs/sample-docs/ja/v2/02-components/02-icons"
+      }
+    ]
+  }
+]
+```
+
+## 生成プロセス
+
+### 1. ファイルスキャン
+
+ビルド時に以下の手順でファイルをスキャン：
+
+```bash
+# サイドバー生成スクリプトの実行
+pnpm build:sidebar
+```
+
+### 2. 構造解析
+
+- ディレクトリ構造を解析
+- ファイルの数字接頭辞を読み取り
+- フロントマターからタイトルを抽出
+
+### 3. JSON生成
+
+言語とバージョンごとに個別のJSONファイルを生成：
+
+```
+public/sidebar/
+├── sidebar-en-v1.json
+├── sidebar-en-v2.json
+├── sidebar-ja-v1.json
+└── sidebar-ja-v2.json
+```
+
+### 4. 配布
+
+生成されたJSONファイルは以下の場所にコピー：
+
+```
+dist/docs/sample-docs/pages/public/sidebar/
+```
+
+## カスタマイズオプション
+
+### カテゴリ名の翻訳
+
+`scripts/build-sidebar.js`でカテゴリ名の翻訳を設定：
+
+```javascript
+const categoryTranslations = {
+  'guide': {
+    'en': 'Guide',
+    'ja': 'ガイド'
+  },
+  'components': {
+    'en': 'Components', 
+    'ja': 'コンポーネント'
+  },
+  'advanced': {
+    'en': 'Advanced',
+    'ja': '高度'
+  },
+  'reference': {
+    'en': 'Reference',
+    'ja': 'リファレンス'
+  }
+};
+```
+
+### 順序の調整
+
+ファイルやディレクトリの数字接頭辞を変更して順序を調整：
+
+```bash
+# 順序を変更
+mv 02-components 03-components
+mv 03-advanced 02-advanced
+
+# サイドバーを再生成
+pnpm build:sidebar
+```
+
+### 除外ファイル
+
+特定のファイルをサイドバーから除外：
+
+```javascript
+// build-sidebar.js内
+const excludePatterns = [
+  /draft-/,           // draft-で始まるファイル
+  /\.draft\.mdx$/,    # .draft.mdxで終わるファイル
+  /private/           # privateディレクトリ
+];
+```
+
+## トラブルシューティング
+
+### 一般的な問題
+
+#### サイドバーが表示されない
+
+**原因**: サイドバーJSONファイルが見つからない
+
+**解決策**:
+```bash
+# サイドバーを再生成
+pnpm build:sidebar
+
+# ビルドプロセス全体を実行
+pnpm build
+```
+
+#### 順序が間違っている
+
+**原因**: ファイルやディレクトリの数字接頭辞が正しくない
+
+**解決策**:
+```bash
+# ファイル名を確認
+ls -la src/content/docs/ja/v2/01-guide/
+
+# 必要に応じて名前を変更
+mv 03-file.mdx 02-file.mdx
+```
+
+#### リンクが機能しない
+
+**原因**: URLパスが正しく生成されていない
+
+**解決策**:
+```bash
+# 生成されたJSONを確認
+cat public/sidebar/sidebar-ja-v2.json
+
+# ベースパス設定を確認
+cat apps/sample-docs/astro.config.mjs
+```
+
+## 高度な機能
+
+### 動的サイドバー
+
+実行時にサイドバーを動的に更新：
+
+```javascript
+// サイドバーの動的更新
+async function updateSidebar() {
+  const response = await fetch('/sidebar/sidebar-ja-v2.json');
+  const sidebarData = await response.json();
+  // サイドバーUIを更新
+}
+```
+
+### サイドバー状態の永続化
+
+ユーザーのサイドバー状態を保存：
+
+```javascript
+// ローカルストレージに状態を保存
+localStorage.setItem('sidebar-expanded', JSON.stringify({
+  'guide': true,
+  'components': false
+}));
+```
+
+## ベストプラクティス
+
+### ファイル整理
+
+- **一貫した命名**: すべてのファイルで同じ命名パターンを使用
+- **論理的な順序**: ユーザーの学習パスに従った順序付け
+- **適切な分類**: 関連するコンテンツを同じカテゴリにグループ化
+
+### メンテナンス
+
+- **定期的な確認**: サイドバー構造が期待通りかを定期的にチェック
+- **リンクテスト**: すべてのサイドバーリンクが機能することを確認
+- **ユーザビリティテスト**: ナビゲーションの使いやすさを評価
+
+## 次のステップ
+
+サイドバー自動生成を理解したら：
+
+- **[コンテンツ整理](/ja/v2/guide/organizing-content)**: 効果的なコンテンツ構造の設計
+- **[自動化](/ja/v2/advanced/automation)**: ビルドプロセスの自動化
+- **[カスタマイズ](/ja/v2/advanced/customization)**: 高度なカスタマイズオプション

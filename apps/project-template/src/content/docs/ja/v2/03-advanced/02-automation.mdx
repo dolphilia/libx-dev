@@ -1,0 +1,700 @@
+---
+title: "自動化"
+description: "効率的なドキュメント管理のための自動化とスクリプティングについて学ぶ"
+---
+
+# 自動化
+
+コンテンツ生成からデプロイまで、ドキュメントタスクを自動化し、ドキュメントワークフローをより効率的で信頼性の高いものにする方法を発見します。
+
+## 組み込みスクリプト
+
+### ドキュメント作成
+
+適切な構造で新しいドキュメントを自動作成：
+
+```bash
+# 新しいガイドドキュメントを作成
+node scripts/create-document.js sample-docs ja v2 guide/new-feature
+
+# コンポーネント例を作成
+node scripts/create-document.js sample-docs ja v2 components/new-component
+
+# 高度なトピックを作成
+node scripts/create-document.js sample-docs ja v2 advanced/optimization
+```
+
+スクリプトは自動的に：
+- ディレクトリ構造を作成
+- 適切なメタデータでフロントマターを生成
+- ナビゲーションリンクを設定
+- コンテンツテンプレートを提供
+
+### バージョン管理
+
+新しいドキュメントバージョンを作成：
+
+```bash
+# 新しいバージョンを作成
+node scripts/create-version.js sample-docs v3
+
+# 既存バージョンからコンテンツをコピー
+node scripts/copy-version.js sample-docs v2 v3
+
+# バージョン設定を更新
+node scripts/update-version-config.js sample-docs v3 --latest
+```
+
+### サイドバー生成
+
+サイドバーナビゲーションを自動生成：
+
+```bash
+# すべての言語とバージョンのサイドバーを生成
+pnpm build:sidebar
+
+# 特定の言語のみ
+node scripts/build-sidebar.js --lang=ja
+
+# 特定のバージョンのみ
+node scripts/build-sidebar.js --version=v2
+```
+
+### 一括更新
+
+複数のファイルを一括で更新：
+
+```bash
+# すべてのフロントマターを更新
+node scripts/update-frontmatter.js --remove-fields="author,pubDate,updatedDate"
+
+# テンプレートを更新
+node scripts/update-templates.js --component=Alert --version=2.0
+
+# リンクを一括更新
+node scripts/update-links.js --from="/old-path" --to="/new-path"
+```
+
+## CI/CDパイプライン
+
+### GitHub Actions
+
+`.github/workflows/docs.yml`でドキュメントの自動ビルドとデプロイ：
+
+```yaml
+name: Documentation Build and Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+          
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          
+      - name: Install dependencies
+        run: pnpm install
+        
+      - name: Lint code
+        run: pnpm lint
+        
+      - name: Build sidebar
+        run: pnpm build:sidebar
+        
+      - name: Build documentation
+        run: pnpm build
+        
+      - name: Run tests
+        run: pnpm test
+        
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: docs-project
+          directory: dist
+```
+
+### 自動品質チェック
+
+品質保証のための自動チェック：
+
+```yaml
+# .github/workflows/quality.yml
+name: Quality Checks
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+          
+      - name: Install dependencies
+        run: pnpm install
+        
+      - name: Check link validity
+        run: node scripts/check-links.js
+        
+      - name: Validate frontmatter
+        run: node scripts/validate-frontmatter.js
+        
+      - name: Check image optimization
+        run: node scripts/check-images.js
+        
+      - name: Spell check
+        run: pnpm spell-check
+        
+      - name: Accessibility check
+        run: pnpm a11y-check
+```
+
+## カスタム自動化スクリプト
+
+### コンテンツ検証
+
+ドキュメント品質を自動検証：
+
+```javascript
+// scripts/validate-content.js
+import fs from 'fs';
+import path from 'path';
+import matter from 'gray-matter';
+
+class ContentValidator {
+  constructor(contentDir) {
+    this.contentDir = contentDir;
+    this.errors = [];
+  }
+  
+  async validateAll() {
+    const files = await this.getAllMdxFiles();
+    
+    for (const file of files) {
+      await this.validateFile(file);
+    }
+    
+    return this.errors;
+  }
+  
+  async validateFile(filePath) {
+    const content = fs.readFileSync(filePath, 'utf-8');
+    const { data: frontmatter, content: body } = matter(content);
+    
+    // フロントマター検証
+    this.validateFrontmatter(filePath, frontmatter);
+    
+    // コンテンツ検証
+    this.validateContent(filePath, body);
+    
+    // リンク検証
+    await this.validateLinks(filePath, body);
+  }
+  
+  validateFrontmatter(filePath, frontmatter) {
+    const required = ['title', 'description'];
+    
+    for (const field of required) {
+      if (!frontmatter[field]) {
+        this.errors.push({
+          file: filePath,
+          type: 'frontmatter',
+          message: `Missing required field: ${field}`
+        });
+      }
+    }
+  }
+  
+  validateContent(filePath, content) {
+    // 空のセクション検査
+    const emptySections = content.match(/##\s+[^#\n]+\n\s*##/g);
+    if (emptySections) {
+      this.errors.push({
+        file: filePath,
+        type: 'content',
+        message: 'Empty section detected'
+      });
+    }
+    
+    // TODO項目の検査
+    const todos = content.match(/TODO:|FIXME:|XXX:/gi);
+    if (todos) {
+      this.errors.push({
+        file: filePath,
+        type: 'content',
+        message: `Found ${todos.length} TODO items`
+      });
+    }
+  }
+  
+  async validateLinks(filePath, content) {
+    const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+    let match;
+    
+    while ((match = linkRegex.exec(content)) !== null) {
+      const url = match[2];
+      
+      if (url.startsWith('/')) {
+        // 内部リンクの検証
+        const exists = await this.checkInternalLink(url);
+        if (!exists) {
+          this.errors.push({
+            file: filePath,
+            type: 'link',
+            message: `Broken internal link: ${url}`
+          });
+        }
+      }
+    }
+  }
+  
+  async getAllMdxFiles() {
+    // MDXファイルを再帰的に検索
+    const files = [];
+    
+    function scanDirectory(dir) {
+      const items = fs.readdirSync(dir);
+      
+      for (const item of items) {
+        const fullPath = path.join(dir, item);
+        const stat = fs.statSync(fullPath);
+        
+        if (stat.isDirectory()) {
+          scanDirectory(fullPath);
+        } else if (item.endsWith('.mdx')) {
+          files.push(fullPath);
+        }
+      }
+    }
+    
+    scanDirectory(this.contentDir);
+    return files;
+  }
+}
+
+// 使用例
+const validator = new ContentValidator('src/content/docs');
+const errors = await validator.validateAll();
+
+if (errors.length > 0) {
+  console.error('Validation errors found:');
+  errors.forEach(error => {
+    console.error(`${error.file}: ${error.message}`);
+  });
+  process.exit(1);
+}
+```
+
+### 画像最適化
+
+画像を自動最適化：
+
+```javascript
+// scripts/optimize-images.js
+import sharp from 'sharp';
+import fs from 'fs';
+import path from 'path';
+
+class ImageOptimizer {
+  constructor(publicDir) {
+    this.publicDir = publicDir;
+    this.sizes = [320, 640, 1024, 1920];
+    this.formats = ['webp', 'avif'];
+  }
+  
+  async optimizeAll() {
+    const images = await this.findImages();
+    
+    for (const image of images) {
+      await this.optimizeImage(image);
+    }
+  }
+  
+  async optimizeImage(imagePath) {
+    const basename = path.basename(imagePath, path.extname(imagePath));
+    const dirname = path.dirname(imagePath);
+    
+    // 元の画像情報を取得
+    const metadata = await sharp(imagePath).metadata();
+    
+    // レスポンシブサイズを生成
+    for (const size of this.sizes) {
+      if (metadata.width && metadata.width > size) {
+        for (const format of this.formats) {
+          const outputPath = path.join(
+            dirname, 
+            `${basename}-${size}w.${format}`
+          );
+          
+          await sharp(imagePath)
+            .resize(size)
+            .toFormat(format, { quality: 80 })
+            .toFile(outputPath);
+            
+          console.log(`Generated: ${outputPath}`);
+        }
+      }
+    }
+  }
+  
+  async findImages() {
+    const images = [];
+    const supportedFormats = ['.jpg', '.jpeg', '.png', '.gif'];
+    
+    function scanDirectory(dir) {
+      const items = fs.readdirSync(dir);
+      
+      for (const item of items) {
+        const fullPath = path.join(dir, item);
+        const stat = fs.statSync(fullPath);
+        
+        if (stat.isDirectory()) {
+          scanDirectory(fullPath);
+        } else if (supportedFormats.includes(path.extname(item).toLowerCase())) {
+          images.push(fullPath);
+        }
+      }
+    }
+    
+    scanDirectory(this.publicDir);
+    return images;
+  }
+}
+```
+
+### SEO最適化
+
+SEOメタデータを自動生成：
+
+```javascript
+// scripts/generate-seo.js
+import fs from 'fs';
+import matter from 'gray-matter';
+
+class SEOGenerator {
+  constructor(contentDir, baseUrl) {
+    this.contentDir = contentDir;
+    this.baseUrl = baseUrl;
+  }
+  
+  async generateSitemap() {
+    const pages = await this.getAllPages();
+    const sitemap = this.createSitemap(pages);
+    
+    fs.writeFileSync('public/sitemap.xml', sitemap);
+    console.log('Sitemap generated: public/sitemap.xml');
+  }
+  
+  async generateRobots() {
+    const robots = `User-agent: *
+Allow: /
+
+Sitemap: ${this.baseUrl}/sitemap.xml`;
+    
+    fs.writeFileSync('public/robots.txt', robots);
+    console.log('Robots.txt generated: public/robots.txt');
+  }
+  
+  createSitemap(pages) {
+    const urls = pages.map(page => `
+  <url>
+    <loc>${this.baseUrl}${page.url}</loc>
+    <lastmod>${page.lastmod}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`).join('');
+    
+    return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls}
+</urlset>`;
+  }
+  
+  async getAllPages() {
+    // ページ情報を収集
+    const pages = [];
+    
+    // 実装...
+    
+    return pages;
+  }
+}
+```
+
+## 監視とアラート
+
+### パフォーマンス監視
+
+Lighthouseを使用した自動パフォーマンス測定：
+
+```javascript
+// scripts/performance-check.js
+import lighthouse from 'lighthouse';
+import chromeLauncher from 'chrome-launcher';
+
+class PerformanceMonitor {
+  async checkSite(url) {
+    const chrome = await chromeLauncher.launch({chromeFlags: ['--headless']});
+    
+    const options = {
+      logLevel: 'info',
+      output: 'json',
+      onlyCategories: ['performance', 'accessibility', 'best-practices', 'seo'],
+      port: chrome.port,
+    };
+    
+    const runnerResult = await lighthouse(url, options);
+    
+    await chrome.kill();
+    
+    return this.processResults(runnerResult);
+  }
+  
+  processResults(results) {
+    const scores = results.lhr.categories;
+    const report = {
+      performance: scores.performance.score * 100,
+      accessibility: scores.accessibility.score * 100,
+      bestPractices: scores['best-practices'].score * 100,
+      seo: scores.seo.score * 100
+    };
+    
+    // アラート条件
+    const thresholds = {
+      performance: 90,
+      accessibility: 95,
+      bestPractices: 90,
+      seo: 95
+    };
+    
+    const alerts = [];
+    for (const [metric, score] of Object.entries(report)) {
+      if (score < thresholds[metric]) {
+        alerts.push(`${metric}: ${score} (threshold: ${thresholds[metric]})`);
+      }
+    }
+    
+    return { scores: report, alerts };
+  }
+}
+```
+
+### デッドリンクチェック
+
+```javascript
+// scripts/check-links.js
+import fetch from 'node-fetch';
+import fs from 'fs';
+
+class LinkChecker {
+  constructor() {
+    this.brokenLinks = [];
+    this.checkedUrls = new Set();
+  }
+  
+  async checkAllLinks() {
+    const files = await this.getAllMdxFiles();
+    
+    for (const file of files) {
+      await this.checkFileLinks(file);
+    }
+    
+    return this.brokenLinks;
+  }
+  
+  async checkFileLinks(filePath) {
+    const content = fs.readFileSync(filePath, 'utf-8');
+    const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+    let match;
+    
+    while ((match = linkRegex.exec(content)) !== null) {
+      const url = match[2];
+      
+      if (url.startsWith('http')) {
+        await this.checkExternalLink(url, filePath);
+      } else if (url.startsWith('/')) {
+        await this.checkInternalLink(url, filePath);
+      }
+    }
+  }
+  
+  async checkExternalLink(url, filePath) {
+    if (this.checkedUrls.has(url)) return;
+    
+    this.checkedUrls.add(url);
+    
+    try {
+      const response = await fetch(url, { method: 'HEAD', timeout: 5000 });
+      if (!response.ok) {
+        this.brokenLinks.push({
+          file: filePath,
+          url,
+          status: response.status
+        });
+      }
+    } catch (error) {
+      this.brokenLinks.push({
+        file: filePath,
+        url,
+        error: error.message
+      });
+    }
+  }
+}
+```
+
+## 統合とワークフロー
+
+### Slackとの統合
+
+ビルド結果をSlackに通知：
+
+```javascript
+// scripts/slack-notify.js
+import { WebClient } from '@slack/web-api';
+
+class SlackNotifier {
+  constructor(token, channel) {
+    this.slack = new WebClient(token);
+    this.channel = channel;
+  }
+  
+  async notifyBuildSuccess(buildInfo) {
+    await this.slack.chat.postMessage({
+      channel: this.channel,
+      text: 'ドキュメントビルドが成功しました！',
+      blocks: [
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: `✅ *ドキュメントビルド成功*\n\n*ブランチ:* ${buildInfo.branch}\n*コミット:* ${buildInfo.commit}\n*ビルド時間:* ${buildInfo.duration}秒`
+          }
+        },
+        {
+          type: 'actions',
+          elements: [
+            {
+              type: 'button',
+              text: {
+                type: 'plain_text',
+                text: 'ドキュメントを見る'
+              },
+              url: buildInfo.url
+            }
+          ]
+        }
+      ]
+    });
+  }
+  
+  async notifyBuildFailure(error) {
+    await this.slack.chat.postMessage({
+      channel: this.channel,
+      text: 'ドキュメントビルドが失敗しました',
+      blocks: [
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: `❌ *ドキュメントビルド失敗*\n\n*エラー:* ${error.message}`
+          }
+        }
+      ]
+    });
+  }
+}
+```
+
+### 自動翻訳統合
+
+機械翻訳APIとの統合：
+
+```javascript
+// scripts/auto-translate.js
+import { translate } from '@google-cloud/translate';
+
+class AutoTranslator {
+  constructor(credentials) {
+    this.translate = new translate.Translate(credentials);
+  }
+  
+  async translateDocument(sourcePath, targetPath, targetLang) {
+    const content = fs.readFileSync(sourcePath, 'utf-8');
+    const { data: frontmatter, content: body } = matter(content);
+    
+    // フロントマターを翻訳
+    const translatedFrontmatter = await this.translateFrontmatter(frontmatter, targetLang);
+    
+    // コンテンツを翻訳
+    const translatedBody = await this.translateContent(body, targetLang);
+    
+    // 翻訳されたドキュメントを作成
+    const translatedContent = matter.stringify(translatedBody, translatedFrontmatter);
+    
+    fs.writeFileSync(targetPath, translatedContent);
+  }
+  
+  async translateFrontmatter(frontmatter, targetLang) {
+    const translated = { ...frontmatter };
+    
+    if (frontmatter.title) {
+      translated.title = await this.translateText(frontmatter.title, targetLang);
+    }
+    
+    if (frontmatter.description) {
+      translated.description = await this.translateText(frontmatter.description, targetLang);
+    }
+    
+    return translated;
+  }
+  
+  async translateText(text, targetLang) {
+    const [translation] = await this.translate.translate(text, targetLang);
+    return translation;
+  }
+}
+```
+
+## 次のステップ
+
+自動化の基本を理解したら：
+
+- **[デプロイ](/ja/v2/advanced/deployment)**: 自動デプロイ戦略とベストプラクティス
+- **[カスタマイズ](/ja/v2/advanced/customization)**: 自動化スクリプトのカスタマイズ
+- **[リファレンス](/ja/v2/reference/frontmatter)**: スクリプト作成のためのAPIリファレンス

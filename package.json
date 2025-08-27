@@ -13,6 +13,7 @@
     "build:sidebar": "node scripts/build-sidebar.js",
     "copy:docs": "node scripts/copy-to-docs.js",
     "build:deploy": "node scripts/build-sidebar.js && node scripts/build-integrated.js && node scripts/copy-to-docs.js",
+    "create:project": "node scripts/create-project.js",
     "deploy": "pnpm build && pnpm deploy:pages",
     "deploy:pages": "wrangler pages deploy dist --project-name libx"
   },

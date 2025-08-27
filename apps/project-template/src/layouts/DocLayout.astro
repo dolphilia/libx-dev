@@ -1,0 +1,329 @@
+---
+import MainLayout from './MainLayout.astro';
+import { Sidebar, TableOfContents } from '@docs/ui/components';
+import { translate } from '@docs/i18n/utils';
+import type { LocaleKey } from '@docs/i18n/locales';
+
+// 設定ファイルのインポート
+import { getLegacyProjectConfig, initializeConfig } from '../config/project.config.new';
+import { getSidebarAsync } from '../utils/sidebar-generator';
+
+// 設定を初期化
+await initializeConfig();
+const projectConfig = await getLegacyProjectConfig();
+
+// Sidebarコンポーネントで使用されるSidebarItem型を定義
+interface SidebarItem {
+  title: string;
+  href?: string;
+  items?: SidebarItem[];
+  isCurrent?: boolean;
+  badge?: {
+    text: string;
+    variant?: 'default' | 'success' | 'caution' | 'danger' | 'note';
+    class?: string;
+  };
+}
+
+interface Props {
+  title: string;
+  lang: LocaleKey;
+  version: string;
+}
+
+const { title, lang: langProp, version } = Astro.props;
+const lang = langProp as LocaleKey;
+
+// ベースパスの取得
+const baseUrl = projectConfig.baseUrl;
+
+// 現在のパスを取得
+const currentPath = Astro.url.pathname;
+
+
+// サイドバー項目の取得（非同期）
+const sidebarItems = await getSidebarAsync(lang, version, baseUrl);
+
+// 現在のページに対応するサイドバー項目にisCurrent=trueを設定
+function markCurrentPage(items: SidebarItem[]): SidebarItem[] {
+  return items.map(section => {
+    // セクション自体のhrefがあり、現在のパスと一致する場合
+    if (section.href && (section.href === currentPath || currentPath.endsWith(section.href))) {
+      return { ...section, isCurrent: true };
+    }
+    
+    // 子項目がある場合は再帰的に処理
+    if (section.items && section.items.length > 0) {
+      const updatedItems = section.items.map(item => {
+        if (item.href && (item.href === currentPath || currentPath.endsWith(item.href))) {
+          return { ...item, isCurrent: true };
+        }
+        return item;
+      });
+      
+      return { ...section, items: updatedItems };
+    }
+    
+    return section;
+  });
+}
+
+// 現在のページをマーク
+const markedSidebarItems = markCurrentPage(sidebarItems);
+
+// 翻訳キーの定数化
+const TRANSLATION_KEYS = {
+  SEARCH_PLACEHOLDER: 'search.placeholder',
+  DOCUMENTATION: 'docs.documentation'
+} as const;
+
+// 目次があるかどうか（実際のプロジェクトでは動的に判断する）
+const hasToc = true;
+---
+
+<MainLayout title={title} lang={lang} version={version} hasSidebar={true} hasToc={hasToc} showSearch={true} showVersionSelector={true} showBreadcrumb={true}>
+  <div class="doc-layout-container">
+    <aside class="sidebar-column print:hidden">
+      <div class="sidebar-content">
+        <Sidebar 
+          items={markedSidebarItems} 
+          title={translate(TRANSLATION_KEYS.DOCUMENTATION, lang)} 
+        />
+      </div>
+    </aside>
+    
+    <div class="main-column">
+      <div class="content-panel">
+        <article class="sl-markdown-content">
+          <slot />
+        </article>
+      </div>
+    </div>
+    
+    {hasToc && (
+      <aside class="toc-column print:hidden">
+        <div class="toc-content">
+          {Astro.slots.has('toc') ? (
+            <slot name="toc" />
+          ) : (
+            <TableOfContents headings={[]} minLevel={2} maxLevel={3} lang={lang} />
+          )}
+        </div>
+      </aside>
+    )}
+  </div>
+</MainLayout>
+
+<script is:inline define:vars={{ lang, version, baseUrl }}>
+  // サイドバーのプリフェッチ
+  function prefetchSidebar(lang, version) {
+    // バージョンが有効な形式（v1, v2など）かチェック
+    if (!version || !version.match(/^v\d+$/)) {
+      version = 'v1'; // デフォルトバージョンを設定
+    }
+    
+    const sidebarPath = `${baseUrl}/sidebar/sidebar-${lang}-${version}.json`;
+    
+    // プリフェッチ用のlink要素を作成
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.href = sidebarPath;
+    document.head.appendChild(link);
+  }
+  
+  // 現在のページの言語とバージョンを取得
+  const currentLang = document.documentElement.lang;
+  
+  // URLパスからバージョン情報を正確に抽出
+  function extractVersionFromPath() {
+    const path = window.location.pathname;
+    
+    // ベースパスを除去
+    const baseUrlPath = baseUrl.replace(/^\/|\/$/g, ''); // 先頭と末尾のスラッシュを削除
+    const pathWithoutBase = path.replace(new RegExp(`^/?${baseUrlPath}/?`), '');
+    
+    // パスを分割
+    const segments = pathWithoutBase.split('/').filter(segment => segment);
+    
+    // 言語の次のセグメントがバージョン
+    if (segments.length >= 2) {
+      const potentialVersion = segments[1];
+      // バージョン形式をチェック (v1, v2, etc.)
+      if (potentialVersion.match(/^v\d+$/)) {
+        return potentialVersion;
+      }
+    }
+    
+    // バージョンが見つからない場合はデフォルトを返す
+    return 'v1';
+  }
+  
+  const currentVersion = extractVersionFromPath();
+  
+  // 現在のサイドバーをプリフェッチ
+  prefetchSidebar(currentLang, currentVersion);
+  
+  // 関連するバージョンのサイドバーもプリフェッチ
+  const versions = ['v1', 'v2'];
+  versions.forEach(version => {
+    if (version !== currentVersion) {
+      prefetchSidebar(currentLang, version);
+    }
+  });
+</script>
+
+<style>
+  
+  /* レスポンシブレイアウトのコンテナ */
+  .doc-layout-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 87.5rem; /* 1400px */
+    margin: 0 auto;
+    padding: 0 0.5rem;
+    box-sizing: border-box;
+    gap: 1rem;
+  }
+  
+  /* モバイル（〜768px）: 縦スタック */
+  .sidebar-column {
+    order: 1;
+    width: 100%;
+    background-color: var(--sl-color-bg-sidebar);
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .sidebar-content {
+    padding: 1rem;
+    height: auto;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
+  .main-column {
+    order: 2;
+    width: 100%;
+    flex: 1;
+  }
+
+  .content-panel {
+    padding: 1.5rem 1rem;
+    background-color: var(--sl-color-bg);
+    border-radius: 0.5rem;
+  }
+
+  .toc-column {
+    order: 3;
+    display: none; /* モバイルでは非表示 */
+    width: 100%;
+    background-color: var(--sl-color-bg);
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 0.5rem;
+  }
+
+  .toc-content {
+    padding: 1rem;
+  }
+
+  /* タブレット（768px〜1200px）: 2カラムレイアウト */
+  @media (min-width: 50em) {
+    .doc-layout-container {
+      flex-direction: row;
+      padding: 0 1rem;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+
+    .sidebar-column {
+      order: 1;
+      width: 260px;
+      max-width: 280px;
+      flex-shrink: 0;
+      position: sticky;
+      top: calc(var(--sl-nav-height) + 1rem);
+      height: calc(100vh - var(--sl-nav-height) - 2rem);
+      margin-bottom: 0;
+    }
+
+    .sidebar-content {
+      padding: 1.5rem 1rem;
+      height: 100%;
+      max-height: none;
+    }
+
+    .main-column {
+      order: 2;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .content-panel {
+      padding: 1.5rem 1rem;
+      min-height: calc(100vh - var(--sl-nav-height) - 2rem);
+    }
+
+    .toc-column {
+      display: none; /* タブレットでも非表示 */
+    }
+  }
+
+  /* デスクトップ（1200px〜）: 3カラムレイアウト */
+  @media (min-width: 75em) {
+    .doc-layout-container {
+      padding: 0 1rem;
+      gap: 2rem;
+    }
+
+    .sidebar-column {
+      width: 250px;
+      max-width: 270px;
+    }
+
+    .main-column {
+      flex: 1;
+      min-width: 600px; /* メインコンテンツの最小幅を確保 */
+    }
+
+    .content-panel {
+      padding: 1.5rem 1rem;
+    }
+
+    .toc-column {
+      order: 3;
+      display: block;
+      width: 240px;
+      flex-shrink: 0;
+      position: sticky;
+      top: calc(var(--sl-nav-height) + 1rem);
+      height: calc(100vh - var(--sl-nav-height) - 2rem);
+      overflow-y: auto;
+    }
+
+    .toc-content {
+      padding: 1.5rem 1rem;
+    }
+  }
+
+  /* 大型デスクトップ（1400px〜）: より余裕のあるレイアウト */
+  @media (min-width: 87.5em) {
+    .doc-layout-container {
+      gap: 2.5rem;
+    }
+
+    .sidebar-column {
+      width: 260px;
+      max-width: 280px;
+    }
+
+    .toc-column {
+      width: 260px;
+    }
+
+    .content-panel {
+      padding: 1.5rem 1rem;
+    }
+  }
+</style>

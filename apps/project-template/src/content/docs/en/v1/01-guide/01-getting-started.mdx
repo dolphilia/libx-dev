@@ -1,0 +1,97 @@
+---
+title: "Documentation Versioning Overview"
+description: "Learn about versioning documentation and how to organize content across different versions"
+---
+
+# Documentation Versioning Overview
+
+Welcome to the sample documentation project! This guide explains the concept of documentation versioning and how you can organize content across different versions like v1 and v2.
+
+## What is Documentation Versioning?
+
+Documentation versioning allows you to maintain multiple versions of your documentation simultaneously. This is particularly useful when:
+
+- You have different versions of your software or API
+- You need to support users on older versions while developing new features
+- You want to gradually migrate users from one version to another
+- You need to maintain backward compatibility documentation
+
+## Why Separate v1 and v2?
+
+In this project, we demonstrate versioning by organizing content into separate directories:
+
+```
+docs/
+├── en/
+│   ├── v1/           # Version 1 documentation
+│   │   └── guide/
+│   └── v2/           # Version 2 documentation
+│       ├── guide/
+│       ├── components/
+│       ├── advanced/
+│       └── reference/
+└── ja/               # Japanese translations
+    ├── v1/
+    └── v2/
+```
+
+### Version 1 (Current Page)
+- **Purpose**: Provides a simple introduction to the versioning concept
+- **Content**: Basic overview and orientation
+- **Audience**: Users getting familiar with the documentation structure
+
+### Version 2 (Main Documentation)
+- **Purpose**: Comprehensive documentation with detailed guides and examples
+- **Content**: Complete documentation creation and editing guides
+- **Audience**: Users ready to create and manage documentation
+
+## Benefits of This Approach
+
+1. **Clear Separation**: Each version has its own dedicated space
+2. **Independent Evolution**: Versions can evolve independently
+3. **User Choice**: Users can choose the version that fits their needs
+4. **Migration Path**: Clear progression from basic to advanced content
+
+## Directory Structure Benefits
+
+By organizing content in version-specific directories, you get:
+
+- **Organized URLs**: Clean paths like `/en/v1/guide/` and `/en/v2/guide/`
+- **Independent Navigation**: Each version can have its own sidebar structure
+- **Flexible Content**: Different versions can have completely different content organization
+- **Easy Maintenance**: Changes to one version don't affect others
+
+## Multi-language Support
+
+This versioning approach works seamlessly with multi-language support:
+
+- Each language (`en`, `ja`) has its own version directories
+- Content can be translated independently for each version
+- URL structure remains clean and predictable
+- Users can switch languages while staying in the same version
+
+## Next Steps
+
+Ready to explore comprehensive documentation creation? Check out **Version 2** which contains:
+
+- **Complete Documentation Guides**: Learn how to create, edit, and organize documentation
+- **Component Examples**: Discover available UI components like icons, tabs, and more
+- **Advanced Topics**: Explore customization, automation, and deployment
+- **Reference Materials**: Find detailed information about configuration and syntax
+
+[**Explore v2 Documentation →**](/en/v2/guide/getting-started)
+
+## Technical Implementation
+
+This versioning system is built using:
+
+- **Directory-based routing**: Astro's file-based routing system
+- **Dynamic sidebar generation**: Automatically generates navigation based on content structure
+- **Frontmatter configuration**: Uses metadata to control ordering and categorization
+- **Multi-language support**: Built-in internationalization features
+
+The version information is configured in `project.config.ts`, where you can:
+- Define available versions
+- Set the latest version
+- Configure version-specific metadata
+- Manage version display names and dates

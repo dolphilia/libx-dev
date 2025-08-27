@@ -1,0 +1,341 @@
+---
+title: "Version Management"
+description: "Learn how to handle multiple documentation versions effectively"
+---
+
+# Version Management
+
+Learn how to effectively manage multiple versions of your documentation, from planning version strategy to maintaining historical content.
+
+## Version Strategy
+
+### When to Create New Versions
+
+Create new documentation versions when:
+
+- **Major API changes**: Breaking changes that affect user implementation
+- **Significant feature additions**: New functionality that changes workflows
+- **Platform updates**: Major platform or framework upgrades
+- **Audience changes**: Different user types requiring different approaches
+
+### Version Lifecycle
+
+Typical version lifecycle:
+
+1. **Development**: Version under active development
+2. **Current/Latest**: Primary supported version
+3. **Maintenance**: Receives critical updates only
+4. **Deprecated**: No longer updated, archived for reference
+5. **Archived**: Removed from main navigation, accessible via direct links
+
+## Configuration
+
+### Version Definition
+
+Define versions in `project.config.ts`:
+
+```typescript
+versions: [
+  { 
+    id: 'v1', 
+    name: 'Version 1.0', 
+    date: new Date('2024-01-01'), 
+    isLatest: false 
+  },
+  { 
+    id: 'v2', 
+    name: 'Version 2.0', 
+    date: new Date('2025-01-01'), 
+    isLatest: true 
+  }
+] as Version[]
+```
+
+### Directory Structure
+
+Organize content by version:
+
+```
+src/content/docs/
+├── en/
+│   ├── v1/                 # Version 1 content
+│   │   └── guide/
+│   │       └── getting-started.mdx
+│   └── v2/                 # Version 2 content
+│       ├── guide/
+│       ├── components/
+│       └── reference/
+└── ja/                     # Japanese translations
+    ├── v1/
+    └── v2/
+```
+
+## Creating New Versions
+
+### Using the Version Script
+
+Create a new version with the built-in script:
+
+```bash
+node scripts/create-version.js sample-docs v3
+```
+
+This script:
+
+1. **Updates configuration**: Adds new version to `project.config.ts`
+2. **Creates directories**: Sets up folder structure for all languages
+3. **Generates index pages**: Creates version-specific landing pages
+4. **Copies content**: Optionally copies from previous version as starting point
+5. **Updates metadata**: Sets new version as latest
+
+### Manual Version Creation
+
+For more control, create versions manually:
+
+#### 1. Update Configuration
+
+Add the new version to `project.config.ts`:
+
+```typescript
+versions: [
+  // Existing versions
+  { 
+    id: 'v1', 
+    name: 'Version 1.0', 
+    date: new Date('2024-01-01'), 
+    isLatest: false 
+  },
+  { 
+    id: 'v2', 
+    name: 'Version 2.0', 
+    date: new Date('2025-01-01'), 
+    isLatest: false      // No longer latest
+  },
+  // New version
+  { 
+    id: 'v3', 
+    name: 'Version 3.0', 
+    date: new Date('2025-06-01'), 
+    isLatest: true       // New latest version
+  }
+]
+```
+
+#### 2. Create Directory Structure
+
+Create directories for each supported language:
+
+```bash
+mkdir -p src/content/docs/en/v3/guide
+mkdir -p src/content/docs/en/v3/components
+mkdir -p src/content/docs/en/v3/reference
+mkdir -p src/content/docs/ja/v3/guide
+mkdir -p src/content/docs/ja/v3/components
+mkdir -p src/content/docs/ja/v3/reference
+```
+
+#### 3. Create Initial Content
+
+Start with a version-specific getting started guide:
+
+```yaml
+---
+title: "What's New in v3"
+description: "Explore the new features and improvements in version 3"
+category: "guide"
+order: 1
+---
+```
+
+```markdown
+# What's New in Version 3
+
+Welcome to version 3! This release introduces significant improvements...
+
+## Breaking Changes
+
+### API Updates
+- Method `oldMethod()` has been replaced with `newMethod()`
+- Configuration structure has changed
+
+### Migration Guide
+Follow these steps to upgrade from v2:
+
+1. Update your configuration files
+2. Replace deprecated method calls
+3. Test your implementation
+
+## New Features
+
+### Enhanced Performance
+Version 3 is 40% faster than v2...
+
+### New Components
+We've added several new UI components...
+
+## Getting Started
+
+If you're new to our documentation system, start with:
+- [Basic concepts](/en/v3/guide/concepts)
+- [Installation guide](/en/v3/guide/installation)
+- [First project](/en/v3/guide/first-project)
+
+## Migrating from v2
+
+Existing v2 users should read:
+- [Migration guide](/en/v3/guide/migration)
+- [Breaking changes](/en/v3/reference/breaking-changes)
+- [Compatibility notes](/en/v3/reference/compatibility)
+```
+
+## Version Navigation
+
+### Version Selector
+
+Users can switch between versions using the built-in version selector component. This appears in the navigation bar and allows quick switching while maintaining the current page context when possible.
+
+### Cross-Version Linking
+
+Link between versions when content is related:
+
+```markdown
+<!-- In v2 documentation -->
+This feature has been improved in [version 3](/en/v3/guide/improved-feature).
+
+<!-- In v3 documentation -->
+This replaces the v2 approach documented [here](/en/v2/guide/old-approach).
+```
+
+### URL Structure
+
+Version URLs follow a consistent pattern:
+
+```
+/{language}/{version}/{category}/{document}
+
+Examples:
+/en/v2/guide/getting-started
+/ja/v3/components/icons
+/en/v1/reference/api
+```
+
+## Content Migration Strategies
+
+### Full Migration
+
+Copy all content from previous version and update:
+
+```bash
+# Copy v2 to v3
+cp -r src/content/docs/en/v2/* src/content/docs/en/v3/
+
+# Update all frontmatter and content for v3
+# Update version-specific links and examples
+```
+
+### Selective Migration
+
+Migrate only relevant content:
+
+1. **Identify evergreen content**: Concepts that don't change between versions
+2. **Update changed content**: Rewrite sections with version-specific changes
+3. **Add new content**: Document new features and capabilities
+4. **Remove obsolete content**: Don't carry forward outdated information
+
+### Progressive Enhancement
+
+Start with basics and expand over time:
+
+1. **Launch with minimal content**: Getting started and key changes
+2. **Migrate popular pages**: Focus on most-visited content first
+3. **Fill content gaps**: Add missing documentation based on user needs
+4. **Enhance with examples**: Improve with better examples and use cases
+
+## Maintenance Workflow
+
+### Version Support Matrix
+
+Define support levels for each version:
+
+| Version | Status | Updates | End of Life |
+|---------|--------|---------|-------------|
+| v3 | Current | All updates | TBD |
+| v2 | Maintenance | Critical fixes only | 2026-01-01 |
+| v1 | Deprecated | Security fixes only | 2025-06-01 |
+
+### Update Strategy
+
+**Current Version (v3)**:
+- Regular content updates
+- New feature documentation
+- Performance improvements
+- User experience enhancements
+
+**Maintenance Version (v2)**:
+- Critical bug fixes
+- Security updates
+- Important clarifications
+- No new features
+
+**Deprecated Version (v1)**:
+- Security fixes only
+- Clear deprecation notices
+- Migration guidance
+- Minimal maintenance
+
+### Deprecation Process
+
+When deprecating a version:
+
+1. **Announce deprecation**: Clear communication about timeline
+2. **Add notices**: Prominent deprecation warnings on all pages
+3. **Provide migration path**: Clear upgrade instructions
+4. **Set end-of-life date**: Specific date when support ends
+5. **Archive gracefully**: Keep content accessible but remove from navigation
+
+## Best Practices
+
+### Content Strategy
+
+- **Maintain consistency**: Use similar structure across versions
+- **Plan migration paths**: Clear upgrade instructions between versions
+- **Document breaking changes**: Comprehensive change logs
+- **Preserve context**: Explain why changes were made
+
+### User Experience
+
+- **Default to latest**: New users should see current version
+- **Preserve user choice**: Remember version preference
+- **Clear version indicators**: Always show which version user is viewing
+- **Smooth transitions**: Handle missing pages gracefully when switching versions
+
+### Technical Considerations
+
+- **URL stability**: Don't break existing links unnecessarily
+- **Search optimization**: Ensure search works across versions
+- **Performance**: Don't load unnecessary version data
+- **Analytics**: Track usage patterns across versions
+
+## Troubleshooting
+
+### Common Issues
+
+**Broken links between versions**:
+- Solution: Use version-agnostic links where possible, or update links when content moves
+
+**Outdated content in old versions**:
+- Solution: Add prominent notices linking to current version
+
+**User confusion about versions**:
+- Solution: Clear version indicators and better onboarding
+
+**Search returning outdated results**:
+- Solution: Weight current version higher in search results
+
+## Next Steps
+
+Now that you understand version management:
+
+- **[Explore Components](/en/v2/components/overview)**: Learn about available UI components
+- **[Advanced Customization](/en/v2/advanced/customization)**: Customize the documentation system
+- **[Reference Materials](/en/v2/reference/frontmatter)**: Detailed configuration options
