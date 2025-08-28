@@ -32,15 +32,6 @@
         "example"
       ],
       "isNew": false
-    },
-    "project-template": {
-      "icon": "layers",
-      "tags": [
-        "template",
-        "base",
-        "starter"
-      ],
-      "isNew": true
     }
   }
 }

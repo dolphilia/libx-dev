@@ -36,7 +36,7 @@ export async function scanAppsDirectory(): Promise<string[]> {
     const entries = await fs.readdir(appsDir, { withFileTypes: true });
     
     for (const entry of entries) {
-      if (!entry.isDirectory() || entry.name === 'top-page') {
+      if (!entry.isDirectory() || entry.name === 'top-page' || entry.name === 'project-template') {
         continue;
       }
       
@@ -46,7 +46,7 @@ export async function scanAppsDirectory(): Promise<string[]> {
         try {
           const appEntries = await fs.readdir(appsSubDir, { withFileTypes: true });
           for (const appEntry of appEntries) {
-            if (!appEntry.isDirectory() || appEntry.name === 'top-page') {
+            if (!appEntry.isDirectory() || appEntry.name === 'top-page' || appEntry.name === 'project-template') {
               continue;
             }
             
