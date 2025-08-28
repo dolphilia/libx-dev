@@ -1,0 +1,76 @@
+{
+  "common": {
+    "home": "Trang chủ",
+    "search": "Tìm kiếm",
+    "menu": "Menu",
+    "close": "Đóng",
+    "back": "Trở lại",
+    "next": "Tiếp theo",
+    "previous": "Trước",
+    "loading": "Đang tải...",
+    "error": "Lỗi",
+    "success": "Thành công",
+    "warning": "Cảnh báo",
+    "info": "Thông tin",
+    "new": "Mới",
+    "updated": "Đã cập nhật"
+  },
+  "navigation": {
+    "docs": "Tài liệu",
+    "api": "API",
+    "examples": "Ví dụ",
+    "blog": "Blog",
+    "community": "Cộng đồng",
+    "github": "GitHub"
+  },
+  "footer": {
+    "copyright": "© {year} Bảo lưu mọi quyền.",
+    "terms": "Điều khoản dịch vụ",
+    "privacy": "Chính sách bảo mật",
+    "contact": "Liên hệ",
+    "contributeText": " để giúp cải thiện tài liệu.",
+    "contributeLink": "Đóng góp cho dự án"
+  },
+  "docs": {
+    "onThisPage": "Trên trang này",
+    "editThisPage": "Chỉnh sửa trang này",
+    "lastUpdated": "Cập nhật lần cuối {date}",
+    "version": "Phiên bản",
+    "versions": "Các phiên bản",
+    "language": "Ngôn ngữ",
+    "languages": "Các ngôn ngữ",
+    "toc": "Mục lục",
+    "documentation": "Tài liệu",
+    "latest": "Mới nhất",
+    "showLatest": "Hiển thị phiên bản mới nhất",
+    "showDiff": "Hiển thị sự khác biệt giữa các phiên bản",
+    "current": "Hiện tại"
+  },
+  "search": {
+    "placeholder": "Tìm kiếm tài liệu...",
+    "noResults": "Không tìm thấy kết quả cho '{query}'",
+    "oneResult": "1 kết quả cho '{query}'",
+    "manyResults": "{count} kết quả cho '{query}'",
+    "searchResults": "Kết quả tìm kiếm",
+    "searchIn": "Tìm kiếm trong",
+    "searching": "Đang tìm kiếm...",
+    "closeSearch": "Đóng",
+    "error": "Lỗi tìm kiếm",
+    "label": "Tìm kiếm",
+    "ctrlKey": "Ctrl"
+  },
+  "error": {
+    "notFound": "Không tìm thấy trang",
+    "notFoundDescription": "Trang bạn đang tìm kiếm không tồn tại hoặc đã được di chuyển.",
+    "goHome": "Về trang chủ"
+  },
+  "projects": {
+    "title": "Dự án",
+    "description": "Duyệt tất cả các dự án tài liệu có sẵn"
+  },
+  "contribute": {
+    "title": "Đóng góp",
+    "description": "Giúp chúng tôi cải thiện tài liệu bằng cách đóng góp cho dự án",
+    "button": "Đóng góp trên GitHub"
+  }
+}

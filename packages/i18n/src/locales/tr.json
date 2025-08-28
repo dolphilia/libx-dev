@@ -1,0 +1,76 @@
+{
+  "common": {
+    "home": "Ana Sayfa",
+    "search": "Ara",
+    "menu": "Menü",
+    "close": "Kapat",
+    "back": "Geri",
+    "next": "İleri",
+    "previous": "Önceki",
+    "loading": "Yükleniyor...",
+    "error": "Hata",
+    "success": "Başarılı",
+    "warning": "Uyarı",
+    "info": "Bilgi",
+    "new": "Yeni",
+    "updated": "Güncellendi"
+  },
+  "navigation": {
+    "docs": "Dokümantasyon",
+    "api": "API",
+    "examples": "Örnekler",
+    "blog": "Blog",
+    "community": "Topluluk",
+    "github": "GitHub"
+  },
+  "footer": {
+    "copyright": "© {year} Tüm hakları saklıdır.",
+    "terms": "Hizmet Şartları",
+    "privacy": "Gizlilik Politikası",
+    "contact": "Bize Ulaşın",
+    "contributeText": " dokümantasyonu geliştirmek için yardım edin.",
+    "contributeLink": "Projeye katkıda bulun"
+  },
+  "docs": {
+    "onThisPage": "Bu sayfada",
+    "editThisPage": "Bu sayfayı düzenle",
+    "lastUpdated": "Son güncelleme {date}",
+    "version": "Versiyon",
+    "versions": "Versiyonlar",
+    "language": "Dil",
+    "languages": "Diller",
+    "toc": "İçindekiler",
+    "documentation": "Dokümantasyon",
+    "latest": "En son",
+    "showLatest": "En son versiyonu göster",
+    "showDiff": "Versiyon farklarını göster",
+    "current": "Mevcut"
+  },
+  "search": {
+    "placeholder": "Dokümantasyonu ara...",
+    "noResults": "'{query}' için sonuç bulunamadı",
+    "oneResult": "'{query}' için 1 sonuç",
+    "manyResults": "'{query}' için {count} sonuç",
+    "searchResults": "Arama Sonuçları",
+    "searchIn": "Arama yeri",
+    "searching": "Aranıyor...",
+    "closeSearch": "Kapat",
+    "error": "Arama hatası",
+    "label": "Ara",
+    "ctrlKey": "Ctrl"
+  },
+  "error": {
+    "notFound": "Sayfa bulunamadı",
+    "notFoundDescription": "Aradığınız sayfa mevcut değil veya taşınmış.",
+    "goHome": "Ana Sayfaya Git"
+  },
+  "projects": {
+    "title": "Projeler",
+    "description": "Mevcut tüm dokümantasyon projelerini görüntüleyin"
+  },
+  "contribute": {
+    "title": "Katkıda Bulun",
+    "description": "Projeye katkıda bulunarak dokümantasyonu geliştirmemize yardım edin",
+    "button": "GitHub'da Katkıda Bulun"
+  }
+}

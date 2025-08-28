@@ -1,0 +1,76 @@
+{
+  "common": {
+    "home": "홈",
+    "search": "검색",
+    "menu": "메뉴",
+    "close": "닫기",
+    "back": "뒤로",
+    "next": "다음",
+    "previous": "이전",
+    "loading": "로딩 중...",
+    "error": "오류",
+    "success": "성공",
+    "warning": "경고",
+    "info": "정보",
+    "new": "새로운",
+    "updated": "업데이트됨"
+  },
+  "navigation": {
+    "docs": "문서",
+    "api": "API",
+    "examples": "예제",
+    "blog": "블로그",
+    "community": "커뮤니티",
+    "github": "GitHub"
+  },
+  "footer": {
+    "copyright": "© {year} 모든 권리 보유.",
+    "terms": "이용약관",
+    "privacy": "개인정보처리방침",
+    "contact": "문의하기",
+    "contributeText": "하여 문서 개선에 도움을 주세요.",
+    "contributeLink": "프로젝트에 기여"
+  },
+  "docs": {
+    "onThisPage": "이 페이지의 내용",
+    "editThisPage": "이 페이지 편집",
+    "lastUpdated": "최종 업데이트: {date}",
+    "version": "버전",
+    "versions": "버전 목록",
+    "language": "언어",
+    "languages": "언어 목록",
+    "toc": "목차",
+    "documentation": "문서",
+    "latest": "최신",
+    "showLatest": "최신 버전 표시",
+    "showDiff": "버전 차이 표시",
+    "current": "현재"
+  },
+  "search": {
+    "placeholder": "문서 검색...",
+    "noResults": "'{query}'에 대한 결과를 찾을 수 없습니다",
+    "oneResult": "'{query}'에 대한 결과 1개",
+    "manyResults": "'{query}'에 대한 결과 {count}개",
+    "searchResults": "검색 결과",
+    "searchIn": "검색 대상",
+    "searching": "검색 중...",
+    "closeSearch": "닫기",
+    "error": "검색 오류",
+    "label": "검색",
+    "ctrlKey": "Ctrl"
+  },
+  "error": {
+    "notFound": "페이지를 찾을 수 없습니다",
+    "notFoundDescription": "찾고 있는 페이지가 존재하지 않거나 이동되었습니다.",
+    "goHome": "홈으로 가기"
+  },
+  "projects": {
+    "title": "프로젝트",
+    "description": "사용 가능한 모든 문서 프로젝트 탐색"
+  },
+  "contribute": {
+    "title": "기여하기",
+    "description": "프로젝트에 기여하여 문서 개선에 도움을 주세요",
+    "button": "GitHub에서 기여하기"
+  }
+}

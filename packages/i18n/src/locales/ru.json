@@ -1,0 +1,76 @@
+{
+  "common": {
+    "home": "Главная",
+    "search": "Поиск",
+    "menu": "Меню",
+    "close": "Закрыть",
+    "back": "Назад",
+    "next": "Далее",
+    "previous": "Предыдущий",
+    "loading": "Загрузка...",
+    "error": "Ошибка",
+    "success": "Успех",
+    "warning": "Предупреждение",
+    "info": "Информация",
+    "new": "Новый",
+    "updated": "Обновлено"
+  },
+  "navigation": {
+    "docs": "Документация",
+    "api": "API",
+    "examples": "Примеры",
+    "blog": "Блог",
+    "community": "Сообщество",
+    "github": "GitHub"
+  },
+  "footer": {
+    "copyright": "© {year} Все права защищены.",
+    "terms": "Условия использования",
+    "privacy": "Политика конфиденциальности",
+    "contact": "Связаться с нами",
+    "contributeText": " чтобы помочь улучшить документацию.",
+    "contributeLink": "Внести вклад в проект"
+  },
+  "docs": {
+    "onThisPage": "На этой странице",
+    "editThisPage": "Редактировать эту страницу",
+    "lastUpdated": "Последнее обновление {date}",
+    "version": "Версия",
+    "versions": "Версии",
+    "language": "Язык",
+    "languages": "Языки",
+    "toc": "Содержание",
+    "documentation": "Документация",
+    "latest": "Последняя",
+    "showLatest": "Показать последнюю версию",
+    "showDiff": "Показать различия версий",
+    "current": "Текущая"
+  },
+  "search": {
+    "placeholder": "Поиск в документации...",
+    "noResults": "Не найдено результатов для '{query}'",
+    "oneResult": "1 результат для '{query}'",
+    "manyResults": "{count} результатов для '{query}'",
+    "searchResults": "Результаты поиска",
+    "searchIn": "Искать в",
+    "searching": "Поиск...",
+    "closeSearch": "Закрыть",
+    "error": "Ошибка поиска",
+    "label": "Поиск",
+    "ctrlKey": "Ctrl"
+  },
+  "error": {
+    "notFound": "Страница не найдена",
+    "notFoundDescription": "Страница, которую вы ищете, не существует или была перемещена.",
+    "goHome": "Перейти на главную"
+  },
+  "projects": {
+    "title": "Проекты",
+    "description": "Просмотреть все доступные проекты документации"
+  },
+  "contribute": {
+    "title": "Внести вклад",
+    "description": "Помогите нам улучшить документацию, внося вклад в проект",
+    "button": "Внести вклад на GitHub"
+  }
+}

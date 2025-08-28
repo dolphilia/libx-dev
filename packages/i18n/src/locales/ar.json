@@ -1,0 +1,76 @@
+{
+  "common": {
+    "home": "الرئيسية",
+    "search": "بحث",
+    "menu": "القائمة",
+    "close": "إغلاق",
+    "back": "العودة",
+    "next": "التالي",
+    "previous": "السابق",
+    "loading": "جارِ التحميل...",
+    "error": "خطأ",
+    "success": "نجح",
+    "warning": "تحذير",
+    "info": "معلومات",
+    "new": "جديد",
+    "updated": "محدث"
+  },
+  "navigation": {
+    "docs": "التوثيق",
+    "api": "واجهة برمجة التطبيقات",
+    "examples": "أمثلة",
+    "blog": "المدونة",
+    "community": "المجتمع",
+    "github": "GitHub"
+  },
+  "footer": {
+    "copyright": "© {year} جميع الحقوق محفوظة.",
+    "terms": "شروط الخدمة",
+    "privacy": "سياسة الخصوصية",
+    "contact": "اتصل بنا",
+    "contributeText": " لمساعدة في تحسين التوثيق.",
+    "contributeLink": "المساهمة في المشروع"
+  },
+  "docs": {
+    "onThisPage": "في هذه الصفحة",
+    "editThisPage": "تحرير هذه الصفحة",
+    "lastUpdated": "آخر تحديث في {date}",
+    "version": "الإصدار",
+    "versions": "الإصدارات",
+    "language": "اللغة",
+    "languages": "اللغات",
+    "toc": "جدول المحتويات",
+    "documentation": "التوثيق",
+    "latest": "الأحدث",
+    "showLatest": "عرض أحدث إصدار",
+    "showDiff": "عرض اختلافات الإصدارات",
+    "current": "الحالي"
+  },
+  "search": {
+    "placeholder": "البحث في التوثيق...",
+    "noResults": "لم يتم العثور على نتائج لـ '{query}'",
+    "oneResult": "نتيجة واحدة لـ '{query}'",
+    "manyResults": "{count} نتائج لـ '{query}'",
+    "searchResults": "نتائج البحث",
+    "searchIn": "البحث في",
+    "searching": "جارِ البحث...",
+    "closeSearch": "إغلاق",
+    "error": "خطأ في البحث",
+    "label": "بحث",
+    "ctrlKey": "Ctrl"
+  },
+  "error": {
+    "notFound": "الصفحة غير موجودة",
+    "notFoundDescription": "الصفحة التي تبحث عنها غير موجودة أو تم نقلها.",
+    "goHome": "العودة للرئيسية"
+  },
+  "projects": {
+    "title": "المشاريع",
+    "description": "استعراض جميع مشاريع التوثيق المتاحة"
+  },
+  "contribute": {
+    "title": "المساهمة",
+    "description": "ساعدنا في تحسين التوثيق من خلال المساهمة في المشروع",
+    "button": "المساهمة على GitHub"
+  }
+}

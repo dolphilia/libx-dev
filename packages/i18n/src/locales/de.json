@@ -1,0 +1,76 @@
+{
+  "common": {
+    "home": "Startseite",
+    "search": "Suchen",
+    "menu": "Menü",
+    "close": "Schließen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "previous": "Vorherige",
+    "loading": "Lädt...",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "warning": "Warnung",
+    "info": "Information",
+    "new": "Neu",
+    "updated": "Aktualisiert"
+  },
+  "navigation": {
+    "docs": "Dokumentation",
+    "api": "API",
+    "examples": "Beispiele",
+    "blog": "Blog",
+    "community": "Community",
+    "github": "GitHub"
+  },
+  "footer": {
+    "copyright": "© {year} Alle Rechte vorbehalten.",
+    "terms": "Nutzungsbedingungen",
+    "privacy": "Datenschutzrichtlinie",
+    "contact": "Kontakt",
+    "contributeText": " um die Dokumentation zu verbessern.",
+    "contributeLink": "Zum Projekt beitragen"
+  },
+  "docs": {
+    "onThisPage": "Auf dieser Seite",
+    "editThisPage": "Diese Seite bearbeiten",
+    "lastUpdated": "Zuletzt aktualisiert am {date}",
+    "version": "Version",
+    "versions": "Versionen",
+    "language": "Sprache",
+    "languages": "Sprachen",
+    "toc": "Inhaltsverzeichnis",
+    "documentation": "Dokumentation",
+    "latest": "Neueste",
+    "showLatest": "Neueste Version anzeigen",
+    "showDiff": "Versionsunterschiede anzeigen",
+    "current": "Aktuell"
+  },
+  "search": {
+    "placeholder": "Dokumentation durchsuchen...",
+    "noResults": "Keine Ergebnisse für '{query}' gefunden",
+    "oneResult": "1 Ergebnis für '{query}'",
+    "manyResults": "{count} Ergebnisse für '{query}'",
+    "searchResults": "Suchergebnisse",
+    "searchIn": "Suchen in",
+    "searching": "Suche...",
+    "closeSearch": "Schließen",
+    "error": "Suchfehler",
+    "label": "Suchen",
+    "ctrlKey": "Strg"
+  },
+  "error": {
+    "notFound": "Seite nicht gefunden",
+    "notFoundDescription": "Die gesuchte Seite existiert nicht oder wurde verschoben.",
+    "goHome": "Zur Startseite"
+  },
+  "projects": {
+    "title": "Projekte",
+    "description": "Alle verfügbaren Dokumentationsprojekte durchsuchen"
+  },
+  "contribute": {
+    "title": "Beitragen",
+    "description": "Helfen Sie uns, die Dokumentation zu verbessern, indem Sie zum Projekt beitragen",
+    "button": "Auf GitHub beitragen"
+  }
+}

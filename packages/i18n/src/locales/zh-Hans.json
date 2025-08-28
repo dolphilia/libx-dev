@@ -1,0 +1,76 @@
+{
+  "common": {
+    "home": "首页",
+    "search": "搜索",
+    "menu": "菜单",
+    "close": "关闭",
+    "back": "返回",
+    "next": "下一页",
+    "previous": "上一页",
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "warning": "警告",
+    "info": "信息",
+    "new": "新建",
+    "updated": "已更新"
+  },
+  "navigation": {
+    "docs": "文档",
+    "api": "API",
+    "examples": "示例",
+    "blog": "博客",
+    "community": "社区",
+    "github": "GitHub"
+  },
+  "footer": {
+    "copyright": "© {year} 版权所有。",
+    "terms": "服务条款",
+    "privacy": "隐私政策",
+    "contact": "联系我们",
+    "contributeText": "，帮助改进文档。",
+    "contributeLink": "为项目贡献"
+  },
+  "docs": {
+    "onThisPage": "本页内容",
+    "editThisPage": "编辑本页",
+    "lastUpdated": "最后更新：{date}",
+    "version": "版本",
+    "versions": "版本列表",
+    "language": "语言",
+    "languages": "语言列表",
+    "toc": "目录",
+    "documentation": "文档",
+    "latest": "最新",
+    "showLatest": "显示最新版本",
+    "showDiff": "显示版本差异",
+    "current": "当前"
+  },
+  "search": {
+    "placeholder": "搜索文档...",
+    "noResults": "没有找到与'{query}'匹配的结果",
+    "oneResult": "找到 1 个与'{query}'相关的结果",
+    "manyResults": "找到 {count} 个与'{query}'相关的结果",
+    "searchResults": "搜索结果",
+    "searchIn": "搜索范围",
+    "searching": "搜索中...",
+    "closeSearch": "关闭",
+    "error": "搜索错误",
+    "label": "搜索",
+    "ctrlKey": "Ctrl"
+  },
+  "error": {
+    "notFound": "页面未找到",
+    "notFoundDescription": "您要查找的页面不存在或已被移动。",
+    "goHome": "返回首页"
+  },
+  "projects": {
+    "title": "项目列表",
+    "description": "浏览所有可用的文档项目"
+  },
+  "contribute": {
+    "title": "贡献",
+    "description": "为项目贡献力量，帮助改进文档",
+    "button": "在 GitHub 上贡献"
+  }
+}

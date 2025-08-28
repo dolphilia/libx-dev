@@ -14,8 +14,12 @@ import { getTopPageConfig } from '../config/projects.config.new';
 export async function generateProjectUrl(project: Project, lang: LocaleKey): Promise<string> {
   // まずfallbackUrlを試す（より信頼性が高い）
   if (project.fallbackUrl && project.fallbackUrl[lang]) {
-    console.log(`[URL] Using fallback URL for ${project.id}: ${project.fallbackUrl[lang]}`);
     return project.fallbackUrl[lang];
+  }
+  
+  // 指定した言語のfallbackURLが存在しない場合は英語にフォールバック
+  if (project.fallbackUrl && project.fallbackUrl['en'] && lang !== 'en') {
+    return project.fallbackUrl['en'];
   }
   
   // contentPathがある場合は動的生成を試行
@@ -23,18 +27,15 @@ export async function generateProjectUrl(project: Project, lang: LocaleKey): Pro
     try {
       const dynamicUrl = await generateDynamicUrl(project.contentPath, lang, project.path);
       if (dynamicUrl) {
-        console.log(`[URL] Using dynamic URL for ${project.id}: ${dynamicUrl}`);
         return dynamicUrl;
       }
     } catch (error) {
-      console.warn(`[URL] Dynamic generation failed for ${project.id}:`, error);
+      // 動的生成に失敗した場合は処理を継続
     }
   }
   
-  // 最終フォールバック: 基本パス + 言語
-  const defaultUrl = `${project.path}/${lang}`;
-  console.log(`[URL] Using default URL for ${project.id}: ${defaultUrl}`);
-  return defaultUrl;
+  // 最終フォールバック: 基本パス + 英語
+  return `${project.path}/en`;
 }
 
 /**

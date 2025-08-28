@@ -1,0 +1,76 @@
+{
+  "common": {
+    "home": "Beranda",
+    "search": "Cari",
+    "menu": "Menu",
+    "close": "Tutup",
+    "back": "Kembali",
+    "next": "Selanjutnya",
+    "previous": "Sebelumnya",
+    "loading": "Memuat...",
+    "error": "Error",
+    "success": "Berhasil",
+    "warning": "Peringatan",
+    "info": "Informasi",
+    "new": "Baru",
+    "updated": "Diperbarui"
+  },
+  "navigation": {
+    "docs": "Dokumentasi",
+    "api": "API",
+    "examples": "Contoh",
+    "blog": "Blog",
+    "community": "Komunitas",
+    "github": "GitHub"
+  },
+  "footer": {
+    "copyright": "© {year} Semua hak dilindungi.",
+    "terms": "Ketentuan Layanan",
+    "privacy": "Kebijakan Privasi",
+    "contact": "Hubungi Kami",
+    "contributeText": " untuk membantu meningkatkan dokumentasi.",
+    "contributeLink": "Berkontribusi ke proyek"
+  },
+  "docs": {
+    "onThisPage": "Di halaman ini",
+    "editThisPage": "Edit halaman ini",
+    "lastUpdated": "Terakhir diperbarui pada {date}",
+    "version": "Versi",
+    "versions": "Versi",
+    "language": "Bahasa",
+    "languages": "Bahasa",
+    "toc": "Daftar Isi",
+    "documentation": "Dokumentasi",
+    "latest": "Terbaru",
+    "showLatest": "Tampilkan versi terbaru",
+    "showDiff": "Tampilkan perbedaan versi",
+    "current": "Saat ini"
+  },
+  "search": {
+    "placeholder": "Cari dokumentasi...",
+    "noResults": "Tidak ditemukan hasil untuk '{query}'",
+    "oneResult": "1 hasil untuk '{query}'",
+    "manyResults": "{count} hasil untuk '{query}'",
+    "searchResults": "Hasil Pencarian",
+    "searchIn": "Cari di",
+    "searching": "Mencari...",
+    "closeSearch": "Tutup",
+    "error": "Error pencarian",
+    "label": "Cari",
+    "ctrlKey": "Ctrl"
+  },
+  "error": {
+    "notFound": "Halaman tidak ditemukan",
+    "notFoundDescription": "Halaman yang Anda cari tidak ada atau telah dipindahkan.",
+    "goHome": "Ke Beranda"
+  },
+  "projects": {
+    "title": "Proyek",
+    "description": "Jelajahi semua proyek dokumentasi yang tersedia"
+  },
+  "contribute": {
+    "title": "Berkontribusi",
+    "description": "Bantu kami meningkatkan dokumentasi dengan berkontribusi ke proyek",
+    "button": "Berkontribusi di GitHub"
+  }
+}

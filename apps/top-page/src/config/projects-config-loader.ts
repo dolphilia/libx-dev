@@ -65,26 +65,30 @@ async function generateAutoProjects(decorations: Record<string, ProjectDecoratio
         ...decoration
       });
     } catch (error) {
-      console.warn(`プロジェクト ${id} の自動検出に失敗しました:`, error);
+      console.warn(`プロジェクト ${id} の自動検出に失敗しました:`, error?.message || error);
       
       // 設定ファイルが見つからなくても基本情報でプロジェクトを追加
       const decoration = decorations[id] || {};
+      
+      // 基本的なフォールバックURLを生成（英語・日本語のみ）
+      const basicFallbackUrl: Record<string, string> = {
+        en: `/docs/${id}/en/v1/guide/getting-started`,
+        ja: `/docs/${id}/ja/v1/guide/getting-started`
+      };
+      
       projects.push({
         id,
         name: {
           en: id.charAt(0).toUpperCase() + id.slice(1).replace('-', ' '),
           ja: id.charAt(0).toUpperCase() + id.slice(1).replace('-', ' ')
-        },
+        } as Record<string, string>,
         description: {
           en: `Documentation for ${id}`,
           ja: `${id}のドキュメント`
-        },
+        } as Record<string, string>,
         path: `/docs/${id}`,
         contentPath: id,
-        fallbackUrl: {
-          en: `/docs/${id}/en/v1/guide/getting-started`,
-          ja: `/docs/${id}/ja/v1/guide/getting-started`
-        },
+        fallbackUrl: basicFallbackUrl,
         ...decoration
       });
     }

@@ -78,8 +78,29 @@ export function formatDate(
 ): string {
   const dateObj = date instanceof Date ? date : new Date(date);
   
+  // 言語コードからIntl.DateTimeFormatのロケールにマッピング
+  const localeMap: Record<LocaleKey, string> = {
+    'en': 'en-US',
+    'ja': 'ja-JP',
+    'zh-Hans': 'zh-CN',
+    'zh-Hant': 'zh-TW',
+    'es': 'es-ES',
+    'pt-BR': 'pt-BR',
+    'ko': 'ko-KR',
+    'de': 'de-DE',
+    'fr': 'fr-FR',
+    'ru': 'ru-RU',
+    'ar': 'ar-SA',
+    'id': 'id-ID',
+    'tr': 'tr-TR',
+    'hi': 'hi-IN',
+    'vi': 'vi-VN'
+  };
+  
+  const intlLocale = localeMap[lang] || localeMap[defaultLocale];
+  
   try {
-    return new Intl.DateTimeFormat(lang === 'en' ? 'en-US' : 'ja-JP', {
+    return new Intl.DateTimeFormat(intlLocale, {
       year: 'numeric',
       month: 'long',
       day: 'numeric'

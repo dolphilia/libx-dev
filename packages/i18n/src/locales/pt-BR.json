@@ -1,0 +1,76 @@
+{
+  "common": {
+    "home": "Início",
+    "search": "Pesquisar",
+    "menu": "Menu",
+    "close": "Fechar",
+    "back": "Voltar",
+    "next": "Próximo",
+    "previous": "Anterior",
+    "loading": "Carregando...",
+    "error": "Erro",
+    "success": "Sucesso",
+    "warning": "Aviso",
+    "info": "Informação",
+    "new": "Novo",
+    "updated": "Atualizado"
+  },
+  "navigation": {
+    "docs": "Documentação",
+    "api": "API",
+    "examples": "Exemplos",
+    "blog": "Blog",
+    "community": "Comunidade",
+    "github": "GitHub"
+  },
+  "footer": {
+    "copyright": "© {year} Todos os direitos reservados.",
+    "terms": "Termos de Serviço",
+    "privacy": "Política de Privacidade",
+    "contact": "Contate-nos",
+    "contributeText": " para ajudar a melhorar a documentação.",
+    "contributeLink": "Contribuir para o projeto"
+  },
+  "docs": {
+    "onThisPage": "Nesta página",
+    "editThisPage": "Editar esta página",
+    "lastUpdated": "Última atualização em {date}",
+    "version": "Versão",
+    "versions": "Versões",
+    "language": "Idioma",
+    "languages": "Idiomas",
+    "toc": "Índice",
+    "documentation": "Documentação",
+    "latest": "Mais recente",
+    "showLatest": "Mostrar versão mais recente",
+    "showDiff": "Mostrar diferenças de versão",
+    "current": "Atual"
+  },
+  "search": {
+    "placeholder": "Pesquisar documentação...",
+    "noResults": "Nenhum resultado encontrado para '{query}'",
+    "oneResult": "1 resultado para '{query}'",
+    "manyResults": "{count} resultados para '{query}'",
+    "searchResults": "Resultados da Pesquisa",
+    "searchIn": "Pesquisar em",
+    "searching": "Pesquisando...",
+    "closeSearch": "Fechar",
+    "error": "Erro de pesquisa",
+    "label": "Pesquisar",
+    "ctrlKey": "Ctrl"
+  },
+  "error": {
+    "notFound": "Página não encontrada",
+    "notFoundDescription": "A página que você está procurando não existe ou foi movida.",
+    "goHome": "Ir para o Início"
+  },
+  "projects": {
+    "title": "Projetos",
+    "description": "Navegue por todos os projetos de documentação disponíveis"
+  },
+  "contribute": {
+    "title": "Contribuir",
+    "description": "Nos ajude a melhorar a documentação contribuindo para o projeto",
+    "button": "Contribuir no GitHub"
+  }
+}

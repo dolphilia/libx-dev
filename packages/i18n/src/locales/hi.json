@@ -1,0 +1,76 @@
+{
+  "common": {
+    "home": "होम",
+    "search": "खोजें",
+    "menu": "मेनू",
+    "close": "बंद करें",
+    "back": "वापस",
+    "next": "अगला",
+    "previous": "पिछला",
+    "loading": "लोड हो रहा है...",
+    "error": "त्रुटि",
+    "success": "सफल",
+    "warning": "चेतावनी",
+    "info": "जानकारी",
+    "new": "नया",
+    "updated": "अपडेट किया गया"
+  },
+  "navigation": {
+    "docs": "दस्तावेज़ीकरण",
+    "api": "API",
+    "examples": "उदाहरण",
+    "blog": "ब्लॉग",
+    "community": "समुदाय",
+    "github": "GitHub"
+  },
+  "footer": {
+    "copyright": "© {year} सभी अधिकार सुरक्षित।",
+    "terms": "सेवा की शर्तें",
+    "privacy": "गोपनीयता नीति",
+    "contact": "संपर्क करें",
+    "contributeText": " दस्तावेज़ीकरण को बेहतर बनाने में मदद करने के लिए।",
+    "contributeLink": "प्रोजेक्ट में योगदान करें"
+  },
+  "docs": {
+    "onThisPage": "इस पेज पर",
+    "editThisPage": "इस पेज को संपादित करें",
+    "lastUpdated": "अंतिम अपडेट {date}",
+    "version": "संस्करण",
+    "versions": "संस्करण",
+    "language": "भाषा",
+    "languages": "भाषाएं",
+    "toc": "विषय सूची",
+    "documentation": "दस्तावेज़ीकरण",
+    "latest": "नवीनतम",
+    "showLatest": "नवीनतम संस्करण दिखाएं",
+    "showDiff": "संस्करण अंतर दिखाएं",
+    "current": "वर्तमान"
+  },
+  "search": {
+    "placeholder": "दस्तावेज़ खोजें...",
+    "noResults": "'{query}' के लिए कोई परिणाम नहीं मिला",
+    "oneResult": "'{query}' के लिए 1 परिणाम",
+    "manyResults": "'{query}' के लिए {count} परिणाम",
+    "searchResults": "खोज परिणाम",
+    "searchIn": "में खोजें",
+    "searching": "खोजा जा रहा है...",
+    "closeSearch": "बंद करें",
+    "error": "खोज त्रुटि",
+    "label": "खोजें",
+    "ctrlKey": "Ctrl"
+  },
+  "error": {
+    "notFound": "पेज नहीं मिला",
+    "notFoundDescription": "आप जिस पेज को खोज रहे हैं वह मौजूद नहीं है या स्थानांतरित हो गया है।",
+    "goHome": "होम पर जाएं"
+  },
+  "projects": {
+    "title": "प्रोजेक्ट्स",
+    "description": "सभी उपलब्ध दस्तावेज़ीकरण प्रोजेक्ट्स देखें"
+  },
+  "contribute": {
+    "title": "योगदान करें",
+    "description": "प्रोजेक्ट में योगदान करके दस्तावेज़ीकरण को बेहतर बनाने में हमारी मदद करें",
+    "button": "GitHub पर योगदान करें"
+  }
+}

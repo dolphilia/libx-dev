@@ -99,7 +99,13 @@ export async function detectProject(projectId: string): Promise<DetectedProject>
   const fallbackUrls: Record<string, string> = {};
   for (const lang of docsConfig.basic.supportedLangs) {
     const firstFile = findFirstContentFile(contentFiles, lang, latestVersion);
-    fallbackUrls[lang] = `${docsConfig.basic.baseUrl}/${lang}/${latestVersion}/${firstFile}`;
+    if (firstFile) {
+      fallbackUrls[lang] = `${docsConfig.basic.baseUrl}/${lang}/${latestVersion}/${firstFile}`;
+    } else {
+      // コンテンツが存在しない言語は英語にフォールバック
+      const englishFile = findFirstContentFile(contentFiles, 'en', latestVersion);
+      fallbackUrls[lang] = `${docsConfig.basic.baseUrl}/en/${latestVersion}/${englishFile || 'guide/getting-started'}`;
+    }
   }
   
   return {
@@ -271,7 +277,7 @@ async function scanDirectory(dirPath: string, basePath: string = ''): Promise<st
 /**
  * 指定した言語・バージョンの最初のコンテンツファイルを特定
  */
-function findFirstContentFile(files: ContentFile[], lang: string, version: string): string {
+function findFirstContentFile(files: ContentFile[], lang: string, version: string): string | null {
   const filtered = files
     .filter(f => f.lang === lang && f.version === version)
     .sort((a, b) => {
@@ -300,6 +306,6 @@ function findFirstContentFile(files: ContentFile[], lang: string, version: strin
     return filtered[0].url;
   }
   
-  // フォールバック
-  return 'guide/getting-started';
+  // コンテンツが見つからない場合はnullを返す
+  return null;
 }

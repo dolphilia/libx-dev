@@ -60,7 +60,7 @@ export function getDisplayDescription(config: ProjectConfig, lang: LocaleKey): s
 export function getCategoryTranslations(config: ProjectConfig): Record<LocaleKey, Record<string, string>> {
   const result: Record<LocaleKey, Record<string, string>> = {} as Record<LocaleKey, Record<string, string>>;
   for (const lang of config.basic.supportedLangs) {
-    result[lang] = config.translations[lang].categories;
+    result[lang] = config.translations[lang]?.categories || config.translations.en.categories || {};
   }
   return result;
 }
@@ -69,6 +69,15 @@ export function getCategoryTranslations(config: ProjectConfig): Record<LocaleKey
  * 後方互換性のためのレガシー設定を生成
  */
 export function createLegacyConfig(config: ProjectConfig): LegacyProjectConfig {
+  // 全サポート言語の表示名を動的に生成
+  const displayName: Record<LocaleKey, string> = {} as Record<LocaleKey, string>;
+  const displayDescription: Record<LocaleKey, string> = {} as Record<LocaleKey, string>;
+  
+  for (const lang of config.basic.supportedLangs) {
+    displayName[lang] = config.translations[lang]?.displayName || config.translations.en.displayName;
+    displayDescription[lang] = config.translations[lang]?.displayDescription || config.translations.en.displayDescription;
+  }
+
   return {
     ...config,
     // フラット構造でのアクセス
@@ -76,14 +85,8 @@ export function createLegacyConfig(config: ProjectConfig): LegacyProjectConfig {
     supportedLangs: config.basic.supportedLangs,
     defaultLang: config.basic.defaultLang,
     versions: config.versioning.versions,
-    displayName: {
-      en: config.translations.en.displayName,
-      ja: config.translations.ja.displayName
-    } as Record<LocaleKey, string>,
-    displayDescription: {
-      en: config.translations.en.displayDescription,
-      ja: config.translations.ja.displayDescription
-    } as Record<LocaleKey, string>,
+    displayName,
+    displayDescription,
     categoryTranslations: getCategoryTranslations(config)
   };
 }
