@@ -260,15 +260,6 @@ async function main() {
     }
   }
 
-  // Pagefindインデックスを生成
-  console.log('Pagefindインデックスを生成しています...');
-  try {
-    execSync('npx pagefind --source dist', { stdio: 'inherit' });
-    console.log('Pagefindインデックスの生成が完了しました。');
-  } catch (error) {
-    console.error('Pagefindインデックスの生成中にエラーが発生しました:', error);
-    console.warn('検索機能は利用できませんが、ビルドは続行します。');
-  }
 
   console.log('統合ビルドが完了しました。');
 }

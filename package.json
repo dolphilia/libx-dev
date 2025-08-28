@@ -31,8 +31,6 @@
     "wrangler": "^3.0.0"
   },
   "dependencies": {
-    "astro-pagefind": "^1.8.3",
-    "pagefind": "^1.3.0",
     "unist-util-visit": "^5.0.0"
   }
 }

@@ -1,7 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
-import pagefind from 'astro-pagefind';
 import { remarkLinkTransformer } from '../../scripts/plugins/remark-link-transformer.js';
 
 import path from 'path';
@@ -30,8 +29,7 @@ export default defineConfig({
         [remarkLinkTransformer, { baseUrl: '/docs/project-template' }]
       ],
       rehypePlugins: []
-    }),
-    pagefind()
+    })
   ],
   vite: {
     resolve: {
