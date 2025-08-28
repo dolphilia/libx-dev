@@ -12,22 +12,14 @@
       "displayName": "Project Template",
       "displayDescription": "Template for creating new documentation projects",
       "categories": {
-        "guide": "Guide",
-        "components": "Components",
-        "advanced": "Advanced",
-        "reference": "Reference"
+        "guide": "Guide"
       }
     },
     "ja": {
       "displayName": "プロジェクトテンプレート",
       "displayDescription": "新しいドキュメントプロジェクト作成用のテンプレート",
       "categories": {
-        "guide": "ガイド",
-        "components": "コンポーネント",
-        "advanced": "高度な設定",
-        "reference": "リファレンス",
-        "api": "API",
-        "examples": "サンプル"
+        "guide": "ガイド"
       }
     }
   },
@@ -37,12 +29,6 @@
         "id": "v1",
         "name": "Version 1.0",
         "date": "2024-01-01T00:00:00.000Z",
-        "isLatest": false
-      },
-      {
-        "id": "v2",
-        "name": "Version 2.0",
-        "date": "2025-01-01T00:00:00.000Z",
         "isLatest": true
       }
     ]

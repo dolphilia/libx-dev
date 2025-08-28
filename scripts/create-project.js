@@ -18,8 +18,6 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';
-import { copyDirRecursive } from './utils.js';
-import { loadProjectConfig, saveProjectConfig, normalizeFileName } from './document-utils.js';
 
 // ESモジュールで__dirnameを取得
 const __filename = fileURLToPath(import.meta.url);

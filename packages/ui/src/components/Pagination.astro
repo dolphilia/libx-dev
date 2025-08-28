@@ -11,6 +11,9 @@ interface PageLink {
   url: string;
 }
 
+import { translate } from '@docs/i18n/utils';
+import type { LocaleKey } from '@docs/i18n/locales';
+
 interface Props {
   /**
    * 前のページへのリンク情報
@@ -30,28 +33,15 @@ interface Props {
   
   /**
    * 言語コード（翻訳用）
-   * @default 'ja'
    */
-  lang?: 'en' | 'ja';
+  lang?: LocaleKey;
 }
 
-const { prev, next, dir = 'ltr', lang = 'ja' } = Astro.props;
+const { prev, next, dir = 'ltr', lang = 'en' } = Astro.props;
 const isRtl = dir === 'rtl';
 
-// 言語別翻訳テキスト
-const translations = {
-  en: {
-    prev: 'Previous',
-    next: 'Next'
-  },
-  ja: {
-    prev: '前のページ',
-    next: '次のページ'
-  }
-};
-
-const prevText = translations[lang].prev;
-const nextText = translations[lang].next;
+const prevText = translate('pagination.previous', lang);
+const nextText = translate('pagination.next', lang);
 ---
 
 <div class="pagination-links" dir={dir}>

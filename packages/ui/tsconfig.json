@@ -4,7 +4,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@docs/i18n/*": ["../i18n/src/*"],
+      "@docs/i18n/utils": ["../i18n/src/utils/index"],
+      "@docs/i18n/locales": ["../i18n/src/locales/index"]
     }
   }
 }

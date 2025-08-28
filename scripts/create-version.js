@@ -10,8 +10,7 @@ import path from 'path';
 import readline from 'readline';
 import {
   loadProjectConfig,
-  saveProjectConfig,
-  analyzeProjectStructure
+  saveProjectConfig
 } from './document-utils.js';
 
 // コマンドライン引数の解析

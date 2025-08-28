@@ -46,6 +46,12 @@ async function generateAppsList() {
       const appPath = path.join(appsDir, appName);
       const srcDir = path.join(appPath, 'dist');
       
+      // project-templateはテンプレートなのでビルド対象から除外
+      if (appName === 'project-template') {
+        console.log(`⏩ ${appName}はテンプレートプロジェクトのためスキップします`);
+        continue;
+      }
+      
       if (appName === 'top-page') {
         // トップページはルートに配置
         apps.push({

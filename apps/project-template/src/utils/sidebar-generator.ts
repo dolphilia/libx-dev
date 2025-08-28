@@ -56,13 +56,13 @@ async function translateCategory(category: string, lang: LocaleKey): Promise<str
 /**
  * フォールバック用の最小限のサイドバー項目を生成します
  */
-function getFallbackSidebar(lang: LocaleKey, version: string, baseUrl: string): SidebarItem[] {
+async function getFallbackSidebar(lang: LocaleKey, version: string, baseUrl: string): Promise<SidebarItem[]> {
   return [
     {
-      title: translateCategory('guide', lang),
+      title: await translateCategory('guide', lang),
       items: [
         { 
-          title: translateCategory('getting_started', lang), 
+          title: await translateCategory('getting_started', lang), 
           href: `${baseUrl}/${lang}/${version}/guide/01-getting-started` 
         }
       ]
@@ -159,9 +159,9 @@ export async function getAutoSidebar(lang: LocaleKey, version: string, baseUrl: 
   });
   
   // サイドバー項目の生成
-  return sortedCategories.map(([category, { docs }]) => {
+  return Promise.all(sortedCategories.map(async ([category, { docs }]) => {
     // カテゴリ名を翻訳
-    const title = translateCategory(category, lang);
+    const title = await translateCategory(category, lang);
     
     return {
       title,
@@ -179,15 +179,29 @@ export async function getAutoSidebar(lang: LocaleKey, version: string, baseUrl: 
         };
       })
     };
-  });
+  }));
 }
 
 /**
  * 設定に基づいてサイドバー項目を取得します
  * 自動生成に切り替えました
  */
+// この同期関数は現在使用されていませんが、もし使用する場合はPromiseを扱うように修正が必要です。
+// 現状では、getSidebarAsyncを使用することが推奨されます。
 export function getSidebar(lang: LocaleKey, version: string, baseUrl: string): SidebarItem[] {
-  return getFallbackSidebar(lang, version, baseUrl);
+  // Note: This is a synchronous fallback and will not have translated titles.
+  // Consider making this async or using getSidebarAsync instead.
+  return [
+    {
+      title: 'Guide',
+      items: [
+        {
+          title: 'Getting Started',
+          href: `${baseUrl}/${lang}/${version}/guide/01-getting-started`
+        }
+      ]
+    }
+  ];
 }
 
 /**
@@ -217,7 +231,7 @@ export async function getSidebarAsync(lang: LocaleKey, version: string, baseUrl:
 
   } catch (error) {
     // フォールバック: 最小限のサイドバーを返す
-    const fallbackSidebar = getFallbackSidebar(lang, version, baseUrl);
+    const fallbackSidebar = await getFallbackSidebar(lang, version, baseUrl);
 
     // フォールバックサイドバーもキャッシュに保存
     sidebarCache.set(cacheKey, {

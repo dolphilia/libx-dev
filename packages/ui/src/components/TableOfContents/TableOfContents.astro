@@ -1,20 +1,8 @@
 ---
 import TableOfContentsList from './TableOfContentsList.astro';
 
-// 言語タイプの定義（@docs/i18n/localesから本来はインポートすべき）
-type LocaleKey = 'en' | 'ja';
-
-// 翻訳関数の簡易実装（@docs/i18n/utilsから本来はインポートすべき）
-function translate(key: string, locale: LocaleKey = 'en'): string {
-  const translations: Record<string, Record<string, string>> = {
-    'tableOfContents.onThisPage': {
-      en: 'On this page',
-      ja: 'このページの内容'
-    }
-  };
-  
-  return translations[key]?.[locale] || key;
-}
+import { translate } from '@docs/i18n/utils';
+import type { LocaleKey } from '@docs/i18n/locales';
 
 export interface TocItem {
   depth: number;

@@ -1,97 +1,85 @@
 ---
-title: "Documentation Versioning Overview"
-description: "Learn about versioning documentation and how to organize content across different versions"
+title: "Welcome to Project Template"
+description: "Starting point for creating new documentation sites"
 ---
 
-# Documentation Versioning Overview
+# Welcome to Project Template
 
-Welcome to the sample documentation project! This guide explains the concept of documentation versioning and how you can organize content across different versions like v1 and v2.
+This project serves as a template for creating new documentation sites. It's designed as a starting point when using `scripts/create-project.js` to create new projects.
 
-## What is Documentation Versioning?
+## About This Template
 
-Documentation versioning allows you to maintain multiple versions of your documentation simultaneously. This is particularly useful when:
+This template includes the following features:
 
-- You have different versions of your software or API
-- You need to support users on older versions while developing new features
-- You want to gradually migrate users from one version to another
-- You need to maintain backward compatibility documentation
+- **Multi-language support**: Content creation in English and Japanese
+- **Version management**: Simultaneous management of multiple versions (can be added as needed)
+- **Automatic sidebar**: Auto-generated navigation based on content structure
+- **Shared UI components**: Unified design system
+- **Responsive design**: Compatible with all devices
 
-## Why Separate v1 and v2?
-
-In this project, we demonstrate versioning by organizing content into separate directories:
+## Project Structure
 
 ```
-docs/
-├── en/
-│   ├── v1/           # Version 1 documentation
-│   │   └── guide/
-│   └── v2/           # Version 2 documentation
-│       ├── guide/
-│       ├── components/
-│       ├── advanced/
-│       └── reference/
-└── ja/               # Japanese translations
-    ├── v1/
-    └── v2/
+src/content/docs/
+├── en/                    # English documentation
+│   └── v1/                # Initial version
+│       └── 01-guide/      # Guide section
+└── ja/                    # Japanese documentation
+    └── v1/
+        └── 01-guide/
 ```
 
-### Version 1 (Current Page)
-- **Purpose**: Provides a simple introduction to the versioning concept
-- **Content**: Basic overview and orientation
-- **Audience**: Users getting familiar with the documentation structure
+## Creating a New Project
 
-### Version 2 (Main Documentation)
-- **Purpose**: Comprehensive documentation with detailed guides and examples
-- **Content**: Complete documentation creation and editing guides
-- **Audience**: Users ready to create and manage documentation
+To create a new project from this template:
 
-## Benefits of This Approach
+```bash
+# Create a new project
+node scripts/create-project.js my-docs "My Documentation" "私のドキュメント"
 
-1. **Clear Separation**: Each version has its own dedicated space
-2. **Independent Evolution**: Versions can evolve independently
-3. **User Choice**: Users can choose the version that fits their needs
-4. **Migration Path**: Clear progression from basic to advanced content
+# Create with more detailed options
+node scripts/create-project.js api-docs "API Documentation" "API文書" --icon=code --tags=api,reference
+```
 
-## Directory Structure Benefits
+## Version Management
 
-By organizing content in version-specific directories, you get:
+When you need a new version, use `scripts/create-version.js`:
 
-- **Organized URLs**: Clean paths like `/en/v1/guide/` and `/en/v2/guide/`
-- **Independent Navigation**: Each version can have its own sidebar structure
-- **Flexible Content**: Different versions can have completely different content organization
-- **Easy Maintenance**: Changes to one version don't affect others
+```bash
+# Add a new version
+node scripts/create-version.js my-docs v2
 
-## Multi-language Support
+# Add in interactive mode
+node scripts/create-version.js my-docs v2 --interactive
+```
 
-This versioning approach works seamlessly with multi-language support:
+## Adding Documents
 
-- Each language (`en`, `ja`) has its own version directories
-- Content can be translated independently for each version
-- URL structure remains clean and predictable
-- Users can switch languages while staying in the same version
+To add individual document files, use `scripts/create-document.js`:
 
-## Next Steps
+```bash
+# Basic usage
+node scripts/create-document.js my-docs en v1 guide "New Guide"
 
-Ready to explore comprehensive documentation creation? Check out **Version 2** which contains:
+# Interactive mode (recommended)
+node scripts/create-document.js my-docs en v1 --interactive
+```
 
-- **Complete Documentation Guides**: Learn how to create, edit, and organize documentation
-- **Component Examples**: Discover available UI components like icons, tabs, and more
-- **Advanced Topics**: Explore customization, automation, and deployment
-- **Reference Materials**: Find detailed information about configuration and syntax
+## Customization Points
 
-[**Explore v2 Documentation →**](/en/v2/guide/getting-started)
+For new projects, customize the following:
 
-## Technical Implementation
+1. **Project configuration**: Edit `src/config/project.config.json`
+2. **Display names**: Update `displayName` and `displayDescription` for each language
+3. **Content**: Remove this template content and replace with project-specific content
+4. **Categories**: Adjust sidebar categories to match your project
 
-This versioning system is built using:
+## Development Setup Steps
 
-- **Directory-based routing**: Astro's file-based routing system
-- **Dynamic sidebar generation**: Automatically generates navigation based on content structure
-- **Frontmatter configuration**: Uses metadata to control ordering and categorization
-- **Multi-language support**: Built-in internationalization features
+1. [ ] Delete or update existing template content
+2. [ ] Create project-specific documentation
+3. [ ] Adjust configuration files to match your project
+4. [ ] Test with development server: `pnpm dev`
+5. [ ] Test build: `pnpm build`
 
-The version information is configured in `project.config.ts`, where you can:
-- Define available versions
-- Set the latest version
-- Configure version-specific metadata
-- Manage version display names and dates
+Use this template as the foundation for your new documentation projects.

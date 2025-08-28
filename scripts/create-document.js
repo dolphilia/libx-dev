@@ -7,8 +7,6 @@
  * node scripts/create-document.js sample-docs en v2 --interactive
  */
 
-import fs from 'fs';
-import path from 'path';
 import readline from 'readline';
 import {
   loadProjectConfig,
@@ -204,7 +202,6 @@ async function main() {
       }
 
       // プロジェクト設定を読み込み
-      const config = loadProjectConfig(args.projectName);
       const categories = analyzeProjectStructure(args.projectName, args.lang, args.version);
       
       categoryName = args.category;
