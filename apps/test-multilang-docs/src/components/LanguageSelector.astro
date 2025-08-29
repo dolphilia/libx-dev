@@ -1,0 +1,280 @@
+---
+import type { LocaleKey } from '@docs/i18n/locales';
+import { translate } from '@docs/i18n/utils';
+import { Dropdown, DropdownItem, Icon } from '@docs/ui/components';
+import { getProjectConfig } from '../config/project.config.new';
+
+// 定数定義
+// BASE_URL 定義は削除し、projectConfig.baseUrl を使用する
+const LANG_NAMES: Record<string, string> = {
+  en: 'English',
+  ja: '日本語',
+  ko: '한국어'
+};
+
+// 言語フラグアイコン（ISO 639-1コードをキーとして使用）
+const LANG_FLAGS: Record<string, string> = {
+  en: '🇺🇸',
+  ja: '🇯🇵',
+  ko: '🇰🇷'
+};
+
+// コンポーネントのプロパティ型定義
+interface Props {
+  currentLang: string;
+  supportedLangs?: string[];
+  className?: string;
+}
+
+// プロジェクト設定を読み込み
+const projectConfig = await getProjectConfig();
+
+// プロパティの取得と初期値設定
+const ACTUAL_BASE_URL = projectConfig.basic.baseUrl; // projectConfigからbaseUrlを取得
+const configuredSupportedLangs = projectConfig.basic.supportedLangs; // projectConfigからsupportedLangsを取得
+
+const { 
+  currentLang, 
+  supportedLangs = configuredSupportedLangs,
+  className = ''
+} = Astro.props;
+
+// 現在のパス情報を取得
+const currentPathname = Astro.url.pathname;
+
+// パスを正規化（末尾にスラッシュを付ける）
+const normalizedPathname = currentPathname.endsWith('/') ? currentPathname : `${currentPathname}/`;
+
+// ベースURLを除いたパス部分を取得
+// 例: /docs/sample-docs/en/v1/foo/  -> /en/v1/foo/
+let pathWithoutActualBase = normalizedPathname;
+if (normalizedPathname.startsWith(ACTUAL_BASE_URL + '/')) {
+  pathWithoutActualBase = normalizedPathname.substring(ACTUAL_BASE_URL.length);
+} else if (normalizedPathname === ACTUAL_BASE_URL + '/') { // ベースURLそのものの場合
+  pathWithoutActualBase = '/';
+}
+// pathWithoutActualBase は /en/v1/slug/ や /en/ のようになることを期待
+
+// 言語コード、バージョン、スラッグを抽出
+// pathWithoutActualBase は `/` で始まるので、最初の要素は空文字列になる場合がある
+const pathSegments = pathWithoutActualBase.split('/').filter(segment => segment !== '');
+// 例: /en/v1/guide/getting-started/ -> ['en', 'v1', 'guide', 'getting-started']
+// 例: /en/ -> ['en']
+
+let langFromPath: string | undefined = undefined;
+let versionFromPath: string | undefined = undefined;
+let slugParts: string[] = [];
+
+const langsForRegex = configuredSupportedLangs.join('|');
+const langRegex = new RegExp(`^(${langsForRegex})$`);
+
+if (pathSegments.length > 0 && pathSegments[0].match(langRegex)) {
+  langFromPath = pathSegments.shift();
+}
+
+// バージョン番号の正規表現を少し改善 (例: v1, v1.0, v1.0.1)
+if (pathSegments.length > 0 && pathSegments[0].match(/^v\\d+([\\.-]\\d+)*$/)) {
+  versionFromPath = pathSegments.shift();
+}
+slugParts = pathSegments; // 残りがスラッグ部分
+
+// slugFromPath は末尾スラッシュあり、または空文字列
+let slugFromPath = slugParts.join('/');
+if (slugFromPath && !slugFromPath.endsWith('/')) {
+  slugFromPath += '/';
+} else if (!slugFromPath && slugParts.length === 0 && (langFromPath || versionFromPath)) {
+  // 言語またはバージョンが存在するが、それ以降のスラッグ部分がない場合
+  // (例: /base/lang/ や /base/lang/version/) slugFromPath は "" となる
+  slugFromPath = "";
+}
+
+
+// 各言語のパス情報を生成
+interface LangPathInfo {
+  lang: string;
+  name: string;
+  flag: string;
+  path: string;
+  isCurrent: boolean;
+}
+
+const langPaths: LangPathInfo[] = supportedLangs.map(langCode => {
+  const targetLang = langCode as LocaleKey;
+  
+  const newPathParts = [ACTUAL_BASE_URL];
+  newPathParts.push(targetLang);
+
+  if (versionFromPath) {
+    newPathParts.push(versionFromPath);
+  }
+  
+  // slugFromPath は 'guide/getting-started/' または ''
+  // '' の場合は結合時に無視されるようにする
+  if (slugFromPath && slugFromPath !== '/') {
+    // 末尾の / を除いて追加し、最後に全体で / を付ける戦略
+    const cleanSlug = slugFromPath.endsWith('/') ? slugFromPath.slice(0, -1) : slugFromPath;
+    if (cleanSlug) { // 空文字列でなければ追加
+        newPathParts.push(cleanSlug);
+    }
+  }
+
+  let newPath = newPathParts
+    .filter(part => typeof part === 'string' && part !== '') // null, undefined, 空文字を除去
+    .join('/');
+
+  // ベースURLが空で、パスが "/" から始まっていない場合、先頭に "/" を追加
+  if (ACTUAL_BASE_URL === '' && !newPath.startsWith('/') && newPath !== '') {
+    newPath = '/' + newPath;
+  }
+  
+  // 連続するスラッシュを1つに置換 (例: "///" -> "/")
+  newPath = newPath.replace(/\/\/+/g, '/');
+  
+  // ルートパス "/" を除き、全てのパスの末尾にスラッシュを保証
+  if (newPath !== '/' && !newPath.endsWith('/')) {
+    newPath += '/';
+  }
+
+  return {
+    lang: langCode,
+    name: LANG_NAMES[langCode] || langCode,
+    flag: LANG_FLAGS[langCode] || '🌐',
+    path: newPath,
+    isCurrent: langCode === currentLang
+  };
+});
+
+---
+
+<div class="language-selector-container">
+  <Dropdown 
+    label={LANG_NAMES[currentLang] || currentLang}
+    align="right"
+    width="14rem"
+    class={`language-dropdown ${className}`}
+  >
+    <div class="language-dropdown-header" slot="before-items">
+      <Icon name="languages" class="language-icon" />
+      <span>言語を選択</span>
+    </div>
+    
+    {langPaths.map((pathInfo) => (
+      <DropdownItem 
+        label={pathInfo.name}
+        href={pathInfo.path}
+        isActive={pathInfo.isCurrent}
+      >
+        <span slot="before-label" class="language-flag">{pathInfo.flag}</span>
+        {pathInfo.isCurrent && (
+          <span slot="after-label" class="language-current-badge">{translate('docs.current', currentLang as LocaleKey)}</span>
+        )}
+      </DropdownItem>
+    ))}
+  </Dropdown>
+</div>
+
+<style>
+  .language-selector-container {
+    display: inline-block;
+  }
+
+  .language-dropdown {
+    position: relative;
+  }
+
+  .language-dropdown-header {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--sl-color-gray-5, #6b7280);
+    border-bottom: 1px solid var(--sl-color-gray-2, #e5e7eb);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+
+  .language-icon {
+    font-size: 1rem;
+    color: var(--sl-color-gray-4, #9ca3af);
+  }
+
+  .language-flag {
+    display: inline-block;
+    margin-right: 0.5rem;
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  .language-current-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1;
+    background-color: var(--sl-color-blue-2, #dbeafe);
+    color: var(--sl-color-blue-9, #1e40af);
+  }
+
+
+  /* ダークモード対応 */
+  :global(.dark) .language-dropdown-header,
+  :global(.dark) .language-dropdown-footer {
+    border-color: var(--sl-color-gray-7, #374151);
+  }
+
+  :global(.dark) .language-current-badge {
+    background-color: rgba(30, 64, 175, 0.2);
+    color: var(--sl-color-blue-3, #93c5fd);
+  }
+
+  /* アニメーション */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-0.25rem); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .language-dropdown :global(.dropdown-content) {
+    animation: fadeIn 0.2s ease-out;
+  }
+</style>
+
+<script>
+  // 言語切り替え時のURLパス修正
+  document.addEventListener('DOMContentLoaded', () => {
+    // 言語選択リンクのクリックイベントを監視
+    const languageLinks = document.querySelectorAll('.language-dropdown .dropdown-item');
+    
+    languageLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        // 現在のURLからバージョン情報を抽出
+        const currentPath = window.location.pathname;
+        const versionMatch = currentPath.match(/\/([^\/]+)\/v([^\/]+)/);
+        
+        if (versionMatch) {
+          const href = (e.currentTarget as HTMLAnchorElement).getAttribute('href');
+          if (href) {
+            // 新しいURLにバージョン情報が正しく含まれているか確認
+            const newUrlMatch = href.match(/\/([^\/]+)\/v([^\/]+)/);
+            
+            if (!newUrlMatch || newUrlMatch[2] !== versionMatch[2]) {
+              // バージョン情報が正しくない場合、URLを修正
+              e.preventDefault();
+              
+              // 新しい言語コードを抽出
+              const newLangMatch = href.match(/\/([^\/]+)(\/|$)/);
+              if (newLangMatch) {
+                const newLang = newLangMatch[1];
+                // 正しいバージョン情報を含むURLを構築
+                const correctedUrl = href.replace(/\/([^\/]+)(\/|$)/, `/${newLang}/v${versionMatch[2]}/`);
+                window.location.href = correctedUrl;
+              }
+            }
+          }
+        }
+      });
+    });
+  });
+</script>

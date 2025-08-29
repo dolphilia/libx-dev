@@ -1,0 +1,283 @@
+---
+/**
+ * MainLayout - ドキュメントサイトの基本レイアウトコンポーネント
+ * Starlightスタイルに基づいたレイアウト
+ */
+import { Footer } from '@docs/ui/components';
+import { VersionSelector } from '@docs/versioning/components';
+import LanguageSelector from '../components/LanguageSelector.astro';
+import type { LocaleKey } from '@docs/i18n/locales';
+import '../styles/global.css';
+import { getProjectConfig, getDisplayNameAsync } from '../config/project.config.new';
+import { ThemeToggle } from '@docs/ui/components';
+import { Icons } from '@docs/ui/components/icons/Icons';
+import { generateRedirectUrl } from '../utils/dynamic-navigation';
+
+// 定数定義
+
+// インターフェース定義
+interface Props {
+  /** ページタイトル */
+  title: string;
+  /** 言語コード */
+  lang: LocaleKey;
+  /** ドキュメントバージョン */
+  version?: string;
+  /** サイドバーを表示するか */
+  hasSidebar?: boolean;
+  /** 目次を表示するか */
+  hasToc?: boolean;
+  /** バージョンセレクターを表示するか */
+  showVersionSelector?: boolean;
+  /** パンくずリストを表示するか */
+  showBreadcrumb?: boolean;
+}
+
+// プロパティの取得
+const { 
+  title, 
+  lang, 
+  version = 'v1', 
+  hasSidebar = false,
+  hasToc = false,
+  showVersionSelector = true,
+  showBreadcrumb = false
+} = Astro.props;
+
+
+
+
+// プロジェクト設定を読み込み
+const projectConfig = await getProjectConfig();
+const displayName = await getDisplayNameAsync(lang);
+
+// HTML属性の設定
+const htmlDataAttributes: Record<string, string> = { 'data-theme': 'dark' };
+if (hasToc) htmlDataAttributes['data-has-toc'] = '';
+if (hasSidebar) htmlDataAttributes['data-has-sidebar'] = '';
+
+const numBaseSegments = projectConfig.basic.baseUrl.split('/').filter(p => p.length > 0).length;
+const slugSliceIndex = 1 + numBaseSegments + 1 + 1; // 1 (leading empty) + base segments + lang segment + version segment
+const currentSlugForSelector = Astro.url.pathname.split('/').slice(slugSliceIndex).join('/').replace(/\/$/, ''); // 末尾のスラッシュを削除
+
+// ドキュメントトップへの動的リンクを生成
+const docTopLink = await generateRedirectUrl(lang, projectConfig.basic.baseUrl);
+---
+
+<!DOCTYPE html>
+<html lang={lang} {...htmlDataAttributes}>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href={`${projectConfig.basic.baseUrl}/favicon.svg`} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content="Documentation site built with Astro" />
+    <title>{title} | Docs</title>
+    <style>
+      html:not([data-has-toc]) {
+        --sl-mobile-toc-height: 0rem;
+      }
+      html:not([data-has-sidebar]) {
+        --sl-content-width: 67.5rem;
+      }
+      html {
+        scroll-padding-top: calc(1.5rem + var(--sl-nav-height) + var(--sl-mobile-toc-height));
+      }
+      @media (min-width: 50em) {
+        [data-has-sidebar] {
+          --sl-content-inline-start: var(--sl-sidebar-width);
+        }
+      }
+      @media (min-width: 72em) {
+        html {
+          scroll-padding-top: calc(1.5rem + var(--sl-nav-height));
+        }
+      }
+    </style>
+    <script>
+      // Service Workerの登録
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          // サイトのベースURLに応じてsw.jsのパスを解決
+          const swPath = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/sw.js`;
+          navigator.serviceWorker.register(swPath);
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <div class="page">
+      <header class="header">
+        <div class="header-container">
+          <div class="header-content">
+            <div class="title-wrapper">
+              {showBreadcrumb ? (
+                <div class="breadcrumb-title">
+                  <a href={`/${lang}`} class="site-title">Libx</a>
+                  <svg class="breadcrumb-separator" viewBox="0 0 24 24" set:html={Icons['chevron-right']} />
+                  <a href={docTopLink} class="doc-title">{displayName}</a>
+                </div>
+              ) : (
+                <a href={`/${lang}`} class="site-title">{displayName}</a>
+              )}
+            </div>
+            <div class="print:hidden right-group">
+              {showVersionSelector && version && (
+                <div class="version-selector-container">
+                  <VersionSelector
+                    currentVersion={version}
+                    versions={projectConfig.versioning.versions}
+                    basePath={`${projectConfig.basic.baseUrl}/${lang}`}
+                    currentSlug={currentSlugForSelector}
+                  />
+                </div>
+              )}
+              <div class="language-selector-container" aria-label="言語選択">
+                <LanguageSelector currentLang={lang} />
+              </div>
+              <ThemeToggle />
+            </div>
+          </div>
+        </div>
+      </header>
+      
+      <div class="main-frame">
+        <main id="main-content">
+          <slot />
+        </main>
+      </div>
+      
+      <Footer 
+        showContribute={true}
+        contributeUrl="https://github.com/dolphilia"
+        lang={lang}
+      />
+    </div>
+  </body>
+</html>
+
+<style>
+  /* Starlightスタイルに基づくレイアウト */
+  .page {
+    min-height: 100vh;
+  }
+
+  .header {
+    z-index: var(--sl-z-index-navbar);
+    position: inherit;
+    inset-inline-start: 0;
+    inset-block-start: 0;
+    width: 100%;
+    height: var(--sl-nav-height);
+    border-bottom: 1px solid var(--sl-color-hairline-shade);
+    padding: 0.75rem 0;
+    background-color: var(--sl-color-bg-nav);
+    margin-bottom: 3.5rem; /* メインコンテンツとのスペース */
+  }
+
+  .header-container {
+    max-width: 87.5rem; /* 1400px */
+    width: 100%;
+    padding: 0 1.5rem;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  
+  @media (min-width: 50em) {
+    .header-container {
+      padding: 0 2rem;
+    }
+  }
+  
+  /* スクロールバーによる幅変化を防ぐ */
+  html {
+    scrollbar-gutter: stable;
+  }
+
+  .header-content {
+    display: flex;
+    gap: var(--sl-nav-gap);
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+  }
+
+  .title-wrapper {
+    overflow: clip;
+    padding: 0.25rem;
+    margin: -0.25rem;
+    min-width: 0;
+  }
+
+  .site-title {
+    font-size: var(--sl-text-lg);
+    font-weight: 600;
+    color: var(--sl-color-white);
+    text-decoration: none;
+  }
+
+  .breadcrumb-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .breadcrumb-separator {
+    width: 1rem;
+    height: 1rem;
+    fill: none;
+    stroke: #000000;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+    opacity: 0.6;
+  }
+
+  :global(.dark) .breadcrumb-separator {
+    stroke: #ffffff;
+    opacity: 0.8;
+  }
+
+  .doc-title {
+    font-size: var(--sl-text-lg);
+    font-weight: 600;
+    color: var(--sl-color-white);
+    text-decoration: none;
+  }
+
+  .right-group {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    gap: 0.5rem;
+  }
+
+
+  .version-selector-container {
+    height: 2.5rem;
+  }
+
+  .language-selector-container {
+    height: 2.5rem;
+  }
+
+  .main-frame {
+    padding-top: calc(var(--sl-nav-height) + var(--sl-mobile-toc-height) + 3.5rem);
+  }
+
+  main {
+    flex-grow: 1;
+  }
+
+  @media (min-width: 50em) {
+    .header-content {
+      display: grid;
+      grid-template-columns: auto 1fr auto; /* サイトタイトル | 検索エリア用スペース | 右側グループ */
+      align-items: center; /* 垂直方向の中央揃え */
+      gap: var(--sl-nav-gap);
+      height: 100%;
+    }
+
+  }
+</style>

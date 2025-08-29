@@ -3,7 +3,8 @@
     "baseUrl": "",
     "supportedLangs": [
       "en",
-      "ja"
+      "ja",
+      "ko"
     ],
     "defaultLang": "en",
     "repository": "https://github.com/dolphilia",
@@ -12,15 +13,18 @@
   "content": {
     "siteDescription": {
       "en": "Documentation site built with Astro",
-      "ja": "Astroで構築されたドキュメントサイト"
+      "ja": "Astroで構築されたドキュメントサイト",
+      "ko": "Astro로 구축된 문서 사이트"
     },
     "heroTitle": {
       "en": "Documentation Hub",
-      "ja": "ドキュメントハブ"
+      "ja": "ドキュメントハブ",
+      "ko": "문서 허브"
     },
     "heroDescription": {
       "en": "Find all the documentation you need in one place",
-      "ja": "必要なすべてのドキュメントを一箇所で見つけることができます"
+      "ja": "必要なすべてのドキュメントを一箇所で見つけることができます",
+      "ko": "필요한 모든 문서를 한 곳에서 찾을 수 있습니다"
     }
   },
   "projectDecorations": {
@@ -32,6 +36,13 @@
         "example"
       ],
       "isNew": false
+    },
+    "test-multilang-docs": {
+      "icon": "file-text",
+      "tags": [
+        "documentation"
+      ],
+      "isNew": true
     }
   }
 }

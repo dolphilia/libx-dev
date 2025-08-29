@@ -1,0 +1,85 @@
+---
+title: "Welcome to Project Template"
+description: "Starting point for creating new documentation sites"
+---
+
+# Welcome to Project Template
+
+This project serves as a template for creating new documentation sites. It's designed as a starting point when using `scripts/create-project.js` to create new projects.
+
+## About This Template
+
+This template includes the following features:
+
+- **Multi-language support**: Content creation in English and Japanese
+- **Version management**: Simultaneous management of multiple versions (can be added as needed)
+- **Automatic sidebar**: Auto-generated navigation based on content structure
+- **Shared UI components**: Unified design system
+- **Responsive design**: Compatible with all devices
+
+## Project Structure
+
+```
+src/content/docs/
+├── en/                    # English documentation
+│   └── v1/                # Initial version
+│       └── 01-guide/      # Guide section
+└── ja/                    # Japanese documentation
+    └── v1/
+        └── 01-guide/
+```
+
+## Creating a New Project
+
+To create a new project from this template:
+
+```bash
+# Create a new project
+node scripts/create-project.js my-docs "My Documentation" "私のドキュメント"
+
+# Create with more detailed options
+node scripts/create-project.js api-docs "API Documentation" "API文書" --icon=code --tags=api,reference
+```
+
+## Version Management
+
+When you need a new version, use `scripts/create-version.js`:
+
+```bash
+# Add a new version
+node scripts/create-version.js my-docs v2
+
+# Add in interactive mode
+node scripts/create-version.js my-docs v2 --interactive
+```
+
+## Adding Documents
+
+To add individual document files, use `scripts/create-document.js`:
+
+```bash
+# Basic usage
+node scripts/create-document.js my-docs en v1 guide "New Guide"
+
+# Interactive mode (recommended)
+node scripts/create-document.js my-docs en v1 --interactive
+```
+
+## Customization Points
+
+For new projects, customize the following:
+
+1. **Project configuration**: Edit `src/config/project.config.json`
+2. **Display names**: Update `displayName` and `displayDescription` for each language
+3. **Content**: Remove this template content and replace with project-specific content
+4. **Categories**: Adjust sidebar categories to match your project
+
+## Development Setup Steps
+
+1. [ ] Delete or update existing template content
+2. [ ] Create project-specific documentation
+3. [ ] Adjust configuration files to match your project
+4. [ ] Test with development server: `pnpm dev`
+5. [ ] Test build: `pnpm build`
+
+Use this template as the foundation for your new documentation projects.
