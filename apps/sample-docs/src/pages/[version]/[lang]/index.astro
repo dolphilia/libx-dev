@@ -10,6 +10,8 @@ import { getLegacyProjectConfig, initializeConfig } from '../../../config/projec
 type DocEntry = CollectionEntry<'docs'>;
 
 export async function getStaticPaths() {
+  console.log('[Index getStaticPaths] Starting...');
+  
   // getStaticPaths内で設定を初期化
   await initializeConfig();
   const projectConfig = await getLegacyProjectConfig();
@@ -19,21 +21,43 @@ export async function getStaticPaths() {
   
   const paths = [];
   
+  // 利用可能なバージョンと言語の組み合わせのみを生成
+  const docs = await getCollection('docs');
+  const availableCombinations = new Set<string>();
+  
+  docs.forEach(doc => {
+    const pathParts = doc.slug.split('/');
+    if (pathParts.length >= 2) {
+      const version = pathParts[0];
+      const lang = pathParts[1];
+      availableCombinations.add(`${version}:${lang}`);
+    }
+  });
+  
   for (const lang of allLangs) {
     for (const version of allVersions) {
-      paths.push({
-        params: { lang, version },
-        props: { lang, version }
-      });
+      const key = `${version}:${lang}`;
+      if (availableCombinations.has(key)) {
+        console.log(`[Index getStaticPaths] Adding path: version=${version}, lang=${lang}`);
+        paths.push({
+          params: { version, lang },
+          props: { version, lang }
+        });
+      } else {
+        console.log(`[Index getStaticPaths] Skipping unavailable combination: version=${version}, lang=${lang}`);
+      }
     }
   }
   
+  console.log(`[Index getStaticPaths] Generated ${paths.length} index paths`);
   return paths;
 }
 
-const { lang: langParam, version: versionParam } = Astro.props;
-const lang = (langParam || 'en') as LocaleKey;
+const { version: versionParam, lang: langParam } = Astro.props;
 const version = versionParam || 'v1';
+const lang = (langParam || 'en') as LocaleKey;
+
+console.log(`[Index Render] Processing version=${version}, lang=${lang}`);
 
 // 設定を再度初期化（プロパティセクション）
 await initializeConfig();
@@ -42,21 +66,30 @@ const projectConfig = await getLegacyProjectConfig();
 // GitHub Pagesのベースパス
 const baseUrl = projectConfig.baseUrl;
 
-// 指定された言語とバージョンのドキュメントを取得
+// 指定されたバージョンと言語のドキュメントを取得
 const docs = await getCollection('docs', (entry: DocEntry) => {
-  return entry.slug.startsWith(`${lang}/${version}/`);
+  const isMatch = entry.slug.startsWith(`${version}/${lang}/`);
+  if (isMatch) {
+    console.log(`[Index Render] Found matching doc: ${entry.slug}`);
+  }
+  return isMatch;
 });
+
+console.log(`[Index Render] Found ${docs.length} documents for ${version}/${lang}`);
 
 // カテゴリごとにドキュメントを整理
 const categories = docs.reduce((acc: Record<string, DocEntry[]>, doc: DocEntry) => {
-  // スラグからカテゴリを抽出（例: en/v1/guide/getting-started → guide）
+  // スラグからカテゴリを抽出（例: v2/ja/01-guide/getting-started → 01-guide）
   const parts = doc.slug.split('/');
   if (parts.length >= 3) {
-    const category = parts[2]; // 3番目の部分がカテゴリ
-    if (!acc[category]) {
-      acc[category] = [];
+    const category = parts[2]; // 3番目の部分がカテゴリ (01-guide)
+    const categoryName = category.replace(/^\d+-/, ''); // 番号プレフィックスを削除 (guide)
+    
+    if (!acc[categoryName]) {
+      acc[categoryName] = [];
     }
-    acc[category].push(doc);
+    acc[categoryName].push(doc);
+    console.log(`[Index Render] Added ${doc.slug} to category ${categoryName}`);
   }
   return acc;
 }, {});
@@ -64,8 +97,16 @@ const categories = docs.reduce((acc: Record<string, DocEntry[]>, doc: DocEntry) 
 // カテゴリごとにドキュメントを順序で並べ替え
 Object.keys(categories).forEach(category => {
   categories[category].sort((a: DocEntry, b: DocEntry) => {
-    const orderA = a.data.order || 999;
-    const orderB = b.data.order || 999;
+    // スラグからファイル番号を抽出してソート
+    const getFileNumber = (slug: string) => {
+      const parts = slug.split('/');
+      const lastPart = parts[parts.length - 1];
+      const match = lastPart.match(/^(\d+)-/);
+      return match ? parseInt(match[1]) : 999;
+    };
+    
+    const orderA = a.data.order || getFileNumber(a.slug);
+    const orderB = b.data.order || getFileNumber(b.slug);
     return orderA - orderB;
   });
 });
@@ -73,6 +114,9 @@ Object.keys(categories).forEach(category => {
 // カテゴリの表示名マッピング
 const categoryNames: Record<string, string> = {
   'guide': translate('docs.guide', lang),
+  'components': translate('navigation.components', lang),
+  'advanced': translate('docs.advanced', lang),
+  'reference': translate('docs.reference', lang),
   'api': translate('navigation.api', lang),
   'examples': translate('docs.examples', lang)
 };
@@ -87,14 +131,20 @@ const categoryNames: Record<string, string> = {
         <div class="category-item">
           <h2 class="category-title">{categoryNames[category] || category}</h2>
           <div class="doc-grid">
-            {categories[category].map((doc: DocEntry) => (
-              <Card
-                title={doc.data.title}
-                href={`${baseUrl}/${lang}/${version}/${doc.slug.split('/').slice(2).join('/')}`}
-              >
-                <p class="doc-description">{doc.data.description}</p>
-              </Card>
-            ))}
+            {categories[category].map((doc: DocEntry) => {
+              // スラグからパスを構築 (例: v2/ja/01-guide/01-getting-started → /01-guide/01-getting-started)
+              const docPath = doc.slug.split('/').slice(2).join('/');
+              const href = `${baseUrl}/${version}/${lang}/${docPath}`;
+              
+              return (
+                <Card
+                  title={doc.data.title}
+                  href={href}
+                >
+                  <p class="doc-description">{doc.data.description}</p>
+                </Card>
+              );
+            })}
           </div>
         </div>
       ))}

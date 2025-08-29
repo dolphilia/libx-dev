@@ -1,0 +1,11 @@
+[
+  {
+    "title": "Guide",
+    "items": [
+      {
+        "title": "Welcome to Project Template",
+        "href": "/docs/test-multilang-docs/v1/en/01-guide/01-getting-started"
+      }
+    ]
+  }
+]

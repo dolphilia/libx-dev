@@ -70,10 +70,10 @@ async function generateAutoProjects(decorations: Record<string, ProjectDecoratio
       // 設定ファイルが見つからなくても基本情報でプロジェクトを追加
       const decoration = decorations[id] || {};
       
-      // 基本的なフォールバックURLを生成（英語・日本語のみ）
+      // 基本的なフォールバックURLを生成（新構造: [version]/[lang]/）
       const basicFallbackUrl: Record<string, string> = {
-        en: `/docs/${id}/en/v1/guide/getting-started`,
-        ja: `/docs/${id}/ja/v1/guide/getting-started`
+        en: `/docs/${id}/v1/en/01-guide/01-getting-started`,
+        ja: `/docs/${id}/v1/ja/01-guide/01-getting-started`
       };
       
       projects.push({

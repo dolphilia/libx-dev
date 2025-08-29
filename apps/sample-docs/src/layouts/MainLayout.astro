@@ -127,8 +127,8 @@ const docTopLink = await generateRedirectUrl(lang, projectConfig.basic.baseUrl);
                   <VersionSelector
                     currentVersion={version}
                     versions={projectConfig.versioning.versions}
-                    basePath={`${projectConfig.basic.baseUrl}/${lang}`}
-                    currentSlug={currentSlugForSelector}
+                    basePath={projectConfig.basic.baseUrl}
+                    currentSlug={`${lang}/${currentSlugForSelector}`}
                   />
                 </div>
               )}

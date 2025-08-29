@@ -74,11 +74,6 @@ export function createLocalizedVersionedPath(
 ): string {
   const slugPath = Array.isArray(slug) ? slug.join('/') : slug;
   
-  // デフォルト言語の場合
-  if (lang === defaultLocale) {
-    return `/${version}/${slugPath}`;
-  }
-  
-  // その他の言語の場合
-  return `/${lang}/${version}/${slugPath}`;
+  // 新しい構造: 全ての言語でバージョン/言語の順序に統一
+  return `/${version}/${lang}/${slugPath}`;
 }

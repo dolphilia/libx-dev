@@ -13,17 +13,6 @@ import { generateFileBasedPagination, checkFileExists } from '../../../utils/con
 await initializeConfig();
 const projectConfig = await getLegacyProjectConfig();
 
-// 見出しの型定義
-interface Heading {
-  depth: number;
-  slug: string;
-  text: string;
-}
-
-// 目次項目の型定義
-interface TOCItem extends Heading {
-  indent: number;
-}
 
 export async function getStaticPaths(): Promise<GetStaticPathsResult> {
   // パフォーマンス計測開始
@@ -35,48 +24,53 @@ export async function getStaticPaths(): Promise<GetStaticPathsResult> {
   // 結果を生成
   const result = docs.map((entry: CollectionEntry<'docs'>) => {
     // スラグからパスパラメータを抽出
-    // 例: "en/v1/guide/getting-started" → { lang: "en", version: "v1", slug: "guide/getting-started" }
-    const [lang, version, ...slugParts] = entry.slug.split('/');
-    const slug = slugParts.join('/');
+    // 例: "v2/ja/01-guide/01-getting-started" → { version: "v2", lang: "ja", slug: ["01-guide", "01-getting-started"] }
+    const pathParts = entry.slug.split('/');
+    
+    if (pathParts.length < 3) {
+      console.warn(`Invalid entry slug format: ${entry.slug}`);
+      return null;
+    }
+    
+    const version = pathParts[0]; // "v2"
+    const lang = pathParts[1];    // "ja"
+    const slugParts = pathParts.slice(2); // ["01-guide", "01-getting-started"]
+    const slug = slugParts.join('/'); // "01-guide/01-getting-started"
+    
+    console.log(`[getStaticPaths] Processing: ${entry.slug} → version: ${version}, lang: ${lang}, slug: ${slug}`);
     
     return {
-      params: { lang, version, slug },
+      params: { version, lang, slug },
       props: { entry }
     };
-  });
+  }).filter(Boolean); // nullを除去
   
   // パフォーマンス計測終了
   console.timeEnd('getStaticPaths execution time');
   // ドキュメント数をログ出力
   console.log(`Generated ${result.length} static paths`);
   
-  return result;
+  return result as GetStaticPathsResult;
 }
 
 const { entry } = Astro.props as { entry: CollectionEntry<'docs'> };
 const { Content, headings } = await entry.render();
 
-// 言語とバージョンをパラメータから取得
-const { lang: langParam, version: versionParam } = Astro.params;
-const lang = (langParam || 'en') as LocaleKey;
+// バージョンと言語をパラメータから取得
+const { version: versionParam, lang: langParam } = Astro.params;
 const version = String(versionParam || 'v1');
+const lang = (langParam || 'en') as LocaleKey;
 
-// GitHub Pagesのベースパス
-const baseUrl = '';
+// デバッグログ
+console.log(`[Page Render] Processing URL params - version: ${version}, lang: ${lang}, entry.slug: ${entry.slug}`);
 
-// 目次の生成
-const tableOfContents: TOCItem[] = headings.filter((heading: Heading) => heading.depth <= 3).map((heading: Heading) => ({
-  ...heading,
-  slug: heading.slug,
-  indent: (heading.depth - 1) * 16 // インデントのサイズを計算
-}));
 
 // ファイルベースのページネーション生成
 let autoPagination = {};
 try {
-  // entry.slug から情報を抽出 (例: "en/v1/guide/01-getting-started")
+  // entry.slug から情報を抽出 (例: "v2/ja/01-guide/01-getting-started")
   const slugParts = entry.slug.split('/');
-  const currentSection = slugParts[2]; // "guide"
+  const currentSection = slugParts[2]; // "01-guide" 
   const currentFile = slugParts[3]; // "01-getting-started"
   const currentSlug = currentFile.replace(/^\d+-/, ''); // "getting-started"
   

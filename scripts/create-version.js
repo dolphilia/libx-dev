@@ -78,8 +78,8 @@ async function copyFromPreviousVersion(projectName, newVersion, previousVersion,
   const projectPath = path.join(process.cwd(), 'apps', projectName);
   
   for (const lang of supportedLangs) {
-    const prevContentDir = path.join(projectPath, 'src', 'content', 'docs', lang, previousVersion);
-    const newContentDir = path.join(projectPath, 'src', 'content', 'docs', lang, newVersion);
+    const prevContentDir = path.join(projectPath, 'src', 'content', 'docs', previousVersion, lang);
+    const newContentDir = path.join(projectPath, 'src', 'content', 'docs', newVersion, lang);
     
     if (fs.existsSync(prevContentDir)) {
       try {
@@ -255,9 +255,9 @@ async function main() {
       const projectPath = path.join(process.cwd(), 'apps', args.projectName);
       
       for (const lang of config.basic.supportedLangs) {
-        const contentDir = path.join(projectPath, 'src', 'content', 'docs', lang, args.version);
+        const contentDir = path.join(projectPath, 'src', 'content', 'docs', args.version, lang);
         fs.mkdirSync(contentDir, { recursive: true });
-        console.log(`  ✅ ${lang}/${args.version}/`);
+        console.log(`  ✅ ${args.version}/${lang}/`);
       }
     }
 

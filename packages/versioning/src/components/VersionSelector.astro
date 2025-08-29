@@ -66,7 +66,7 @@ function getVersionTag(version: Version): { text: string; type: 'latest' | 'stab
 // 動的フォールバック戦略（ハードコーディングなし）
 function getVersionPath(versionId: string): string {
   if (currentSlug) {
-    // 基本的なターゲットパス
+    // 新しいURL構造: /basePath/version/lang/slug
     const targetPath = `${basePath}/${versionId}/${currentSlug}`;
     
     // クライアントサイドでファイル存在確認を行うために、

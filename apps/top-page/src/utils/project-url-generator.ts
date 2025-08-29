@@ -60,6 +60,6 @@ async function generateDynamicUrl(contentPath: string, lang: LocaleKey, basePath
   }
   
   // プロジェクトが見つからない場合は汎用的なパターンを生成
-  // ほとんどのドキュメントプロジェクトで共通のパターンを使用
-  return `${basePath}/${lang}/v2/guide/01-getting-started`;
+  // 新しい構造: [version]/[lang]/ の順序で共通パターンを使用
+  return `${basePath}/v2/${lang}/01-guide/01-getting-started`;
 }

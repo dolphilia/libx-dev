@@ -41,10 +41,10 @@ export function sortVersions(versions: Version[]): Version[] {
  * 指定されたパスからバージョン情報を抽出します
  */
 export function extractVersionFromPath(path: string): string | null {
-  // パスからバージョン部分を抽出（例: /ja/v1/guide -> v1）
+  // パスからバージョン部分を抽出（例: /v1/ja/guide -> v1）
   const match = path.match(/\/([^\/]+)\/([^\/]+)/);
-  if (match && match[2] && match[2].startsWith('v')) {
-    return match[2];
+  if (match && match[1] && match[1].startsWith('v')) {
+    return match[1];
   }
   return null;
 }
@@ -53,8 +53,8 @@ export function extractVersionFromPath(path: string): string | null {
  * 指定されたパスのバージョンを変更します
  */
 export function changePathVersion(path: string, newVersion: string): string {
-  // パス内のバージョン部分を置換（例: /ja/v1/guide -> /ja/v2/guide）
-  return path.replace(/\/([^\/]+)\/([^\/]+)\//, `/$1/${newVersion}/`);
+  // パス内のバージョン部分を置換（例: /v1/ja/guide -> /v2/ja/guide）
+  return path.replace(/\/([^\/]+)\/([^\/]+)\//, `/${newVersion}/$2/`);
 }
 
 /**

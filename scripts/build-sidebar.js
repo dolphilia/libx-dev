@@ -108,19 +108,19 @@ async function detectProjects() {
         continue;
       }
       
-      // 言語ディレクトリを検出
-      const languages = await detectLanguages(contentPath);
-      
-      if (languages.length === 0) {
-        console.log(`${projectName} に言語ディレクトリが見つかりませんでした。スキップします。`);
-        continue;
-      }
-      
-      // 各言語ディレクトリ内のバージョンを検出
-      const versions = await detectVersions(contentPath, languages[0]);
+      // バージョンディレクトリを検出
+      const versions = await detectVersions(contentPath);
       
       if (versions.length === 0) {
         console.log(`${projectName} にバージョンディレクトリが見つかりませんでした。スキップします。`);
+        continue;
+      }
+      
+      // 各バージョンディレクトリ内の言語を検出
+      const languages = await detectLanguages(contentPath, versions[0]);
+      
+      if (languages.length === 0) {
+        console.log(`${projectName} に言語ディレクトリが見つかりませんでした。スキップします。`);
         continue;
       }
       
@@ -149,32 +149,32 @@ async function detectProjects() {
 }
 
 /**
- * ドキュメントディレクトリ内の言語ディレクトリを検出する
+ * ドキュメントディレクトリ内のバージョンディレクトリを検出する
  */
-async function detectLanguages(contentPath) {
+async function detectVersions(contentPath) {
   try {
     const entries = await fs.readdir(contentPath, { withFileTypes: true });
     return entries
       .filter(entry => entry.isDirectory())
       .map(entry => entry.name);
   } catch (error) {
-    console.error('言語ディレクトリの検出中にエラーが発生しました:', error);
+    console.error('バージョンディレクトリの検出中にエラーが発生しました:', error);
     return [];
   }
 }
 
 /**
- * 言語ディレクトリ内のバージョンディレクトリを検出する
+ * バージョンディレクトリ内の言語ディレクトリを検出する
  */
-async function detectVersions(contentPath, language) {
+async function detectLanguages(contentPath, version) {
   try {
-    const langPath = path.join(contentPath, language);
-    const entries = await fs.readdir(langPath, { withFileTypes: true });
+    const versionPath = path.join(contentPath, version);
+    const entries = await fs.readdir(versionPath, { withFileTypes: true });
     return entries
       .filter(entry => entry.isDirectory())
       .map(entry => entry.name);
   } catch (error) {
-    console.error('バージョンディレクトリの検出中にエラーが発生しました:', error);
+    console.error('言語ディレクトリの検出中にエラーが発生しました:', error);
     return [];
   }
 }
@@ -196,7 +196,7 @@ async function generateSidebarForVersion(project, lang, version) {
   // プロジェクトの翻訳設定を取得
   const categoryTranslations = await getProjectCategoryTranslations(project);
   // ドキュメントファイルを検索
-  const pattern = `${lang}/${version}/**/*.{md,mdx}`;
+  const pattern = `${version}/${lang}/**/*.{md,mdx}`;
   
   const files = await glob(pattern, { cwd: project.contentPath });
   

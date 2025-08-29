@@ -56,7 +56,7 @@ export function saveProjectConfig(projectName, config) {
  */
 export function analyzeProjectStructure(projectName, lang, version) {
   const projectPath = path.join(rootDir, 'apps', projectName);
-  const docsPath = path.join(projectPath, 'src', 'content', 'docs', lang, version);
+  const docsPath = path.join(projectPath, 'src', 'content', 'docs', version, lang);
   
   const categories = {};
   
@@ -229,7 +229,7 @@ export function validateDocumentPath(projectName, lang, version, category, fileN
  */
 export function createDocumentFile(projectName, lang, version, categoryDir, fileName, content) {
   const projectPath = path.join(rootDir, 'apps', projectName);
-  const docPath = path.join(projectPath, 'src', 'content', 'docs', lang, version, categoryDir, `${fileName}.mdx`);
+  const docPath = path.join(projectPath, 'src', 'content', 'docs', version, lang, categoryDir, `${fileName}.mdx`);
   
   // ディレクトリを作成
   fs.mkdirSync(path.dirname(docPath), { recursive: true });

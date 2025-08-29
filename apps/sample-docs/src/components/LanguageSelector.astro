@@ -51,28 +51,28 @@ if (normalizedPathname.startsWith(ACTUAL_BASE_URL + '/')) {
 } else if (normalizedPathname === ACTUAL_BASE_URL + '/') { // ベースURLそのものの場合
   pathWithoutActualBase = '/';
 }
-// pathWithoutActualBase は /en/v1/slug/ や /en/ のようになることを期待
+// pathWithoutActualBase は /v2/en/slug/ や /v2/en/ のようになることを期待
 
-// 言語コード、バージョン、スラッグを抽出
+// バージョン、言語コード、スラッグを抽出
 // pathWithoutActualBase は `/` で始まるので、最初の要素は空文字列になる場合がある
 const pathSegments = pathWithoutActualBase.split('/').filter(segment => segment !== '');
-// 例: /en/v1/guide/getting-started/ -> ['en', 'v1', 'guide', 'getting-started']
-// 例: /en/ -> ['en']
+// 例: /v2/en/guide/getting-started/ -> ['v2', 'en', 'guide', 'getting-started']
+// 例: /v2/en/ -> ['v2', 'en']
 
-let langFromPath: string | undefined = undefined;
 let versionFromPath: string | undefined = undefined;
+let langFromPath: string | undefined = undefined;
 let slugParts: string[] = [];
+
+// バージョン番号の正規表現を少し改善 (例: v1, v1.0, v1.0.1)
+if (pathSegments.length > 0 && pathSegments[0].match(/^v\d+([\.-]\d+)*$/)) {
+  versionFromPath = pathSegments.shift();
+}
 
 const langsForRegex = configuredSupportedLangs.join('|');
 const langRegex = new RegExp(`^(${langsForRegex})$`);
 
 if (pathSegments.length > 0 && pathSegments[0].match(langRegex)) {
   langFromPath = pathSegments.shift();
-}
-
-// バージョン番号の正規表現を少し改善 (例: v1, v1.0, v1.0.1)
-if (pathSegments.length > 0 && pathSegments[0].match(/^v\\d+([\\.-]\\d+)*$/)) {
-  versionFromPath = pathSegments.shift();
 }
 slugParts = pathSegments; // 残りがスラッグ部分
 
@@ -100,11 +100,12 @@ const langPaths: LangPathInfo[] = supportedLangs.map(langCode => {
   const targetLang = langCode as LocaleKey;
   
   const newPathParts = [ACTUAL_BASE_URL];
-  newPathParts.push(targetLang);
-
+  
   if (versionFromPath) {
     newPathParts.push(versionFromPath);
   }
+  
+  newPathParts.push(targetLang);
   
   // slugFromPath は 'guide/getting-started/' または ''
   // '' の場合は結合時に無視されるようにする

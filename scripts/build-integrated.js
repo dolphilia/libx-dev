@@ -113,20 +113,20 @@ function updateBasePath(filePath, oldBasePath, newBasePath) {
     
     // リダイレクト先URLを修正
     content = content.replace(
-      new RegExp(`content="[0-9]+;url=${oldBasePath}/([a-z]+)/"`, 'g'),
-      `content="2;url=${newBasePath}/$1/"`
+      new RegExp(`content="[0-9]+;url=${oldBasePath}/([v0-9]+)/([a-z]+)/"`, 'g'),
+      `content="2;url=${newBasePath}/$1/$2/"`
     );
     
     // リンクのhref属性を修正
     content = content.replace(
-      new RegExp(`href="${oldBasePath}/([a-z]+)/"`, 'g'),
-      `href="${newBasePath}/$1/"`
+      new RegExp(`href="${oldBasePath}/([v0-9]+)/([a-z]+)/"`, 'g'),
+      `href="${newBasePath}/$1/$2/"`
     );
     
     // リダイレクトメッセージを修正
     content = content.replace(
-      new RegExp(`Redirecting from <code>${oldBasePath}</code> to <code>${oldBasePath}/([a-z]+)/</code>`, 'g'),
-      `Redirecting from <code>${newBasePath}</code> to <code>${newBasePath}/$1/</code>`
+      new RegExp(`Redirecting from <code>${oldBasePath}</code> to <code>${oldBasePath}/([v0-9]+)/([a-z]+)/</code>`, 'g'),
+      `Redirecting from <code>${newBasePath}</code> to <code>${newBasePath}/$1/$2/</code>`
     );
     
     // 直接HTMLを書き換える（ローカルビルドの場合）
@@ -139,15 +139,15 @@ function updateBasePath(filePath, oldBasePath, newBasePath) {
     // canonical URLを修正
     if (!isLocalBuild) {
       content = content.replace(
-        new RegExp(`href="https://dolphilia.github.io${oldBasePath}/([a-z]+)/"`, 'g'),
-        `href="https://dolphilia.github.io${newBasePath}/$1/"`
+        new RegExp(`href="https://dolphilia.github.io${oldBasePath}/([v0-9]+)/([a-z]+)/"`, 'g'),
+        `href="https://dolphilia.github.io${newBasePath}/$1/$2/"`
       );
     } else {
       // ローカル開発環境用のポート番号（デフォルト: 8080）
       const localPort = process.env.PORT || 8080;
       content = content.replace(
-        new RegExp(`href="https://dolphilia.github.io${oldBasePath}/([a-z]+)/"`, 'g'),
-        `href="http://localhost:${localPort}/$1/"`
+        new RegExp(`href="https://dolphilia.github.io${oldBasePath}/([v0-9]+)/([a-z]+)/"`, 'g'),
+        `href="http://localhost:${localPort}/$1/$2/"`
       );
     }
   }

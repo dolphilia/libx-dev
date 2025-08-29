@@ -53,7 +53,7 @@ export async function getAvailableContent(): Promise<ContentFile[]> {
       const pathParts = filePath.split(path.sep);
       
       if (pathParts.length >= 4) {
-        const [lang, version, section, fileName] = pathParts;
+        const [version, lang, section, fileName] = pathParts;
         
         // ファイル名から拡張子を除去（番号プレフィックスは保持）
         const fileSlug = fileName.replace('.mdx', '');
@@ -66,7 +66,7 @@ export async function getAvailableContent(): Promise<ContentFile[]> {
           version,
           section,
           fullPath: path.join('src', 'content', 'docs', filePath),
-          url: `/${lang}/${version}/${section}/${fileSlug}`
+          url: `/${version}/${lang}/${section}/${fileSlug}`
         };
         
         contentFiles.push(contentFile);
@@ -353,7 +353,7 @@ export async function findCorrespondingFile(
   
   if (targetFiles.length === 0) {
     // ターゲットバージョンにファイルがない場合はバージョンのルートページへ
-    return `${baseUrl}/${targetVersion}/`;
+    return `${baseUrl}/${targetVersion}/${currentLang}/`;
   }
   
   // currentSlugを解析

@@ -100,11 +100,11 @@ export async function detectProject(projectId: string): Promise<DetectedProject>
   for (const lang of docsConfig.basic.supportedLangs) {
     const firstFile = findFirstContentFile(contentFiles, lang, latestVersion);
     if (firstFile) {
-      fallbackUrls[lang] = `${docsConfig.basic.baseUrl}/${lang}/${latestVersion}/${firstFile}`;
+      fallbackUrls[lang] = `${docsConfig.basic.baseUrl}/${latestVersion}/${lang}/${firstFile}`;
     } else {
       // コンテンツが存在しない言語は英語にフォールバック
       const englishFile = findFirstContentFile(contentFiles, 'en', latestVersion);
-      fallbackUrls[lang] = `${docsConfig.basic.baseUrl}/en/${latestVersion}/${englishFile || 'guide/getting-started'}`;
+      fallbackUrls[lang] = `${docsConfig.basic.baseUrl}/${latestVersion}/en/${englishFile || '01-guide/01-getting-started'}`;
     }
   }
   
