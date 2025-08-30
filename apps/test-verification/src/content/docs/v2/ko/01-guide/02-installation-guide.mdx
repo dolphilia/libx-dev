@@ -1,0 +1,78 @@
+---
+title: "설치 가이드"
+description: "검증 테스트 v2 설치 방법"
+---
+
+# 설치 가이드
+
+이 가이드는 검증 테스트 v2를 설치하고 설정하는 방법을 안내합니다.
+
+## 시스템 요구 사항
+
+설치하기 전에 다음 요구 사항을 확인하세요:
+
+- Node.js 18.0 이상
+- pnpm 8.0 이상
+- Git
+
+## 설치 단계
+
+### 1. 저장소 클론
+
+```bash
+git clone https://github.com/your-org/test-verification.git
+cd test-verification
+```
+
+### 2. 의존성 설치
+
+```bash
+pnpm install
+```
+
+### 3. 환경 변수 설정
+
+`.env.example`을 복사하여 `.env` 파일을 생성하세요:
+
+```bash
+cp .env.example .env
+```
+
+필요한 환경 변수를 설정하세요:
+
+```env
+NODE_ENV=development
+BASE_URL=/docs/test-verification
+```
+
+### 4. 개발 서버 시작
+
+```bash
+pnpm dev
+```
+
+개발 서버가 `http://localhost:4321`에서 시작됩니다.
+
+## 프로덕션 배포
+
+### 빌드
+
+```bash
+pnpm build
+```
+
+### 미리보기
+
+```bash
+pnpm preview
+```
+
+## 문제 해결
+
+설치 중 문제가 발생하면:
+
+1. Node.js와 pnpm 버전 확인
+2. 캐시 정리: `pnpm store prune`
+3. 의존성 재설치: `rm -rf node_modules && pnpm install`
+
+더 자세한 문제 해결 방법은 [문제 해결 섹션](/v2/ko/02-troubleshooting/)을 참조하세요.

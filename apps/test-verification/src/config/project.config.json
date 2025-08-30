@@ -3,7 +3,8 @@
     "baseUrl": "/docs/test-verification",
     "supportedLangs": [
       "en",
-      "ja"
+      "ja",
+      "ko"
     ],
     "defaultLang": "en"
   },
@@ -20,6 +21,13 @@
       "displayDescription": "検証テストのドキュメントです",
       "categories": {
         "guide": "ガイド"
+      }
+    },
+    "ko": {
+      "displayName": "검증 테스트",
+      "displayDescription": "검증 테스트 문서입니다",
+      "categories": {
+        "guide": "가이드"
       }
     }
   },

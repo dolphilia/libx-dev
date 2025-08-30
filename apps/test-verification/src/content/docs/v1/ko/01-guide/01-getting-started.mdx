@@ -1,0 +1,86 @@
+---
+title: "검증 테스트에 오신 것을 환영합니다"
+description: "새로운 문서 사이트 생성을 위한 시작점"
+---
+
+# 검증 테스트에 오신 것을 환영합니다
+
+이 프로젝트는 새로운 문서 사이트 생성을 위한 템플릿 역할을 합니다. `scripts/create-project.js`를 사용하여 새 프로젝트를 생성할 때의 출발점으로 설계되었습니다.
+
+## 이 템플릿 소개
+
+이 템플릿에는 다음과 같은 기능이 포함되어 있습니다:
+
+- **다국어 지원**: 영어, 일본어, 한국어로 콘텐츠 생성
+- **버전 관리**: 여러 버전을 동시에 관리 (필요에 따라 추가 가능)
+- **자동 사이드바**: 콘텐츠 구조를 기반으로 자동 생성된 탐색
+- **공유 UI 컴포넌트**: 통합된 디자인 시스템
+- **반응형 디자인**: 모든 기기와 호환
+
+## 프로젝트 구조
+
+```
+src/content/docs/
+├── v1/
+│   ├── en/                # 영어 문서
+│   │   └── 01-guide/      # 가이드 섹션
+│   ├── ja/                # 일본어 문서
+│   │   └── 01-guide/
+│   └── ko/                # 한국어 문서
+│       └── 01-guide/
+```
+
+## 새 프로젝트 생성
+
+이 템플릿에서 새 프로젝트를 생성하려면:
+
+```bash
+# 새 프로젝트 생성
+node scripts/create-project.js my-docs "My Documentation" "내 문서"
+
+# 더 자세한 옵션으로 생성
+node scripts/create-project.js api-docs "API Documentation" "API 문서" --icon=code --tags=api,reference
+```
+
+## 버전 관리
+
+새 버전이 필요하면 `scripts/create-version.js`를 사용하세요:
+
+```bash
+# 새 버전 추가
+node scripts/create-version.js my-docs v2
+
+# 대화형 모드로 추가
+node scripts/create-version.js my-docs v2 --interactive
+```
+
+## 문서 추가
+
+개별 문서 파일을 추가하려면 `scripts/create-document.js`를 사용하세요:
+
+```bash
+# 기본 사용법
+node scripts/create-document.js my-docs ko v1 guide "새 가이드"
+
+# 대화형 모드 (권장)
+node scripts/create-document.js my-docs ko v1 --interactive
+```
+
+## 사용자 정의 포인트
+
+새 프로젝트의 경우 다음을 사용자 정의하세요:
+
+1. **프로젝트 설정**: `src/config/project.config.json` 편집
+2. **표시 이름**: 각 언어의 `displayName` 및 `displayDescription` 업데이트
+3. **콘텐츠**: 이 템플릿 콘텐츠를 제거하고 프로젝트별 콘텐츠로 교체
+4. **카테고리**: 프로젝트에 맞게 사이드바 카테고리 조정
+
+## 개발 설정 단계
+
+1. [ ] 기존 템플릿 콘텐츠 삭제 또는 업데이트
+2. [ ] 프로젝트별 문서 생성
+3. [ ] 프로젝트에 맞게 구성 파일 조정
+4. [ ] 개발 서버로 테스트: `pnpm dev`
+5. [ ] 빌드 테스트: `pnpm build`
+
+이 템플릿을 새 문서 프로젝트의 기반으로 사용하세요.

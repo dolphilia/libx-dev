@@ -1,6 +1,6 @@
 # ドキュメントサイトへの新しい言語追加ガイド
 
-このガイドでは、既存のドキュメントプロジェクトに新しい言語を追加する方法を詳しく説明します。実際のテストプロジェクト（韓国語の追加）を通じて検証された手順を示します。
+このガイドでは、既存のドキュメントプロジェクトに新しい言語を追加する方法を詳しく説明します。実際のテストプロジェクト（test-verification での韓国語追加）を通じて検証された手順を示します。
 
 ## 前提条件
 
@@ -94,11 +94,108 @@ export const supportedLocales: LocaleKey[] = [
 - `displayDescription`: プロジェクトの説明文
 - `categories`: サイドバーで使用されるカテゴリ名の翻訳
 
-## ステップ2: トップページ（top-page）への言語サポート追加
+## ステップ2: 言語セレクターの更新
+
+### 2.1 言語名とフラグの追加
+
+`apps/[project-name]/src/components/LanguageSelector.astro`を編集し、新しい言語の表示名とフラグを追加します：
+
+```typescript
+const LANG_NAMES: Record<string, string> = {
+  en: 'English',
+  ja: '日本語',
+  ko: '한국어'  // 追加
+};
+
+const LANG_FLAGS: Record<string, string> = {
+  en: '🇺🇸',
+  ja: '🇯🇵',
+  ko: '🇰🇷'  // 追加
+};
+```
+
+### 2.2 フラグの選択基準
+
+- できるだけその言語の主要な国の国旗を使用
+- 地域方言がある場合（例：pt-BR）は、対応する地域の国旗を使用
+
+## ステップ3: ディレクトリ構造の作成
+
+### 3.1 新しいディレクトリ構造について
+
+**重要**: 新しいディレクトリ構造は `docs/[version]/[lang]/[category]/` です。
+
+```
+src/content/docs/
+├── v1/
+│   ├── en/
+│   │   └── 01-guide/
+│   ├── ja/
+│   │   └── 01-guide/
+│   └── ko/              # 新しく追加
+│       └── 01-guide/
+└── v2/
+    ├── en/
+    ├── ja/
+    └── ko/              # 新しく追加
+        ├── 01-guide/
+        └── 02-troubleshooting/
+```
+
+### 3.2 基本ディレクトリの作成
+
+新しい言語用のディレクトリ構造を作成します：
+
+```bash
+# v1 バージョンの韓国語ディレクトリ
+mkdir -p apps/[project-name]/src/content/docs/v1/ko/01-guide
+
+# v2 バージョンの韓国語ディレクトリ（必要に応じて）
+mkdir -p apps/[project-name]/src/content/docs/v2/ko/01-guide
+mkdir -p apps/[project-name]/src/content/docs/v2/ko/02-troubleshooting
+```
+
+## ステップ4: コンテンツの作成
+
+### 4.1 基本ドキュメントの作成
+
+既存の言語（英語または日本語）からベースとなるドキュメントをコピーし、新しい言語に翻訳します：
+
+```mdx
+---
+title: "새로운 언어로 작성된 제목"
+description: "새로운 언어로 작성된 설명"
+---
+
+# 새로운 언어로 작성된 제목
+
+새로운 언어로 작성된 내용...
+```
+
+### 4.2 フロントマターの重要性
+
+各MDXファイルには以下の情報が必要です：
+
+- `title`: ページのタイトル
+- `description`: ページの説明（SEOに使用）
+
+### 4.3 ファイル命名規則
+
+既存のファイルと同じ命名規則に従います：
+
+```
+01-getting-started.mdx
+02-installation.mdx
+03-configuration.mdx
+```
+
+番号プレフィックスはサイドバーの順序を決定します。
+
+## ステップ5: トップページ（top-page）への言語サポート追加
 
 **重要**: 新しい言語を追加する際は、個別プロジェクトだけでなく、システム全体で整合性を保つためにトップページ（top-page）でもサポートする必要があります。
 
-### 2.1 top-page設定ファイルの更新
+### 5.1 top-page設定ファイルの更新
 
 `apps/top-page/src/config/projects.config.json`を編集し、以下を追加します：
 
@@ -131,7 +228,7 @@ export const supportedLocales: LocaleKey[] = [
 }
 ```
 
-### 2.2 なぜtop-pageの更新が必要か
+### 5.2 なぜtop-pageの更新が必要か
 
 個別プロジェクトで新しい言語を追加した際、ドキュメントページのヘッダーにある「Libx」リンクは`/${lang}`（例：`/ko`）を指します。しかし、top-pageで該当言語がサポートされていない場合、404エラーが発生します。
 
@@ -140,94 +237,6 @@ export const supportedLocales: LocaleKey[] = [
 
 **修正後**:
 - 韓国語ドキュメントページ → 「Libx」クリック → `/ko` → 韓国語トップページ表示
-
-## ステップ3: 言語セレクターの更新
-
-### 3.1 言語名とフラグの追加
-
-`apps/[project-name]/src/components/LanguageSelector.astro`を編集し、新しい言語の表示名とフラグを追加します：
-
-```typescript
-const LANG_NAMES: Record<string, string> = {
-  en: 'English',
-  ja: '日本語',
-  ko: '한국어'  // 追加
-};
-
-const LANG_FLAGS: Record<string, string> = {
-  en: '🇺🇸',
-  ja: '🇯🇵',
-  ko: '🇰🇷'  // 追加
-};
-```
-
-### 3.2 フラグの選択基準
-
-- できるだけその言語の主要な国の国旗を使用
-- 地域方言がある場合（例：pt-BR）は、対応する地域の国旗を使用
-
-## ステップ4: ディレクトリ構造の作成
-
-### 4.1 基本ディレクトリの作成
-
-新しい言語用のディレクトリ構造を作成します：
-
-```bash
-mkdir -p apps/[project-name]/src/content/docs/ko/v1/01-guide
-```
-
-### 4.2 ディレクトリ構造の確認
-
-作成後、以下のような構造になるはずです：
-
-```
-src/content/docs/
-├── en/
-│   └── v1/
-│       └── 01-guide/
-├── ja/
-│   └── v1/
-│       └── 01-guide/
-└── ko/          # 新しく追加
-    └── v1/
-        └── 01-guide/
-```
-
-## ステップ5: コンテンツの作成
-
-### 5.1 基本ドキュメントの作成
-
-既存の言語（英語または日本語）からベースとなるドキュメントをコピーし、新しい言語に翻訳します：
-
-```mdx
----
-title: "새로운 언어로 작성된 제목"
-description: "새로운 언어로 작성된 설명"
----
-
-# 새로운 언어로 작성된 제목
-
-새로운 언어로 작성된 내용...
-```
-
-### 5.2 フロントマターの重要性
-
-各MDXファイルには以下の情報が必要です：
-
-- `title`: ページのタイトル
-- `description`: ページの説明（SEOに使用）
-
-### 5.3 ファイル命名規則
-
-既存のファイルと同じ命名規則に従います：
-
-```
-01-getting-started.mdx
-02-installation.mdx
-03-configuration.mdx
-```
-
-番号プレフィックスはサイドバーの順序を決定します。
 
 ## ステップ6: テストと検証
 
@@ -259,6 +268,17 @@ pnpm dev
 - サイドバーが適切に生成されること
 - **重要**: ヘッダーの「Libx」リンクが正しく動作すること（`/${lang}`に404エラーなくアクセスできる）
 
+## URL構造について
+
+新しいディレクトリ構造では、以下のURL構造となります：
+
+- 旧構造: `/docs/[project]/[lang]/[version]/[slug]`
+- **新構造**: `/docs/[project]/[version]/[lang]/[slug]`
+
+例：
+- `/docs/test-verification/v2/ko/01-guide/01-getting-started/`
+- `/docs/test-verification/v1/ko/01-guide/01-getting-started/`
+
 ## トラブルシューティング
 
 ### よくある問題と解決方法
@@ -277,17 +297,27 @@ pnpm dev
 
 #### 問題3: サイドバーが表示されない
 
-**原因**: MDXファイルのフロントマターが不適切
+**原因**: MDXファイルのフロントマターが不適切、またはディレクトリ構造が間違っている
 
-**解決方法**: `title`と`description`が正しく設定されていることを確認する
+**解決方法**: 
+- `title`と`description`が正しく設定されていることを確認する
+- 新しいディレクトリ構造 `docs/[version]/[lang]/` を使用していることを確認する
 
-#### 問題4: ヘッダーの「Libx」リンクが404エラーになる 🆕
+#### 問題4: ヘッダーの「Libx」リンクが404エラーになる
 
 **原因**: top-pageで新しい言語がサポートされていない
 
 **解決方法**: `apps/top-page/src/config/projects.config.json`の`supportedLangs`に新しい言語を追加し、対応する翻訳コンテンツを追加する
 
-#### 問題5: 多言語テキストが文字化けする
+#### 問題5: ページが見つからない（404）
+
+**原因**: 新しいディレクトリ構造に対応していない、またはファイルパスが間違っている
+
+**解決方法**: 
+- ディレクトリ構造が `src/content/docs/[version]/[lang]/` になっているか確認
+- ファイル名が正しい命名規則に従っているか確認
+
+#### 問題6: 多言語テキストが文字化けする
 
 **原因**: ファイルエンコーディングの問題
 
@@ -321,28 +351,6 @@ pnpm dev
    - 翻訳の品質を定期的にレビューする
    - ネイティブスピーカーによるチェックを推奨
 
-## 自動化の可能性
-
-### スクリプトによる自動化
-
-将来的に以下のような自動化が可能です：
-
-```bash
-# 新しい言語用のスクリプト（今後実装予定）
-node scripts/add-language.js [project-name] [language-code] [display-name]
-
-# 例
-node scripts/add-language.js my-docs ko "한국어"
-```
-
-### 自動翻訳ツールとの連携
-
-- Google Translate API
-- DeepL API
-- GitHub Copilot
-
-などのツールを使用した半自動翻訳システムの構築も検討できます。
-
 ## チェックリスト
 
 新しい言語を追加する際は、以下のチェックリストを使用してください：
@@ -356,8 +364,8 @@ node scripts/add-language.js my-docs ko "한국어"
 - [ ] `LanguageSelector.astro`の`LANG_FLAGS`にフラグ追加
 
 ### ディレクトリ構造
-- [ ] 言語ディレクトリ作成（`src/content/docs/[lang]/`）
-- [ ] バージョンディレクトリ作成（例：`v1/`）
+- [ ] 新しい構造でディレクトリ作成（`src/content/docs/[version]/[lang]/`）
+- [ ] 各バージョンディレクトリ作成（例：`v1/ko/`、`v2/ko/`）
 - [ ] 適切なカテゴリディレクトリ作成（例：`01-guide/`）
 
 ### コンテンツ
@@ -372,6 +380,7 @@ node scripts/add-language.js my-docs ko "한국어"
 - [ ] 言語切り替え機能確認
 - [ ] サイドバー生成確認
 - [ ] **重要**: ヘッダーの「Libx」リンクが404エラーなく動作することを確認
+- [ ] URL構造が新形式（`/[version]/[lang]/`）になっていることを確認
 
 ### 品質確認
 - [ ] 翻訳内容の品質確認
@@ -379,8 +388,23 @@ node scripts/add-language.js my-docs ko "한국어"
 - [ ] リンクと内部参照の修正
 - [ ] 最終レビュー完了
 
+## 実証実験の結果
+
+このガイドは、`apps/test-verification`プロジェクトに韓国語を追加する実証実験を通じて検証されました：
+
+### 成功例
+- 韓国語ページの正常な生成確認
+- 言語切り替え機能の正常動作
+- サイドバーの適切な生成
+- 統合ビルドの成功
+
+### 検証したURL構造
+- `/docs/test-verification/v1/ko/01-guide/01-getting-started/`
+- `/docs/test-verification/v2/ko/01-guide/01-getting-started/`
+- `/docs/test-verification/v2/ko/02-troubleshooting/01-new-document/`
+
 ## 結論
 
-このガイドに従うことで、ドキュメントサイトに新しい言語を安全かつ確実に追加することができます。韓国語の追加テストを通じて検証されたこの手順は、他の言語についても同様に適用できます。
+このガイドに従うことで、新しいディレクトリ構造（`/[version]/[lang]/`）に対応したドキュメントサイトに新しい言語を安全かつ確実に追加することができます。韓国語の追加テストを通じて検証されたこの手順は、他の言語についても同様に適用できます。
 
 定期的なメンテナンスと品質管理を行い、多言語ドキュメントサイトの価値を最大化してください。
