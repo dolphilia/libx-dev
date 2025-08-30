@@ -35,8 +35,8 @@ export interface ProjectDecorationJSON {
 // ランタイム設定の型定義（既存のProject等と互換性保持）
 export interface Project {
   id: string;
-  name: Record<LocaleKey, string>;
-  description: Record<LocaleKey, string>;
+  name: Partial<Record<LocaleKey, string>>;
+  description: Partial<Record<LocaleKey, string>>;
   path: string;
   icon?: IconName;
   tags?: string[];
@@ -44,7 +44,7 @@ export interface Project {
   isUpdated?: boolean;
   // 動的URL生成用の情報
   contentPath?: string; // コンテンツディレクトリのパス（sample-docs等）
-  fallbackUrl?: Record<LocaleKey, string>; // フォールバック用の固定URL
+  fallbackUrl?: Partial<Record<LocaleKey, string>>; // フォールバック用の固定URL
 }
 
 export interface TopPageConfig {

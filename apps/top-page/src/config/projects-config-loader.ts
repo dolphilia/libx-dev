@@ -17,6 +17,7 @@ import {
   validateProjectsConfig 
 } from './projects-config-schema';
 import { scanAppsDirectory, detectProject, type DetectedProject } from '../utils/project-auto-detector';
+import type { LocaleKey } from '@docs/i18n/locales';
 
 // 設定キャッシュ
 let _configCache: TopPageConfig | null = null;
@@ -65,27 +66,39 @@ async function generateAutoProjects(decorations: Record<string, ProjectDecoratio
         ...decoration
       });
     } catch (error) {
-      console.warn(`プロジェクト ${id} の自動検出に失敗しました:`, error?.message || error);
+      console.warn(`プロジェクト ${id} の自動検出に失敗しました:`, error instanceof Error ? error.message : error);
       
       // 設定ファイルが見つからなくても基本情報でプロジェクトを追加
       const decoration = decorations[id] || {};
       
       // 基本的なフォールバックURLを生成（新構造: [version]/[lang]/）
-      const basicFallbackUrl: Record<string, string> = {
-        en: `/docs/${id}/v1/en/01-guide/01-getting-started`,
-        ja: `/docs/${id}/v1/ja/01-guide/01-getting-started`
-      };
+      // 実際のコンテンツ存在を確認してからURLを生成
+      const basicFallbackUrl: Record<string, string> = {};
+      
+      // 英語は必ずフォールバックとして提供
+      basicFallbackUrl['en'] = `/docs/${id}/v1/en/01-guide/01-getting-started`;
+      
+      // 日本語は存在する場合のみ
+      try {
+        const appsDir = path.resolve(process.cwd(), '..', '..');
+        const jaContentPath = path.join(appsDir, 'apps', id, 'src', 'content', 'docs', 'v1', 'ja');
+        await fs.access(jaContentPath);
+        basicFallbackUrl['ja'] = `/docs/${id}/v1/ja/01-guide/01-getting-started`;
+      } catch {
+        // 日本語コンテンツが存在しない場合は英語へのフォールバック用URL
+        basicFallbackUrl['ja'] = basicFallbackUrl['en'];
+      }
       
       projects.push({
         id,
         name: {
           en: id.charAt(0).toUpperCase() + id.slice(1).replace('-', ' '),
           ja: id.charAt(0).toUpperCase() + id.slice(1).replace('-', ' ')
-        } as Record<string, string>,
+        },
         description: {
           en: `Documentation for ${id}`,
           ja: `${id}のドキュメント`
-        } as Record<string, string>,
+        },
         path: `/docs/${id}`,
         contentPath: id,
         fallbackUrl: basicFallbackUrl,

@@ -95,17 +95,32 @@ export async function detectProject(projectId: string): Promise<DetectedProject>
   // コンテンツファイルをスキャン
   const contentFiles = await scanProjectContent(projectPath);
   
-  // 各言語の最初のページを自動特定
+  // 実際にコンテンツが存在する言語のみfallbackUrlsを生成
   const fallbackUrls: Record<string, string> = {};
+  const actualSupportedLangs: LocaleKey[] = [];
+  
   for (const lang of docsConfig.basic.supportedLangs) {
     const firstFile = findFirstContentFile(contentFiles, lang, latestVersion);
     if (firstFile) {
+      // 実際にコンテンツが存在する言語
       fallbackUrls[lang] = `${docsConfig.basic.baseUrl}/${latestVersion}/${lang}/${firstFile}`;
-    } else {
-      // コンテンツが存在しない言語は英語にフォールバック
-      const englishFile = findFirstContentFile(contentFiles, 'en', latestVersion);
-      fallbackUrls[lang] = `${docsConfig.basic.baseUrl}/${latestVersion}/en/${englishFile || '01-guide/01-getting-started'}`;
+      actualSupportedLangs.push(lang);
     }
+  }
+  
+  // 英語のフォールバック（全ての言語で英語版も提供）
+  const englishFile = findFirstContentFile(contentFiles, 'en', latestVersion);
+  if (englishFile && !fallbackUrls['en']) {
+    fallbackUrls['en'] = `${docsConfig.basic.baseUrl}/${latestVersion}/en/${englishFile}`;
+    if (!actualSupportedLangs.includes('en')) {
+      actualSupportedLangs.push('en');
+    }
+  }
+  
+  // 英語すらない場合のフォールバック
+  if (Object.keys(fallbackUrls).length === 0) {
+    fallbackUrls['en'] = `${docsConfig.basic.baseUrl}/${latestVersion}/en/01-guide/01-getting-started`;
+    actualSupportedLangs.push('en');
   }
   
   return {
@@ -113,7 +128,7 @@ export async function detectProject(projectId: string): Promise<DetectedProject>
     name: extractDisplayNames(docsConfig),
     description: extractDisplayDescriptions(docsConfig),
     basePath: docsConfig.basic.baseUrl,
-    supportedLangs: docsConfig.basic.supportedLangs,
+    supportedLangs: actualSupportedLangs.length > 0 ? actualSupportedLangs : docsConfig.basic.supportedLangs,
     fallbackUrls
   };
 }
@@ -226,7 +241,8 @@ async function scanProjectContent(projectPath: string): Promise<ContentFile[]> {
       const pathParts = filePath.split(path.sep);
       
       if (pathParts.length >= 4) {
-        const [lang, version, section, fileName] = pathParts;
+        // 新しい構造: [version]/[lang]/[section]/[fileName]
+        const [version, lang, section, fileName] = pathParts;
         
         // ファイル名から拡張子を除去
         const fileSlug = fileName.replace(/\.mdx?$/, '');
