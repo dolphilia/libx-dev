@@ -37,20 +37,6 @@
       ],
       "isNew": false
     },
-    "test-multilang-docs": {
-      "icon": "file-text",
-      "tags": [
-        "documentation"
-      ],
-      "isNew": true
-    },
-    "test-structure": {
-      "icon": "file-text",
-      "tags": [
-        "documentation"
-      ],
-      "isNew": true
-    },
     "test-verification": {
       "icon": "file-text",
       "tags": [
