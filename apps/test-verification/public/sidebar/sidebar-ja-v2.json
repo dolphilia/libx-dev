@@ -1,0 +1,24 @@
+[
+  {
+    "title": "Guide",
+    "items": [
+      {
+        "title": "インストールガイド",
+        "href": "/docs/test-verification/ja/v2/01-guide/02-new-document"
+      },
+      {
+        "title": "プロジェクトテンプレートへようこそ",
+        "href": "/docs/test-verification/ja/v2/01-guide/01-getting-started"
+      }
+    ]
+  },
+  {
+    "title": "Troubleshooting",
+    "items": [
+      {
+        "title": "トラブルシューティング",
+        "href": "/docs/test-verification/ja/v2/02-troubleshooting/01-new-document"
+      }
+    ]
+  }
+]

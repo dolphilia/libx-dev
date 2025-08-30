@@ -1,0 +1,11 @@
+[
+  {
+    "title": "Guide",
+    "items": [
+      {
+        "title": "Welcome to Project Template",
+        "href": "/docs/project-template/en/v1/01-guide/01-getting-started"
+      }
+    ]
+  }
+]

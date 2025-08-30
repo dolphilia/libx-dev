@@ -8,21 +8,22 @@ export async function getStaticPaths() {
   await initializeConfig();
   const projectConfig = await getLegacyProjectConfig();
   
-  return projectConfig.supportedLangs.map(lang => ({
-    params: { lang }
+  return projectConfig.versions.map(v => ({
+    params: { version: v.id }
   }));
 }
 
-const { lang: langParam } = Astro.params;
-const lang = (langParam || 'en') as LocaleKey;
+const { version: versionParam } = Astro.params;
+const version = versionParam || 'v1';
 
 // 設定を再度初期化（プロパティセクション）
 await initializeConfig();
 const projectConfig = await getLegacyProjectConfig();
 const baseUrl = projectConfig.baseUrl;
 
-// 動的にリダイレクト先を決定
-const redirectUrl = await generateRedirectUrl(lang, baseUrl);
+// デフォルト言語でリダイレクト
+const defaultLang = projectConfig.defaultLocale || 'en';
+const redirectUrl = `${baseUrl}/${version}/${defaultLang}/`;
 
 // リダイレクトを実行
 return Astro.redirect(redirectUrl);

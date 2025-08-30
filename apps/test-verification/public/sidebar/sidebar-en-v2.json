@@ -1,0 +1,24 @@
+[
+  {
+    "title": "Guide",
+    "items": [
+      {
+        "title": "Installation Guide",
+        "href": "/docs/test-verification/en/v2/01-guide/02-installation-guide"
+      },
+      {
+        "title": "Welcome to Project Template",
+        "href": "/docs/test-verification/en/v2/01-guide/01-getting-started"
+      }
+    ]
+  },
+  {
+    "title": "Api-reference",
+    "items": [
+      {
+        "title": "API Overview",
+        "href": "/docs/test-verification/en/v2/02-api-reference/01-api-overview"
+      }
+    ]
+  }
+]

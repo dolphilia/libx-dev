@@ -1,0 +1,42 @@
+{
+  "basic": {
+    "baseUrl": "/docs/test-verification",
+    "supportedLangs": [
+      "en",
+      "ja"
+    ],
+    "defaultLang": "en"
+  },
+  "translations": {
+    "en": {
+      "displayName": "Test Verification",
+      "displayDescription": "Documentation for Test Verification",
+      "categories": {
+        "guide": "Guide"
+      }
+    },
+    "ja": {
+      "displayName": "検証テスト",
+      "displayDescription": "検証テストのドキュメントです",
+      "categories": {
+        "guide": "ガイド"
+      }
+    }
+  },
+  "versioning": {
+    "versions": [
+      {
+        "id": "v1",
+        "name": "Version 1.0",
+        "date": "2024-01-01T00:00:00.000Z",
+        "isLatest": false
+      },
+      {
+        "id": "v2",
+        "name": "Version 2",
+        "date": "2025-08-30T02:13:09.787Z",
+        "isLatest": true
+      }
+    ]
+  }
+}

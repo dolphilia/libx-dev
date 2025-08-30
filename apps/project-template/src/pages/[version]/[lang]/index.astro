@@ -19,10 +19,10 @@ export async function getStaticPaths() {
   
   const paths = [];
   
-  for (const lang of allLangs) {
-    for (const version of allVersions) {
+  for (const version of allVersions) {
+    for (const lang of allLangs) {
       paths.push({
-        params: { lang, version },
+        params: { version, lang },
         props: { lang, version }
       });
     }
@@ -31,7 +31,7 @@ export async function getStaticPaths() {
   return paths;
 }
 
-const { lang: langParam, version: versionParam } = Astro.props;
+const { version: versionParam, lang: langParam } = Astro.props;
 const lang = (langParam || 'en') as LocaleKey;
 const version = versionParam || 'v1';
 
@@ -44,12 +44,12 @@ const baseUrl = projectConfig.baseUrl;
 
 // 指定された言語とバージョンのドキュメントを取得
 const docs = await getCollection('docs', (entry: DocEntry) => {
-  return entry.slug.startsWith(`${lang}/${version}/`);
+  return entry.slug.startsWith(`${version}/${lang}/`);
 });
 
 // カテゴリごとにドキュメントを整理
 const categories = docs.reduce((acc: Record<string, DocEntry[]>, doc: DocEntry) => {
-  // スラグからカテゴリを抽出（例: en/v1/guide/getting-started → guide）
+  // スラグからカテゴリを抽出（例: v1/en/01-guide/getting-started → 01-guide）
   const parts = doc.slug.split('/');
   if (parts.length >= 3) {
     const category = parts[2]; // 3番目の部分がカテゴリ
@@ -90,7 +90,7 @@ const categoryNames: Record<string, string> = {
             {categories[category].map((doc: DocEntry) => (
               <Card
                 title={doc.data.title}
-                href={`${baseUrl}/${lang}/${version}/${doc.slug.split('/').slice(2).join('/')}`}
+                href={`${baseUrl}/${version}/${lang}/${doc.slug.split('/').slice(2).join('/')}`}
               >
                 <p class="doc-description">{doc.data.description}</p>
               </Card>

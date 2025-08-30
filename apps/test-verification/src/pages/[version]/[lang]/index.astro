@@ -1,0 +1,167 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import MainLayout from '../../../layouts/MainLayout.astro';
+import { Card } from '@docs/ui/components';
+import type { LocaleKey } from '@docs/i18n/locales';
+import { translate } from '@docs/i18n/utils';
+import { getLegacyProjectConfig, initializeConfig } from '../../../config/project.config.new';
+
+// 型定義
+type DocEntry = CollectionEntry<'docs'>;
+
+export async function getStaticPaths() {
+  // getStaticPaths内で設定を初期化
+  await initializeConfig();
+  const projectConfig = await getLegacyProjectConfig();
+  
+  const allVersions = projectConfig.versions.map(v => v.id);
+  const allLangs = projectConfig.supportedLangs;
+  
+  const paths = [];
+  
+  for (const version of allVersions) {
+    for (const lang of allLangs) {
+      paths.push({
+        params: { version, lang },
+        props: { lang, version }
+      });
+    }
+  }
+  
+  return paths;
+}
+
+const { version: versionParam, lang: langParam } = Astro.props;
+const lang = (langParam || 'en') as LocaleKey;
+const version = versionParam || 'v1';
+
+// 設定を再度初期化（プロパティセクション）
+await initializeConfig();
+const projectConfig = await getLegacyProjectConfig();
+
+// GitHub Pagesのベースパス
+const baseUrl = projectConfig.baseUrl;
+
+// 指定された言語とバージョンのドキュメントを取得
+const docs = await getCollection('docs', (entry: DocEntry) => {
+  return entry.slug.startsWith(`${version}/${lang}/`);
+});
+
+// カテゴリごとにドキュメントを整理
+const categories = docs.reduce((acc: Record<string, DocEntry[]>, doc: DocEntry) => {
+  // スラグからカテゴリを抽出（例: v1/en/01-guide/getting-started → 01-guide）
+  const parts = doc.slug.split('/');
+  if (parts.length >= 3) {
+    const category = parts[2]; // 3番目の部分がカテゴリ
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(doc);
+  }
+  return acc;
+}, {});
+
+// カテゴリごとにドキュメントを順序で並べ替え
+Object.keys(categories).forEach(category => {
+  categories[category].sort((a: DocEntry, b: DocEntry) => {
+    const orderA = a.data.order || 999;
+    const orderB = b.data.order || 999;
+    return orderA - orderB;
+  });
+});
+
+// カテゴリの表示名マッピング
+const categoryNames: Record<string, string> = {
+  'guide': translate('docs.guide', lang),
+  'api': translate('navigation.api', lang),
+  'examples': translate('docs.examples', lang)
+};
+---
+
+<MainLayout title={`${translate('docs.documentation', lang)} (${version})`} lang={lang} version={version}>
+  <div class="container">
+    <h1 class="page-title">{translate('docs.documentation', lang)} - {version}</h1>
+    
+    <div class="category-list">
+      {Object.keys(categories).map(category => (
+        <div class="category-item">
+          <h2 class="category-title">{categoryNames[category] || category}</h2>
+          <div class="doc-grid">
+            {categories[category].map((doc: DocEntry) => (
+              <Card
+                title={doc.data.title}
+                href={`${baseUrl}/${version}/${lang}/${doc.slug.split('/').slice(2).join('/')}`}
+              >
+                <p class="doc-description">{doc.data.description}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+    
+    {Object.keys(categories).length === 0 && (
+      <div class="empty-state">
+        <p>{translate('docs.no_documents', lang)}</p>
+      </div>
+    )}
+  </div>
+</MainLayout>
+
+<style>
+  .container {
+    max-width: 64rem;
+    margin: 0 auto;
+  }
+
+  .page-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+  }
+
+  .category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .category-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .doc-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .doc-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .doc-description {
+    color: #4b5563;
+  }
+
+  :global(.dark) .doc-description {
+    color: #9ca3af;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 0;
+  }
+
+  .empty-state p {
+    color: #4b5563;
+  }
+
+  :global(.dark) .empty-state p {
+    color: #9ca3af;
+  }
+</style>
